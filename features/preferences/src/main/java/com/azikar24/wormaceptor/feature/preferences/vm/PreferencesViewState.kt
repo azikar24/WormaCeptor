@@ -19,6 +19,7 @@ import kotlinx.collections.immutable.persistentListOf
  * @property totalItemCount Total number of preference entries in the selected file, before filtering.
  */
 data class PreferencesViewState(
+    val isFileSearchActive: Boolean = false,
     val fileSearchQuery: String = "",
     val selectedFileName: String? = null,
     val itemSearchQuery: String = "",
@@ -28,4 +29,8 @@ data class PreferencesViewState(
     val preferenceItems: ImmutableList<PreferenceItem> = persistentListOf(),
     val availableTypes: ImmutableList<String> = persistentListOf(),
     val totalItemCount: Int = 0,
+    val editingItem: PreferenceItem? = null,
+    val showEditSheet: Boolean = false,
+    val showDeleteConfirmKey: String? = null,
+    val showClearConfirmDialog: Boolean = false,
 )

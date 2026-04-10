@@ -5,6 +5,7 @@
     <string name="preferences_back">Back</string>
     <string name="preferences_search_placeholder">Search preferences files…</string>
     <string name="preferences_search">Search</string>
+    <string name="preferences_close_search">Close search</string>
     <string name="preferences_item_count_singular">item</string>
     <string name="preferences_item_count_plural">items</string>
     <string name="preferences_empty_no_matches">No matches found</string>

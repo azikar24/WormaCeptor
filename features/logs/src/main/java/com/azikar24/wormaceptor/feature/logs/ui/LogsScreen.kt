@@ -5,77 +5,57 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.VerticalAlignBottom
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
-import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import com.azikar24.wormaceptor.feature.logs.R
-import com.azikar24.wormaceptor.feature.logs.ui.theme.LogLevelColors
-import com.azikar24.wormaceptor.feature.logs.ui.theme.logLevelColors
+import com.azikar24.wormaceptor.feature.logs.ui.components.LevelFilterChips
+import com.azikar24.wormaceptor.feature.logs.ui.components.LogList
+import com.azikar24.wormaceptor.feature.logs.ui.components.StatsBar
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewEvent
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
-import kotlinx.collections.immutable.ImmutableList
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.azikar24.wormaceptor.feature.logs.vm.LogsViewState
 
 /**
  * Main screen for viewing console logs.
@@ -93,65 +73,34 @@ fun LogsScreen(
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
 ) {
-    BaseScreen(viewModel) { state, onEvent ->
-        LogsScreenContent(
-            logs = state.logs,
-            searchQuery = state.searchQuery,
-            selectedLevels = state.selectedLevels,
-            autoScroll = state.autoScroll,
-            isCapturing = state.isCapturing,
-            totalCount = state.totalCount,
-            levelCounts = state.levelCounts,
-            pid = state.currentPid,
-            onSearchQueryChanged = { query -> onEvent(LogsViewEvent.SearchQueryChanged(query)) },
-            onLevelToggle = { level -> onEvent(LogsViewEvent.LevelToggled(level)) },
-            onSetAutoScroll = { enabled -> onEvent(LogsViewEvent.AutoScrollSet(enabled)) },
-            onToggleCapture = {
-                if (state.isCapturing) {
-                    onEvent(LogsViewEvent.CaptureStopped)
-                } else {
-                    onEvent(LogsViewEvent.CaptureStarted)
-                }
-            },
-            onStartCapture = { onEvent(LogsViewEvent.CaptureStarted) },
-            onClearLogs = { onEvent(LogsViewEvent.LogsCleared) },
-            modifier = modifier,
-            onBack = onBack,
-        )
-    }
+    val state by viewModel.uiState.collectAsState()
+    val onEvent: (LogsViewEvent) -> Unit = { viewModel.sendEvent(it) }
+
+    LogsScreenContent(
+        state = state,
+        onEvent = onEvent,
+        modifier = modifier,
+        onBack = onBack,
+    )
 }
 
-@Suppress("LongParameterList")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LogsScreenContent(
-    logs: ImmutableList<LogEntry>,
-    searchQuery: String,
-    selectedLevels: Set<LogLevel>,
-    autoScroll: Boolean,
-    isCapturing: Boolean,
-    totalCount: Int,
-    levelCounts: Map<LogLevel, Int>,
-    pid: Int,
-    onSearchQueryChanged: (String) -> Unit,
-    onLevelToggle: (LogLevel) -> Unit,
-    onSetAutoScroll: (Boolean) -> Unit,
-    onToggleCapture: () -> Unit,
-    onStartCapture: () -> Unit,
-    onClearLogs: () -> Unit,
+    state: LogsViewState,
+    onEvent: (LogsViewEvent) -> Unit,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
 ) {
     val listState = rememberLazyListState()
+    val currentOnEvent by rememberUpdatedState(onEvent)
 
-    // Auto-scroll to bottom when new logs arrive
-    LaunchedEffect(logs.size, autoScroll) {
-        if (autoScroll && logs.isNotEmpty()) {
-            listState.animateScrollToItem(logs.size - 1)
+    LaunchedEffect(state.logs.size, state.autoScroll) {
+        if (state.autoScroll && state.logs.isNotEmpty()) {
+            listState.animateScrollToItem(state.logs.size - 1)
         }
     }
 
-    // Detect if user has scrolled away from bottom
     val isAtBottom by remember {
         derivedStateOf {
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
@@ -160,10 +109,9 @@ internal fun LogsScreenContent(
         }
     }
 
-    // Disable auto-scroll when user scrolls up
     LaunchedEffect(isAtBottom) {
-        if (!isAtBottom && autoScroll) {
-            onSetAutoScroll(false)
+        if (!isAtBottom && state.autoScroll) {
+            currentOnEvent(LogsViewEvent.AutoScrollSet(false))
         }
     }
 
@@ -171,388 +119,195 @@ internal fun LogsScreenContent(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
         topBar = {
-            Column {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(R.string.logs_console_title),
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    },
-                    navigationIcon = {
-                        onBack?.let { back ->
-                            IconButton(onClick = back) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = stringResource(R.string.logs_back),
-                                )
-                            }
-                        }
-                    },
-                    actions = {
-                        WormaCeptorPlayPauseButton(
-                            isActive = isCapturing,
-                            onToggle = onToggleCapture,
-                            activeContentDescription = stringResource(R.string.logs_pause_capture),
-                            inactiveContentDescription = stringResource(R.string.logs_start_capture),
-                        )
-
-                        // Clear logs
-                        IconButton(onClick = onClearLogs) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.logs_clear),
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                    ),
-                )
-
-                // Search bar
-                WormaCeptorSearchBar(
-                    query = searchQuery,
-                    onQueryChange = onSearchQueryChanged,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                            vertical = WormaCeptorDesignSystem.Spacing.sm,
-                        ),
-                    placeholder = stringResource(R.string.logs_search_placeholder),
-                )
-
-                // Level filter chips
-                LevelFilterChips(
-                    selectedLevels = selectedLevels,
-                    levelCounts = levelCounts,
-                    onLevelToggle = onLevelToggle,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
-                )
-
-                // Stats bar
-                StatsBar(
-                    totalCount = totalCount,
-                    filteredCount = logs.size,
-                    isCapturing = isCapturing,
-                    pid = pid,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                            vertical = WormaCeptorDesignSystem.Spacing.xs,
-                        ),
-                )
-            }
+            LogsTopBar(
+                state = state,
+                onEvent = onEvent,
+                onBack = onBack,
+            )
         },
         floatingActionButton = {
-            AnimatedVisibility(
-                visible = !isAtBottom && logs.isNotEmpty(),
-                enter = fadeIn() + slideInVertically { it },
-                exit = fadeOut() + slideOutVertically { it },
-            ) {
-                WormaCeptorFAB(
-                    onClick = {
-                        onSetAutoScroll(true)
-                    },
-                    icon = Icons.Default.KeyboardArrowDown,
-                    contentDescription = stringResource(R.string.logs_scroll_to_bottom),
-                )
-            }
+            LogsScrollFab(
+                isAtBottom = isAtBottom,
+                hasLogs = state.logs.isNotEmpty(),
+                onEvent = onEvent,
+            )
         },
     ) { paddingValues ->
-        Box(modifier = Modifier.imePadding()) {
-            if (logs.isEmpty()) {
-                WormaCeptorEmptyState(
-                    title = if (isCapturing) {
-                        stringResource(R.string.logs_empty_capturing_title)
-                    } else {
-                        stringResource(R.string.logs_empty_paused_title)
-                    },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    subtitle = if (isCapturing) {
-                        stringResource(R.string.logs_empty_capturing_subtitle)
-                    } else {
-                        stringResource(R.string.logs_empty_paused_subtitle)
-                    },
-                    icon = Icons.Default.VerticalAlignBottom,
-                    actionLabel = if (!isCapturing) stringResource(R.string.logs_start_capture_action) else null,
-                    onAction = if (!isCapturing) onStartCapture else null,
-                )
-            } else {
-                LogList(
-                    logs = logs,
-                    listState = listState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                )
-            }
-        }
+        LogsBody(
+            state = state,
+            onEvent = onEvent,
+            listState = listState,
+            paddingValues = paddingValues,
+        )
     }
 }
 
+@Suppress("LongMethod")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LevelFilterChips(
-    selectedLevels: Set<LogLevel>,
-    levelCounts: Map<LogLevel, Int>,
-    onLevelToggle: (LogLevel) -> Unit,
-    modifier: Modifier = Modifier,
+private fun LogsTopBar(
+    state: LogsViewState,
+    onEvent: (LogsViewEvent) -> Unit,
+    onBack: (() -> Unit)?,
 ) {
-    val colors = logLevelColors()
-    val scrollState = rememberScrollState()
+    val haptic = LocalHapticFeedback.current
 
-    Row(
-        modifier = modifier
-            .horizontalScroll(scrollState)
-            .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-    ) {
-        LogLevel.entries.forEach { level ->
-            val isSelected = level in selectedLevels
-            val count = levelCounts[level] ?: 0
-            val levelColor = colors.forLevel(level)
-
-            FilterChip(
-                selected = isSelected,
-                onClick = { onLevelToggle(level) },
-                modifier = Modifier.semantics { selected = isSelected },
-                label = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                    ) {
-                        Text(
-                            text = level.tag,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        if (count > 0) {
-                            Text(
-                                text = if (count > 999) {
-                                    stringResource(
-                                        R.string.logs_count_overflow,
-                                    )
-                                } else {
-                                    count.toString()
-                                },
-                                style = MaterialTheme.typography.labelSmall,
-                                color = if (isSelected) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
-                                    )
-                                } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
-                                    )
-                                },
-                            )
-                        }
-                    }
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-                    selectedLabelColor = levelColor,
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
-                    selectedBorderColor = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
-                    enabled = true,
-                    selected = isSelected,
-                ),
-            )
-        }
-    }
-}
-
-@Composable
-private fun StatsBar(
-    totalCount: Int,
-    filteredCount: Int,
-    isCapturing: Boolean,
-    pid: Int,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // Capture indicator
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-            ) {
-                WormaCeptorStatusDot(
-                    color = if (isCapturing) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.outline
-                    },
-                )
+    Column {
+        TopAppBar(
+            title = {
                 Text(
-                    text = if (isCapturing) {
-                        stringResource(
-                            R.string.logs_status_capturing,
-                        )
-                    } else {
-                        stringResource(R.string.logs_status_paused)
-                    },
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    text = stringResource(R.string.logs_console_title),
+                    fontWeight = FontWeight.SemiBold,
                 )
-            }
-
-            // PID
-            Text(
-                text = stringResource(R.string.logs_pid, pid),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontFamily = FontFamily.Monospace,
-            )
-        }
-
-        // Counts
-        Text(
-            text = if (filteredCount != totalCount) {
-                stringResource(R.string.logs_entries_filtered, filteredCount, totalCount)
-            } else {
-                stringResource(R.string.logs_entries_total, totalCount)
             },
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            navigationIcon = {
+                onBack?.let { back ->
+                    IconButton(onClick = back) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.logs_back),
+                        )
+                    }
+                }
+            },
+            actions = {
+                WormaCeptorPlayPauseButton(
+                    isActive = state.isCapturing,
+                    onToggle = {
+                        if (state.isCapturing) {
+                            onEvent(LogsViewEvent.CaptureStopped)
+                        } else {
+                            onEvent(LogsViewEvent.CaptureStarted)
+                        }
+                    },
+                    activeContentDescription = stringResource(R.string.logs_pause_capture),
+                    inactiveContentDescription = stringResource(R.string.logs_start_capture),
+                )
+
+                IconButton(onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onEvent(LogsViewEvent.LogsCleared)
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.logs_clear),
+                    )
+                }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
+        )
+
+        WormaCeptorSearchBar(
+            query = state.searchQuery,
+            onQueryChange = { onEvent(LogsViewEvent.SearchQueryChanged(it)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = WormaCeptorTokens.Spacing.lg,
+                    vertical = WormaCeptorTokens.Spacing.sm,
+                ),
+            placeholder = stringResource(R.string.logs_search_placeholder),
+        )
+
+        LevelFilterChips(
+            selectedLevels = state.selectedLevels,
+            levelCounts = state.levelCounts,
+            onLevelToggle = { onEvent(LogsViewEvent.LevelToggled(it)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = WormaCeptorTokens.Spacing.sm),
+        )
+
+        StatsBar(
+            totalCount = state.totalCount,
+            filteredCount = state.logs.size,
+            isCapturing = state.isCapturing,
+            pid = state.currentPid,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = WormaCeptorTokens.Spacing.lg,
+                    vertical = WormaCeptorTokens.Spacing.xs,
+                ),
         )
     }
 }
 
 @Composable
-private fun LogList(
-    logs: ImmutableList<LogEntry>,
-    listState: androidx.compose.foundation.lazy.LazyListState,
-    modifier: Modifier = Modifier,
+private fun LogsScrollFab(
+    isAtBottom: Boolean,
+    hasLogs: Boolean,
+    onEvent: (LogsViewEvent) -> Unit,
 ) {
-    val colors = logLevelColors()
-    LazyColumn(
-        state = listState,
-        modifier = modifier,
-        contentPadding = PaddingValues(
-            top = WormaCeptorDesignSystem.Spacing.sm,
-            bottom = WormaCeptorDesignSystem.Spacing.sm +
-                WindowInsets.navigationBars.asPaddingValues()
-                    .calculateBottomPadding(),
-        ),
+    AnimatedVisibility(
+        visible = !isAtBottom && hasLogs,
+        enter = fadeIn() + slideInVertically { it },
+        exit = fadeOut() + slideOutVertically { it },
     ) {
-        items(
-            items = logs,
-            key = { it.id },
-        ) { entry ->
-            LogEntryItem(
-                entry = entry,
-                colors = colors,
-                modifier = Modifier.fillMaxWidth(),
+        WormaCeptorFAB(
+            onClick = { onEvent(LogsViewEvent.AutoScrollSet(true)) },
+            icon = Icons.Default.KeyboardArrowDown,
+            contentDescription = stringResource(R.string.logs_scroll_to_bottom),
+        )
+    }
+}
+
+@Composable
+private fun LogsBody(
+    state: LogsViewState,
+    onEvent: (LogsViewEvent) -> Unit,
+    listState: LazyListState,
+    paddingValues: PaddingValues,
+) {
+    Box(modifier = Modifier.imePadding()) {
+        if (state.logs.isEmpty()) {
+            LogsEmptyState(
+                isCapturing = state.isCapturing,
+                onEvent = onEvent,
+                paddingValues = paddingValues,
+            )
+        } else {
+            LogList(
+                logs = state.logs,
+                listState = listState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
             )
         }
     }
 }
 
 @Composable
-private fun LogEntryItem(
-    entry: LogEntry,
-    colors: LogLevelColors,
-    modifier: Modifier = Modifier,
+private fun LogsEmptyState(
+    isCapturing: Boolean,
+    onEvent: (LogsViewEvent) -> Unit,
+    paddingValues: PaddingValues,
 ) {
-    val levelColor = colors.forLevel(entry.level)
-    val backgroundColor = colors.backgroundForLevel(entry.level)
-
-    val timeFormat = remember { SimpleDateFormat("HH:mm:ss.SSS", Locale.US) }
-    val formattedTime = remember(entry.timestamp) {
-        timeFormat.format(Date(entry.timestamp))
-    }
-
-    Surface(
-        modifier = modifier,
-        color = backgroundColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.md,
-                    vertical = WormaCeptorDesignSystem.CornerRadius.sm,
-                ),
-            verticalAlignment = Alignment.Top,
-        ) {
-            // Level badge
-            Surface(
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                color = levelColor.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-                modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.xxs),
-            ) {
-                Text(
-                    text = entry.level.tag,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = levelColor,
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.CornerRadius.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                    ),
-                )
-            }
-
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-
-            Column(modifier = Modifier.weight(1f)) {
-                // Tag and timestamp row
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = entry.tag,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, fill = false),
-                    )
-
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-
-                    Text(
-                        text = formattedTime,
-                        style = MaterialTheme.typography.labelSmall,
-                        fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
-                        ),
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
-
-                // Message
-                Text(
-                    text = entry.message,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
-                    lineHeight = 18.sp,
-                )
-            }
-        }
-    }
+    WormaCeptorEmptyState(
+        title = if (isCapturing) {
+            stringResource(R.string.logs_empty_capturing_title)
+        } else {
+            stringResource(R.string.logs_empty_paused_title)
+        },
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        subtitle = if (isCapturing) {
+            stringResource(R.string.logs_empty_capturing_subtitle)
+        } else {
+            stringResource(R.string.logs_empty_paused_subtitle)
+        },
+        icon = Icons.Default.VerticalAlignBottom,
+        actionLabel = if (!isCapturing) stringResource(R.string.logs_start_capture_action) else null,
+        onAction = if (!isCapturing) {
+            { onEvent(LogsViewEvent.CaptureStarted) }
+        } else {
+            null
+        },
+    )
 }
 
 @Suppress("HardcodedString")
@@ -561,49 +316,46 @@ private fun LogEntryItem(
 private fun LogsScreenContentPreview() {
     WormaCeptorTheme {
         LogsScreenContent(
-            logs = kotlinx.collections.immutable.persistentListOf(
-                LogEntry(
-                    id = 1L,
-                    timestamp = System.currentTimeMillis() - 5_000,
-                    level = LogLevel.DEBUG,
-                    tag = "OkHttp",
-                    pid = 12_345,
-                    message = "Sending request https://api.example.com/users",
+            state = LogsViewState(
+                logs = kotlinx.collections.immutable.persistentListOf(
+                    LogEntry(
+                        id = 1L,
+                        timestamp = System.currentTimeMillis() - 5_000,
+                        level = LogLevel.DEBUG,
+                        tag = "OkHttp",
+                        pid = 12_345,
+                        message = "Sending request https://api.example.com/users",
+                    ),
+                    LogEntry(
+                        id = 2L,
+                        timestamp = System.currentTimeMillis() - 3_000,
+                        level = LogLevel.INFO,
+                        tag = "MainActivity",
+                        pid = 12_345,
+                        message = "User authenticated successfully",
+                    ),
+                    LogEntry(
+                        id = 3L,
+                        timestamp = System.currentTimeMillis() - 1_000,
+                        level = LogLevel.ERROR,
+                        tag = "CrashReporter",
+                        pid = 12_345,
+                        message = "Failed to upload crash report: timeout",
+                    ),
                 ),
-                LogEntry(
-                    id = 2L,
-                    timestamp = System.currentTimeMillis() - 3_000,
-                    level = LogLevel.INFO,
-                    tag = "MainActivity",
-                    pid = 12_345,
-                    message = "User authenticated successfully",
+                searchQuery = "",
+                selectedLevels = LogLevel.entries.toSet(),
+                autoScroll = true,
+                isCapturing = true,
+                totalCount = 3,
+                levelCounts = mapOf(
+                    LogLevel.DEBUG to 1,
+                    LogLevel.INFO to 1,
+                    LogLevel.ERROR to 1,
                 ),
-                LogEntry(
-                    id = 3L,
-                    timestamp = System.currentTimeMillis() - 1_000,
-                    level = LogLevel.ERROR,
-                    tag = "CrashReporter",
-                    pid = 12_345,
-                    message = "Failed to upload crash report: timeout",
-                ),
+                currentPid = 12_345,
             ),
-            searchQuery = "",
-            selectedLevels = LogLevel.entries.toSet(),
-            autoScroll = true,
-            isCapturing = true,
-            totalCount = 3,
-            levelCounts = mapOf(
-                LogLevel.DEBUG to 1,
-                LogLevel.INFO to 1,
-                LogLevel.ERROR to 1,
-            ),
-            pid = 12_345,
-            onSearchQueryChanged = {},
-            onLevelToggle = {},
-            onSetAutoScroll = {},
-            onToggleCapture = {},
-            onStartCapture = {},
-            onClearLogs = {},
+            onEvent = {},
             onBack = {},
         )
     }

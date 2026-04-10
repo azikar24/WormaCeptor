@@ -5,7 +5,7 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/LeakDetectionF
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/LeakDetectionFeatureKt {
-	public static final fun LeakDetector (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LeakDetectionMonitor (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/LeakDetectionNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {

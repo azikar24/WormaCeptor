@@ -1,11 +1,6 @@
 package com.azikar24.wormaceptor.feature.preferences.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,24 +36,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
 import com.azikar24.wormaceptor.feature.preferences.R
-import kotlinx.collections.immutable.ImmutableList
+import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewEvent
+import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewState
 import kotlinx.collections.immutable.persistentListOf
 
 /**
@@ -67,105 +58,125 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreferencesListScreen(
-    files: ImmutableList<PreferenceFile>,
-    searchQuery: String,
-    onSearchQueryChanged: (String) -> Unit,
+    state: PreferencesViewState,
+    onEvent: (PreferencesViewEvent) -> Unit,
     onFileClick: (PreferenceFile) -> Unit,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onNavigateBack: (() -> Unit)? = null,
 ) {
-    var searchActive by rememberSaveable { mutableStateOf(false) }
-
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.preferences_list_title)) },
-                navigationIcon = {
-                    onNavigateBack?.let { callback ->
-                        IconButton(onClick = callback) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.preferences_back),
-                            )
-                        }
-                    }
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            searchActive = !searchActive
-                            if (!searchActive) onSearchQueryChanged("")
-                        },
-                    ) {
-                        Icon(
-                            imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
-                            contentDescription = stringResource(R.string.preferences_search_placeholder),
-                        )
-                    }
-                },
+            PreferencesListTopBar(
+                searchActive = state.isFileSearchActive,
+                onToggleSearch = { onEvent(PreferencesViewEvent.List.SearchToggled) },
+                onNavigateBack = onNavigateBack,
             )
         },
         modifier = modifier,
     ) { padding ->
-        Column(modifier = Modifier.fillMaxSize().padding(padding).imePadding()) {
-            // Animated search bar
-            AnimatedVisibility(
-                visible = searchActive,
-                enter = expandVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
-                ) + fadeIn(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
-                exit = shrinkVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
-                ) + fadeOut(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
-            ) {
-                WormaCeptorSearchBar(
-                    query = searchQuery,
-                    onQueryChange = onSearchQueryChanged,
-                    placeholder = stringResource(R.string.preferences_search_placeholder),
-                    modifier = Modifier.padding(
-                        start = WormaCeptorDesignSystem.Spacing.md,
-                        end = WormaCeptorDesignSystem.Spacing.md,
-                        top = WormaCeptorDesignSystem.Spacing.sm,
-                    ),
+        PreferencesListBody(
+            state = state,
+            onEvent = onEvent,
+            onFileClick = onFileClick,
+            searchActive = state.isFileSearchActive,
+            modifier = Modifier.fillMaxSize().padding(padding).imePadding(),
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PreferencesListTopBar(
+    searchActive: Boolean,
+    onToggleSearch: () -> Unit,
+    onNavigateBack: () -> Unit,
+) {
+    TopAppBar(
+        title = { Text(stringResource(R.string.preferences_list_title)) },
+        navigationIcon = {
+            IconButton(onClick = onNavigateBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.preferences_back),
                 )
             }
-
-            if (files.isEmpty()) {
-                WormaCeptorEmptyState(
-                    title = if (searchQuery.isNotBlank()) {
-                        stringResource(R.string.preferences_empty_no_matches)
+        },
+        actions = {
+            IconButton(onClick = onToggleSearch) {
+                Icon(
+                    imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
+                    contentDescription = if (searchActive) {
+                        stringResource(R.string.preferences_close_search)
                     } else {
-                        stringResource(R.string.preferences_empty_no_files)
+                        stringResource(R.string.preferences_search)
                     },
-                    modifier = Modifier.fillMaxSize(),
-                    subtitle = if (searchQuery.isNotBlank()) {
-                        stringResource(R.string.preferences_empty_try_different_search)
-                    } else {
-                        stringResource(R.string.preferences_empty_files_will_appear)
-                    },
-                    icon = Icons.Default.Settings,
                 )
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(
-                        start = WormaCeptorDesignSystem.Spacing.md,
-                        end = WormaCeptorDesignSystem.Spacing.md,
-                        top = WormaCeptorDesignSystem.Spacing.sm,
-                        bottom = WormaCeptorDesignSystem.Spacing.xs +
-                            WindowInsets.navigationBars.asPaddingValues()
-                                .calculateBottomPadding(),
-                    ),
-                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                ) {
-                    items(files, key = { it.name }) { file ->
-                        PreferenceFileItem(
-                            file = file,
-                            onClick = { onFileClick(file) },
-                            modifier = Modifier.animateItem(),
-                        )
-                    }
+            }
+        },
+    )
+}
+
+@Composable
+private fun PreferencesListBody(
+    state: PreferencesViewState,
+    onEvent: (PreferencesViewEvent) -> Unit,
+    onFileClick: (PreferenceFile) -> Unit,
+    searchActive: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        AnimatedVisibility(
+            visible = searchActive,
+            enter = WormaCeptorTokens.Animations.expandFadeIn,
+            exit = WormaCeptorTokens.Animations.shrinkFadeOut,
+        ) {
+            WormaCeptorSearchBar(
+                query = state.fileSearchQuery,
+                onQueryChange = { onEvent(PreferencesViewEvent.List.SearchQueryChanged(it)) },
+                placeholder = stringResource(R.string.preferences_search_placeholder),
+                modifier = Modifier.padding(
+                    start = WormaCeptorTokens.Spacing.md,
+                    end = WormaCeptorTokens.Spacing.md,
+                    top = WormaCeptorTokens.Spacing.sm,
+                ),
+            )
+        }
+
+        if (state.preferenceFiles.isEmpty()) {
+            WormaCeptorEmptyState(
+                title = if (state.fileSearchQuery.isNotBlank()) {
+                    stringResource(R.string.preferences_empty_no_matches)
+                } else {
+                    stringResource(R.string.preferences_empty_no_files)
+                },
+                modifier = Modifier.fillMaxSize(),
+                subtitle = if (state.fileSearchQuery.isNotBlank()) {
+                    stringResource(R.string.preferences_empty_try_different_search)
+                } else {
+                    stringResource(R.string.preferences_empty_files_will_appear)
+                },
+                icon = Icons.Default.Settings,
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(
+                    start = WormaCeptorTokens.Spacing.md,
+                    end = WormaCeptorTokens.Spacing.md,
+                    top = WormaCeptorTokens.Spacing.sm,
+                    bottom = WormaCeptorTokens.Spacing.xs +
+                        WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding(),
+                ),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            ) {
+                items(state.preferenceFiles, key = { it.name }) { file ->
+                    PreferenceFileItem(
+                        file = file,
+                        onClick = { onFileClick(file) },
+                        modifier = Modifier.animateItem(),
+                    )
                 }
             }
         }
@@ -180,16 +191,15 @@ private fun PreferenceFileItem(
 ) {
     WormaCeptorContainer(
         onClick = onClick,
-        style = ContainerStyle.Outlined,
         backgroundColor = MaterialTheme.colorScheme.surface,
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.Top,
         ) {
             PreferenceFileIcon()
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -198,7 +208,7 @@ private fun PreferenceFileItem(
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
                 val itemCountLabel = if (file.itemCount == 1) {
                     stringResource(R.string.preferences_item_count_singular)
                 } else {
@@ -211,16 +221,16 @@ private fun PreferenceFileItem(
                 )
             }
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .size(WormaCeptorDesignSystem.IconSize.sm),
+                    .size(WormaCeptorTokens.IconSize.sm),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.BOLD,
+                    alpha = WormaCeptorTokens.Alpha.BOLD,
                 ),
             )
         }
@@ -230,11 +240,11 @@ private fun PreferenceFileItem(
 @Composable
 private fun PreferenceFileIcon() {
     Surface(
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE),
+        shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         modifier = Modifier
-            .padding(top = WormaCeptorDesignSystem.Spacing.xxs)
-            .size(WormaCeptorDesignSystem.TouchTarget.minimum),
+            .padding(top = WormaCeptorTokens.Spacing.xxs)
+            .size(WormaCeptorTokens.TouchTarget.minimum),
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -243,7 +253,7 @@ private fun PreferenceFileIcon() {
             Icon(
                 imageVector = Icons.Default.Folder,
                 contentDescription = stringResource(R.string.preferences_list_title),
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
@@ -256,13 +266,14 @@ private fun PreferenceFileIcon() {
 private fun PreferencesListScreenPreview() {
     WormaCeptorTheme {
         PreferencesListScreen(
-            files = persistentListOf(
-                PreferenceFile(name = "app_preferences", itemCount = 12),
-                PreferenceFile(name = "user_settings", itemCount = 5),
-                PreferenceFile(name = "cache_config", itemCount = 3),
+            state = PreferencesViewState(
+                preferenceFiles = persistentListOf(
+                    PreferenceFile(name = "app_preferences", itemCount = 12),
+                    PreferenceFile(name = "user_settings", itemCount = 5),
+                    PreferenceFile(name = "cache_config", itemCount = 3),
+                ),
             ),
-            searchQuery = "",
-            onSearchQueryChanged = {},
+            onEvent = {},
             onFileClick = {},
             onNavigateBack = {},
         )

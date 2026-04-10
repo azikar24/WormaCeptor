@@ -18,7 +18,7 @@ class LeakDetectionNavigationContributor : FeatureNavigationContributor {
         onBack: () -> Unit,
     ) {
         builder.composable(WormaCeptorNavKeys.LeakDetection.route) {
-            LeakDetector(onNavigateBack = onBack)
+            LeakDetectionMonitor(onNavigateBack = onBack)
         }
     }
 }

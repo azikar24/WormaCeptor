@@ -16,7 +16,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -31,35 +30,40 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.R
-import com.azikar24.wormaceptor.feature.preferences.ui.theme.PreferencesDesignSystem
+import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_BOOLEAN
+import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_FLOAT
+import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_INT
+import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_LONG
+import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_STRING
+import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_STRING_SET
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 
 /** Bottom sheet for creating or editing a preference item. */
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("LongMethod", "CyclomaticComplexMethod", "ModifierMissing")
+@Suppress("ModifierMissing")
 @Composable
 fun PreferenceEditSheet(
     item: PreferenceItem?,
@@ -67,257 +71,137 @@ fun PreferenceEditSheet(
     onSave: (String, PreferenceValue) -> Unit,
     onDelete: ((String) -> Unit)? = null,
 ) {
-    val isCreating = item == null
-    val focusRequester = remember { FocusRequester() }
+    val formState = rememberPreferenceEditFormState(item)
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    var key by remember(item) { mutableStateOf(item?.key ?: "") }
-    var selectedType by remember(item) {
-        mutableStateOf(item?.value?.typeName ?: "String")
-    }
-
-    var stringValue by remember(item) {
-        mutableStateOf((item?.value as? PreferenceValue.StringValue)?.value ?: "")
-    }
-    var intValue by remember(item) {
-        mutableStateOf((item?.value as? PreferenceValue.IntValue)?.value?.toString() ?: "")
-    }
-    var longValue by remember(item) {
-        mutableStateOf((item?.value as? PreferenceValue.LongValue)?.value?.toString() ?: "")
-    }
-    var floatValue by remember(item) {
-        mutableStateOf((item?.value as? PreferenceValue.FloatValue)?.value?.toString() ?: "")
-    }
-    var booleanValue by remember(item) {
-        mutableStateOf((item?.value as? PreferenceValue.BooleanValue)?.value ?: false)
-    }
-    val stringSetValues = remember(item) {
-        mutableStateListOf<String>().also {
-            (item?.value as? PreferenceValue.StringSetValue)?.value?.let { set ->
-                it.addAll(set)
-            }
-        }
-    }
-    var newStringSetItem by remember { mutableStateOf("") }
-    var typeDropdownExpanded by remember { mutableStateOf(false) }
-
-    val availableTypes = listOf("String", "Int", "Long", "Float", "Boolean", "StringSet").toImmutableList()
-
-    val isKeyValid = key.isNotBlank()
-    val isValueValid = when (selectedType) {
-        "String" -> true
-        "Int" -> intValue.toIntOrNull() != null || intValue.isBlank()
-        "Long" -> longValue.toLongOrNull() != null || longValue.isBlank()
-        "Float" -> floatValue.toFloatOrNull() != null || floatValue.isBlank()
-        "Boolean" -> true
-        "StringSet" -> true
-        else -> true
-    }
-    val canSave = isKeyValid && isValueValid
+    val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
-        if (isCreating) {
-            focusRequester.requestFocus()
-        }
+        if (formState.isCreating) focusRequester.requestFocus()
     }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        shape = WormaCeptorDesignSystem.Shapes.sheet,
+        shape = WormaCeptorTokens.Shapes.sheet,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .imePadding()
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-        ) {
-            Text(
-                text = if (isCreating) {
-                    stringResource(R.string.preferences_dialog_create_title)
-                } else {
-                    stringResource(R.string.preferences_dialog_edit_title)
-                },
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-            )
+        PreferenceEditSheetContent(
+            formState = formState,
+            focusRequester = focusRequester,
+            onDismiss = onDismiss,
+            onSave = onSave,
+            onDelete = onDelete,
+        )
+    }
+}
 
-            EditSheetKeyInput(
-                key = key,
-                onKeyChange = { key = it },
-                isCreating = isCreating,
-                focusRequester = focusRequester,
-            )
+@Composable
+private fun PreferenceEditSheetContent(
+    formState: PreferenceEditFormState,
+    focusRequester: FocusRequester,
+    onDismiss: () -> Unit,
+    onSave: (String, PreferenceValue) -> Unit,
+    onDelete: ((String) -> Unit)?,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .imePadding()
+            .padding(horizontal = WormaCeptorTokens.Spacing.lg)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+    ) {
+        Text(
+            text = if (formState.isCreating) {
+                stringResource(R.string.preferences_dialog_create_title)
+            } else {
+                stringResource(R.string.preferences_dialog_edit_title)
+            },
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+        )
 
-            EditSheetTypeSelector(
-                selectedType = selectedType,
-                isCreating = isCreating,
-                expanded = typeDropdownExpanded,
-                onExpandedChange = { if (isCreating) typeDropdownExpanded = it },
-                availableTypes = availableTypes,
-                onTypeSelected = {
-                    selectedType = it
-                    typeDropdownExpanded = false
-                },
-                onDismissDropdown = { typeDropdownExpanded = false },
-            )
+        EditSheetKeyInput(formState = formState, focusRequester = focusRequester)
+        EditSheetTypeSelector(formState = formState)
+        EditSheetValueInput(formState = formState)
+        EditSheetActions(
+            formState = formState,
+            onDismiss = onDismiss,
+            onSave = onSave,
+            onDelete = onDelete,
+        )
 
-            EditSheetValueInput(
-                selectedType = selectedType,
-                stringValue = stringValue,
-                onStringValueChange = { stringValue = it },
-                intValue = intValue,
-                onIntValueChange = { intValue = it },
-                longValue = longValue,
-                onLongValueChange = { longValue = it },
-                floatValue = floatValue,
-                onFloatValueChange = { floatValue = it },
-                booleanValue = booleanValue,
-                onBooleanValueChange = { booleanValue = it },
-                stringSetValues = stringSetValues.toImmutableList(),
-                newStringSetItem = newStringSetItem,
-                onNewStringSetItemChange = { newStringSetItem = it },
-                onAddStringSetItem = {
-                    if (newStringSetItem.isNotBlank()) {
-                        stringSetValues.add(newStringSetItem)
-                        newStringSetItem = ""
-                    }
-                },
-                onRemoveStringSetItem = { stringSetValues.removeAt(it) },
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                if (!isCreating && onDelete != null) {
-                    TextButton(
-                        onClick = { onDelete(key) },
-                    ) {
-                        Text(
-                            stringResource(R.string.preferences_dialog_delete_confirm),
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                TextButton(onClick = onDismiss) {
-                    Text(stringResource(R.string.preferences_dialog_cancel))
-                }
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-                Button(
-                    onClick = {
-                        val value = buildPreferenceValue(
-                            selectedType = selectedType,
-                            stringValue = stringValue,
-                            intValue = intValue,
-                            longValue = longValue,
-                            floatValue = floatValue,
-                            booleanValue = booleanValue,
-                            stringSetValues = stringSetValues.toImmutableList(),
-                        )
-                        onSave(key, value)
-                    },
-                    enabled = canSave,
-                ) {
-                    Text(
-                        if (isCreating) {
-                            stringResource(R.string.preferences_button_create)
-                        } else {
-                            stringResource(R.string.preferences_button_save)
-                        },
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxxl))
-        }
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxxl))
     }
 }
 
 @Composable
 private fun EditSheetKeyInput(
-    key: String,
-    onKeyChange: (String) -> Unit,
-    isCreating: Boolean,
+    formState: PreferenceEditFormState,
     focusRequester: FocusRequester,
 ) {
-    OutlinedTextField(
-        value = key,
-        onValueChange = onKeyChange,
+    WormaCeptorTextField(
+        value = formState.key,
+        onValueChange = { formState.key = it },
         label = { Text(stringResource(R.string.preferences_label_key)) },
         modifier = Modifier
             .fillMaxWidth()
             .then(
-                if (isCreating) Modifier.focusRequester(focusRequester) else Modifier,
+                if (formState.isCreating) Modifier.focusRequester(focusRequester) else Modifier,
             ),
         singleLine = true,
-        enabled = isCreating,
-        textStyle = MaterialTheme.typography.bodyMedium.copy(
-            fontFamily = FontFamily.Monospace,
-        ),
-        isError = key.isBlank() && key.isNotEmpty(),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+        enabled = formState.isCreating,
+        monospace = true,
+        isError = formState.isKeyError,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Suppress("LongParameterList")
 @Composable
-private fun EditSheetTypeSelector(
-    selectedType: String,
-    isCreating: Boolean,
-    expanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit,
-    availableTypes: ImmutableList<String>,
-    onTypeSelected: (String) -> Unit,
-    onDismissDropdown: () -> Unit,
-) {
+private fun EditSheetTypeSelector(formState: PreferenceEditFormState) {
     ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = onExpandedChange,
+        expanded = formState.typeDropdownExpanded,
+        onExpandedChange = { if (formState.isCreating) formState.typeDropdownExpanded = it },
     ) {
         OutlinedTextField(
-            value = selectedType,
+            value = formState.selectedType,
             onValueChange = {},
             readOnly = true,
             label = { Text(stringResource(R.string.preferences_label_type)) },
             trailingIcon = {
-                if (isCreating) {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                if (formState.isCreating) {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = formState.typeDropdownExpanded)
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-            enabled = isCreating,
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+            enabled = formState.isCreating,
+            shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
         )
-        if (isCreating) {
+        if (formState.isCreating) {
             ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = onDismissDropdown,
+                expanded = formState.typeDropdownExpanded,
+                onDismissRequest = { formState.typeDropdownExpanded = false },
             ) {
-                availableTypes.forEach { type ->
-                    val typeColor = PreferencesDesignSystem.TypeColors.forTypeName(type)
+                val typeColors = WormaCeptorTokens.Colors.Preferences.typeScheme()
+                PreferenceEditFormState.AVAILABLE_TYPES.forEach { type ->
+                    val typeColor = typeColors.forTypeName(type)
                     DropdownMenuItem(
                         text = {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Surface(
                                     color = typeColor.copy(
-                                        alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
+                                        alpha = WormaCeptorTokens.Alpha.MEDIUM,
                                     ),
                                     shape = RoundedCornerShape(
-                                        WormaCeptorDesignSystem.CornerRadius.xs,
+                                        WormaCeptorTokens.Radius.xs,
                                     ),
                                 ) {
                                     Text(
                                         text = type,
                                         modifier = Modifier.padding(
-                                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                                            horizontal = WormaCeptorTokens.Spacing.sm,
+                                            vertical = WormaCeptorTokens.Spacing.xs,
                                         ),
                                         color = typeColor,
                                         fontWeight = FontWeight.Medium,
@@ -325,7 +209,7 @@ private fun EditSheetTypeSelector(
                                 }
                             }
                         },
-                        onClick = { onTypeSelected(type) },
+                        onClick = { formState.selectType(type) },
                     )
                 }
             }
@@ -333,56 +217,77 @@ private fun EditSheetTypeSelector(
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
-private fun EditSheetValueInput(
-    selectedType: String,
-    stringValue: String,
-    onStringValueChange: (String) -> Unit,
-    intValue: String,
-    onIntValueChange: (String) -> Unit,
-    longValue: String,
-    onLongValueChange: (String) -> Unit,
-    floatValue: String,
-    onFloatValueChange: (String) -> Unit,
-    booleanValue: Boolean,
-    onBooleanValueChange: (Boolean) -> Unit,
-    stringSetValues: ImmutableList<String>,
-    newStringSetItem: String,
-    onNewStringSetItemChange: (String) -> Unit,
-    onAddStringSetItem: () -> Unit,
-    onRemoveStringSetItem: (Int) -> Unit,
-) {
-    when (selectedType) {
-        "String" -> StringValueInput(stringValue, onStringValueChange)
-        "Int" -> NumericValueInput(
-            value = intValue,
-            onValueChange = onIntValueChange,
-            isError = intValue.isNotBlank() && intValue.toIntOrNull() == null,
+private fun EditSheetValueInput(formState: PreferenceEditFormState) {
+    when (formState.selectedType) {
+        TYPE_STRING -> StringValueInput(
+            value = formState.stringValue,
+            onValueChange = { formState.stringValue = it },
+        )
+        TYPE_INT -> NumericValueInput(
+            value = formState.intValue,
+            onValueChange = { formState.intValue = it },
+            isError = formState.isIntError,
             errorText = stringResource(R.string.preferences_validation_invalid_integer),
             keyboardType = KeyboardType.Number,
         )
-        "Long" -> NumericValueInput(
-            value = longValue,
-            onValueChange = onLongValueChange,
-            isError = longValue.isNotBlank() && longValue.toLongOrNull() == null,
+        TYPE_LONG -> NumericValueInput(
+            value = formState.longValue,
+            onValueChange = { formState.longValue = it },
+            isError = formState.isLongError,
             errorText = stringResource(R.string.preferences_validation_invalid_long),
             keyboardType = KeyboardType.Number,
         )
-        "Float" -> NumericValueInput(
-            value = floatValue,
-            onValueChange = onFloatValueChange,
-            isError = floatValue.isNotBlank() && floatValue.toFloatOrNull() == null,
+        TYPE_FLOAT -> NumericValueInput(
+            value = formState.floatValue,
+            onValueChange = { formState.floatValue = it },
+            isError = formState.isFloatError,
             errorText = stringResource(R.string.preferences_validation_invalid_float),
             keyboardType = KeyboardType.Decimal,
         )
-        "Boolean" -> BooleanValueInput(booleanValue, onBooleanValueChange)
-        "StringSet" -> StringSetValueInput(
-            values = stringSetValues,
-            newItem = newStringSetItem,
-            onNewItemChange = onNewStringSetItemChange,
-            onAddItem = onAddStringSetItem,
-            onRemoveItem = onRemoveStringSetItem,
+        TYPE_BOOLEAN -> BooleanValueInput(
+            value = formState.booleanValue,
+            onValueChange = { formState.booleanValue = it },
+        )
+        TYPE_STRING_SET -> StringSetValueInput(formState = formState)
+    }
+}
+
+@Composable
+private fun EditSheetActions(
+    formState: PreferenceEditFormState,
+    onDismiss: () -> Unit,
+    onSave: (String, PreferenceValue) -> Unit,
+    onDelete: ((String) -> Unit)?,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (!formState.isCreating && onDelete != null) {
+            WormaCeptorButton(
+                text = stringResource(R.string.preferences_dialog_delete_confirm),
+                onClick = { onDelete(formState.key) },
+                variant = ButtonVariant.Text,
+                contentColor = MaterialTheme.colorScheme.error,
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        WormaCeptorButton(
+            text = stringResource(R.string.preferences_dialog_cancel),
+            onClick = onDismiss,
+            variant = ButtonVariant.Text,
+        )
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+        WormaCeptorButton(
+            text = if (formState.isCreating) {
+                stringResource(R.string.preferences_button_create)
+            } else {
+                stringResource(R.string.preferences_button_save)
+            },
+            onClick = { onSave(formState.key, formState.toPreferenceValue()) },
+            variant = ButtonVariant.Primary,
+            enabled = formState.canSave,
         )
     }
 }
@@ -392,13 +297,12 @@ private fun StringValueInput(
     value: String,
     onValueChange: (String) -> Unit,
 ) {
-    OutlinedTextField(
+    WormaCeptorTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(stringResource(R.string.preferences_label_value)) },
         modifier = Modifier.fillMaxWidth(),
-        textStyle = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+        monospace = true,
         minLines = 2,
         maxLines = 5,
     )
@@ -412,7 +316,7 @@ private fun NumericValueInput(
     errorText: String,
     keyboardType: KeyboardType,
 ) {
-    OutlinedTextField(
+    WormaCeptorTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(stringResource(R.string.preferences_label_value)) },
@@ -420,8 +324,7 @@ private fun NumericValueInput(
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         isError = isError,
         supportingText = { if (isError) Text(errorText) },
-        textStyle = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+        monospace = true,
         singleLine = true,
     )
 }
@@ -431,6 +334,8 @@ private fun BooleanValueInput(
     value: Boolean,
     onValueChange: (Boolean) -> Unit,
 ) {
+    val haptic = LocalHapticFeedback.current
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -448,26 +353,25 @@ private fun BooleanValueInput(
                     fontWeight = FontWeight.Medium,
                 ),
                 color = if (value) {
-                    PreferencesDesignSystem.TypeColors.boolean
+                    WormaCeptorTokens.Colors.Preferences.typeScheme().boolean
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
             )
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-            Switch(checked = value, onCheckedChange = onValueChange)
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+            Switch(
+                checked = value,
+                onCheckedChange = { newValue ->
+                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onValueChange(newValue)
+                },
+            )
         }
     }
 }
 
-@Suppress("LongParameterList")
 @Composable
-private fun StringSetValueInput(
-    values: ImmutableList<String>,
-    newItem: String,
-    onNewItemChange: (String) -> Unit,
-    onAddItem: () -> Unit,
-    onRemoveItem: (Int) -> Unit,
-) {
+private fun StringSetValueInput(formState: PreferenceEditFormState) {
     Column {
         Text(
             text = stringResource(R.string.preferences_label_values),
@@ -475,14 +379,21 @@ private fun StringSetValueInput(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
-        if (values.isNotEmpty()) {
-            StringSetChips(values = values, onRemoveItem = onRemoveItem)
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+        if (formState.stringSetValues.isNotEmpty()) {
+            StringSetChips(
+                values = formState.stringSetValues,
+                onRemoveItem = formState::removeStringSetItem,
+            )
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
         }
 
-        StringSetAddRow(newItem = newItem, onNewItemChange = onNewItemChange, onAddItem = onAddItem)
+        StringSetAddRow(
+            newItem = formState.newStringSetItem,
+            onNewItemChange = { formState.newStringSetItem = it },
+            onAddItem = formState::addStringSetItem,
+        )
     }
 }
 
@@ -491,21 +402,17 @@ private fun StringSetChips(
     values: ImmutableList<String>,
     onRemoveItem: (Int) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs)) {
+    Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs)) {
         values.forEachIndexed { index, value ->
             InputChip(
                 selected = false,
                 onClick = {},
                 label = { Text(text = value, fontFamily = FontFamily.Monospace) },
                 trailingIcon = {
-                    IconButton(
-                        onClick = { onRemoveItem(index) },
-                        modifier = Modifier.padding(0.dp).then(Modifier),
-                    ) {
+                    IconButton(onClick = { onRemoveItem(index) }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.preferences_remove),
-                            modifier = Modifier.padding(0.dp),
                         )
                     }
                 },
@@ -521,17 +428,16 @@ private fun StringSetAddRow(
     onAddItem: () -> Unit,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        OutlinedTextField(
+        WormaCeptorTextField(
             value = newItem,
             onValueChange = onNewItemChange,
             placeholder = { Text(stringResource(R.string.preferences_add_item_placeholder)) },
             modifier = Modifier.weight(1f),
             singleLine = true,
-            textStyle = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
-            shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
+            monospace = true,
         )
 
-        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
         IconButton(onClick = onAddItem, enabled = newItem.isNotBlank()) {
             Icon(
@@ -542,21 +448,39 @@ private fun StringSetAddRow(
     }
 }
 
-@Suppress("LongParameterList")
-private fun buildPreferenceValue(
-    selectedType: String,
-    stringValue: String,
-    intValue: String,
-    longValue: String,
-    floatValue: String,
-    booleanValue: Boolean,
-    stringSetValues: ImmutableList<String>,
-): PreferenceValue = when (selectedType) {
-    "String" -> PreferenceValue.StringValue(stringValue)
-    "Int" -> PreferenceValue.IntValue(intValue.toIntOrNull() ?: 0)
-    "Long" -> PreferenceValue.LongValue(longValue.toLongOrNull() ?: 0L)
-    "Float" -> PreferenceValue.FloatValue(floatValue.toFloatOrNull() ?: 0f)
-    "Boolean" -> PreferenceValue.BooleanValue(booleanValue)
-    "StringSet" -> PreferenceValue.StringSetValue(stringSetValues.toSet())
-    else -> PreferenceValue.StringValue(stringValue)
+@Preview(showBackground = true)
+@Composable
+private fun PreferenceEditSheetCreatePreview() {
+    WormaCeptorTheme {
+        Surface {
+            PreferenceEditSheetContent(
+                formState = PreferenceEditFormState(item = null),
+                focusRequester = remember { FocusRequester() },
+                onDismiss = {},
+                onSave = { _, _ -> },
+                onDelete = null,
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreferenceEditSheetEditPreview() {
+    WormaCeptorTheme {
+        Surface {
+            PreferenceEditSheetContent(
+                formState = PreferenceEditFormState(
+                    item = PreferenceItem(
+                        key = "dark_mode",
+                        value = PreferenceValue.BooleanValue(true),
+                    ),
+                ),
+                focusRequester = remember { FocusRequester() },
+                onDismiss = {},
+                onSave = { _, _ -> },
+                onDelete = {},
+            )
+        }
+    }
 }

@@ -128,7 +128,7 @@ class PreferencesViewModelTest {
             viewModel.uiState.test {
                 awaitUntil { it.preferenceFiles.size == 3 }
 
-                viewModel.sendEvent(PreferencesViewEvent.FileSearchQueryChanged("user"))
+                viewModel.sendEvent(PreferencesViewEvent.List.SearchQueryChanged("user"))
 
                 val state = awaitUntil { it.preferenceFiles.size == 1 }
                 state.preferenceFiles.first().name shouldBe "user_prefs"
@@ -141,10 +141,10 @@ class PreferencesViewModelTest {
             viewModel.uiState.test {
                 awaitUntil { it.preferenceFiles.size == 3 }
 
-                viewModel.sendEvent(PreferencesViewEvent.FileSearchQueryChanged("user"))
+                viewModel.sendEvent(PreferencesViewEvent.List.SearchQueryChanged("user"))
                 awaitUntil { it.preferenceFiles.size == 1 }
 
-                viewModel.sendEvent(PreferencesViewEvent.FileSearchQueryChanged(""))
+                viewModel.sendEvent(PreferencesViewEvent.List.SearchQueryChanged(""))
                 val state = awaitUntil { it.preferenceFiles.size == 3 }
                 state.preferenceFiles shouldHaveSize 3
                 cancelAndIgnoreRemainingEvents()
@@ -157,23 +157,23 @@ class PreferencesViewModelTest {
 
         @Test
         fun `sets selected file name`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
 
             viewModel.uiState.value.selectedFileName shouldBe "app_settings"
         }
 
         @Test
         fun `resets item search query`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.ItemSearchQueryChanged("something"))
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.Detail.SearchQueryChanged("something"))
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
 
             viewModel.uiState.value.itemSearchQuery shouldBe ""
         }
 
         @Test
         fun `resets type filter`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.SetTypeFilter("String"))
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.Detail.TypeFilterChanged("String"))
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
 
             viewModel.uiState.value.typeFilter shouldBe null
         }
@@ -184,19 +184,19 @@ class PreferencesViewModelTest {
 
         @Test
         fun `clears selected file name`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
-            viewModel.sendEvent(PreferencesViewEvent.ClearFileSelection)
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.List.SelectionCleared)
 
             viewModel.uiState.value.selectedFileName shouldBe null
         }
 
         @Test
         fun `resets item search and type filter`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
-            viewModel.sendEvent(PreferencesViewEvent.ItemSearchQueryChanged("theme"))
-            viewModel.sendEvent(PreferencesViewEvent.SetTypeFilter("String"))
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.Detail.SearchQueryChanged("theme"))
+            viewModel.sendEvent(PreferencesViewEvent.Detail.TypeFilterChanged("String"))
 
-            viewModel.sendEvent(PreferencesViewEvent.ClearFileSelection)
+            viewModel.sendEvent(PreferencesViewEvent.List.SelectionCleared)
 
             viewModel.uiState.value.itemSearchQuery shouldBe ""
             viewModel.uiState.value.typeFilter shouldBe null
@@ -217,7 +217,7 @@ class PreferencesViewModelTest {
         @Test
         fun `emits items when file is selected`() = runTest {
             viewModel.uiState.test {
-                viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+                viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -226,10 +226,10 @@ class PreferencesViewModelTest {
         @Test
         fun `filters items by search query matching key`() = runTest {
             viewModel.uiState.test {
-                viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+                viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
 
-                viewModel.sendEvent(PreferencesViewEvent.ItemSearchQueryChanged("theme"))
+                viewModel.sendEvent(PreferencesViewEvent.Detail.SearchQueryChanged("theme"))
                 val state = awaitUntil { it.preferenceItems.size == 1 }
                 state.preferenceItems.first().key shouldBe "theme"
                 cancelAndIgnoreRemainingEvents()
@@ -239,10 +239,10 @@ class PreferencesViewModelTest {
         @Test
         fun `filters items by search query matching value`() = runTest {
             viewModel.uiState.test {
-                viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+                viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
 
-                viewModel.sendEvent(PreferencesViewEvent.ItemSearchQueryChanged("dark"))
+                viewModel.sendEvent(PreferencesViewEvent.Detail.SearchQueryChanged("dark"))
                 val state = awaitUntil { it.preferenceItems.size == 1 }
                 state.preferenceItems.first().key shouldBe "theme"
                 cancelAndIgnoreRemainingEvents()
@@ -252,10 +252,10 @@ class PreferencesViewModelTest {
         @Test
         fun `filters items by type filter`() = runTest {
             viewModel.uiState.test {
-                viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+                viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
 
-                viewModel.sendEvent(PreferencesViewEvent.SetTypeFilter("String"))
+                viewModel.sendEvent(PreferencesViewEvent.Detail.TypeFilterChanged("String"))
                 val state = awaitUntil { it.preferenceItems.size == 1 }
                 state.preferenceItems.first().key shouldBe "theme"
                 cancelAndIgnoreRemainingEvents()
@@ -265,11 +265,11 @@ class PreferencesViewModelTest {
         @Test
         fun `combines search query and type filter`() = runTest {
             viewModel.uiState.test {
-                viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+                viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
 
-                viewModel.sendEvent(PreferencesViewEvent.SetTypeFilter("Int"))
-                viewModel.sendEvent(PreferencesViewEvent.ItemSearchQueryChanged("font"))
+                viewModel.sendEvent(PreferencesViewEvent.Detail.TypeFilterChanged("Int"))
+                viewModel.sendEvent(PreferencesViewEvent.Detail.SearchQueryChanged("font"))
                 val state = awaitUntil { it.preferenceItems.size == 1 }
                 state.preferenceItems.first().key shouldBe "fontSize"
                 cancelAndIgnoreRemainingEvents()
@@ -291,7 +291,7 @@ class PreferencesViewModelTest {
         @Test
         fun `emits sorted distinct type names`() = runTest {
             viewModel.uiState.test {
-                viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+                viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 val state = awaitUntil { it.availableTypes.size == 5 }
                 state.availableTypes shouldContainExactly listOf("Boolean", "Float", "Int", "Long", "String")
                 cancelAndIgnoreRemainingEvents()
@@ -313,7 +313,7 @@ class PreferencesViewModelTest {
         @Test
         fun `reflects raw item count for selected file`() = runTest {
             viewModel.uiState.test {
-                viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+                viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.totalItemCount == 5 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -325,10 +325,10 @@ class PreferencesViewModelTest {
 
         @Test
         fun `resets item search and type filter`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.ItemSearchQueryChanged("theme"))
-            viewModel.sendEvent(PreferencesViewEvent.SetTypeFilter("String"))
+            viewModel.sendEvent(PreferencesViewEvent.Detail.SearchQueryChanged("theme"))
+            viewModel.sendEvent(PreferencesViewEvent.Detail.TypeFilterChanged("String"))
 
-            viewModel.sendEvent(PreferencesViewEvent.ClearFilters)
+            viewModel.sendEvent(PreferencesViewEvent.Detail.FiltersCleared)
 
             viewModel.uiState.value.itemSearchQuery shouldBe ""
             viewModel.uiState.value.typeFilter shouldBe null
@@ -340,9 +340,11 @@ class PreferencesViewModelTest {
 
         @Test
         fun `delegates to repository with file name and value`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
 
-            viewModel.sendEvent(PreferencesViewEvent.SetPreference("theme", PreferenceValue.StringValue("light")))
+            viewModel.sendEvent(
+                PreferencesViewEvent.Detail.PreferenceSet("theme", PreferenceValue.StringValue("light")),
+            )
 
             viewModel.uiState.test {
                 awaitUntil { !it.isLoading }
@@ -356,7 +358,9 @@ class PreferencesViewModelTest {
 
         @Test
         fun `does nothing when no file selected`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.SetPreference("theme", PreferenceValue.StringValue("light")))
+            viewModel.sendEvent(
+                PreferencesViewEvent.Detail.PreferenceSet("theme", PreferenceValue.StringValue("light")),
+            )
 
             coVerify(exactly = 0) { repository.setPreference(any(), any(), any()) }
         }
@@ -364,9 +368,11 @@ class PreferencesViewModelTest {
         @Test
         fun `sets loading to false after operation`() = runTest {
             coEvery { repository.setPreference(any(), any(), any()) } returns Unit
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
 
-            viewModel.sendEvent(PreferencesViewEvent.SetPreference("theme", PreferenceValue.StringValue("light")))
+            viewModel.sendEvent(
+                PreferencesViewEvent.Detail.PreferenceSet("theme", PreferenceValue.StringValue("light")),
+            )
 
             viewModel.uiState.test {
                 awaitUntil { !it.isLoading }
@@ -382,9 +388,9 @@ class PreferencesViewModelTest {
 
         @Test
         fun `delegates to repository`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
 
-            viewModel.sendEvent(PreferencesViewEvent.DeletePreference("theme"))
+            viewModel.sendEvent(PreferencesViewEvent.Detail.PreferenceDeleted("theme"))
 
             viewModel.uiState.test {
                 awaitUntil { !it.isLoading }
@@ -396,7 +402,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `does nothing when no file selected`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.DeletePreference("theme"))
+            viewModel.sendEvent(PreferencesViewEvent.Detail.PreferenceDeleted("theme"))
 
             coVerify(exactly = 0) { repository.deletePreference(any(), any()) }
         }
@@ -407,9 +413,9 @@ class PreferencesViewModelTest {
 
         @Test
         fun `delegates to repository`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.SelectFile("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
 
-            viewModel.sendEvent(PreferencesViewEvent.ClearCurrentFile)
+            viewModel.sendEvent(PreferencesViewEvent.Detail.FileCleared)
 
             viewModel.uiState.test {
                 awaitUntil { !it.isLoading }
@@ -421,7 +427,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `does nothing when no file selected`() = runTest {
-            viewModel.sendEvent(PreferencesViewEvent.ClearCurrentFile)
+            viewModel.sendEvent(PreferencesViewEvent.Detail.FileCleared)
 
             coVerify(exactly = 0) { repository.clearFile(any()) }
         }

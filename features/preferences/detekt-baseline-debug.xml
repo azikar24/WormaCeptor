@@ -2,12 +2,14 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>Deprecation:PreferenceEditSheet.kt$MenuAnchorType</ID>
+    <ID>InjectDispatcher:PreferencesRepositoryImpl.kt$PreferencesRepositoryImpl$IO</ID>
+    <ID>InjectDispatcher:PreferencesViewModel.kt$PreferencesViewModel$Default</ID>
     <ID>LongMethod:PreferenceDetailScreen.kt$@Composable private fun PreferenceDetailBody( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, typeColors: ToolColors.Preferences.TypeScheme, searchActive: Boolean, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun PreferenceDetailTopBar( fileName: String, totalItemCount: Int, searchActive: Boolean, onToggleSearch: () -&gt; Unit, onClearAll: () -&gt; Unit, onBack: () -&gt; Unit, )</ID>
     <ID>LongParameterList:PreferenceDetailScreen.kt$( fileName: String, totalItemCount: Int, searchActive: Boolean, onToggleSearch: () -&gt; Unit, onClearAll: () -&gt; Unit, onBack: () -&gt; Unit, )</ID>
-    <ID>ModifierMissing:PreferenceDetailScreen.kt$PreferenceDetailScreen</ID>
     <ID>OutdatedDocumentation:PreferencesViewState.kt$PreferencesViewState</ID>
-    <ID>UndocumentedPublicClass:PreferenceEditFormState.kt$PreferenceEditFormState$Companion</ID>
+    <ID>ParameterNaming:PreferenceEditSheet.kt$onTypeSelected</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent$Detail : PreferencesViewEvent</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent$List : PreferencesViewEvent</ID>
@@ -28,38 +30,8 @@
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SearchToggled : List</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$Selected : List</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SelectionCleared : List</ID>
-    <ID>UndocumentedPublicFunction:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceDetailScreen( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, onBack: () -&gt; Unit, )</ID>
-    <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$@Composable fun rememberPreferenceEditFormState(item: PreferenceItem?): PreferenceEditFormState</ID>
-    <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$PreferenceEditFormState$fun addStringSetItem()</ID>
-    <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$PreferenceEditFormState$fun removeStringSetItem(index: Int)</ID>
-    <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$PreferenceEditFormState$fun selectType(type: String)</ID>
-    <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$PreferenceEditFormState$fun toPreferenceValue(): PreferenceValue</ID>
+    <ID>UndocumentedPublicFunction:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceDetailScreen( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicFunction:PreferenceItemCard.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun PreferenceItemCard( item: PreferenceItem, typeColors: ToolColors.Preferences.TypeScheme, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val canSave: Boolean get() = isKeyValid &amp;&amp; isValueValid</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val isCreating: Boolean = item == null</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val isFloatError: Boolean get() = floatValue.isNotBlank() &amp;&amp; floatValue.toFloatOrNull() == null</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val isIntError: Boolean get() = intValue.isNotBlank() &amp;&amp; intValue.toIntOrNull() == null</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val isKeyError: Boolean get() = key.isNotEmpty() &amp;&amp; key.isBlank()</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val isKeyValid: Boolean get() = key.isNotBlank()</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val isLongError: Boolean get() = longValue.isNotBlank() &amp;&amp; longValue.toLongOrNull() == null</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val isValueValid: Boolean get() = when (selectedType) { TYPE_INT -&gt; !isIntError TYPE_LONG -&gt; !isLongError TYPE_FLOAT -&gt; !isFloatError else -&gt; true }</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val stringSetValues: ImmutableList&lt;String&gt; get() = _stringSetValues.toImmutableList()</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var booleanValue by mutableStateOf( (item?.value as? PreferenceValue.BooleanValue)?.value ?: false, )</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var floatValue by mutableStateOf( (item?.value as? PreferenceValue.FloatValue)?.value?.toString().orEmpty(), )</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var intValue by mutableStateOf( (item?.value as? PreferenceValue.IntValue)?.value?.toString().orEmpty(), )</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var key by mutableStateOf(item?.key.orEmpty())</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var longValue by mutableStateOf( (item?.value as? PreferenceValue.LongValue)?.value?.toString().orEmpty(), )</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var newStringSetItem by mutableStateOf("")</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var selectedType by mutableStateOf(item?.value?.typeName ?: TYPE_STRING)</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var stringValue by mutableStateOf( (item?.value as? PreferenceValue.StringValue)?.value.orEmpty(), )</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$var typeDropdownExpanded by mutableStateOf(false)</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState.Companion$const val TYPE_BOOLEAN = "Boolean"</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState.Companion$const val TYPE_FLOAT = "Float"</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState.Companion$const val TYPE_INT = "Int"</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState.Companion$const val TYPE_LONG = "Long"</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState.Companion$const val TYPE_STRING = "String"</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState.Companion$const val TYPE_STRING_SET = "StringSet"</ID>
-    <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState.Companion$val AVAILABLE_TYPES: ImmutableList&lt;String&gt; = listOf( TYPE_STRING, TYPE_INT, TYPE_LONG, TYPE_FLOAT, TYPE_BOOLEAN, TYPE_STRING_SET, ).toImmutableList()</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.DeleteConfirmShown$val key: String</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.EditSheetOpened$val item: PreferenceItem?</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.PreferenceCreated$val key: String</ID>
@@ -76,5 +48,11 @@
     <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showClearConfirmDialog: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showDeleteConfirmKey: String? = null</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showEditSheet: Boolean = false</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$(item?.value as? PreferenceValue.FloatValue)?.value?.toString() ?: ""</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$(item?.value as? PreferenceValue.IntValue)?.value?.toString() ?: ""</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$(item?.value as? PreferenceValue.LongValue)?.value?.toString() ?: ""</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$(item?.value as? PreferenceValue.StringValue)?.value ?: ""</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$item?.key ?: ""</ID>
+    <ID>UseOrEmpty:PreferencesDataSource.kt$PreferencesDataSource$prefsDir.listFiles() ?.filter { it.isFile &amp;&amp; it.extension == "xml" } ?.map { it.nameWithoutExtension } ?: emptyList()</ID>
   </CurrentIssues>
 </SmellBaseline>

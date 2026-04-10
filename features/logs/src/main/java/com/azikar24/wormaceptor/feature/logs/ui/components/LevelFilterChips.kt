@@ -27,7 +27,6 @@ internal fun LevelFilterChips(
     onLevelToggle: (LogLevel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val logColors = WormaCeptorTokens.Colors.LogLevel
     val scrollState = rememberScrollState()
 
     Row(
@@ -37,65 +36,92 @@ internal fun LevelFilterChips(
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         LogLevel.entries.forEach { level ->
-            val isSelected = level in selectedLevels
-            val count = levelCounts[level] ?: 0
-            val levelColor = when (level) {
-                LogLevel.VERBOSE -> logColors.verbose
-                LogLevel.DEBUG -> logColors.debug
-                LogLevel.INFO -> logColors.info
-                LogLevel.WARN -> logColors.warn
-                LogLevel.ERROR -> logColors.error
-                LogLevel.ASSERT -> logColors.assert
-            }
-
-            FilterChip(
-                selected = isSelected,
-                onClick = { onLevelToggle(level) },
-                modifier = Modifier.semantics { selected = isSelected },
-                label = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
-                    ) {
-                        Text(
-                            text = level.tag,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        if (count > 0) {
-                            Text(
-                                text = if (count > 999) {
-                                    stringResource(
-                                        R.string.logs_count_overflow,
-                                    )
-                                } else {
-                                    count.toString()
-                                },
-                                style = MaterialTheme.typography.labelSmall,
-                                color = if (isSelected) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                                        alpha = WormaCeptorTokens.Alpha.HEAVY,
-                                    )
-                                } else {
-                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                        alpha = WormaCeptorTokens.Alpha.HEAVY,
-                                    )
-                                },
-                            )
-                        }
-                    }
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
-                    selectedLabelColor = levelColor,
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
-                    selectedBorderColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
-                    enabled = true,
-                    selected = isSelected,
-                ),
+            LevelFilterChip(
+                level = level,
+                isSelected = level in selectedLevels,
+                count = levelCounts[level] ?: 0,
+                onToggle = { onLevelToggle(level) },
             )
         }
     }
 }
+
+@Composable
+private fun LevelFilterChip(
+    level: LogLevel,
+    isSelected: Boolean,
+    count: Int,
+    onToggle: () -> Unit,
+) {
+    val logColors = WormaCeptorTokens.Colors.LogLevel
+    val levelColor = when (level) {
+        LogLevel.VERBOSE -> logColors.verbose
+        LogLevel.DEBUG -> logColors.debug
+        LogLevel.INFO -> logColors.info
+        LogLevel.WARN -> logColors.warn
+        LogLevel.ERROR -> logColors.error
+        LogLevel.ASSERT -> logColors.assert
+    }
+
+    FilterChip(
+        selected = isSelected,
+        onClick = onToggle,
+        modifier = Modifier.semantics { selected = isSelected },
+        label = {
+            LevelChipLabel(
+                tag = level.tag,
+                count = count,
+                isSelected = isSelected,
+            )
+        },
+        colors = FilterChipDefaults.filterChipColors(
+            selectedContainerColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
+            selectedLabelColor = levelColor,
+        ),
+        border = FilterChipDefaults.filterChipBorder(
+            borderColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+            selectedBorderColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+            enabled = true,
+            selected = isSelected,
+        ),
+    )
+}
+
+@Composable
+private fun LevelChipLabel(
+    tag: String,
+    count: Int,
+    isSelected: Boolean,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
+    ) {
+        Text(
+            text = tag,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold,
+        )
+        if (count > 0) {
+            Text(
+                text = if (count > CountOverflowThreshold) {
+                    stringResource(R.string.logs_count_overflow)
+                } else {
+                    count.toString()
+                },
+                style = MaterialTheme.typography.labelSmall,
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                        alpha = WormaCeptorTokens.Alpha.HEAVY,
+                    )
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorTokens.Alpha.HEAVY,
+                    )
+                },
+            )
+        }
+    }
+}
+
+private const val CountOverflowThreshold = 999

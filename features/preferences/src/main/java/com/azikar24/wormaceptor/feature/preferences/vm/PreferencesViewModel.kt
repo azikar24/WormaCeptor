@@ -44,16 +44,56 @@ class PreferencesViewModel(
 
     override fun handleEvent(event: PreferencesViewEvent) {
         when (event) {
-            is PreferencesViewEvent.FileSearchQueryChanged -> handleFileSearchQueryChanged(event.query)
-            is PreferencesViewEvent.SelectFile -> handleSelectFile(event.fileName)
-            is PreferencesViewEvent.ClearFileSelection -> handleClearFileSelection()
-            is PreferencesViewEvent.ItemSearchQueryChanged -> handleItemSearchQueryChanged(event.query)
-            is PreferencesViewEvent.SetTypeFilter -> handleSetTypeFilter(event.typeName)
-            is PreferencesViewEvent.ClearFilters -> handleClearFilters()
-            is PreferencesViewEvent.SetPreference -> handleSetPreference(event.key, event.value)
-            is PreferencesViewEvent.DeletePreference -> handleDeletePreference(event.key)
-            is PreferencesViewEvent.ClearCurrentFile -> handleClearCurrentFile()
-            is PreferencesViewEvent.CreatePreference -> handleSetPreference(event.key, event.value)
+            is PreferencesViewEvent.List -> handleListEvent(event)
+            is PreferencesViewEvent.Detail -> handleDetailEvent(event)
+        }
+    }
+
+    private fun handleListEvent(event: PreferencesViewEvent.List) {
+        when (event) {
+            is PreferencesViewEvent.List.SearchToggled -> handleToggleFileSearch()
+            is PreferencesViewEvent.List.SearchQueryChanged -> handleFileSearchQueryChanged(event.query)
+            is PreferencesViewEvent.List.Selected -> handleSelectFile(event.fileName)
+            is PreferencesViewEvent.List.SelectionCleared -> handleClearFileSelection()
+        }
+    }
+
+    private fun handleDetailEvent(event: PreferencesViewEvent.Detail) {
+        when (event) {
+            is PreferencesViewEvent.Detail.SearchQueryChanged -> handleItemSearchQueryChanged(event.query)
+            is PreferencesViewEvent.Detail.TypeFilterChanged -> handleSetTypeFilter(event.typeName)
+            is PreferencesViewEvent.Detail.FiltersCleared -> handleClearFilters()
+            is PreferencesViewEvent.Detail.PreferenceSet -> handleSetPreference(event.key, event.value)
+            is PreferencesViewEvent.Detail.PreferenceDeleted -> handleDeletePreference(event.key)
+            is PreferencesViewEvent.Detail.FileCleared -> handleClearCurrentFile()
+            is PreferencesViewEvent.Detail.PreferenceCreated -> handleSetPreference(event.key, event.value)
+            is PreferencesViewEvent.Detail.EditSheetOpened -> updateState {
+                copy(editingItem = event.item, showEditSheet = true)
+            }
+            is PreferencesViewEvent.Detail.EditSheetDismissed -> updateState {
+                copy(editingItem = null, showEditSheet = false)
+            }
+            is PreferencesViewEvent.Detail.DeleteConfirmShown -> updateState {
+                copy(showDeleteConfirmKey = event.key)
+            }
+            is PreferencesViewEvent.Detail.DeleteConfirmDismissed -> updateState {
+                copy(showDeleteConfirmKey = null)
+            }
+            is PreferencesViewEvent.Detail.ClearConfirmShown -> updateState {
+                copy(showClearConfirmDialog = true)
+            }
+            is PreferencesViewEvent.Detail.ClearConfirmDismissed -> updateState {
+                copy(showClearConfirmDialog = false)
+            }
+        }
+    }
+
+    private fun handleToggleFileSearch() {
+        val nowActive = !uiState.value.isFileSearchActive
+        updateState { copy(isFileSearchActive = nowActive) }
+        if (!nowActive) {
+            _fileSearchQuery.value = ""
+            updateState { copy(fileSearchQuery = "") }
         }
     }
 

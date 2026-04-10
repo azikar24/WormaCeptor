@@ -25,7 +25,11 @@
     <ID>ModifierComposed:TrackRecompositionModifier.kt$trackRecomposition</ID>
     <ID>MultipleEmitters:WormaCeptorButton.kt$ButtonContent</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
-    <ID>UndocumentedPublicFunction:WormaCeptorDetailSection.kt$@Composable fun WormaCeptorDetailSection( title: String, items: List&lt;Pair&lt;String, String&gt;&gt;, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicClass:DetailItem.kt$DetailItem</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDetailSection.kt$@Composable fun WormaCeptorDetailSection( title: String, items: List&lt;DetailItem&gt;, modifier: Modifier = Modifier, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant, valueColor: Color = MaterialTheme.colorScheme.onSurface.copy( alpha = WormaCeptorTokens.Alpha.PROMINENT, ), surfaceColor: Color = MaterialTheme.colorScheme.surfaceVariant, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDetailSection.kt$@Composable fun WormaCeptorDetailSection( title: String, value: String, modifier: Modifier = Modifier, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant, valueColor: Color = MaterialTheme.colorScheme.onSurface.copy( alpha = WormaCeptorTokens.Alpha.PROMINENT, ), surfaceColor: Color = MaterialTheme.colorScheme.surfaceVariant, )</ID>
+    <ID>UndocumentedPublicProperty:DetailItem.kt$DetailItem$val label: String</ID>
+    <ID>UndocumentedPublicProperty:DetailItem.kt$DetailItem$val value: String</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accent: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accentSubtle: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val background: Color</ID>

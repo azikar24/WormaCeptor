@@ -34,6 +34,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.DetailItem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampCompact
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
@@ -87,17 +89,21 @@ internal fun ViolationDetailContent(
         }
 
         item {
-            DetailSection(
-                stringResource(R.string.threadviolation_detail_section_details),
-                listOf(
-                    stringResource(R.string.threadviolation_detail_label_description) to violation.description,
-                    stringResource(R.string.threadviolation_detail_label_thread) to violation.threadName,
-                    stringResource(
-                        R.string.threadviolation_detail_label_time,
-                    ) to formatTimestampCompact(violation.timestamp),
+            WormaCeptorDetailSection(
+                title = stringResource(R.string.threadviolation_detail_section_details),
+                items = listOf(
+                    DetailItem(
+                        stringResource(R.string.threadviolation_detail_label_description),
+                        violation.description,
+                    ),
+                    DetailItem(stringResource(R.string.threadviolation_detail_label_thread), violation.threadName),
+                    DetailItem(
+                        stringResource(R.string.threadviolation_detail_label_time),
+                        formatTimestampCompact(violation.timestamp),
+                    ),
                 ) + (
                     violation.durationMs?.let {
-                        listOf(stringResource(R.string.threadviolation_detail_label_duration) to "${it}ms")
+                        listOf(DetailItem(stringResource(R.string.threadviolation_detail_label_duration), "${it}ms"))
                     } ?: emptyList()
                     ),
             )
@@ -169,46 +175,5 @@ internal fun ViolationDetailContent(
         }
 
         item { Spacer(Modifier.height(WormaCeptorTokens.Spacing.lg)) }
-    }
-}
-
-@Composable
-private fun DetailSection(
-    title: String,
-    items: List<Pair<String, String>>,
-) {
-    Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm)) {
-        Text(
-            title,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Surface(
-            Modifier.fillMaxWidth(),
-            RoundedCornerShape(WormaCeptorTokens.Radius.md),
-            MaterialTheme.colorScheme.surfaceVariant,
-        ) {
-            Column(
-                Modifier.padding(WormaCeptorTokens.Spacing.md),
-                Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            ) {
-                items.forEach { (label, value) ->
-                    Column {
-                        Text(
-                            label,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        Text(
-                            value,
-                            style = MaterialTheme.typography.bodySmall,
-                            fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
-                        )
-                    }
-                }
-            }
-        }
     }
 }

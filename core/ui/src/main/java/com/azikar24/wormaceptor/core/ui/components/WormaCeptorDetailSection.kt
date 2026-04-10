@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.core.ui.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
@@ -22,8 +22,13 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 @Composable
 fun WormaCeptorDetailSection(
     title: String,
-    items: List<Pair<String, String>>,
+    items: List<DetailItem>,
     modifier: Modifier = Modifier,
+    labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    valueColor: Color = MaterialTheme.colorScheme.onSurface.copy(
+        alpha = WormaCeptorTokens.Alpha.PROMINENT,
+    ),
+    surfaceColor: Color = MaterialTheme.colorScheme.surfaceVariant,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -33,32 +38,30 @@ fun WormaCeptorDetailSection(
             text = title,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = labelColor,
             modifier = Modifier.semantics { heading() },
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
-            color = MaterialTheme.colorScheme.surfaceVariant,
+            color = surfaceColor,
         ) {
             Column(
                 modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
                 verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
-                items.forEach { (label, value) ->
+                items.forEach { item ->
                     Column {
                         Text(
-                            text = label,
+                            text = item.label,
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = labelColor,
                         )
                         Text(
-                            text = value,
+                            text = item.value,
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.onSurface.copy(
-                                alpha = WormaCeptorTokens.Alpha.PROMINENT,
-                            ),
+                            color = valueColor,
                         )
                     }
                 }
@@ -67,7 +70,45 @@ fun WormaCeptorDetailSection(
     }
 }
 
-@Preview(name = "DetailSection - Light")
+@Composable
+fun WormaCeptorDetailSection(
+    title: String,
+    value: String,
+    modifier: Modifier = Modifier,
+    labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    valueColor: Color = MaterialTheme.colorScheme.onSurface.copy(
+        alpha = WormaCeptorTokens.Alpha.PROMINENT,
+    ),
+    surfaceColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = labelColor,
+            modifier = Modifier.semantics { heading() },
+        )
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+            color = surfaceColor,
+        ) {
+            Text(
+                text = value,
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
+                style = MaterialTheme.typography.bodySmall,
+                fontFamily = FontFamily.Monospace,
+                color = valueColor,
+            )
+        }
+    }
+}
+
+@Preview
 @Composable
 private fun WormaCeptorDetailSectionPreview() {
     WormaCeptorTheme {
@@ -75,9 +116,9 @@ private fun WormaCeptorDetailSectionPreview() {
             WormaCeptorDetailSection(
                 title = "Details",
                 items = listOf(
-                    "Class" to "com.example.app.MainActivity",
-                    "Description" to "Activity retained after onDestroy",
-                    "Size" to "2.0 MB",
+                    DetailItem("Class", "com.example.app.MainActivity"),
+                    DetailItem("Description", "Activity retained after onDestroy"),
+                    DetailItem("Size", "2.0 MB"),
                 ),
                 modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
             )
@@ -85,18 +126,14 @@ private fun WormaCeptorDetailSectionPreview() {
     }
 }
 
-@Preview(name = "DetailSection - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
 @Composable
 private fun WormaCeptorDetailSectionDarkPreview() {
     WormaCeptorTheme(darkTheme = true) {
         Surface {
             WormaCeptorDetailSection(
                 title = "Details",
-                items = listOf(
-                    "Class" to "com.example.app.MainActivity",
-                    "Description" to "Activity retained after onDestroy",
-                    "Size" to "2.0 MB",
-                ),
+                value = "test",
                 modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
             )
         }

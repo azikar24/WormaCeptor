@@ -28,6 +28,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.DetailItem
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -60,10 +61,16 @@ internal fun LeakDetailContent(
             WormaCeptorDetailSection(
                 title = stringResource(R.string.leakdetection_section_details),
                 items = listOf(
-                    stringResource(R.string.leakdetection_detail_class) to leak.objectClass,
-                    stringResource(R.string.leakdetection_detail_description) to leak.leakDescription,
-                    stringResource(R.string.leakdetection_detail_retained_size) to formatBytes(leak.retainedSize),
-                    stringResource(R.string.leakdetection_detail_detected) to formatTimestampFull(leak.timestamp),
+                    DetailItem(stringResource(R.string.leakdetection_detail_class), leak.objectClass),
+                    DetailItem(stringResource(R.string.leakdetection_detail_description), leak.leakDescription),
+                    DetailItem(
+                        stringResource(R.string.leakdetection_detail_retained_size),
+                        formatBytes(leak.retainedSize),
+                    ),
+                    DetailItem(
+                        stringResource(R.string.leakdetection_detail_detected),
+                        formatTimestampFull(leak.timestamp),
+                    ),
                 ),
             )
         }

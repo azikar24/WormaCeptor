@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
@@ -17,17 +16,15 @@ import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.DetailItem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -80,53 +77,20 @@ internal fun LibraryDetailContent(
         val systemLibraryType = stringResource(R.string.loadedlibraries_type_system)
         val appLibraryType = stringResource(R.string.loadedlibraries_type_app)
 
-        DetailSection(
-            detailTitle,
-            listOfNotNull(
-                pathLabel to library.path,
-                library.size?.let { sizeLabel to formatBytes(it) },
-                library.loadAddress?.let { loadAddressLabel to it },
-                library.version?.let { versionLabel to it },
-                typeLabel to if (library.isSystemLibrary) systemLibraryType else appLibraryType,
+        WormaCeptorDetailSection(
+            title = detailTitle,
+            items = listOfNotNull(
+                DetailItem(pathLabel, library.path),
+                library.size?.let { DetailItem(sizeLabel, formatBytes(it)) },
+                library.loadAddress?.let { DetailItem(loadAddressLabel, it) },
+                library.version?.let { DetailItem(versionLabel, it) },
+                DetailItem(typeLabel, if (library.isSystemLibrary) systemLibraryType else appLibraryType),
             ),
-            colors,
+            labelColor = colors.labelSecondary,
+            valueColor = colors.valuePrimary,
+            surfaceColor = colors.searchBackground,
         )
 
         Spacer(Modifier.height(WormaCeptorTokens.Spacing.lg))
-    }
-}
-
-@Composable
-internal fun DetailSection(
-    title: String,
-    items: List<Pair<String, String>>,
-    colors: ToolColors.LoadedLibraries.Scheme,
-) {
-    Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm)) {
-        Text(
-            title,
-            modifier = Modifier.semantics { heading() },
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = colors.labelSecondary,
-        )
-        Surface(Modifier.fillMaxWidth(), WormaCeptorTokens.Shapes.card, colors.searchBackground) {
-            Column(
-                Modifier.padding(WormaCeptorTokens.Spacing.md),
-                Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            ) {
-                items.forEach { (label, value) ->
-                    Column {
-                        Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
-                        Text(
-                            value,
-                            style = MaterialTheme.typography.bodySmall,
-                            fontFamily = FontFamily.Monospace,
-                            color = colors.valuePrimary,
-                        )
-                    }
-                }
-            }
-        }
     }
 }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -19,17 +18,14 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
@@ -120,59 +116,23 @@ internal fun EntryDetailContent(
             }
         }
 
-        // Key section
-        DetailSection(
-            label = stringResource(R.string.securestorage_detail_label_key),
+        WormaCeptorDetailSection(
+            title = stringResource(R.string.securestorage_detail_label_key),
             value = entry.key,
         )
 
-        // Value section
-        DetailSection(
-            label = stringResource(R.string.securestorage_detail_label_value),
+        WormaCeptorDetailSection(
+            title = stringResource(R.string.securestorage_detail_label_value),
             value = entry.value,
         )
 
-        // Timestamp
         entry.lastModified?.let { timestamp ->
-            DetailSection(
-                label = stringResource(R.string.securestorage_detail_label_last_modified),
+            WormaCeptorDetailSection(
+                title = stringResource(R.string.securestorage_detail_label_last_modified),
                 value = formatTimestampFull(timestamp),
             )
         }
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
-    }
-}
-
-@Composable
-private fun DetailSection(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.semantics { heading() },
-        )
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = WormaCeptorTokens.Shapes.card,
-            color = MaterialTheme.colorScheme.surfaceVariant,
-        ) {
-            Text(
-                text = value,
-                modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
-                style = MaterialTheme.typography.bodyMedium,
-                fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
-            )
-        }
     }
 }

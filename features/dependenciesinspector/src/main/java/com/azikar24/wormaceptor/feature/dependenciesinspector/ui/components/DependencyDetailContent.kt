@@ -27,12 +27,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import com.azikar24.wormaceptor.core.ui.components.DetailItem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
@@ -145,15 +145,19 @@ private fun DetailDetailsSection(
     val groupIdLabel = stringResource(R.string.dependenciesinspector_detail_label_group_id)
     val artifactIdLabel = stringResource(R.string.dependenciesinspector_detail_label_artifact_id)
     val mavenLabel = stringResource(R.string.dependenciesinspector_detail_label_maven)
-    DetailSection(
-        stringResource(R.string.dependenciesinspector_detail_section_details),
-        listOfNotNull(
-            packageLabel to dependency.packageName,
-            dependency.groupId?.let { groupIdLabel to it },
-            dependency.artifactId?.let { artifactIdLabel to it },
-            dependency.mavenCoordinate?.let { mavenLabel to it },
-        ),
-        colors,
+    val items = listOfNotNull(
+        DetailItem(packageLabel, dependency.packageName),
+        dependency.groupId?.let { DetailItem(groupIdLabel, it) },
+        dependency.artifactId?.let { DetailItem(artifactIdLabel, it) },
+        dependency.mavenCoordinate?.let { DetailItem(mavenLabel, it) },
+    )
+    if (items.isEmpty()) return
+    WormaCeptorDetailSection(
+        title = stringResource(R.string.dependenciesinspector_detail_section_details),
+        items = items,
+        labelColor = colors.labelSecondary,
+        valueColor = colors.valuePrimary,
+        surfaceColor = colors.searchBackground,
     )
 }
 
@@ -167,14 +171,16 @@ private fun DetailDetectionSection(
     val versionStatusLabel = stringResource(R.string.dependenciesinspector_detail_label_version_status)
     val versionDetected = stringResource(R.string.dependenciesinspector_summary_detected)
     val versionUnknown = stringResource(R.string.dependenciesinspector_summary_unknown)
-    DetailSection(
-        stringResource(R.string.dependenciesinspector_detail_section_detection),
-        listOf(
-            methodLabel to dependency.detectionMethod.displayName(),
-            confidenceLabel to dependency.detectionMethod.confidence(),
-            versionStatusLabel to if (dependency.version != null) versionDetected else versionUnknown,
+    WormaCeptorDetailSection(
+        title = stringResource(R.string.dependenciesinspector_detail_section_detection),
+        items = listOf(
+            DetailItem(methodLabel, dependency.detectionMethod.displayName()),
+            DetailItem(confidenceLabel, dependency.detectionMethod.confidence()),
+            DetailItem(versionStatusLabel, if (dependency.version != null) versionDetected else versionUnknown),
         ),
-        colors,
+        labelColor = colors.labelSecondary,
+        valueColor = colors.valuePrimary,
+        surfaceColor = colors.searchBackground,
     )
 }
 
@@ -206,46 +212,5 @@ private fun WebsiteLink(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-    }
-}
-
-@Composable
-private fun DetailSection(
-    title: String,
-    items: List<Pair<String, String>>,
-    colors: ToolColors.DependenciesInspector.Scheme,
-) {
-    if (items.isEmpty()) return
-
-    Column(Modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm)) {
-        Text(
-            title,
-            modifier = Modifier.semantics { heading() },
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = colors.labelSecondary,
-        )
-        Surface(
-            Modifier.fillMaxWidth(),
-            RoundedCornerShape(WormaCeptorTokens.Radius.md),
-            colors.searchBackground,
-        ) {
-            Column(
-                Modifier.padding(WormaCeptorTokens.Spacing.md),
-                Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            ) {
-                items.forEach { (label, value) ->
-                    Column {
-                        Text(label, style = MaterialTheme.typography.labelSmall, color = colors.labelSecondary)
-                        Text(
-                            value,
-                            style = MaterialTheme.typography.bodySmall,
-                            fontFamily = FontFamily.Monospace,
-                            color = colors.valuePrimary,
-                        )
-                    }
-                }
-            }
-        }
     }
 }

@@ -9,16 +9,14 @@
     <ID>UnderscoresInNumericLiterals:ThreadViolationScreen.kt$1712534390000L</ID>
     <ID>UnderscoresInNumericLiterals:ThreadViolationScreen.kt$1712534395000L</ID>
     <ID>UnderscoresInNumericLiterals:ThreadViolationScreen.kt$1712534400000L</ID>
-    <ID>UndocumentedPublicClass:ThreadViolationFeature.kt$ThreadViolationFeature</ID>
-    <ID>UndocumentedPublicClass:ThreadViolationFeature.kt$ThreadViolationViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationNavigationContributor.kt$ThreadViolationNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$ClearViolations : ThreadViolationViewEvent</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$DismissDetail : ThreadViolationViewEvent</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$SelectType : ThreadViolationViewEvent</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$SelectViolation : ThreadViolationViewEvent</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$ToggleMonitoring : ThreadViolationViewEvent</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationViewModelFactory.kt$ThreadViolationViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewState.kt$ThreadViolationViewState</ID>
-    <ID>UndocumentedPublicFunction:ThreadViolationFeature.kt$@Composable fun ThreadViolationMonitor( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>UndocumentedPublicFunction:ThreadViolationFeature.kt$ThreadViolationFeature$fun createViewModelFactory(engine: ThreadViolationEngine): ThreadViolationViewModelFactory</ID>
     <ID>UndocumentedPublicFunction:ThreadViolationScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ThreadViolationScreen( state: ThreadViolationViewState, onEvent: (ThreadViolationViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewEvent.kt$ThreadViolationViewEvent.SelectType$val type: ViolationType?</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewEvent.kt$ThreadViolationViewEvent.SelectViolation$val violation: ThreadViolation</ID>
@@ -27,6 +25,5 @@
     <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val selectedType: ViolationType? = null</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val selectedViolation: ThreadViolation? = null</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val stats: ViolationStats = ViolationStats.empty()</ID>
-    <ID>ViewModelInjection:ThreadViolationFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

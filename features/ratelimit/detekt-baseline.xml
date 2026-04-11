@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>UndocumentedPublicClass:RateLimitNavigationContributor.kt$RateLimitNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ClearStats : RateLimitViewEvent</ID>
     <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ResetToDefaults : RateLimitViewEvent</ID>
     <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SelectPreset : RateLimitViewEvent</ID>
@@ -10,6 +11,7 @@
     <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetPacketLoss : RateLimitViewEvent</ID>
     <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetUploadSpeed : RateLimitViewEvent</ID>
     <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ToggleEnabled : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewModelFactory.kt$RateLimitViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:RateLimitViewState.kt$RateLimitViewState</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SelectPreset$val preset: NetworkPreset?</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetDownloadSpeed$val speedKbps: Long</ID>
@@ -19,6 +21,5 @@
     <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val config: RateLimitConfig = RateLimitConfig.default()</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val selectedPreset: NetworkPreset? = null</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val stats: ThrottleStats = ThrottleStats.empty()</ID>
-    <ID>ViewModelInjection:RateLimitFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

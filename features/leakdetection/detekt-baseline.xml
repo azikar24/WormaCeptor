@@ -2,16 +2,15 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>UndocumentedPublicClass:LeakDetectionFeature.kt$LeakDetectionFeature</ID>
-    <ID>UndocumentedPublicClass:LeakDetectionFeature.kt$LeakDetectionViewModelFactory : Factory</ID>
+    <ID>LongMethod:LeakDetailContent.kt$@Composable internal fun LeakDetailContent( leak: LeakInfo, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionNavigationContributor.kt$LeakDetectionNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$ClearLeaks : LeakDetectionViewEvent</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$DismissDetail : LeakDetectionViewEvent</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$SelectLeak : LeakDetectionViewEvent</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$SelectSeverity : LeakDetectionViewEvent</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$TriggerCheck : LeakDetectionViewEvent</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionViewModelFactory.kt$LeakDetectionViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewState.kt$LeakDetectionViewState</ID>
-    <ID>UndocumentedPublicFunction:LeakDetectionFeature.kt$@Composable fun LeakDetectionMonitor( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>UndocumentedPublicFunction:LeakDetectionFeature.kt$LeakDetectionFeature$fun createViewModelFactory(engine: LeakDetectionEngine): LeakDetectionViewModelFactory</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewEvent.kt$LeakDetectionViewEvent.SelectLeak$val leak: LeakInfo</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewEvent.kt$LeakDetectionViewEvent.SelectSeverity$val severity: LeakSeverity?</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val filteredLeaks: ImmutableList&lt;LeakInfo&gt; = persistentListOf()</ID>
@@ -19,6 +18,5 @@
     <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val selectedLeak: LeakInfo? = null</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val selectedSeverity: LeakSeverity? = null</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val summary: LeakSummary = LeakSummary.empty()</ID>
-    <ID>ViewModelInjection:LeakDetectionFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

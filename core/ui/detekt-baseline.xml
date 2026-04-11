@@ -15,6 +15,12 @@
     <ID>MagicNumber:FormatUtils.kt$1024.0</ID>
     <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$0.001f</ID>
     <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$1000f</ID>
+    <ID>MagicNumber:WormaCeptorStatusBadge.kt$0xFF1976D2</ID>
+    <ID>MagicNumber:WormaCeptorStatusBadge.kt$0xFF7B1FA2</ID>
+    <ID>MagicNumber:WormaCeptorStatusBadge.kt$0xFFBBDEFB</ID>
+    <ID>MagicNumber:WormaCeptorStatusBadge.kt$0xFFD32F2F</ID>
+    <ID>MagicNumber:WormaCeptorStatusBadge.kt$0xFFE1BEE7</ID>
+    <ID>MagicNumber:WormaCeptorStatusBadge.kt$0xFFFFCDD2</ID>
     <ID>MatchingDeclarationName:BaseColors.kt$Palette</ID>
     <ID>MatchingDeclarationName:FeatureColors.kt$Colors</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
@@ -26,8 +32,10 @@
     <ID>MultipleEmitters:WormaCeptorButton.kt$ButtonContent</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
     <ID>UndocumentedPublicClass:DetailItem.kt$DetailItem</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDetailHeader.kt$@Composable fun WormaCeptorDetailHeader( icon: ImageVector, iconTint: Color, iconBackgroundColor: Color, title: String, modifier: Modifier = Modifier, iconContentDescription: String? = null, titleColor: Color = MaterialTheme.colorScheme.onSurface, subtitle: (@Composable () -&gt; Unit)? = null, )</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorDetailSection.kt$@Composable fun WormaCeptorDetailSection( title: String, items: List&lt;DetailItem&gt;, modifier: Modifier = Modifier, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant, valueColor: Color = MaterialTheme.colorScheme.onSurface.copy( alpha = WormaCeptorTokens.Alpha.PROMINENT, ), surfaceColor: Color = MaterialTheme.colorScheme.surfaceVariant, )</ID>
     <ID>UndocumentedPublicFunction:WormaCeptorDetailSection.kt$@Composable fun WormaCeptorDetailSection( title: String, value: String, modifier: Modifier = Modifier, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant, valueColor: Color = MaterialTheme.colorScheme.onSurface.copy( alpha = WormaCeptorTokens.Alpha.PROMINENT, ), surfaceColor: Color = MaterialTheme.colorScheme.surfaceVariant, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorStatusBadge.kt$@Composable fun WormaCeptorStatusBadge( text: String, containerColor: Color, contentColor: Color, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:DetailItem.kt$DetailItem$val label: String</ID>
     <ID>UndocumentedPublicProperty:DetailItem.kt$DetailItem$val value: String</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accent: Color</ID>

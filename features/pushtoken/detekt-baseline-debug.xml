@@ -6,6 +6,6 @@
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val error: String? = null</ID>
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val isLoading: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val tokenHistory: ImmutableList&lt;TokenHistory&gt; = persistentListOf()</ID>
-    <ID>ViewModelInjection:PushTokenFeature.kt$viewModel</ID>
+
   </CurrentIssues>
 </SmellBaseline>

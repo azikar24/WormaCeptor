@@ -5,7 +5,7 @@
     <ID>LongMethod:DelaySection.kt$@Composable internal fun DelaySection( delayType: DelayType, delayMs: String, delayMinMs: String, delayMaxMs: String, onDelayTypeChange: (DelayType) -&gt; Unit, onDelayMsChange: (String) -&gt; Unit, onDelayMinMsChange: (String) -&gt; Unit, onDelayMaxMsChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:MockRulesScreen.kt$@Composable private fun MasterToggleCard( enabled: Boolean, ruleCount: Int, onToggle: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:MockRulesScreen.kt$@Composable private fun MockRuleItem( rule: MockRule, onToggle: () -&gt; Unit, onDelete: () -&gt; Unit, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:MockRulesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MockRulesScreen( state: MockRulesViewState, onEvent: (MockRulesEvent) -&gt; Unit, onNavigateToEditor: (String?) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MockRulesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MockRulesScreen( state: MockRulesViewState, onEvent: (MockRulesViewEvent) -&gt; Unit, onNavigateToEditor: (String?) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:DelaySection.kt$( delayType: DelayType, delayMs: String, delayMinMs: String, delayMaxMs: String, onDelayTypeChange: (DelayType) -&gt; Unit, onDelayMsChange: (String) -&gt; Unit, onDelayMinMsChange: (String) -&gt; Unit, onDelayMaxMsChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:RequestMatchingSection.kt$( urlPattern: String, matchType: UrlMatchType, method: String, methodDropdownExpanded: Boolean, onUrlPatternChange: (String) -&gt; Unit, onMatchTypeChange: (UrlMatchType) -&gt; Unit, onMethodChange: (String) -&gt; Unit, onMethodDropdownExpandedChange: (Boolean) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:ResponseSection.kt$( statusCode: Int, statusMessage: String, contentType: String, responseBody: String, onStatusCodeChange: (String) -&gt; Unit, onStatusMessageChange: (String) -&gt; Unit, onContentTypeChange: (String) -&gt; Unit, onResponseBodyChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
@@ -21,52 +21,52 @@
     <ID>UndocumentedPublicClass:DelayType.kt$DelayType</ID>
     <ID>UndocumentedPublicClass:MockRulesEffect.kt$MockRulesEffect</ID>
     <ID>UndocumentedPublicClass:MockRulesEffect.kt$MockRulesEffect$NavigateBack : MockRulesEffect</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent$Editor : MockRulesEvent</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent$List : MockRulesEvent</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$ContentTypeChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$DelayMaxMsChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$DelayMinMsChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$DelayMsChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$DelayTypeChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$LoadRule : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$MatchTypeChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$MethodChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$MethodDropdownExpandedChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$NameChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$ResponseBodyChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$SaveRule : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$StatusCodeChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$StatusMessageChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.Editor$UrlPatternChanged : Editor</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.List$DeleteAllRules : List</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.List$DeleteRule : List</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.List$ToggleMocking : List</ID>
-    <ID>UndocumentedPublicClass:MockRulesEvent.kt$MockRulesEvent.List$ToggleRule : List</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent$Editor : MockRulesViewEvent</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent$List : MockRulesViewEvent</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$ContentTypeChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$DelayMaxMsChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$DelayMinMsChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$DelayMsChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$DelayTypeChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$LoadRule : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$MatchTypeChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$MethodChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$MethodDropdownExpandedChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$NameChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$ResponseBodyChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$SaveRule : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$StatusCodeChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$StatusMessageChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$UrlPatternChanged : Editor</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$DeleteAllRules : List</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$DeleteRule : List</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$ToggleMocking : List</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$ToggleRule : List</ID>
     <ID>UndocumentedPublicClass:MockRulesNavigationContributor.kt$MockRulesNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:MockRulesViewState.kt$EditorState</ID>
     <ID>UndocumentedPublicClass:MockRulesViewState.kt$MockRulesViewState</ID>
-    <ID>UndocumentedPublicFunction:MockRulesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MockRulesScreen( state: MockRulesViewState, onEvent: (MockRulesEvent) -&gt; Unit, onNavigateToEditor: (String?) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:MockRulesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MockRulesScreen( state: MockRulesViewState, onEvent: (MockRulesViewEvent) -&gt; Unit, onNavigateToEditor: (String?) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:DelayType.kt$DelayType$FIXED : DelayType</ID>
     <ID>UndocumentedPublicProperty:DelayType.kt$DelayType$NONE : DelayType</ID>
     <ID>UndocumentedPublicProperty:DelayType.kt$DelayType$RANGE : DelayType</ID>
     <ID>UndocumentedPublicProperty:DelayType.kt$DelayType$val displayName: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.ContentTypeChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.DelayMaxMsChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.DelayMinMsChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.DelayMsChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.DelayTypeChanged$val value: DelayType</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.LoadRule$val ruleId: String?</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.MatchTypeChanged$val value: UrlMatchType</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.MethodChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.MethodDropdownExpandedChanged$val expanded: Boolean</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.NameChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.ResponseBodyChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.StatusCodeChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.StatusMessageChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.Editor.UrlPatternChanged$val value: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.List.DeleteRule$val ruleId: String</ID>
-    <ID>UndocumentedPublicProperty:MockRulesEvent.kt$MockRulesEvent.List.ToggleRule$val ruleId: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.ContentTypeChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.DelayMaxMsChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.DelayMinMsChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.DelayMsChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.DelayTypeChanged$val value: DelayType</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.LoadRule$val ruleId: String?</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.MatchTypeChanged$val value: UrlMatchType</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.MethodChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.MethodDropdownExpandedChanged$val expanded: Boolean</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.NameChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.ResponseBodyChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.StatusCodeChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.StatusMessageChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.UrlPatternChanged$val value: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.List.DeleteRule$val ruleId: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.List.ToggleRule$val ruleId: String</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$EditorState$val contentType: String = "application/json"</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$EditorState$val delayMaxMs: String = "1000"</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$EditorState$val delayMinMs: String = "0"</ID>

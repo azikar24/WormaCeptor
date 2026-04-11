@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
@@ -85,21 +85,11 @@ internal fun ViolationCard(
                     }
                 }
             }
-            Surface(
-                shape = WormaCeptorTokens.Shapes.chip,
-                color = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
-            ) {
-                Text(
-                    text = violation.violationType.abbreviation,
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorTokens.Spacing.sm,
-                        vertical = WormaCeptorTokens.Spacing.xs,
-                    ),
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = typeColor,
-                )
-            }
+            WormaCeptorStatusBadge(
+                text = violation.violationType.abbreviation,
+                containerColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                contentColor = typeColor,
+            )
         }
     }
 }

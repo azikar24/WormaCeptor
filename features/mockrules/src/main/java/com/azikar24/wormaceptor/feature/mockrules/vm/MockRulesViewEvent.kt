@@ -2,16 +2,16 @@ package com.azikar24.wormaceptor.feature.mockrules.vm
 
 import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 
-sealed class MockRulesEvent {
+sealed class MockRulesViewEvent {
 
-    sealed class List : MockRulesEvent() {
+    sealed class List : MockRulesViewEvent() {
         data object ToggleMocking : List()
         data class ToggleRule(val ruleId: String) : List()
         data class DeleteRule(val ruleId: String) : List()
         data object DeleteAllRules : List()
     }
 
-    sealed class Editor : MockRulesEvent() {
+    sealed class Editor : MockRulesViewEvent() {
         data class LoadRule(val ruleId: String?) : Editor()
         data object SaveRule : Editor()
 

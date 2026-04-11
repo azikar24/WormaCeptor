@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.launchIn
 /** ViewModel for the Push Token management screen. */
 class PushTokenViewModel(
     private val engine: PushTokenEngine,
-) : BaseViewModel<PushTokenViewState, PushTokenEffect, PushTokenEvent>(
+) : BaseViewModel<PushTokenViewState, PushTokenEffect, PushTokenViewEvent>(
     initialState = PushTokenViewState(),
 ) {
 
@@ -32,14 +32,14 @@ class PushTokenViewModel(
         }.launchIn(viewModelScope)
     }
 
-    override fun handleEvent(event: PushTokenEvent) {
+    override fun handleEvent(event: PushTokenViewEvent) {
         when (event) {
-            is PushTokenEvent.FetchToken -> engine.fetchCurrentToken()
-            is PushTokenEvent.RefreshToken -> engine.requestNewToken()
-            is PushTokenEvent.DeleteToken -> engine.deleteToken()
-            is PushTokenEvent.CopyToken -> handleCopyToken()
-            is PushTokenEvent.ClearHistory -> engine.clearHistory()
-            is PushTokenEvent.DismissError -> engine.clearError()
+            is PushTokenViewEvent.FetchToken -> engine.fetchCurrentToken()
+            is PushTokenViewEvent.RefreshToken -> engine.requestNewToken()
+            is PushTokenViewEvent.DeleteToken -> engine.deleteToken()
+            is PushTokenViewEvent.CopyToken -> handleCopyToken()
+            is PushTokenViewEvent.ClearHistory -> engine.clearHistory()
+            is PushTokenViewEvent.DismissError -> engine.clearError()
         }
     }
 

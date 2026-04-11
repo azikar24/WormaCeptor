@@ -17,7 +17,7 @@ import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
-import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoFeature
+import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoViewModelFactory
 import com.azikar24.wormaceptor.feature.deviceinfo.R
 import com.azikar24.wormaceptor.feature.deviceinfo.ui.DeviceInfoScreenContent
 import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoViewEffect
@@ -43,7 +43,7 @@ private fun DeviceInfoDestination(
     context: Context,
     onNavigateBack: () -> Unit,
     viewModel: DeviceInfoViewModel = viewModel(
-        factory = DeviceInfoFeature.createViewModelFactory(
+        factory = DeviceInfoViewModelFactory(
             context.applicationContext as Application,
         ),
     ),

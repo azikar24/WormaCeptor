@@ -3,9 +3,7 @@ package com.azikar24.wormaceptor.feature.threadviolation.ui.components
 import android.content.ClipData
 import android.os.Build
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
@@ -35,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.DetailItem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailHeader
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampCompact
@@ -54,38 +52,19 @@ internal fun ViolationDetailContent(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
     ) {
         item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(WormaCeptorTokens.Spacing.xxxl)
-                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
-                        .background(typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        Icons.Default.Warning,
-                        null,
-                        tint = typeColor,
-                        modifier = Modifier.size(WormaCeptorTokens.Spacing.xl),
-                    )
-                }
-                Column {
-                    Text(
-                        violation.violationType.name.replace("_", " "),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
+            WormaCeptorDetailHeader(
+                icon = Icons.Default.Warning,
+                iconTint = typeColor,
+                iconBackgroundColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                title = violation.violationType.name.replace("_", " "),
+                subtitle = {
                     Text(
                         violation.threadName,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                }
-            }
+                },
+            )
         }
 
         item {

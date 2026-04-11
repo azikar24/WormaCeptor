@@ -38,13 +38,13 @@ public abstract class com/azikar24/wormaceptor/feature/recomposition/vm/Recompos
 	public static final field $stable I
 }
 
-public abstract class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEvent {
+public abstract class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent {
 	public static final field $stable I
 }
 
-public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEvent$Reset : com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEvent {
+public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent$Reset : com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEvent$Reset;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent$Reset;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

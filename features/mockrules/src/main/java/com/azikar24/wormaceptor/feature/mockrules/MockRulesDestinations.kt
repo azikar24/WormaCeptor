@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -16,7 +14,7 @@ import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
 import com.azikar24.wormaceptor.feature.mockrules.ui.MockRuleEditorContent
 import com.azikar24.wormaceptor.feature.mockrules.ui.MockRulesScreen
 import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesEffect
-import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesEvent
+import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewEvent
 import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewModel
 import org.koin.compose.koinInject
 
@@ -70,7 +68,7 @@ internal fun MockRuleEditorDestination(
     val viewModel = graphScopedViewModel(backStackEntry, navController)
 
     LaunchedEffect(ruleId) {
-        viewModel.sendEvent(MockRulesEvent.Editor.LoadRule(ruleId))
+        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadRule(ruleId))
     }
 
     BaseScreen(
@@ -89,18 +87,5 @@ internal fun MockRuleEditorDestination(
                 modifier = modifier,
             )
         }
-    }
-}
-
-internal class MockRulesViewModelFactory(
-    private val repository: MockRuleRepository,
-    private val engine: MockEngine,
-) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MockRulesViewModel::class.java)) {
-            return MockRulesViewModel(repository, engine) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 }

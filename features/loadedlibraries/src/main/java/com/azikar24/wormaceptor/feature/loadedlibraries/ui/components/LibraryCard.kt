@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -60,7 +60,11 @@ internal fun LibraryCard(
             Spacer(Modifier.width(WormaCeptorTokens.Spacing.md))
             LibraryDetails(library, colors, color, Modifier.weight(1f))
             Spacer(Modifier.width(WormaCeptorTokens.Spacing.sm))
-            TypeBadge(library.type, color)
+            WormaCeptorStatusBadge(
+                text = library.type.badgeLabel(),
+                containerColor = color.copy(WormaCeptorTokens.Alpha.LIGHT),
+                contentColor = color,
+            )
         }
     }
 }
@@ -126,28 +130,6 @@ private fun LibraryDetails(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun TypeBadge(
-    type: LoadedLibrary.LibraryType,
-    color: Color,
-) {
-    Surface(
-        shape = WormaCeptorTokens.Shapes.chip,
-        color = color.copy(WormaCeptorTokens.Alpha.LIGHT),
-    ) {
-        Text(
-            type.badgeLabel(),
-            Modifier.padding(
-                horizontal = WormaCeptorTokens.Spacing.sm,
-                vertical = WormaCeptorTokens.Spacing.xxs,
-            ),
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = color,
-        )
     }
 }
 

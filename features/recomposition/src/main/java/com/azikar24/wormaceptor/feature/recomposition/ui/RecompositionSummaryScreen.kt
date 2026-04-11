@@ -30,8 +30,8 @@ import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.recomposition.R
-import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionEvent
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionItem
+import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewEvent
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewModel
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewState
 import kotlinx.collections.immutable.persistentListOf
@@ -59,7 +59,7 @@ fun RecompositionSummaryScreen(
 @Composable
 internal fun RecompositionSummaryContent(
     state: RecompositionViewState,
-    onEvent: (RecompositionEvent) -> Unit,
+    onEvent: (RecompositionViewEvent) -> Unit,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -85,7 +85,7 @@ internal fun RecompositionSummaryContent(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { onEvent(RecompositionEvent.Reset) }) {
+                    IconButton(onClick = { onEvent(RecompositionViewEvent.Reset) }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = stringResource(R.string.recomposition_reset),

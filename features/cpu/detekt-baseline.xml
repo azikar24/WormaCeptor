@@ -47,15 +47,15 @@
     <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$1000</ID>
     <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$24</ID>
     <ID>MagicNumber:CpuViewModel.kt$CpuViewModel$60</ID>
-    <ID>UndocumentedPublicClass:CpuEvent.kt$CpuEvent$ClearHistory : CpuEvent</ID>
-    <ID>UndocumentedPublicClass:CpuEvent.kt$CpuEvent$StartMonitoring : CpuEvent</ID>
-    <ID>UndocumentedPublicClass:CpuEvent.kt$CpuEvent$StopMonitoring : CpuEvent</ID>
+    <ID>UndocumentedPublicClass:CpuNavigationContributor.kt$CpuNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:CpuViewEvent.kt$CpuViewEvent$ClearHistory : CpuViewEvent</ID>
+    <ID>UndocumentedPublicClass:CpuViewEvent.kt$CpuViewEvent$StartMonitoring : CpuViewEvent</ID>
+    <ID>UndocumentedPublicClass:CpuViewEvent.kt$CpuViewEvent$StopMonitoring : CpuViewEvent</ID>
     <ID>UndocumentedPublicClass:CpuViewState.kt$CpuViewState</ID>
     <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val cpuHistory: ImmutableList&lt;CpuInfo&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val currentCpu: CpuInfo = CpuInfo.empty()</ID>
     <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val formattedUptime: String = ""</ID>
     <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val isCpuWarning: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val isMonitoring: Boolean = false</ID>
-    <ID>ViewModelInjection:CpuFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

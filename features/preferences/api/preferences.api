@@ -1,10 +1,3 @@
-public final class com/azikar24/wormaceptor/feature/preferences/PreferencesFeature {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/PreferencesFeature;
-	public final fun createRepository (Landroid/content/Context;)Lcom/azikar24/wormaceptor/domain/contracts/PreferencesRepository;
-	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/domain/contracts/PreferencesRepository;)Lcom/azikar24/wormaceptor/feature/preferences/PreferencesViewModelFactory;
-}
-
 public final class com/azikar24/wormaceptor/feature/preferences/PreferencesNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
 	public static final field $stable I
 	public fun <init> ()V

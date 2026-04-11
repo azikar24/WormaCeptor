@@ -2,9 +2,9 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:LocationFeature.kt$@Composable fun LocationSimulator( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:LocationInputSection.kt$@Composable internal fun CoordinateInputCard( latitudeInput: String, longitudeInput: String, isInputValid: Boolean, isLoading: Boolean, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, currentMockLatitude: Double?, currentMockLongitude: Double?, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onSaveAsPreset: () -&gt; Unit, )</ID>
     <ID>LongMethod:LocationMapCard.kt$@Composable fun LocationMapCard( realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LocationNavigationContributor.kt$@Suppress("ViewModelForwarding") @Composable private fun LocationDestination(onBack: (() -&gt; Unit)? = null)</ID>
     <ID>LongMethod:LocationPresetsSection.kt$@Composable internal fun CollapsibleMapSection( isExpanded: Boolean, onToggle: () -&gt; Unit, realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:LocationPresetsSection.kt$@Composable internal fun PresetItem( preset: LocationPreset, isSelected: Boolean, onClick: () -&gt; Unit, onDelete: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:LocationScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationScreen( state: LocationViewState, onEvent: (LocationViewEvent) -&gt; Unit, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
@@ -24,6 +24,8 @@
     <ID>ParameterNaming:LocationInputSection.kt$onLatitudeChanged</ID>
     <ID>ParameterNaming:LocationInputSection.kt$onLongitudeChanged</ID>
     <ID>SwallowedException:LocationViewModel.kt$LocationViewModel$e: SecurityException</ID>
-    <ID>ViewModelInjection:LocationFeature.kt$viewModel</ID>
+    <ID>UndocumentedPublicClass:LocationNavigationContributor.kt$LocationNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:LocationViewModelFactory.kt$LocationViewModelFactory : Factory</ID>
+    <ID>ViewModelInjection:LocationNavigationContributor.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

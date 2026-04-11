@@ -3,12 +3,13 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:RecomposerRow.kt$@Composable internal fun RecomposerRow( index: Int, item: RecompositionItem, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun RecompositionSummaryContent( state: RecompositionViewState, onEvent: (RecompositionEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun RecompositionSummaryContent( state: RecompositionViewState, onEvent: (RecompositionViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:RecompositionViewModel.kt$RecompositionViewModel.Companion$1_000</ID>
     <ID>MagicNumber:RecompositionViewModel.kt$RecompositionViewModel.Companion$1_000.0</ID>
     <ID>MagicNumber:RecompositionViewModel.kt$RecompositionViewModel.Companion$1_000_000</ID>
     <ID>MagicNumber:RecompositionViewModel.kt$RecompositionViewModel.Companion$1_000_000.0</ID>
-    <ID>UndocumentedPublicClass:RecompositionEvent.kt$RecompositionEvent$Reset : RecompositionEvent</ID>
+    <ID>UndocumentedPublicClass:RecompositionNavigationContributor.kt$RecompositionNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:RecompositionViewEvent.kt$RecompositionViewEvent$Reset : RecompositionViewEvent</ID>
     <ID>UndocumentedPublicClass:RecompositionViewModel.kt$RecompositionViewModel$Companion</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val count: Long</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val name: String</ID>
@@ -19,6 +20,5 @@
     <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val topRecomposers: ImmutableList&lt;RecompositionItem&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val totalRecompositions: Long = 0L</ID>
     <ID>ViewModelForwarding:RecompositionSummaryScreen.kt$BaseScreen(viewModel) { state, onEvent -&gt; RecompositionSummaryContent( state = state, onEvent = onEvent, onBack = onBack, modifier = modifier, ) }</ID>
-    <ID>ViewModelInjection:RecompositionFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

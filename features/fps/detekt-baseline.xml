@@ -2,14 +2,15 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>UndocumentedPublicClass:FpsNavigationContributor.kt$FpsNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:FpsViewEvent.kt$FpsViewEvent$ResetStats : FpsViewEvent</ID>
     <ID>UndocumentedPublicClass:FpsViewEvent.kt$FpsViewEvent$StartMonitoring : FpsViewEvent</ID>
     <ID>UndocumentedPublicClass:FpsViewEvent.kt$FpsViewEvent$StopMonitoring : FpsViewEvent</ID>
     <ID>UndocumentedPublicClass:FpsViewEvent.kt$FpsViewEvent$ToggleMonitoring : FpsViewEvent</ID>
+    <ID>UndocumentedPublicClass:FpsViewModelFactory.kt$FpsViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:FpsViewState.kt$FpsViewState</ID>
     <ID>UndocumentedPublicProperty:FpsViewState.kt$FpsViewState$val currentFpsInfo: FpsInfo = FpsInfo.EMPTY</ID>
     <ID>UndocumentedPublicProperty:FpsViewState.kt$FpsViewState$val fpsHistory: ImmutableList&lt;FpsInfo&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:FpsViewState.kt$FpsViewState$val isMonitoring: Boolean = false</ID>
-    <ID>ViewModelInjection:FpsFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

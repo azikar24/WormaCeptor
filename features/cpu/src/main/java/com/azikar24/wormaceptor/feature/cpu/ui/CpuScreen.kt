@@ -41,7 +41,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.feature.cpu.R
-import com.azikar24.wormaceptor.feature.cpu.vm.CpuEvent
+import com.azikar24.wormaceptor.feature.cpu.vm.CpuViewEvent
 import com.azikar24.wormaceptor.feature.cpu.vm.CpuViewState
 import kotlinx.collections.immutable.persistentListOf
 
@@ -49,7 +49,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 private fun CpuTopAppBar(
     state: CpuViewState,
-    onEvent: (CpuEvent) -> Unit,
+    onEvent: (CpuViewEvent) -> Unit,
     onBack: (() -> Unit)?,
     onClearHistory: () -> Unit,
 ) {
@@ -89,9 +89,9 @@ private fun CpuTopAppBar(
                 isActive = state.isMonitoring,
                 onToggle = {
                     if (state.isMonitoring) {
-                        onEvent(CpuEvent.StopMonitoring)
+                        onEvent(CpuViewEvent.StopMonitoring)
                     } else {
-                        onEvent(CpuEvent.StartMonitoring)
+                        onEvent(CpuViewEvent.StartMonitoring)
                     }
                 },
             )
@@ -165,7 +165,7 @@ private fun CpuScreenContent(
 @Composable
 fun CpuScreen(
     state: CpuViewState,
-    onEvent: (CpuEvent) -> Unit,
+    onEvent: (CpuViewEvent) -> Unit,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -182,7 +182,7 @@ fun CpuScreen(
                 onBack = onBack,
                 onClearHistory = {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    onEvent(CpuEvent.ClearHistory)
+                    onEvent(CpuViewEvent.ClearHistory)
                 },
             )
         },

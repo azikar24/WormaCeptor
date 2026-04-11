@@ -1,7 +1,5 @@
 package com.azikar24.wormaceptor.feature.crypto.vm
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
@@ -127,20 +125,5 @@ class CryptoViewModel(
                 updateState { copy(error = error) }
             }
         }
-    }
-}
-
-/**
- * Factory for creating [CryptoViewModel] instances with a [CryptoEngine] dependency.
- */
-class CryptoViewModelFactory(
-    private val engine: CryptoEngine,
-) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CryptoViewModel::class.java)) {
-            return CryptoViewModel(engine) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 }

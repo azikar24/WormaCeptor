@@ -172,228 +172,228 @@ public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEffect
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent {
+public abstract class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent {
 	public static final field $stable I
 }
 
-public abstract class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent {
+public abstract class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent {
 	public static final field $stable I
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$ContentTypeChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$ContentTypeChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$ContentTypeChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$ContentTypeChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$ContentTypeChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$ContentTypeChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$ContentTypeChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$ContentTypeChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMaxMsChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMaxMsChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMaxMsChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMaxMsChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMaxMsChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMaxMsChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMaxMsChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMaxMsChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMinMsChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMinMsChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMinMsChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMinMsChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMinMsChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMinMsChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMinMsChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMinMsChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMsChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMsChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMsChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMsChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayMsChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMsChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMsChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayMsChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayTypeChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayTypeChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/feature/mockrules/vm/DelayType;)V
 	public final fun component1 ()Lcom/azikar24/wormaceptor/feature/mockrules/vm/DelayType;
-	public final fun copy (Lcom/azikar24/wormaceptor/feature/mockrules/vm/DelayType;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayTypeChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayTypeChanged;Lcom/azikar24/wormaceptor/feature/mockrules/vm/DelayType;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$DelayTypeChanged;
+	public final fun copy (Lcom/azikar24/wormaceptor/feature/mockrules/vm/DelayType;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayTypeChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayTypeChanged;Lcom/azikar24/wormaceptor/feature/mockrules/vm/DelayType;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$DelayTypeChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Lcom/azikar24/wormaceptor/feature/mockrules/vm/DelayType;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$LoadRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$LoadRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$LoadRule;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$LoadRule;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$LoadRule;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$LoadRule;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$LoadRule;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$LoadRule;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getRuleId ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MatchTypeChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MatchTypeChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/mock/UrlMatchType;)V
 	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/mock/UrlMatchType;
-	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/mock/UrlMatchType;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MatchTypeChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MatchTypeChanged;Lcom/azikar24/wormaceptor/domain/entities/mock/UrlMatchType;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MatchTypeChanged;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/mock/UrlMatchType;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MatchTypeChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MatchTypeChanged;Lcom/azikar24/wormaceptor/domain/entities/mock/UrlMatchType;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MatchTypeChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Lcom/azikar24/wormaceptor/domain/entities/mock/UrlMatchType;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MethodChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MethodChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MethodChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MethodChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MethodChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MethodChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MethodChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MethodChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MethodDropdownExpandedChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MethodDropdownExpandedChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Z)V
 	public final fun component1 ()Z
-	public final fun copy (Z)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MethodDropdownExpandedChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MethodDropdownExpandedChanged;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$MethodDropdownExpandedChanged;
+	public final fun copy (Z)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MethodDropdownExpandedChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MethodDropdownExpandedChanged;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$MethodDropdownExpandedChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getExpanded ()Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$NameChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$NameChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$NameChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$NameChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$NameChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$NameChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$NameChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$NameChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$ResponseBodyChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$ResponseBodyChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$ResponseBodyChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$ResponseBodyChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$ResponseBodyChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$ResponseBodyChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$ResponseBodyChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$ResponseBodyChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$SaveRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$SaveRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$SaveRule;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$SaveRule;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$StatusCodeChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$StatusCodeChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$StatusCodeChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$StatusCodeChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$StatusCodeChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$StatusCodeChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$StatusCodeChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$StatusCodeChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$StatusMessageChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$StatusMessageChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$StatusMessageChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$StatusMessageChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$StatusMessageChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$StatusMessageChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$StatusMessageChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$StatusMessageChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$UrlPatternChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$UrlPatternChanged : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$UrlPatternChanged;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$UrlPatternChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$Editor$UrlPatternChanged;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$UrlPatternChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$UrlPatternChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$Editor$UrlPatternChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getValue ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent {
+public abstract class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent {
 	public static final field $stable I
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$DeleteAllRules : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DeleteAllRules : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$DeleteAllRules;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DeleteAllRules;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$DeleteRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DeleteRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$DeleteRule;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$DeleteRule;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$DeleteRule;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DeleteRule;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DeleteRule;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DeleteRule;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getRuleId ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$ToggleMocking : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ToggleMocking : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$ToggleMocking;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ToggleMocking;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$ToggleRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List {
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ToggleRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$ToggleRule;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$ToggleRule;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesEvent$List$ToggleRule;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ToggleRule;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ToggleRule;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ToggleRule;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getRuleId ()Ljava/lang/String;
 	public fun hashCode ()I

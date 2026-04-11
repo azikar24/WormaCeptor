@@ -2,20 +2,17 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>UndocumentedPublicClass:MemoryFeature.kt$MemoryFeature</ID>
-    <ID>UndocumentedPublicClass:MemoryFeature.kt$MemoryViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicClass:MemoryNavigationContributor.kt$MemoryNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$ClearHistory : MemoryViewEvent</ID>
     <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$ForceGc : MemoryViewEvent</ID>
     <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$StartMonitoring : MemoryViewEvent</ID>
     <ID>UndocumentedPublicClass:MemoryViewEvent.kt$MemoryViewEvent$StopMonitoring : MemoryViewEvent</ID>
+    <ID>UndocumentedPublicClass:MemoryViewModelFactory.kt$MemoryViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:MemoryViewState.kt$MemoryViewState</ID>
-    <ID>UndocumentedPublicFunction:MemoryFeature.kt$@Composable fun MemoryMonitor( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>UndocumentedPublicFunction:MemoryFeature.kt$MemoryFeature$fun createViewModelFactory(engine: MemoryMonitorEngine): MemoryViewModelFactory</ID>
     <ID>UndocumentedPublicFunction:MemoryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MemoryScreen( state: MemoryViewState, onEvent: (MemoryViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val currentMemory: MemoryInfo = MemoryInfo.empty()</ID>
     <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val isHeapWarning: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val isMonitoring: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:MemoryViewState.kt$MemoryViewState$val memoryHistory: ImmutableList&lt;MemoryInfo&gt; = persistentListOf()</ID>
-    <ID>ViewModelInjection:MemoryFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

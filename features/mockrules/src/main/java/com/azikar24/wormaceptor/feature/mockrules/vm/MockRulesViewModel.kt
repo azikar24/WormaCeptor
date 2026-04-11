@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 internal class MockRulesViewModel(
     private val repository: MockRuleRepository,
     private val engine: MockEngine,
-) : BaseViewModel<MockRulesViewState, MockRulesEffect, MockRulesEvent>(
+) : BaseViewModel<MockRulesViewState, MockRulesEffect, MockRulesViewEvent>(
     initialState = MockRulesViewState(),
 ) {
 
@@ -40,39 +40,39 @@ internal class MockRulesViewModel(
             .launchIn(viewModelScope)
     }
 
-    override fun handleEvent(event: MockRulesEvent) {
+    override fun handleEvent(event: MockRulesViewEvent) {
         when (event) {
-            is MockRulesEvent.List -> handleListEvent(event)
-            is MockRulesEvent.Editor -> handleEditorEvent(event)
+            is MockRulesViewEvent.List -> handleListEvent(event)
+            is MockRulesViewEvent.Editor -> handleEditorEvent(event)
         }
     }
 
-    private fun handleListEvent(event: MockRulesEvent.List) {
+    private fun handleListEvent(event: MockRulesViewEvent.List) {
         when (event) {
-            is MockRulesEvent.List.ToggleMocking ->
+            is MockRulesViewEvent.List.ToggleMocking ->
                 engine.setMockingEnabled(!engine.mockingEnabled.value)
 
-            is MockRulesEvent.List.ToggleRule -> viewModelScope.launch {
+            is MockRulesViewEvent.List.ToggleRule -> viewModelScope.launch {
                 val rule = repository.getById(event.ruleId) ?: return@launch
                 repository.update(rule.copy(enabled = !rule.enabled))
             }
 
-            is MockRulesEvent.List.DeleteRule -> viewModelScope.launch {
+            is MockRulesViewEvent.List.DeleteRule -> viewModelScope.launch {
                 repository.delete(event.ruleId)
             }
 
-            is MockRulesEvent.List.DeleteAllRules -> viewModelScope.launch {
+            is MockRulesViewEvent.List.DeleteAllRules -> viewModelScope.launch {
                 repository.deleteAll()
                 engine.resetCounters()
             }
         }
     }
 
-    private fun handleEditorEvent(event: MockRulesEvent.Editor) {
+    private fun handleEditorEvent(event: MockRulesViewEvent.Editor) {
         when (event) {
-            is MockRulesEvent.Editor.LoadRule -> loadRule(event.ruleId)
+            is MockRulesViewEvent.Editor.LoadRule -> loadRule(event.ruleId)
 
-            is MockRulesEvent.Editor.SaveRule -> viewModelScope.launch {
+            is MockRulesViewEvent.Editor.SaveRule -> viewModelScope.launch {
                 val rule = buildRule()
                 val existing = repository.getById(rule.id)
                 if (existing != null) {
@@ -85,31 +85,31 @@ internal class MockRulesViewModel(
                 emitEffect(MockRulesEffect.NavigateBack)
             }
 
-            is MockRulesEvent.Editor.NameChanged ->
+            is MockRulesViewEvent.Editor.NameChanged ->
                 updateEditor { copy(name = event.value) }
-            is MockRulesEvent.Editor.UrlPatternChanged ->
+            is MockRulesViewEvent.Editor.UrlPatternChanged ->
                 updateEditor { copy(urlPattern = event.value) }
-            is MockRulesEvent.Editor.MatchTypeChanged ->
+            is MockRulesViewEvent.Editor.MatchTypeChanged ->
                 updateEditor { copy(matchType = event.value) }
-            is MockRulesEvent.Editor.MethodChanged ->
+            is MockRulesViewEvent.Editor.MethodChanged ->
                 updateEditor { copy(method = event.value) }
-            is MockRulesEvent.Editor.MethodDropdownExpandedChanged ->
+            is MockRulesViewEvent.Editor.MethodDropdownExpandedChanged ->
                 updateEditor { copy(methodDropdownExpanded = event.expanded) }
-            is MockRulesEvent.Editor.StatusCodeChanged ->
+            is MockRulesViewEvent.Editor.StatusCodeChanged ->
                 updateEditor { copy(statusCode = event.value.toIntOrNull() ?: statusCode) }
-            is MockRulesEvent.Editor.StatusMessageChanged ->
+            is MockRulesViewEvent.Editor.StatusMessageChanged ->
                 updateEditor { copy(statusMessage = event.value) }
-            is MockRulesEvent.Editor.ContentTypeChanged ->
+            is MockRulesViewEvent.Editor.ContentTypeChanged ->
                 updateEditor { copy(contentType = event.value) }
-            is MockRulesEvent.Editor.ResponseBodyChanged ->
+            is MockRulesViewEvent.Editor.ResponseBodyChanged ->
                 updateEditor { copy(responseBody = event.value) }
-            is MockRulesEvent.Editor.DelayTypeChanged ->
+            is MockRulesViewEvent.Editor.DelayTypeChanged ->
                 updateEditor { copy(delayType = event.value) }
-            is MockRulesEvent.Editor.DelayMsChanged ->
+            is MockRulesViewEvent.Editor.DelayMsChanged ->
                 updateEditor { copy(delayMs = event.value) }
-            is MockRulesEvent.Editor.DelayMinMsChanged ->
+            is MockRulesViewEvent.Editor.DelayMinMsChanged ->
                 updateEditor { copy(delayMinMs = event.value) }
-            is MockRulesEvent.Editor.DelayMaxMsChanged ->
+            is MockRulesViewEvent.Editor.DelayMaxMsChanged ->
                 updateEditor { copy(delayMaxMs = event.value) }
         }
     }

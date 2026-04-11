@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.launchIn
  * ViewModel for the CPU Monitoring screen.
  *
  * Consolidates CPU metrics from [CpuMonitorEngine] into a single [CpuViewState]
- * and exposes user actions via [CpuEvent].
+ * and exposes user actions via [CpuViewEvent].
  */
 class CpuViewModel(
     private val engine: CpuMonitorEngine,
-) : BaseViewModel<CpuViewState, CpuEffect, CpuEvent>(
+) : BaseViewModel<CpuViewState, CpuEffect, CpuViewEvent>(
     initialState = CpuViewState(),
 ) {
 
@@ -37,11 +37,11 @@ class CpuViewModel(
         }.launchIn(viewModelScope)
     }
 
-    override fun handleEvent(event: CpuEvent) {
+    override fun handleEvent(event: CpuViewEvent) {
         when (event) {
-            is CpuEvent.StartMonitoring -> engine.start()
-            is CpuEvent.StopMonitoring -> engine.stop()
-            is CpuEvent.ClearHistory -> engine.clearHistory()
+            is CpuViewEvent.StartMonitoring -> engine.start()
+            is CpuViewEvent.StopMonitoring -> engine.stop()
+            is CpuViewEvent.ClearHistory -> engine.clearHistory()
         }
     }
 

@@ -16,7 +16,7 @@ import java.util.Locale
  */
 class RecompositionViewModel(
     private val tracker: RecompositionTracker = RecompositionTracker,
-) : BaseViewModel<RecompositionViewState, RecompositionEffect, RecompositionEvent>(
+) : BaseViewModel<RecompositionViewState, RecompositionEffect, RecompositionViewEvent>(
     initialState = RecompositionViewState(),
 ) {
 
@@ -29,9 +29,9 @@ class RecompositionViewModel(
         }
     }
 
-    override fun handleEvent(event: RecompositionEvent) {
+    override fun handleEvent(event: RecompositionViewEvent) {
         when (event) {
-            is RecompositionEvent.Reset -> tracker.reset()
+            is RecompositionViewEvent.Reset -> tracker.reset()
         }
     }
 

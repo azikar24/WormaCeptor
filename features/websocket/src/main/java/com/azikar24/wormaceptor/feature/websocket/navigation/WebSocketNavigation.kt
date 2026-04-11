@@ -11,7 +11,7 @@ import androidx.navigation.navigation
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
-import com.azikar24.wormaceptor.feature.websocket.WebSocketFeature
+import com.azikar24.wormaceptor.feature.websocket.WebSocketViewModelFactory
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketDetailScreen
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketListScreen
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewEvent
@@ -44,7 +44,7 @@ private fun graphScopedViewModel(
         navController.getBackStackEntry(WormaCeptorNavKeys.WebSocket.route)
     }
     val engine: WebSocketMonitorEngine = koinInject()
-    val factory = remember { WebSocketFeature.createViewModelFactory(engine) }
+    val factory = remember { WebSocketViewModelFactory(engine) }
     return viewModel(viewModelStoreOwner = graphEntry, factory = factory)
 }
 

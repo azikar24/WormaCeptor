@@ -2,7 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>UndocumentedPublicClass:LoadedLibrariesFeature.kt$LoadedLibrariesFeature</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesNavigationContributor.kt$LoadedLibrariesNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$DismissDetail : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$Refresh : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SelectLibrary : LoadedLibrariesViewEvent</ID>
@@ -11,8 +11,6 @@
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetShowSystemLibs : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$ToggleSearch : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewModelFactory.kt$LoadedLibrariesViewModelFactory : Factory</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesFeature.kt$@Composable fun LoadedLibrariesInspector( modifier: Modifier = Modifier, onNavigateBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>UndocumentedPublicFunction:LoadedLibrariesFeature.kt$LoadedLibrariesFeature$fun createViewModelFactory(engine: LoadedLibrariesEngine): LoadedLibrariesViewModelFactory</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SelectLibrary$val library: LoadedLibrary</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSearchQuery$val query: String</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSelectedType$val type: LoadedLibrary.LibraryType?</ID>
@@ -26,6 +24,5 @@
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val selectedType: LoadedLibrary.LibraryType? = null</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val showSystemLibs: Boolean = true</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val summary: LibrarySummary = LibrarySummary.empty()</ID>
-    <ID>ViewModelInjection:LoadedLibrariesFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

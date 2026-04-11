@@ -34,14 +34,14 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatDateShort
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
 import com.azikar24.wormaceptor.feature.pushtoken.R
-import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenEvent
+import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewEvent
 
 /** Displays the current push token with copy/delete actions, or an empty state. */
 @Composable
 fun PushTokenCurrentTokenCard(
     token: PushTokenInfo?,
     isLoading: Boolean,
-    onEvent: (PushTokenEvent) -> Unit,
+    onEvent: (PushTokenViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     WormaCeptorCard(
@@ -121,7 +121,7 @@ private fun TokenProviderRow(token: PushTokenInfo) {
 @Composable
 private fun TokenActionButtons(
     isLoading: Boolean,
-    onEvent: (PushTokenEvent) -> Unit,
+    onEvent: (PushTokenViewEvent) -> Unit,
 ) {
     Row(
         Modifier.fillMaxWidth(),
@@ -129,7 +129,7 @@ private fun TokenActionButtons(
     ) {
         WormaCeptorButton(
             text = stringResource(R.string.pushtoken_copy),
-            onClick = { onEvent(PushTokenEvent.CopyToken) },
+            onClick = { onEvent(PushTokenViewEvent.CopyToken) },
             modifier = Modifier.weight(1f),
             variant = ButtonVariant.Primary,
             leadingIcon = {
@@ -138,7 +138,7 @@ private fun TokenActionButtons(
         )
         WormaCeptorButton(
             text = stringResource(R.string.pushtoken_delete),
-            onClick = { onEvent(PushTokenEvent.DeleteToken) },
+            onClick = { onEvent(PushTokenViewEvent.DeleteToken) },
             variant = ButtonVariant.Outlined,
             enabled = !isLoading,
             containerColor = WormaCeptorTokens.Colors.Status.red,

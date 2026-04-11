@@ -1,29 +1,22 @@
 package com.azikar24.wormaceptor.feature.loadedlibraries.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Memory
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.DetailItem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailHeader
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -45,28 +38,20 @@ internal fun LibraryDetailContent(
     }
 
     Column(modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg)) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
-        ) {
-            Box(
-                Modifier.size(
-                    WormaCeptorTokens.Spacing.xxxl,
-                ).clip(WormaCeptorTokens.Shapes.card).background(color.copy(WormaCeptorTokens.Alpha.LIGHT)),
-                Alignment.Center,
-            ) {
-                Icon(icon, null, tint = color, modifier = Modifier.size(WormaCeptorTokens.Spacing.xl))
-            }
-            Column {
+        WormaCeptorDetailHeader(
+            icon = icon,
+            iconTint = color,
+            iconBackgroundColor = color.copy(WormaCeptorTokens.Alpha.LIGHT),
+            title = library.name,
+            titleColor = colors.labelPrimary,
+            subtitle = {
                 Text(
-                    library.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = colors.labelPrimary,
+                    library.type.name.replace("_", " "),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = color,
                 )
-                Text(library.type.name.replace("_", " "), style = MaterialTheme.typography.bodySmall, color = color)
-            }
-        }
+            },
+        )
 
         val detailTitle = stringResource(R.string.loadedlibraries_detail_title)
         val pathLabel = stringResource(R.string.loadedlibraries_detail_path)

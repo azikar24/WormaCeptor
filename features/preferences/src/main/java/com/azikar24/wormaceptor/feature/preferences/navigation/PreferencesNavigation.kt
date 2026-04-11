@@ -11,7 +11,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
-import com.azikar24.wormaceptor.feature.preferences.PreferencesFeature
+import com.azikar24.wormaceptor.feature.preferences.PreferencesViewModelFactory
+import com.azikar24.wormaceptor.feature.preferences.data.PreferencesDataSource
+import com.azikar24.wormaceptor.feature.preferences.data.PreferencesRepositoryImpl
 import com.azikar24.wormaceptor.feature.preferences.ui.PreferenceDetailScreen
 import com.azikar24.wormaceptor.feature.preferences.ui.PreferencesListScreen
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewEvent
@@ -48,8 +50,8 @@ private fun graphScopedViewModel(
     val graphEntry = remember(backStackEntry) {
         navController.getBackStackEntry(WormaCeptorNavKeys.Preferences.route)
     }
-    val repository = remember(context) { PreferencesFeature.createRepository(context) }
-    val factory = remember(repository) { PreferencesFeature.createViewModelFactory(repository) }
+    val repository = remember(context) { PreferencesRepositoryImpl(PreferencesDataSource(context.applicationContext)) }
+    val factory = remember(repository) { PreferencesViewModelFactory(repository) }
     return viewModel(viewModelStoreOwner = graphEntry, factory = factory)
 }
 

@@ -143,19 +143,19 @@ class CpuViewModelTest {
 
         @Test
         fun `startMonitoring delegates to engine`() {
-            viewModel.sendEvent(CpuEvent.StartMonitoring)
+            viewModel.sendEvent(CpuViewEvent.StartMonitoring)
             verify { engine.start() }
         }
 
         @Test
         fun `stopMonitoring delegates to engine`() {
-            viewModel.sendEvent(CpuEvent.StopMonitoring)
+            viewModel.sendEvent(CpuViewEvent.StopMonitoring)
             verify { engine.stop() }
         }
 
         @Test
         fun `clearHistory delegates to engine`() {
-            viewModel.sendEvent(CpuEvent.ClearHistory)
+            viewModel.sendEvent(CpuViewEvent.ClearHistory)
             verify { engine.clearHistory() }
         }
     }

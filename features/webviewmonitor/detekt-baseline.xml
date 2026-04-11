@@ -7,6 +7,7 @@
     <ID>LongParameterList:ListContent.kt$( requests: List&lt;WebViewRequest&gt;, totalCount: Int, stats: WebViewRequestStats, resourceTypeFilter: Set&lt;WebViewResourceType&gt;, onToggleResourceTypeFilter: (WebViewResourceType) -&gt; Unit, onClearFilters: () -&gt; Unit, onRequestClick: (WebViewRequest) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:ListTopBar.kt$( searchActive: Boolean, searchQuery: String, onSearchToggle: () -&gt; Unit, onSearchQueryChanged: (String) -&gt; Unit, onClearRequests: () -&gt; Unit, onNavigateBack: (() -&gt; Unit)?, )</ID>
     <ID>ParameterNaming:ListTopBar.kt$onSearchQueryChanged</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorNavigationContributor.kt$WebViewMonitorNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:WebViewMonitorViewEffect.kt$WebViewMonitorViewEffect$NavigateToDetail : WebViewMonitorViewEffect</ID>
     <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$ClearFilters : WebViewMonitorViewEvent</ID>
     <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$ClearRequests : WebViewMonitorViewEvent</ID>
@@ -15,6 +16,7 @@
     <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$SelectRequest : WebViewMonitorViewEvent</ID>
     <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$SetSearchQuery : WebViewMonitorViewEvent</ID>
     <ID>UndocumentedPublicClass:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent$ToggleResourceTypeFilter : WebViewMonitorViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebViewMonitorViewModelFactory.kt$WebViewMonitorViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicProperty:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent.SelectRequest$val request: WebViewRequest</ID>
     <ID>UndocumentedPublicProperty:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent.SetSearchQuery$val query: String</ID>
     <ID>UndocumentedPublicProperty:WebViewMonitorViewEvent.kt$WebViewMonitorViewEvent.ToggleResourceTypeFilter$val type: WebViewResourceType</ID>
@@ -24,6 +26,6 @@
     <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val searchQuery: String = ""</ID>
     <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val selectedRequest: WebViewRequest? = null</ID>
     <ID>UndocumentedPublicProperty:WebViewMonitorViewState.kt$WebViewMonitorViewState$val stats: WebViewRequestStats = WebViewRequestStats.empty()</ID>
-<ID>ViewModelInjection:WebViewMonitorScreen.kt$viewModel</ID>
+    <ID>ViewModelInjection:WebViewMonitorNavigationContributor.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -12,8 +12,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
-import com.azikar24.wormaceptor.feature.database.DatabaseFeature
 import com.azikar24.wormaceptor.feature.database.DatabaseViewModelFactory
+import com.azikar24.wormaceptor.feature.database.data.DatabaseDataSource
+import com.azikar24.wormaceptor.feature.database.data.DatabaseRepositoryImpl
 import com.azikar24.wormaceptor.feature.database.ui.DatabaseListScreen
 import com.azikar24.wormaceptor.feature.database.ui.QueryScreen
 import com.azikar24.wormaceptor.feature.database.ui.TableDataScreen
@@ -29,8 +30,8 @@ fun NavGraphBuilder.databaseGraph(
     val application = requireNotNull(context.applicationContext as? Application) {
         "applicationContext must be an Application instance"
     }
-    val repository by lazy { DatabaseFeature.createRepository(context) }
-    val factory by lazy { DatabaseFeature.createViewModelFactory(repository, application) }
+    val repository by lazy { DatabaseRepositoryImpl(DatabaseDataSource(context.applicationContext)) }
+    val factory by lazy { DatabaseViewModelFactory(repository, application) }
 
     navigation(
         startDestination = WormaCeptorNavKeys.DatabaseList.route,

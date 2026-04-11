@@ -4,6 +4,8 @@
   <CurrentIssues>
     <ID>LongMethod:CryptoHistoryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun CryptoHistoryContent( state: CryptoViewState, snackbarHostState: SnackbarHostState, onNavigateBack: () -&gt; Unit, onEvent: (CryptoViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:CryptoResultCard.kt$@Composable internal fun ResultCard( result: CryptoResult, onCopy: (String) -&gt; Unit, onClear: () -&gt; Unit, onUseAsInput: (String) -&gt; Unit, )</ID>
-    <ID>ViewModelInjection:CryptoFeature.kt$viewModel</ID>
+    <ID>UndocumentedPublicClass:CryptoNavigationContributor.kt$CryptoNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:CryptoViewModelFactory.kt$CryptoViewModelFactory : Factory</ID>
+    <ID>ViewModelInjection:CryptoNavigationContributor.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

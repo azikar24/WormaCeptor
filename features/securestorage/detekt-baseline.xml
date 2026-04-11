@@ -5,25 +5,23 @@
     <ID>LongMethod:EntryCard.kt$@Composable internal fun EntryCard( entry: SecureStorageEntry, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:EntryDetailContent.kt$@Composable internal fun EntryDetailContent( entry: SecureStorageEntry, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:SecureStorageScreen.kt$@Composable private fun SecureStorageContent( state: SecureStorageViewState, onEvent: (SecureStorageViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:SecureStorageScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageScreen( state: SecureStorageViewState, onEvent: (SecureStorageViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:SecureStorageScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun SecureStorageTopAppBar( state: SecureStorageViewState, searchActive: Boolean, onSearchToggle: () -&gt; Unit, onEvent: (SecureStorageViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, )</ID>
-    <ID>UndocumentedPublicFunction:SecureStorageScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageScreen( state: SecureStorageViewState, onEvent: (SecureStorageViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:SummarySection.kt$( count: Int, label: String, icon: ImageVector, color: Color, isAccessible: Boolean, accessibleText: String, notAccessibleText: String, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:EntryCard.kt$100</ID>
     <ID>MaxLineLength:EntryCard.kt$tint = if (entry.isEncrypted) WormaCeptorTokens.Colors.SecureStorage.encrypted else WormaCeptorTokens.Colors.SecureStorage.unencrypted</ID>
-    <ID>MaxLineLength:EntryDetailContent.kt$color = if (entry.isEncrypted) WormaCeptorTokens.Colors.SecureStorage.encrypted else WormaCeptorTokens.Colors.SecureStorage.unencrypted</ID>
-    <ID>MaxLineLength:EntryDetailContent.kt$tint = if (entry.isEncrypted) WormaCeptorTokens.Colors.SecureStorage.encrypted else WormaCeptorTokens.Colors.SecureStorage.unencrypted</ID>
     <ID>MaxLineLength:SummarySection.kt$tint = if (isAccessible) WormaCeptorTokens.Colors.SecureStorage.encrypted else WormaCeptorTokens.Colors.SecureStorage.unencrypted</ID>
     <ID>MaximumLineLength:EntryCard.kt$ </ID>
-    <ID>MaximumLineLength:EntryDetailContent.kt$ </ID>
     <ID>MaximumLineLength:SummarySection.kt$ </ID>
     <ID>ParameterNaming:TypeFilterChips.kt$onTypeSelected</ID>
+    <ID>UndocumentedPublicClass:SecureStorageNavigationContributor.kt$SecureStorageNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$DismissDetail : SecureStorageViewEvent</ID>
     <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$Refresh : SecureStorageViewEvent</ID>
     <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$SelectEntry : SecureStorageViewEvent</ID>
     <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$SelectType : SecureStorageViewEvent</ID>
     <ID>UndocumentedPublicClass:SecureStorageViewEvent.kt$SecureStorageViewEvent$UpdateSearchQuery : SecureStorageViewEvent</ID>
+    <ID>UndocumentedPublicClass:SecureStorageViewModelFactory.kt$SecureStorageViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:SecureStorageViewState.kt$SecureStorageViewState</ID>
+    <ID>UndocumentedPublicFunction:SecureStorageScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageScreen( state: SecureStorageViewState, onEvent: (SecureStorageViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:SecureStorageViewEvent.kt$SecureStorageViewEvent.SelectEntry$val entry: SecureStorageEntry</ID>
     <ID>UndocumentedPublicProperty:SecureStorageViewEvent.kt$SecureStorageViewEvent.SelectType$val type: StorageType?</ID>
     <ID>UndocumentedPublicProperty:SecureStorageViewEvent.kt$SecureStorageViewEvent.UpdateSearchQuery$val query: String</ID>
@@ -37,6 +35,5 @@
     <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val selectedEntry: SecureStorageEntry? = null</ID>
     <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val selectedType: StorageType? = null</ID>
     <ID>UndocumentedPublicProperty:SecureStorageViewState.kt$SecureStorageViewState$val summary: SecureStorageSummary = SecureStorageSummary.empty()</ID>
-    <ID>ViewModelInjection:SecureStorageFeature.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

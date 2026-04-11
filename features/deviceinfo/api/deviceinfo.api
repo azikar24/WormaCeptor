@@ -1,9 +1,3 @@
-public final class com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoFeature {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoFeature;
-	public final fun createViewModelFactory (Landroid/app/Application;)Lcom/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoViewModelFactory;
-}
-
 public final class com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
 	public static final field $stable I
 	public fun <init> ()V

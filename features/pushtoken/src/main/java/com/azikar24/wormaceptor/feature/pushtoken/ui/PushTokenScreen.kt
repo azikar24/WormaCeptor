@@ -47,7 +47,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
 import com.azikar24.wormaceptor.domain.entities.TokenHistory
 import com.azikar24.wormaceptor.feature.pushtoken.R
-import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenEvent
+import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewEvent
 import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewModel
 import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewState
 import kotlinx.collections.immutable.persistentListOf
@@ -57,7 +57,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun PushTokenScreen(
     state: PushTokenViewState,
-    onEvent: (PushTokenEvent) -> Unit,
+    onEvent: (PushTokenViewEvent) -> Unit,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
     showCopiedSnackbar: Boolean = false,
@@ -80,7 +80,7 @@ fun PushTokenScreen(
 @Composable
 private fun PushTokenTopAppBar(
     state: PushTokenViewState,
-    onEvent: (PushTokenEvent) -> Unit,
+    onEvent: (PushTokenViewEvent) -> Unit,
     onBack: (() -> Unit)?,
 ) {
     TopAppBar(
@@ -96,7 +96,7 @@ private fun PushTokenTopAppBar(
         },
         actions = {
             IconButton(
-                onClick = { onEvent(PushTokenEvent.FetchToken) },
+                onClick = { onEvent(PushTokenViewEvent.FetchToken) },
                 enabled = !state.isLoading,
             ) {
                 if (state.isLoading) {
@@ -115,7 +115,7 @@ private fun PushTokenTopAppBar(
 @Composable
 private fun PushTokenContent(
     state: PushTokenViewState,
-    onEvent: (PushTokenEvent) -> Unit,
+    onEvent: (PushTokenViewEvent) -> Unit,
     padding: PaddingValues,
 ) {
     LazyColumn(
@@ -132,7 +132,12 @@ private fun PushTokenContent(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
     ) {
         state.error?.let { errorMessage ->
-            item { PushTokenErrorCard(message = errorMessage, onDismiss = { onEvent(PushTokenEvent.DismissError) }) }
+            item {
+                PushTokenErrorCard(
+                    message = errorMessage,
+                    onDismiss = { onEvent(PushTokenViewEvent.DismissError) },
+                )
+            }
         }
 
         item {
@@ -145,7 +150,7 @@ private fun PushTokenContent(
 
 private fun LazyListScope.historySection(
     state: PushTokenViewState,
-    onEvent: (PushTokenEvent) -> Unit,
+    onEvent: (PushTokenViewEvent) -> Unit,
 ) {
     item {
         Row(
@@ -163,7 +168,7 @@ private fun LazyListScope.historySection(
             if (state.tokenHistory.isNotEmpty()) {
                 WormaCeptorButton(
                     text = stringResource(R.string.pushtoken_clear),
-                    onClick = { onEvent(PushTokenEvent.ClearHistory) },
+                    onClick = { onEvent(PushTokenViewEvent.ClearHistory) },
                     variant = ButtonVariant.Text,
                 )
             }

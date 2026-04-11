@@ -31,13 +31,13 @@ import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import com.azikar24.wormaceptor.feature.mockrules.R
 import com.azikar24.wormaceptor.feature.mockrules.vm.DelayType
 import com.azikar24.wormaceptor.feature.mockrules.vm.EditorState
-import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesEvent
+import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MockRuleEditorContent(
     state: EditorState,
-    onEvent: (MockRulesEvent) -> Unit,
+    onEvent: (MockRulesViewEvent) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -70,7 +70,7 @@ internal fun MockRuleEditorContent(
         floatingActionButton = {
             if (state.isValid) {
                 WormaCeptorFAB(
-                    onClick = { onEvent(MockRulesEvent.Editor.SaveRule) },
+                    onClick = { onEvent(MockRulesViewEvent.Editor.SaveRule) },
                     icon = Icons.Default.Check,
                     contentDescription = stringResource(R.string.mock_editor_save),
                 )
@@ -90,7 +90,7 @@ internal fun MockRuleEditorContent(
 @Composable
 private fun EditorFormBody(
     state: EditorState,
-    onEvent: (MockRulesEvent) -> Unit,
+    onEvent: (MockRulesViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -102,7 +102,7 @@ private fun EditorFormBody(
     ) {
         BasicInfoSection(
             name = state.name,
-            onNameChange = { onEvent(MockRulesEvent.Editor.NameChanged(it)) },
+            onNameChange = { onEvent(MockRulesViewEvent.Editor.NameChanged(it)) },
         )
 
         RequestMatchingSection(
@@ -110,10 +110,10 @@ private fun EditorFormBody(
             matchType = state.matchType,
             method = state.method,
             methodDropdownExpanded = state.methodDropdownExpanded,
-            onUrlPatternChange = { onEvent(MockRulesEvent.Editor.UrlPatternChanged(it)) },
-            onMatchTypeChange = { onEvent(MockRulesEvent.Editor.MatchTypeChanged(it)) },
-            onMethodChange = { onEvent(MockRulesEvent.Editor.MethodChanged(it)) },
-            onMethodDropdownExpandedChange = { onEvent(MockRulesEvent.Editor.MethodDropdownExpandedChanged(it)) },
+            onUrlPatternChange = { onEvent(MockRulesViewEvent.Editor.UrlPatternChanged(it)) },
+            onMatchTypeChange = { onEvent(MockRulesViewEvent.Editor.MatchTypeChanged(it)) },
+            onMethodChange = { onEvent(MockRulesViewEvent.Editor.MethodChanged(it)) },
+            onMethodDropdownExpandedChange = { onEvent(MockRulesViewEvent.Editor.MethodDropdownExpandedChanged(it)) },
         )
 
         ResponseSection(
@@ -121,10 +121,10 @@ private fun EditorFormBody(
             statusMessage = state.statusMessage,
             contentType = state.contentType,
             responseBody = state.responseBody,
-            onStatusCodeChange = { onEvent(MockRulesEvent.Editor.StatusCodeChanged(it)) },
-            onStatusMessageChange = { onEvent(MockRulesEvent.Editor.StatusMessageChanged(it)) },
-            onContentTypeChange = { onEvent(MockRulesEvent.Editor.ContentTypeChanged(it)) },
-            onResponseBodyChange = { onEvent(MockRulesEvent.Editor.ResponseBodyChanged(it)) },
+            onStatusCodeChange = { onEvent(MockRulesViewEvent.Editor.StatusCodeChanged(it)) },
+            onStatusMessageChange = { onEvent(MockRulesViewEvent.Editor.StatusMessageChanged(it)) },
+            onContentTypeChange = { onEvent(MockRulesViewEvent.Editor.ContentTypeChanged(it)) },
+            onResponseBodyChange = { onEvent(MockRulesViewEvent.Editor.ResponseBodyChanged(it)) },
         )
 
         DelaySection(
@@ -132,10 +132,10 @@ private fun EditorFormBody(
             delayMs = state.delayMs,
             delayMinMs = state.delayMinMs,
             delayMaxMs = state.delayMaxMs,
-            onDelayTypeChange = { onEvent(MockRulesEvent.Editor.DelayTypeChanged(it)) },
-            onDelayMsChange = { onEvent(MockRulesEvent.Editor.DelayMsChanged(it)) },
-            onDelayMinMsChange = { onEvent(MockRulesEvent.Editor.DelayMinMsChanged(it)) },
-            onDelayMaxMsChange = { onEvent(MockRulesEvent.Editor.DelayMaxMsChanged(it)) },
+            onDelayTypeChange = { onEvent(MockRulesViewEvent.Editor.DelayTypeChanged(it)) },
+            onDelayMsChange = { onEvent(MockRulesViewEvent.Editor.DelayMsChanged(it)) },
+            onDelayMinMsChange = { onEvent(MockRulesViewEvent.Editor.DelayMinMsChanged(it)) },
+            onDelayMaxMsChange = { onEvent(MockRulesViewEvent.Editor.DelayMaxMsChanged(it)) },
         )
 
         Spacer(modifier = Modifier.height(80.dp))

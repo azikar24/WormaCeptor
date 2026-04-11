@@ -60,14 +60,14 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.domain.entities.mock.MockRule
 import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import com.azikar24.wormaceptor.feature.mockrules.R
-import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesEvent
+import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewEvent
 import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MockRulesScreen(
     state: MockRulesViewState,
-    onEvent: (MockRulesEvent) -> Unit,
+    onEvent: (MockRulesViewEvent) -> Unit,
     onNavigateToEditor: (String?) -> Unit,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
@@ -112,7 +112,7 @@ fun MockRulesScreen(
             confirmLabel = stringResource(R.string.mock_rules_dialog_delete_all_confirm),
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                onEvent(MockRulesEvent.List.DeleteAllRules)
+                onEvent(MockRulesViewEvent.List.DeleteAllRules)
                 showDeleteAllDialog = false
             },
             dismissLabel = stringResource(R.string.mock_rules_dialog_delete_all_cancel),
@@ -128,7 +128,7 @@ fun MockRulesScreen(
             confirmLabel = stringResource(R.string.mock_rules_dialog_delete_confirm),
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                onEvent(MockRulesEvent.List.DeleteRule(rule.id))
+                onEvent(MockRulesViewEvent.List.DeleteRule(rule.id))
                 ruleToDelete = null
             },
             dismissLabel = stringResource(R.string.mock_rules_dialog_delete_all_cancel),
@@ -173,7 +173,7 @@ private fun MockRulesTopBar(
 @Composable
 private fun MockRulesContent(
     state: MockRulesViewState,
-    onEvent: (MockRulesEvent) -> Unit,
+    onEvent: (MockRulesViewEvent) -> Unit,
     onNavigateToEditor: (String?) -> Unit,
     onDeleteRule: (MockRule) -> Unit,
     modifier: Modifier = Modifier,
@@ -190,7 +190,7 @@ private fun MockRulesContent(
             MasterToggleCard(
                 enabled = state.mockingEnabled,
                 ruleCount = state.rules.size,
-                onToggle = { onEvent(MockRulesEvent.List.ToggleMocking) },
+                onToggle = { onEvent(MockRulesViewEvent.List.ToggleMocking) },
             )
         }
 
@@ -210,7 +210,7 @@ private fun MockRulesContent(
         ) { rule ->
             MockRuleItem(
                 rule = rule,
-                onToggle = { onEvent(MockRulesEvent.List.ToggleRule(rule.id)) },
+                onToggle = { onEvent(MockRulesViewEvent.List.ToggleRule(rule.id)) },
                 onDelete = { onDeleteRule(rule) },
                 onClick = { onNavigateToEditor(rule.id) },
             )

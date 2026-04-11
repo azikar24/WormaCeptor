@@ -1,9 +1,7 @@
 package com.azikar24.wormaceptor.feature.dependenciesinspector.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
@@ -23,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -32,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.components.DetailItem
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailHeader
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -68,35 +65,25 @@ private fun DetailHeader(
     depCategoryColor: Color,
     colors: ToolColors.DependenciesInspector.Scheme,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
-    ) {
-        Box(
-            Modifier
-                .size(WormaCeptorTokens.IconSize.xxxl)
-                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
-                .background(depCategoryColor.copy(WormaCeptorTokens.Alpha.SOFT)),
-            Alignment.Center,
-        ) {
-            Icon(
-                Icons.Default.Code,
-                stringResource(R.string.dependenciesinspector_detail_dependency_icon),
-                tint = depCategoryColor,
-                modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
-            )
-        }
-        Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    dependency.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = colors.labelPrimary,
-                )
-                val version = dependency.version
-                if (version != null) {
-                    Spacer(Modifier.width(WormaCeptorTokens.Spacing.sm))
+    WormaCeptorDetailHeader(
+        icon = Icons.Default.Code,
+        iconTint = depCategoryColor,
+        iconBackgroundColor = depCategoryColor.copy(WormaCeptorTokens.Alpha.SOFT),
+        title = dependency.name,
+        iconContentDescription = stringResource(R.string.dependenciesinspector_detail_dependency_icon),
+        titleColor = colors.labelPrimary,
+        subtitle = {
+            val version = dependency.version
+            if (version != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                ) {
+                    Text(
+                        dependency.category.displayName(),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = depCategoryColor,
+                    )
                     Surface(
                         shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
                         color = colors.versionDetected.copy(WormaCeptorTokens.Alpha.MEDIUM),
@@ -114,14 +101,15 @@ private fun DetailHeader(
                         )
                     }
                 }
+            } else {
+                Text(
+                    dependency.category.displayName(),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = depCategoryColor,
+                )
             }
-            Text(
-                dependency.category.displayName(),
-                style = MaterialTheme.typography.bodySmall,
-                color = depCategoryColor,
-            )
-        }
-    }
+        },
+    )
 }
 
 @Composable

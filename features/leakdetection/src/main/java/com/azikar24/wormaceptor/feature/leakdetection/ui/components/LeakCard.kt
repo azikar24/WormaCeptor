@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -67,10 +68,11 @@ internal fun LeakCard(
                 modifier = Modifier.weight(1f),
             )
 
-            SeverityBadge(
-                severityName = leak.severity.name,
-                severityColor = severityColor,
-                severityBackground = severityBackground,
+            WormaCeptorStatusBadge(
+                text = leak.severity.name.take(1),
+                containerColor = severityBackground,
+                contentColor = severityColor,
+                modifier = Modifier.semantics { contentDescription = "Severity: ${leak.severity.name}" },
             )
         }
     }
@@ -136,30 +138,6 @@ private fun LeakCardDetails(
                 color = severityColor,
             )
         }
-    }
-}
-
-@Composable
-private fun SeverityBadge(
-    severityName: String,
-    severityColor: Color,
-    severityBackground: Color,
-) {
-    Surface(
-        modifier = Modifier.semantics { contentDescription = "Severity: $severityName" },
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-        color = severityBackground,
-    ) {
-        Text(
-            text = severityName.take(1),
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorTokens.Spacing.sm,
-                vertical = WormaCeptorTokens.Spacing.xs,
-            ),
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = severityColor,
-        )
     }
 }
 

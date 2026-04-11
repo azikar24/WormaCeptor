@@ -397,7 +397,9 @@ object HarExporter {
         }
     }
 
-    internal fun formatIso8601(epochMillis: Long): String = iso8601Format.get()!!.format(Date(epochMillis))
+    internal fun formatIso8601(epochMillis: Long): String = requireNotNull(iso8601Format.get()) {
+        "ISO 8601 format not initialized"
+    }.format(Date(epochMillis))
 
     private fun calculateHeadersSize(headers: List<HarHeader>): Long = if (headers.isEmpty()) {
         -1

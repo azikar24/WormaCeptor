@@ -28,6 +28,7 @@
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SearchToggled : List</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$Selected : List</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SelectionCleared : List</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewModelFactory.kt$PreferencesViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicFunction:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceDetailScreen( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, onBack: () -&gt; Unit, )</ID>
     <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$@Composable fun rememberPreferenceEditFormState(item: PreferenceItem?): PreferenceEditFormState</ID>
     <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$PreferenceEditFormState$fun addStringSetItem()</ID>

@@ -4,6 +4,12 @@ public final class com/azikar24/wormaceptor/feature/crypto/CryptoNavigationContr
 	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
 }
 
+public final class com/azikar24/wormaceptor/feature/crypto/CryptoViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;)V
+	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoErrorCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoErrorCardKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -79,14 +85,6 @@ public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingleto
 	public final fun getLambda-2$crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class com/azikar24/wormaceptor/feature/crypto/ui/CryptoHistoryScreenKt {
-	public static final fun CryptoHistoryScreen (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewModel;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/azikar24/wormaceptor/feature/crypto/ui/CryptoScreenKt {
-	public static final fun CryptoTool (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
-}
-
 public abstract class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEffect {
 	public static final field $stable I
 }
@@ -99,6 +97,14 @@ public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEffect$C
 	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEffect$CopyToClipboard;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEffect$CopyToClipboard;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEffect$HistoryLoaded : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEffect {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEffect$HistoryLoaded;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -239,9 +245,17 @@ public abstract class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent
 	public static final field $stable I
 }
 
-public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History$ClearAll : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History {
+public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History$ConfirmClearAll : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History$ClearAll;
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History$ConfirmClearAll;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History$DismissClearConfirmation : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History$DismissClearConfirmation;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -271,6 +285,14 @@ public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Hi
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History$RequestClearAll : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$History$RequestClearAll;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public abstract class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Input : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent {
 	public static final field $stable I
 }
@@ -283,6 +305,26 @@ public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$In
 	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Input$UpdateText;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Input$UpdateText;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Navigation : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Navigation$HideHistory : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Navigation {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Navigation$HideHistory;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Navigation$ShowHistory : com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Navigation {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEvent$Navigation$ShowHistory;
+	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -349,31 +391,29 @@ public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewModel : 
 	public synthetic fun handleEvent (Ljava/lang/Object;)V
 }
 
-public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
-	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;)V
-	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
-}
-
 public final class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Lkotlinx/collections/immutable/ImmutableList;ZLjava/lang/String;)V
-	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Lkotlinx/collections/immutable/ImmutableList;ZLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Lkotlinx/collections/immutable/ImmutableList;ZLjava/lang/String;ZZ)V
+	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Lkotlinx/collections/immutable/ImmutableList;ZLjava/lang/String;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
 	public final fun component4 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component5 ()Z
 	public final fun component6 ()Ljava/lang/String;
-	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Lkotlinx/collections/immutable/ImmutableList;ZLjava/lang/String;)Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewState;Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Lkotlinx/collections/immutable/ImmutableList;ZLjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewState;
+	public final fun component7 ()Z
+	public final fun component8 ()Z
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Lkotlinx/collections/immutable/ImmutableList;ZLjava/lang/String;ZZ)Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewState;Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;Lkotlinx/collections/immutable/ImmutableList;ZLjava/lang/String;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/crypto/vm/CryptoViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getConfig ()Lcom/azikar24/wormaceptor/domain/entities/CryptoConfig;
 	public final fun getCurrentResult ()Lcom/azikar24/wormaceptor/domain/entities/CryptoResult;
 	public final fun getError ()Ljava/lang/String;
 	public final fun getHistory ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun getInputText ()Ljava/lang/String;
+	public final fun getShowClearHistoryConfirmation ()Z
+	public final fun getShowHistory ()Z
 	public fun hashCode ()I
 	public final fun isProcessing ()Z
 	public fun toString ()Ljava/lang/String;

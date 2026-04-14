@@ -47,7 +47,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.preference.PreferenceManager
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptorapp.R
 import com.azikar24.wormaceptorapp.screens.location.LocationTestViewEffect

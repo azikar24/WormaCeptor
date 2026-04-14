@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringStatusBar
+import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringStatusBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.MemoryInfo

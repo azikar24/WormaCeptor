@@ -12,7 +12,10 @@ import kotlinx.coroutines.flow.update
 /**
  * Base MVI ViewModel providing reactive [uiState], one-time [effects], and a single [sendEvent] entry point.
  */
-abstract class BaseViewModel<State, Effect, Event>(initialState: State) : ViewModel() {
+abstract class BaseViewModel<State, Effect, Event, Navigator : FeatureNavigator>(
+    initialState: State,
+    protected val navigator: Navigator,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(initialState)
 

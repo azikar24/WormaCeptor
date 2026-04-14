@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.CallMade
 import androidx.compose.material.icons.automirrored.filled.CallReceived
@@ -32,9 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -142,21 +141,11 @@ private fun MessageItem(
                 Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
                 // Type badge
-                Surface(
-                    shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-                    color = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
-                ) {
-                    Text(
-                        text = message.type.name,
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = typeColor,
-                        modifier = Modifier.padding(
-                            horizontal = WormaCeptorTokens.Spacing.xs,
-                            vertical = WormaCeptorTokens.Spacing.xxs,
-                        ),
-                    )
-                }
+                WormaCeptorStatusBadge(
+                    text = message.type.name,
+                    containerColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                    contentColor = typeColor,
+                )
 
                 Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 

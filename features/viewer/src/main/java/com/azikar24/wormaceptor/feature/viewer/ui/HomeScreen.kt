@@ -48,8 +48,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.api.WormaCeptorApi
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash

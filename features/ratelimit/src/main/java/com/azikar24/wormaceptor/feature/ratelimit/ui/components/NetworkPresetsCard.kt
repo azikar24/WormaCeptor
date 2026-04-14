@@ -17,8 +17,6 @@ import androidx.compose.material.icons.filled.SignalCellularOff
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Wifi
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -33,8 +31,9 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
@@ -160,28 +159,13 @@ private fun PresetChip(
         RateLimitConfig.NetworkPreset.OFFLINE -> Icons.Default.SignalCellularOff
     }
 
-    FilterChip(
+    WormaCeptorChip(
+        label = preset.displayName,
         selected = selected,
         onClick = onClick,
         enabled = enabled,
-        label = {
-            Text(
-                text = preset.displayName,
-                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = presetIcon,
-                contentDescription = preset.displayName,
-                modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-            )
-        },
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = presetColor.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
-            selectedLabelColor = presetColor,
-            selectedLeadingIconColor = presetColor,
-        ),
+        leadingIcon = presetIcon,
+        accentColor = presetColor,
         modifier = modifier,
     )
 }

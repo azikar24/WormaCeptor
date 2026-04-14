@@ -29,8 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.ButtonVariant
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes

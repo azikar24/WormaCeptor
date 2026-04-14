@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -29,6 +28,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.fps.R
@@ -39,10 +39,10 @@ internal fun DroppedFramesCard(
     jankFrames: Int,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
+    WormaCeptorCard(
         modifier = modifier,
         shape = RoundedCornerShape(WormaCeptorTokens.Radius.lg),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(
+        backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(
             alpha = WormaCeptorTokens.Alpha.BOLD,
         ),
     ) {

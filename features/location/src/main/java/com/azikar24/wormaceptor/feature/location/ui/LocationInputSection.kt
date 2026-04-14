@@ -28,11 +28,11 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import com.azikar24.wormaceptor.core.ui.components.ButtonVariant
-import com.azikar24.wormaceptor.core.ui.components.CardStyle
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.location.R
 

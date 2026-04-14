@@ -25,7 +25,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.R

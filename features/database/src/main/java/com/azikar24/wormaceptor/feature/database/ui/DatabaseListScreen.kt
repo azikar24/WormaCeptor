@@ -2,12 +2,10 @@ package com.azikar24.wormaceptor.feature.database.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +26,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,10 +35,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.list.WormaCeptorListItem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -260,31 +257,10 @@ private fun DatabaseListItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ListItem(
-        modifier = modifier.clickable(onClick = onClick),
-        headlineContent = {
-            Text(
-                text = database.name,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
-            )
-        },
-        supportingContent = {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
-            ) {
-                Text(
-                    text = stringResource(R.string.database_list_tables_count, database.tableCount),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Text(
-                    text = formatBytes(database.sizeBytes),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        },
+    WormaCeptorListItem(
+        headline = database.name,
+        supporting = stringResource(R.string.database_list_tables_count, database.tableCount) +
+            " · " + formatBytes(database.sizeBytes),
         leadingContent = {
             Icon(
                 imageVector = Icons.Default.Storage,
@@ -292,6 +268,8 @@ private fun DatabaseListItem(
                 tint = MaterialTheme.colorScheme.primary,
             )
         },
+        onClick = onClick,
+        modifier = modifier,
     )
 }
 

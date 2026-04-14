@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.dependenciesinspector.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.DependenciesInspectorEngine
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
@@ -17,8 +18,14 @@ import kotlinx.coroutines.flow.launchIn
  */
 class DependenciesInspectorViewModel(
     private val engine: DependenciesInspectorEngine,
-) : BaseViewModel<DependenciesInspectorViewState, DependenciesInspectorViewEffect, DependenciesInspectorViewEvent>(
+) : BaseViewModel<
+    DependenciesInspectorViewState,
+    DependenciesInspectorViewEffect,
+    DependenciesInspectorViewEvent,
+    NoOpNavigator,
+    >(
     initialState = DependenciesInspectorViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

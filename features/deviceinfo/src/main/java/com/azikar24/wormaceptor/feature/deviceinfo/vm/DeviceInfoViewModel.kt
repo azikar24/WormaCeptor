@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.deviceinfo.vm
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDateFull
 import com.azikar24.wormaceptor.domain.entities.AppDetails
@@ -25,8 +26,9 @@ import java.util.Locale
 @Suppress("TooManyFunctions")
 class DeviceInfoViewModel(
     private val application: Application,
-) : BaseViewModel<DeviceInfoViewState, DeviceInfoViewEffect, DeviceInfoViewEvent>(
+) : BaseViewModel<DeviceInfoViewState, DeviceInfoViewEffect, DeviceInfoViewEvent, NoOpNavigator>(
     DeviceInfoViewState(),
+    NoOpNavigator,
 ) {
 
     init {

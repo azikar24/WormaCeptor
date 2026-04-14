@@ -1,7 +1,6 @@
 package com.azikar24.wormaceptor.core.ui.components.monitoring
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -59,7 +58,7 @@ fun WormaCeptorMonitoringIndicator(
         animationSpec = infiniteRepeatable(
             animation = tween(
                 WormaCeptorTokens.Animation.VERY_SLOW,
-                easing = LinearEasing,
+                easing = WormaCeptorTokens.Easing.standard,
             ),
             repeatMode = RepeatMode.Reverse,
         ),

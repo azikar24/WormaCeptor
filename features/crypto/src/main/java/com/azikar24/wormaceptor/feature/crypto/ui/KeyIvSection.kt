@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -29,9 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.domain.entities.KeyFormat
@@ -88,10 +88,10 @@ private fun KeyFormatChips(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         KeyFormat.entries.forEach { format ->
-            FilterChip(
+            WormaCeptorChip(
+                label = format.displayName,
                 selected = config.keyFormat == format,
                 onClick = { onEvent(CryptoViewEvent.Config.SetKeyFormat(format)) },
-                label = { Text(format.displayName) },
             )
         }
     }

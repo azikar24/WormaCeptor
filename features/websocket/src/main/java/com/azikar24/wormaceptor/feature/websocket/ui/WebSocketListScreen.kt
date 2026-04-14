@@ -43,10 +43,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorAlertDialog
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.status.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatDuration

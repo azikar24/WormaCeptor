@@ -12,7 +12,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorAlertDialog
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.vm.CrashListViewEvent

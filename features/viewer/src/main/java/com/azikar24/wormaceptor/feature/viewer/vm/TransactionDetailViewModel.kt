@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.viewer.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.domain.contracts.ContentType
@@ -34,8 +35,9 @@ import kotlinx.coroutines.withContext
  */
 internal class TransactionDetailViewModel(
     private val queryEngine: QueryEngine,
-) : BaseViewModel<TransactionDetailViewState, TransactionDetailViewEffect, TransactionDetailViewEvent>(
+) : BaseViewModel<TransactionDetailViewState, TransactionDetailViewEffect, TransactionDetailViewEvent, NoOpNavigator>(
     TransactionDetailViewState(),
+    NoOpNavigator,
 ) {
 
     private var searchDebounceJob: Job? = null

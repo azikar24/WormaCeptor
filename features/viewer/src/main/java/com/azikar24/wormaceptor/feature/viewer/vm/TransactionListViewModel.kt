@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.entities.ExportFormat
@@ -42,8 +43,9 @@ import java.util.UUID
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class TransactionListViewModel(
     private val queryEngine: QueryEngine,
-) : BaseViewModel<TransactionListViewState, TransactionListViewEffect, TransactionListViewEvent>(
+) : BaseViewModel<TransactionListViewState, TransactionListViewEffect, TransactionListViewEvent, NoOpNavigator>(
     TransactionListViewState(),
+    NoOpNavigator,
 ) {
 
     /** Unfiltered stream of every recorded transaction summary. Syncs into [TransactionListViewState]. */

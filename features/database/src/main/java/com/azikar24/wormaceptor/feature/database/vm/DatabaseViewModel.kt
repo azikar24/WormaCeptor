@@ -8,6 +8,7 @@ import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.domain.entities.TableInfo
 import com.azikar24.wormaceptor.feature.database.R
+import com.azikar24.wormaceptor.feature.database.navigator.DatabaseNavigator
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,11 @@ import kotlinx.coroutines.withContext
 class DatabaseViewModel(
     private val repository: DatabaseRepository,
     private val application: Application,
-) : BaseViewModel<DatabaseViewState, DatabaseViewEffect, DatabaseViewEvent>(DatabaseViewState()) {
+    navigator: DatabaseNavigator,
+) : BaseViewModel<DatabaseViewState, DatabaseViewEffect, DatabaseViewEvent, DatabaseNavigator>(
+    DatabaseViewState(),
+    navigator,
+) {
 
     private val _allDatabases = MutableStateFlow<List<DatabaseInfo>>(emptyList())
     private val _allTables = MutableStateFlow<List<TableInfo>>(emptyList())
@@ -92,7 +97,10 @@ class DatabaseViewModel(
                     )
                 }
             }
-            is DatabaseViewEvent.List.Selected -> selectDatabase(event.name)
+            is DatabaseViewEvent.List.Selected -> {
+                selectDatabase(event.name)
+                navigator.navigateToTables()
+            }
             DatabaseViewEvent.List.SelectionCleared -> clearDatabaseSelection()
         }
     }
@@ -111,8 +119,16 @@ class DatabaseViewModel(
                     )
                 }
             }
-            is DatabaseViewEvent.Tables.Selected -> selectTable(event.name)
+            is DatabaseViewEvent.Tables.Selected -> {
+                selectTable(event.name)
+                navigator.navigateToTableData()
+            }
             DatabaseViewEvent.Tables.SelectionCleared -> clearTableSelection()
+            DatabaseViewEvent.Tables.NavigateToQuery -> navigator.navigateToQuery()
+            DatabaseViewEvent.Tables.BackPressed -> {
+                clearDatabaseSelection()
+                navigator.navigateBack()
+            }
         }
     }
 
@@ -121,6 +137,10 @@ class DatabaseViewModel(
             DatabaseViewEvent.Data.ToggleSchema -> updateState { copy(showSchema = !showSchema) }
             DatabaseViewEvent.Data.NextPage -> nextPage()
             DatabaseViewEvent.Data.PreviousPage -> previousPage()
+            DatabaseViewEvent.Data.BackPressed -> {
+                clearTableSelection()
+                navigator.navigateBack()
+            }
         }
     }
 
@@ -129,6 +149,10 @@ class DatabaseViewModel(
             is DatabaseViewEvent.Query.SqlChanged -> updateState { copy(sqlQuery = event.query) }
             DatabaseViewEvent.Query.Execute -> executeQuery()
             DatabaseViewEvent.Query.Clear -> updateState { copy(sqlQuery = "", queryExecutionResult = null) }
+            DatabaseViewEvent.Query.BackPressed -> {
+                updateState { copy(sqlQuery = "", queryExecutionResult = null) }
+                navigator.navigateBack()
+            }
             is DatabaseViewEvent.Query.HistorySelected -> updateState { copy(sqlQuery = event.query) }
             is DatabaseViewEvent.Query.PrefilledRequested -> setPrefilledQuery(event.tableName, event.queryType)
         }

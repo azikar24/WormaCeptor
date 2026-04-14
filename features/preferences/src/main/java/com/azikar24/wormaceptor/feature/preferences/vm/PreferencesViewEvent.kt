@@ -10,6 +10,7 @@ sealed class PreferencesViewEvent {
         data class SearchQueryChanged(val query: String) : List()
         data class Selected(val fileName: String) : List()
         data object SelectionCleared : List()
+        data object BackPressed : List()
     }
 
     sealed class Detail : PreferencesViewEvent() {

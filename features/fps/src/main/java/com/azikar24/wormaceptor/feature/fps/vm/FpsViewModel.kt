@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.fps.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
@@ -16,8 +17,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class FpsViewModel(
     private val fpsMonitorEngine: FpsMonitorEngine,
-) : BaseViewModel<FpsViewState, FpsViewEffect, FpsViewEvent>(
+) : BaseViewModel<FpsViewState, FpsViewEffect, FpsViewEvent, NoOpNavigator>(
     initialState = FpsViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

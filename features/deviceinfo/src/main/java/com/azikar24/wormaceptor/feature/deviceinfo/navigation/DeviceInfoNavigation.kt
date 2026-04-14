@@ -14,7 +14,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
-import com.azikar24.wormaceptor.core.ui.components.rememberHapticOnce
+import com.azikar24.wormaceptor.core.ui.components.state.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.deviceinfo.DeviceInfoViewModelFactory

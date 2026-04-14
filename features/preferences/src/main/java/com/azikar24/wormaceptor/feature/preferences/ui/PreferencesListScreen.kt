@@ -1,22 +1,18 @@
 package com.azikar24.wormaceptor.feature.preferences.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,12 +34,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.list.WormaCeptorListItem
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
@@ -189,52 +185,30 @@ private fun PreferenceFileItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    WormaCeptorContainer(
-        onClick = onClick,
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
-            verticalAlignment = Alignment.Top,
-        ) {
-            PreferenceFileIcon()
-            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = file.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
-                val itemCountLabel = if (file.itemCount == 1) {
-                    stringResource(R.string.preferences_item_count_singular)
-                } else {
-                    stringResource(R.string.preferences_item_count_plural)
-                }
-                Text(
-                    text = "${file.itemCount} $itemCountLabel",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-
-            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
-
+    val itemCountLabel = if (file.itemCount == 1) {
+        stringResource(R.string.preferences_item_count_singular)
+    } else {
+        stringResource(R.string.preferences_item_count_plural)
+    }
+    WormaCeptorListItem(
+        headline = file.name,
+        supporting = "${file.itemCount} $itemCountLabel",
+        leadingContent = { PreferenceFileIcon() },
+        trailingContent = {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .size(WormaCeptorTokens.IconSize.sm),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                     alpha = WormaCeptorTokens.Alpha.BOLD,
                 ),
             )
-        }
-    }
+        },
+        onClick = onClick,
+        modifier = modifier
+            .clip(WormaCeptorTokens.Shapes.card)
+            .background(MaterialTheme.colorScheme.surface),
+    )
 }
 
 @Composable

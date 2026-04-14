@@ -5,8 +5,8 @@ import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailRow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorInfoCard
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorInfoCard
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailRow
 import com.azikar24.wormaceptor.domain.entities.DeviceDetails
 import com.azikar24.wormaceptor.feature.deviceinfo.R
 

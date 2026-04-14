@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -17,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.util.contentColorFor
 
 /**
  * Unified badge primitive. All WormaCeptor badges (method, status, category)
@@ -62,20 +62,6 @@ fun WormaCeptorBadge(
             ),
         )
     }
-}
-
-// Relative luminance weights from ITU-R BT.601 (perceived brightness).
-private const val LuminanceWeightRed = 0.299
-private const val LuminanceWeightGreen = 0.587
-private const val LuminanceWeightBlue = 0.114
-private const val LuminanceThreshold = 0.5
-
-// Simple contrast helper for Filled variant -- dark content on light fills, light on dark.
-private fun contentColorFor(background: Color): Color {
-    val luminance = LuminanceWeightRed * background.red +
-        LuminanceWeightGreen * background.green +
-        LuminanceWeightBlue * background.blue
-    return if (luminance > LuminanceThreshold) Color.Black else Color.White
 }
 
 // region Previews

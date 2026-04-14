@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.logs.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import kotlinx.collections.immutable.toImmutableList
@@ -26,11 +27,12 @@ private const val SearchDebounceMs = 100L
 @OptIn(FlowPreview::class)
 class LogsViewModel(
     private val logCaptureEngine: LogCaptureEngine,
-) : BaseViewModel<LogsViewState, LogsViewEffect, LogsViewEvent>(
+) : BaseViewModel<LogsViewState, LogsViewEffect, LogsViewEvent, NoOpNavigator>(
     LogsViewState(
         currentPid = logCaptureEngine.getCurrentPid(),
         isCapturing = logCaptureEngine.isCapturing.value,
     ),
+    NoOpNavigator,
 ) {
 
     // Internal flows used for debounced filtering pipelines

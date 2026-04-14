@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -38,7 +37,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorAlertDialog
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavTransitions
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -139,7 +138,7 @@ class MainActivity : ComponentActivity() {
                 var hasCrashed = false
                 glitchProgress.animateTo(
                     targetValue = 1f,
-                    animationSpec = tween(GLITCH_ANIMATION_DURATION, easing = FastOutSlowInEasing),
+                    animationSpec = tween(GLITCH_ANIMATION_DURATION, easing = WormaCeptorTokens.Easing.standard),
                 ) {
                     if (value >= GLITCH_CRASH_THRESHOLD && !hasCrashed) {
                         hasCrashed = true

@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.azikar24.wormaceptor.api.WormaCeptorWebView
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptorapp.screens.webview.WebViewTestViewEffect

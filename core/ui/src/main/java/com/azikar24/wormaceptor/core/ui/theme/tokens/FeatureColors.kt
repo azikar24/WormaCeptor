@@ -84,10 +84,10 @@ object Colors {
         val put = Palette.Amber500
         val patch = Palette.Purple600
         val delete = Palette.Red500
-        val head = Palette.Gray625
+        val head = Palette.Cyan500
         val options = Palette.Indigo600
         val connect = Palette.Teal500
-        val trace = Palette.Gray400
+        val trace = Palette.Brown300
 
         /** Returns the color for the given HTTP method name. */
         fun forMethod(method: String): Color = when (method.uppercase()) {

@@ -78,11 +78,27 @@ fun WormaCeptorExpandableCard(
         AnimatedVisibility(
             visible = isExpanded,
             enter = expandVertically(
-                animationSpec = tween(ExpandAnimationDurationMs),
-            ) + fadeIn(animationSpec = tween(ExpandAnimationDurationMs)),
+                animationSpec = tween(
+                    durationMillis = ExpandAnimationDurationMs,
+                    easing = WormaCeptorTokens.Easing.emphasized,
+                ),
+            ) + fadeIn(
+                animationSpec = tween(
+                    durationMillis = ExpandAnimationDurationMs,
+                    easing = WormaCeptorTokens.Easing.standardDecelerate,
+                ),
+            ),
             exit = shrinkVertically(
-                animationSpec = tween(ExpandAnimationDurationMs),
-            ) + fadeOut(animationSpec = tween(ExpandAnimationDurationMs)),
+                animationSpec = tween(
+                    durationMillis = ExpandAnimationDurationMs,
+                    easing = WormaCeptorTokens.Easing.standardAccelerate,
+                ),
+            ) + fadeOut(
+                animationSpec = tween(
+                    durationMillis = ExpandAnimationDurationMs,
+                    easing = WormaCeptorTokens.Easing.standardAccelerate,
+                ),
+            ),
         ) {
             Column(
                 modifier = Modifier

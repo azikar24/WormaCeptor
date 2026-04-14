@@ -1,7 +1,6 @@
 package com.azikar24.wormaceptor.core.ui.components.state
 
 import android.content.res.Configuration
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -65,7 +64,7 @@ fun WormaCeptorErrorState(
         initialValue = 0.3f,
         targetValue = 0.6f,
         animationSpec = infiniteRepeatable(
-            animation = tween(2000, easing = FastOutSlowInEasing),
+            animation = tween(2000, easing = WormaCeptorTokens.Easing.standard),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "pulse",

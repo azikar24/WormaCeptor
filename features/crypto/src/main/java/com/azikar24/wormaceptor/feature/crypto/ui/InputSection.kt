@@ -10,9 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.feature.crypto.R

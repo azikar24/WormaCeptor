@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.crypto.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
  */
 class CryptoViewModel(
     private val engine: CryptoEngine,
-) : BaseViewModel<CryptoViewState, CryptoViewEffect, CryptoViewEvent>(CryptoViewState()) {
+) : BaseViewModel<CryptoViewState, CryptoViewEffect, CryptoViewEvent, NoOpNavigator>(CryptoViewState(), NoOpNavigator) {
 
     init {
         collectEngineFlows()

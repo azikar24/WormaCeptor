@@ -25,8 +25,8 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringStatusBar
+import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringStatusBar
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.FpsInfo

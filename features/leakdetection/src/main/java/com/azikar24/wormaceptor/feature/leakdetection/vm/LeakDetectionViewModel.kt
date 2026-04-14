@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.leakdetection.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
@@ -18,8 +19,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class LeakDetectionViewModel(
     private val engine: LeakDetectionEngine,
-) : BaseViewModel<LeakDetectionViewState, LeakDetectionViewEffect, LeakDetectionViewEvent>(
+) : BaseViewModel<LeakDetectionViewState, LeakDetectionViewEffect, LeakDetectionViewEvent, NoOpNavigator>(
     initialState = LeakDetectionViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

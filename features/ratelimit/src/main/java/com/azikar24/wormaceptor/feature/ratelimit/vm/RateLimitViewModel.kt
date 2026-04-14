@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.ratelimit.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import kotlinx.coroutines.flow.combine
@@ -15,8 +16,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class RateLimitViewModel(
     private val engine: RateLimitEngine,
-) : BaseViewModel<RateLimitViewState, RateLimitViewEffect, RateLimitViewEvent>(
+) : BaseViewModel<RateLimitViewState, RateLimitViewEffect, RateLimitViewEvent, NoOpNavigator>(
     initialState = RateLimitViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

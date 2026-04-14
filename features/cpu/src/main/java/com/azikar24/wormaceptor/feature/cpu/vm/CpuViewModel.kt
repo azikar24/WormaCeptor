@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.cpu.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
@@ -15,8 +16,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class CpuViewModel(
     private val engine: CpuMonitorEngine,
-) : BaseViewModel<CpuViewState, CpuEffect, CpuViewEvent>(
+) : BaseViewModel<CpuViewState, CpuEffect, CpuViewEvent, NoOpNavigator>(
     initialState = CpuViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

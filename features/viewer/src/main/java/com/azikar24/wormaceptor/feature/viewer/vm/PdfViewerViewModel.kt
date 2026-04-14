@@ -6,6 +6,7 @@ import android.os.ParcelFileDescriptor
 import androidx.core.graphics.createBitmap
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.domain.entities.PdfMetadata
 import com.azikar24.wormaceptor.feature.viewer.ui.components.extractPdfTitle
 import com.azikar24.wormaceptor.feature.viewer.ui.components.extractPdfVersion
@@ -17,9 +18,11 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
-internal class PdfViewerViewModel : BaseViewModel<PdfViewerViewState, PdfViewerViewEffect, PdfViewerViewEvent>(
-    PdfViewerViewState(),
-) {
+internal class PdfViewerViewModel :
+    BaseViewModel<PdfViewerViewState, PdfViewerViewEffect, PdfViewerViewEvent, NoOpNavigator>(
+        PdfViewerViewState(),
+        NoOpNavigator,
+    ) {
     private var pdfData: ByteArray? = null
     private var tempFile: File? = null
     private var controlsHideJob: Job? = null

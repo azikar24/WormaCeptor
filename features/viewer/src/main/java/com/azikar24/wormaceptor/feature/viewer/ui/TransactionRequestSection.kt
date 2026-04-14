@@ -37,7 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction

@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.TextWithStartEllipsis
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent

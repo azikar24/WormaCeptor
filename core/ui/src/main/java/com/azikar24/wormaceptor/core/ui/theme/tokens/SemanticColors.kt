@@ -4,9 +4,12 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
 /**
- * Theme-aware semantic color tokens.
- * Maps high-level UI roles (background, text, accent, etc.) to concrete [Palette] entries.
- * Light and dark instances are provided below.
+ * Theme-aware semantic palette layered on top of M3's
+ * [androidx.compose.material3.ColorScheme]. Adds WormaCeptor-specific roles
+ * (success, warning, errorDark, accentSubtle, a three-step text hierarchy)
+ * and is read via
+ * [com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens.semantic] which
+ * resolves the correct variant for the current theme.
  */
 @Immutable
 data class SemanticColors(
@@ -24,34 +27,32 @@ data class SemanticColors(
     val warning: Color,
 )
 
-/** Semantic colors for light theme, matching [WormaCeptorDesignSystem.ThemeColors] light values. */
 internal val LightSemanticColors = SemanticColors(
-    background = Palette.White, // 0xFFFFFFFF
-    surface = Palette.Gray50, // 0xFFFAFAFA
-    surfaceVariant = Palette.Gray150, // 0xFFF0F0F0
-    textPrimary = Palette.Gray990, // 0xFF0A0A0A
-    textSecondary = Palette.Gray650, // 0xFF6B6B6B
-    textTertiary = Palette.Gray400, // 0xFF9CA3AF
-    accent = Palette.Teal600, // 0xFF0D9488
-    accentSubtle = Palette.AccentSubtleLight, // 0x120D9488
-    error = Palette.Red600, // 0xFFDC2626
-    errorDark = Palette.Red800, // 0xFFF87171
-    success = Palette.Green700, // 0xFF16A34A
-    warning = Palette.Amber700, // 0xFFD97706
+    background = Palette.White,
+    surface = Palette.Gray50,
+    surfaceVariant = Palette.Gray150,
+    textPrimary = Palette.Gray990,
+    textSecondary = Palette.Gray650,
+    textTertiary = Palette.Gray400,
+    accent = Palette.Teal600,
+    accentSubtle = Palette.AccentSubtleLight,
+    error = Palette.Red600,
+    errorDark = Palette.Red800,
+    success = Palette.Green700,
+    warning = Palette.Amber700,
 )
 
-/** Semantic colors for dark theme, matching [WormaCeptorDesignSystem.ThemeColors] dark values. */
 internal val DarkSemanticColors = SemanticColors(
-    background = Palette.Gray990, // 0xFF0A0A0A
-    surface = Palette.Gray975, // 0xFF141414
-    surfaceVariant = Palette.Gray925, // 0xFF1F1F1F
-    textPrimary = Palette.Gray50, // 0xFFFAFAFA
-    textSecondary = Palette.Gray500, // 0xFF8A8A8A
-    textTertiary = Palette.Gray800, // 0xFF525252
-    accent = Palette.TealBright, // 0xFF2DD4BF
-    accentSubtle = Palette.AccentSubtleDark, // 0x152DD4BF
-    error = Palette.Red800, // 0xFFF87171
-    errorDark = Palette.Red600, // 0xFFDC2626
-    success = Palette.Green700, // 0xFF16A34A
-    warning = Palette.Amber700, // 0xFFD97706
+    background = Palette.Gray990,
+    surface = Palette.Gray975,
+    surfaceVariant = Palette.Gray925,
+    textPrimary = Palette.Gray50,
+    textSecondary = Palette.Gray500,
+    textTertiary = Palette.Gray800,
+    accent = Palette.TealBright,
+    accentSubtle = Palette.AccentSubtleDark,
+    error = Palette.Red800,
+    errorDark = Palette.Red600,
+    success = Palette.Green700,
+    warning = Palette.Amber700,
 )

@@ -26,13 +26,15 @@ public final class com/azikar24/wormaceptor/feature/deviceinfo/ui/ComposableSing
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function3;
+	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$deviceinfo_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-6$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/deviceinfo/ui/DeviceInfoScreenKt {
@@ -134,6 +136,7 @@ public final class com/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoView
 
 public final class com/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
+	public static final field RefreshDebounceMs J
 	public fun <init> (Landroid/app/Application;)V
 	public synthetic fun handleEvent (Ljava/lang/Object;)V
 }
@@ -141,15 +144,17 @@ public final class com/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoView
 public final class com/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;ZZ)V
-	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;ZZLjava/lang/String;)V
+	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;ZZLjava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;
 	public final fun component2 ()Z
 	public final fun component3 ()Z
-	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;ZZ)Lcom/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState;Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;ZZLjava/lang/String;)Lcom/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState;Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;ZZLjava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getDeviceInfo ()Lcom/azikar24/wormaceptor/domain/entities/DeviceInfo;
+	public final fun getError ()Ljava/lang/String;
 	public fun hashCode ()I
 	public final fun isInitialLoading ()Z
 	public final fun isRefreshing ()Z

@@ -34,9 +34,9 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringStatusBar
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorWarningBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorWarningBadge
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
+import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringStatusBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CpuInfo

@@ -19,8 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorWarningBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorWarningBadge
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.fps.R
 import com.azikar24.wormaceptor.feature.fps.vm.FpsViewEvent

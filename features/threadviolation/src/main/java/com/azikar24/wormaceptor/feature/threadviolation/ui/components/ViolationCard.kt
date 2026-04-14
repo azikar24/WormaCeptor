@@ -21,8 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation

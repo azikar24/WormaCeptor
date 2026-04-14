@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.webviewmonitor.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
@@ -18,8 +19,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class WebViewMonitorViewModel(
     private val engine: WebViewMonitorEngine,
-) : BaseViewModel<WebViewMonitorViewState, WebViewMonitorViewEffect, WebViewMonitorViewEvent>(
+) : BaseViewModel<WebViewMonitorViewState, WebViewMonitorViewEffect, WebViewMonitorViewEvent, NoOpNavigator>(
     initialState = WebViewMonitorViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

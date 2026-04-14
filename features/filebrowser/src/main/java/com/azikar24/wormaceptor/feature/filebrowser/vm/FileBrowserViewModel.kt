@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.filebrowser.vm
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.contracts.FileSystemRepository
 import com.azikar24.wormaceptor.domain.entities.FileEntry
@@ -18,7 +19,10 @@ import kotlinx.coroutines.launch
 class FileBrowserViewModel(
     private val repository: FileSystemRepository,
     private val application: Application,
-) : BaseViewModel<FileBrowserViewState, FileBrowserViewEffect, FileBrowserViewEvent>(FileBrowserViewState()) {
+) : BaseViewModel<FileBrowserViewState, FileBrowserViewEffect, FileBrowserViewEvent, NoOpNavigator>(
+    FileBrowserViewState(),
+    NoOpNavigator,
+) {
 
     init {
         handleLoadRootDirectories()

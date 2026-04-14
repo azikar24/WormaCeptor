@@ -20,8 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailHeader
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailHeader
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry

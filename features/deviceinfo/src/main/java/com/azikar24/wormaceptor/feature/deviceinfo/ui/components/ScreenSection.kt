@@ -4,8 +4,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailRow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorInfoCard
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorInfoCard
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.ScreenDetails
 import com.azikar24.wormaceptor.feature.deviceinfo.R

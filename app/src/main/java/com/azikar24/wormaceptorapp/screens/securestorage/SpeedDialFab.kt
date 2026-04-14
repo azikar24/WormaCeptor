@@ -25,8 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSmallFAB
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorSmallFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 @Composable

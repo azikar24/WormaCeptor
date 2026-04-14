@@ -12,6 +12,7 @@ import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.feature.websocket.WebSocketViewModelFactory
+import com.azikar24.wormaceptor.feature.websocket.navigator.WebSocketNavigator
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketDetailScreen
 import com.azikar24.wormaceptor.feature.websocket.ui.WebSocketListScreen
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewEvent
@@ -44,7 +45,16 @@ private fun graphScopedViewModel(
         navController.getBackStackEntry(WormaCeptorNavKeys.WebSocket.route)
     }
     val engine: WebSocketMonitorEngine = koinInject()
-    val factory = remember { WebSocketViewModelFactory(engine) }
+    val navigator = remember(navController) {
+        object : WebSocketNavigator {
+            override fun navigateToMessages() = navController.navigate(WormaCeptorNavKeys.WebSocketMessages.route)
+
+            override fun navigateBack() {
+                navController.popBackStack()
+            }
+        }
+    }
+    val factory = remember(engine, navigator) { WebSocketViewModelFactory(engine, navigator) }
     return viewModel(viewModelStoreOwner = graphEntry, factory = factory)
 }
 
@@ -61,10 +71,7 @@ private fun WebSocketConnectionsDestination(
             state = state,
             onEvent = onEvent,
             getMessageCount = viewModel::getMessageCountForConnection,
-            onConnectionClick = { connection ->
-                onEvent(WebSocketViewEvent.ConnectionSelected(connection.id))
-                navController.navigate(WormaCeptorNavKeys.WebSocketMessages.route)
-            },
+            onConnectionClick = { connection -> onEvent(WebSocketViewEvent.ConnectionSelected(connection.id)) },
             onBack = onNavigateBack,
         )
     }
@@ -81,10 +88,7 @@ private fun WebSocketMessagesDestination(
         WebSocketDetailScreen(
             state = state,
             onEvent = onEvent,
-            onBack = {
-                onEvent(WebSocketViewEvent.ConnectionSelectionCleared)
-                navController.popBackStack()
-            },
+            onBack = { onEvent(WebSocketViewEvent.ConnectionBackPressed) },
         )
     }
 }

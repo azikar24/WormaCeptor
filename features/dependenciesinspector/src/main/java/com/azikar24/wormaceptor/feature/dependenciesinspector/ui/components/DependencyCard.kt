@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.badge.BadgeVariant
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
@@ -142,22 +144,14 @@ private fun VersionBadge(
     version: String,
     colors: ToolColors.DependenciesInspector.Scheme,
 ) {
-    Surface(
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-        color = colors.versionDetected.copy(CategoryIconBackgroundAlpha),
-    ) {
-        Text(
-            "v$version",
-            Modifier.padding(
-                horizontal = WormaCeptorTokens.Spacing.sm,
-                vertical = WormaCeptorTokens.Spacing.xxs,
-            ),
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Monospace,
-            color = colors.versionText,
-        )
-    }
+    WormaCeptorBadge(
+        text = "v$version",
+        variant = BadgeVariant.Tonal(
+            containerColor = colors.versionDetected.copy(CategoryIconBackgroundAlpha),
+            contentColor = colors.versionText,
+        ),
+        textStyle = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+    )
 }
 
 @Composable
@@ -165,19 +159,9 @@ private fun CategoryBadge(
     category: DependencyCategory,
     categoryColor: Color,
 ) {
-    Surface(
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-        color = categoryColor.copy(CategoryIconBackgroundAlpha),
-    ) {
-        Text(
-            category.shortLabel(),
-            Modifier.padding(
-                horizontal = WormaCeptorTokens.Spacing.sm,
-                vertical = WormaCeptorTokens.Spacing.xxs,
-            ),
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = categoryColor,
-        )
-    }
+    WormaCeptorStatusBadge(
+        text = category.shortLabel(),
+        containerColor = categoryColor.copy(CategoryIconBackgroundAlpha),
+        contentColor = categoryColor,
+    )
 }

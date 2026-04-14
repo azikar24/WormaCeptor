@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
+import com.azikar24.wormaceptor.feature.websocket.navigator.WebSocketNavigator
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +32,11 @@ private const val MessageSearchDebounceMs = 150L
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class WebSocketViewModel(
     private val engine: WebSocketMonitorEngine,
-) : BaseViewModel<WebSocketViewState, WebSocketViewEffect, WebSocketViewEvent>(WebSocketViewState()) {
+    navigator: WebSocketNavigator,
+) : BaseViewModel<WebSocketViewState, WebSocketViewEffect, WebSocketViewEvent, WebSocketNavigator>(
+    WebSocketViewState(),
+    navigator,
+) {
 
     // Internal flows used for debounced filtering pipelines
     private val _connectionSearchQuery = MutableStateFlow("")
@@ -55,8 +60,15 @@ class WebSocketViewModel(
     override fun handleEvent(event: WebSocketViewEvent) {
         when (event) {
             is WebSocketViewEvent.ConnectionSearchQueryChanged -> onConnectionSearchQueryChanged(event.query)
-            is WebSocketViewEvent.ConnectionSelected -> selectConnection(event.connectionId)
+            is WebSocketViewEvent.ConnectionSelected -> {
+                selectConnection(event.connectionId)
+                navigator.navigateToMessages()
+            }
             is WebSocketViewEvent.ConnectionSelectionCleared -> clearConnectionSelection()
+            is WebSocketViewEvent.ConnectionBackPressed -> {
+                clearConnectionSelection()
+                navigator.navigateBack()
+            }
             is WebSocketViewEvent.MessageSearchQueryChanged -> onMessageSearchQueryChanged(event.query)
             is WebSocketViewEvent.DirectionFilterToggled -> toggleDirectionFilter(event.direction)
             is WebSocketViewEvent.MessageExpandToggled -> toggleMessageExpanded(event.messageId)

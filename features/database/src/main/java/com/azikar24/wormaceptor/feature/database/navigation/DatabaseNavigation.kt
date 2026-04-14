@@ -15,6 +15,7 @@ import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.feature.database.DatabaseViewModelFactory
 import com.azikar24.wormaceptor.feature.database.data.DatabaseDataSource
 import com.azikar24.wormaceptor.feature.database.data.DatabaseRepositoryImpl
+import com.azikar24.wormaceptor.feature.database.navigator.DatabaseNavigator
 import com.azikar24.wormaceptor.feature.database.ui.DatabaseListScreen
 import com.azikar24.wormaceptor.feature.database.ui.QueryScreen
 import com.azikar24.wormaceptor.feature.database.ui.TableDataScreen
@@ -31,7 +32,20 @@ fun NavGraphBuilder.databaseGraph(
         "applicationContext must be an Application instance"
     }
     val repository by lazy { DatabaseRepositoryImpl(DatabaseDataSource(context.applicationContext)) }
-    val factory by lazy { DatabaseViewModelFactory(repository, application) }
+    val navigator by lazy {
+        object : DatabaseNavigator {
+            override fun navigateToTables() = navController.navigate(WormaCeptorNavKeys.DatabaseTables.route)
+
+            override fun navigateToTableData() = navController.navigate(WormaCeptorNavKeys.DatabaseTableData.route)
+
+            override fun navigateToQuery() = navController.navigate(WormaCeptorNavKeys.DatabaseQuery.route)
+
+            override fun navigateBack() {
+                navController.popBackStack()
+            }
+        }
+    }
+    val factory by lazy { DatabaseViewModelFactory(repository, application, navigator) }
 
     navigation(
         startDestination = WormaCeptorNavKeys.DatabaseList.route,
@@ -77,10 +91,7 @@ private fun DatabaseListDestination(
         DatabaseListScreen(
             state = state,
             onEvent = onEvent,
-            onDatabaseClick = { db ->
-                onEvent(DatabaseViewEvent.List.Selected(db.name))
-                navController.navigate(WormaCeptorNavKeys.DatabaseTables.route)
-            },
+            onDatabaseClick = { db -> onEvent(DatabaseViewEvent.List.Selected(db.name)) },
             onBack = onNavigateBack,
         )
     }
@@ -98,17 +109,9 @@ private fun DatabaseTablesDestination(
         TableListScreen(
             state = state,
             onEvent = onEvent,
-            onTableClick = { table ->
-                onEvent(DatabaseViewEvent.Tables.Selected(table.name))
-                navController.navigate(WormaCeptorNavKeys.DatabaseTableData.route)
-            },
-            onQueryClick = {
-                navController.navigate(WormaCeptorNavKeys.DatabaseQuery.route)
-            },
-            onBack = {
-                onEvent(DatabaseViewEvent.List.SelectionCleared)
-                navController.popBackStack()
-            },
+            onTableClick = { table -> onEvent(DatabaseViewEvent.Tables.Selected(table.name)) },
+            onQueryClick = { onEvent(DatabaseViewEvent.Tables.NavigateToQuery) },
+            onBack = { onEvent(DatabaseViewEvent.Tables.BackPressed) },
         )
     }
 }
@@ -125,10 +128,7 @@ private fun DatabaseTableDataDestination(
         TableDataScreen(
             state = state,
             onEvent = onEvent,
-            onBack = {
-                onEvent(DatabaseViewEvent.Tables.SelectionCleared)
-                navController.popBackStack()
-            },
+            onBack = { onEvent(DatabaseViewEvent.Data.BackPressed) },
         )
     }
 }
@@ -145,10 +145,7 @@ private fun DatabaseQueryDestination(
         QueryScreen(
             state = state,
             onEvent = onEvent,
-            onBack = {
-                onEvent(DatabaseViewEvent.Query.Clear)
-                navController.popBackStack()
-            },
+            onBack = { onEvent(DatabaseViewEvent.Query.BackPressed) },
         )
     }
 }

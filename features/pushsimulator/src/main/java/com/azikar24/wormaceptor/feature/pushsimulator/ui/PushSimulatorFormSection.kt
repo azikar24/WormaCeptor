@@ -58,10 +58,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.DividerStyle
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -376,20 +377,11 @@ private fun ImportanceBadge(importance: Int) {
         else -> minLabel to MaterialTheme.colorScheme.outline
     }
 
-    Surface(
-        shape = WormaCeptorTokens.Shapes.chip,
-        color = color.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = color,
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorTokens.Spacing.xs,
-                vertical = WormaCeptorTokens.Spacing.xxs,
-            ),
-        )
-    }
+    WormaCeptorStatusBadge(
+        text = label,
+        containerColor = color.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
+        contentColor = color,
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)

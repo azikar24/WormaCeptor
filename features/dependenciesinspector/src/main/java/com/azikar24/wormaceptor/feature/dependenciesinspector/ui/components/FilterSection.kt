@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -18,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
@@ -55,7 +54,8 @@ private fun CategoryChipRow(
         Modifier.horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
-        FilterChip(
+        WormaCeptorChip(
+            label = stringResource(R.string.dependenciesinspector_filter_all),
             selected = selectedCategory == null,
             onClick = {
                 if (selectedCategory != null) {
@@ -63,10 +63,7 @@ private fun CategoryChipRow(
                     onSelectCategory(null)
                 }
             },
-            label = { Text(stringResource(R.string.dependenciesinspector_filter_all)) },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = colors.primary.copy(WormaCeptorTokens.Alpha.MEDIUM),
-            ),
+            accentColor = colors.primary,
         )
 
         summary.byCategory.entries
@@ -74,17 +71,14 @@ private fun CategoryChipRow(
             .forEach { (category, count) ->
                 key(category) {
                     val color = category.categoryColor(colors)
-                    FilterChip(
+                    WormaCeptorChip(
+                        label = "${category.shortLabel()} ($count)",
                         selected = selectedCategory == category,
                         onClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                             onSelectCategory(if (selectedCategory == category) null else category)
                         },
-                        label = { Text("${category.shortLabel()} ($count)") },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = color.copy(WormaCeptorTokens.Alpha.MEDIUM),
-                            selectedLabelColor = color,
-                        ),
+                        accentColor = color,
                     )
                 }
             }

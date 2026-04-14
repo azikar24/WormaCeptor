@@ -9,8 +9,8 @@ import androidx.compose.runtime.getValue
  * Connects a [BaseViewModel] to a Composable, collecting [BaseViewModel.uiState] and [BaseViewModel.effects].
  */
 @Composable
-fun <State, Effect, Event> BaseScreen(
-    viewModel: BaseViewModel<State, Effect, Event>,
+fun <State, Effect, Event, Navigator : FeatureNavigator> BaseScreen(
+    viewModel: BaseViewModel<State, Effect, Event, Navigator>,
     onEffect: (Effect) -> Unit = {},
     content: @Composable (state: State, onEvent: (Event) -> Unit) -> Unit,
 ) {

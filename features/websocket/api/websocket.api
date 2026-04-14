@@ -6,12 +6,24 @@ public final class com/azikar24/wormaceptor/feature/websocket/WebSocketNavigatio
 
 public final class com/azikar24/wormaceptor/feature/websocket/WebSocketViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
 	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;Lcom/azikar24/wormaceptor/feature/websocket/navigator/WebSocketNavigator;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+}
+
+public final class com/azikar24/wormaceptor/feature/websocket/navigation/ComposableSingletons$WebSocketNavigationKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/navigation/ComposableSingletons$WebSocketNavigationKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function4;
+	public fun <init> ()V
+	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/navigation/WebSocketNavigationKt {
 	public static final fun webSocketGraph (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Lkotlin/jvm/functions/Function0;)V
+}
+
+public abstract interface class com/azikar24/wormaceptor/feature/websocket/navigator/WebSocketNavigator : com/azikar24/wormaceptor/common/presentation/FeatureNavigator {
+	public abstract fun navigateBack ()V
+	public abstract fun navigateToMessages ()V
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/ui/ComposableSingletons$WebSocketDetailScreenKt {
@@ -127,6 +139,14 @@ public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEv
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ConnectionBackPressed : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ConnectionBackPressed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent$ConnectionSearchQueryChanged : com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEvent {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
@@ -197,7 +217,7 @@ public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEv
 
 public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;Lcom/azikar24/wormaceptor/feature/websocket/navigator/WebSocketNavigator;)V
 	public final fun getMessageCountForConnection (J)I
 	public synthetic fun handleEvent (Ljava/lang/Object;)V
 }

@@ -11,11 +11,15 @@ import android.os.Build
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import org.osmdroid.util.GeoPoint
 
 class LocationTestViewModel(
     private val application: Application,
-) : BaseViewModel<LocationTestViewState, LocationTestViewEffect, LocationTestViewEvent>(LocationTestViewState()) {
+) : BaseViewModel<LocationTestViewState, LocationTestViewEffect, LocationTestViewEvent, NoOpNavigator>(
+    LocationTestViewState(),
+    NoOpNavigator,
+) {
 
     private var locationManager: LocationManager? = null
     private var locationListener: LocationListener? = null

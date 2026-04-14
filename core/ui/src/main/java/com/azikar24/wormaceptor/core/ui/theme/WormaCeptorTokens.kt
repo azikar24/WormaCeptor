@@ -2,22 +2,28 @@ package com.azikar24.wormaceptor.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ComposeSyntaxColors
 import com.azikar24.wormaceptor.core.ui.theme.tokens.DarkComposeSyntaxColors
 import com.azikar24.wormaceptor.core.ui.theme.tokens.DarkSemanticColors
 import com.azikar24.wormaceptor.core.ui.theme.tokens.LightComposeSyntaxColors
 import com.azikar24.wormaceptor.core.ui.theme.tokens.LightSemanticColors
+import com.azikar24.wormaceptor.core.ui.theme.tokens.LocalWormaCeptorDensity
 import com.azikar24.wormaceptor.core.ui.theme.tokens.SemanticColors
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAnimation
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAnimations
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenBorderWidth
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenComponentSize
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenDensity
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenEasing
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenElevation
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenFocusIndicator
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenIconSize
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenRadius
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenShapes
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenSpacing
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenStateLayer
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenTouchTarget
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenTypography
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -39,7 +45,6 @@ object WormaCeptorTokens {
 
     /** Unified color access. Use WormaCeptorTokens.Colors.Status.green, .Memory.heapUsed, etc. */
     object Colors {
-        // Domain-agnostic groups (delegated from FeatureColors.kt)
 
         /** HTTP status code colors (success, redirect, error). */
         val Status = FeatureColors.Status
@@ -112,9 +117,6 @@ object WormaCeptorTokens {
         /** File browser item-type colors. */
         val FileBrowser = ToolColors.FileBrowser
 
-        /** Push notification simulator colors. */
-        val PushSimulator = ToolColors.PushSimulator
-
         /** Floating overlay colors. */
         val Overlay = ToolColors.Overlay
 
@@ -160,6 +162,26 @@ object WormaCeptorTokens {
 
     /** Component dimension tokens (heights, widths). */
     val ComponentSize = TokenComponentSize
+
+    /** Material 3 state-layer opacities for hover/focus/pressed/dragged. */
+    val StateLayer = TokenStateLayer
+
+    /** Focus-ring tokens for keyboard navigation and assistive-tech focus. */
+    val FocusIndicator = TokenFocusIndicator
+
+    /**
+     * Current density read from [LocalWormaCeptorDensity]. Branches like
+     * `if (WormaCeptorTokens.Density == TokenDensity.Compact) ...` let
+     * composables adapt their layout without threading density manually.
+     * Override at the [WormaCeptorTheme] boundary to retune a subtree.
+     */
+    val Density: TokenDensity
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalWormaCeptorDensity.current
+
+    /** Motion-easing curves (M3 standard / decelerate / accelerate / emphasized). */
+    val Easing = TokenEasing
 
     /** Returns theme-aware semantic colors (background, surface, accent, error, etc.). */
     @Composable

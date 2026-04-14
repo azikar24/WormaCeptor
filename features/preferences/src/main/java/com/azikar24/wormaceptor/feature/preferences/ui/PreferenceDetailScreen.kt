@@ -23,8 +23,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -45,11 +43,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorAlertDialog
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -295,26 +294,18 @@ private fun PreferenceDetailFilterChips(
             .padding(bottom = WormaCeptorTokens.Spacing.sm),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
     ) {
-        FilterChip(
+        WormaCeptorChip(
+            label = stringResource(R.string.preferences_filter_all),
             selected = state.typeFilter == null,
             onClick = { onEvent(PreferencesViewEvent.Detail.TypeFilterChanged(null)) },
-            label = { Text(stringResource(R.string.preferences_filter_all)) },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-            ),
         )
         state.availableTypes.forEach { type ->
             val typeColor = typeColors.forTypeName(type)
-            FilterChip(
+            WormaCeptorChip(
+                label = type,
                 selected = state.typeFilter == type,
                 onClick = { onEvent(PreferencesViewEvent.Detail.TypeFilterChanged(type)) },
-                label = { Text(type) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = typeColor.copy(
-                        alpha = WormaCeptorTokens.Alpha.MEDIUM,
-                    ),
-                    selectedLabelColor = typeColor,
-                ),
+                accentColor = typeColor,
             )
         }
     }

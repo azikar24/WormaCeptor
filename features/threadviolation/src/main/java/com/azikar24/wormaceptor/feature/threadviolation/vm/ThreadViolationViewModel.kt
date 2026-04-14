@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.threadviolation.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation.ViolationType
@@ -18,8 +19,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class ThreadViolationViewModel(
     private val engine: ThreadViolationEngine,
-) : BaseViewModel<ThreadViolationViewState, ThreadViolationViewEffect, ThreadViolationViewEvent>(
+) : BaseViewModel<ThreadViolationViewState, ThreadViolationViewEffect, ThreadViolationViewEvent, NoOpNavigator>(
     initialState = ThreadViolationViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

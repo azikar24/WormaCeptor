@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.viewer.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,8 +16,9 @@ import java.util.UUID
  */
 internal class TransactionPagerViewModel(
     private val queryEngine: QueryEngine,
-) : BaseViewModel<TransactionPagerViewState, TransactionPagerEffect, TransactionPagerEvent>(
+) : BaseViewModel<TransactionPagerViewState, TransactionPagerEffect, TransactionPagerEvent, NoOpNavigator>(
     initialState = TransactionPagerViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     private var transactionIds: List<UUID> = emptyList()

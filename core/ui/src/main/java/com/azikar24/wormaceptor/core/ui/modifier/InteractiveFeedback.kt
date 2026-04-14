@@ -38,7 +38,10 @@ fun Modifier.wormaceptorPressScale(
     val target = if (isPressed) pressedScale else UnpressedScale
     val scale by animateFloatAsState(
         targetValue = if (reduceMotion) UnpressedScale else target,
-        animationSpec = tween(WormaCeptorTokens.Animation.ULTRA_FAST),
+        animationSpec = tween(
+            durationMillis = WormaCeptorTokens.Animation.ULTRA_FAST,
+            easing = WormaCeptorTokens.Easing.standard,
+        ),
         label = "wormaceptor_press_scale",
     )
     return this.scale(scale)

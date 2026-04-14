@@ -20,7 +20,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorAlertDialog
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.feature.crypto.R
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEvent
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewState

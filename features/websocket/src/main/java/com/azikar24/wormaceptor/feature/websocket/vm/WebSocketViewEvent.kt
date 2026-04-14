@@ -6,6 +6,7 @@ sealed class WebSocketViewEvent {
     data class ConnectionSearchQueryChanged(val query: String) : WebSocketViewEvent()
     data class ConnectionSelected(val connectionId: Long) : WebSocketViewEvent()
     data object ConnectionSelectionCleared : WebSocketViewEvent()
+    data object ConnectionBackPressed : WebSocketViewEvent()
     data class MessageSearchQueryChanged(val query: String) : WebSocketViewEvent()
     data class DirectionFilterToggled(val direction: WebSocketMessageDirection) : WebSocketViewEvent()
     data class MessageExpandToggled(val messageId: Long) : WebSocketViewEvent()

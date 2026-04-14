@@ -34,7 +34,8 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
@@ -154,20 +155,11 @@ fun SelectableTransactionItem(
 
             // Status code and duration
             Column(horizontalAlignment = Alignment.End) {
-                Surface(
-                    color = statusColor.copy(alpha = TokenAlpha.SUBTLE),
+                WormaCeptorStatusBadge(
+                    text = transaction.code?.toString() ?: "?",
+                    containerColor = statusColor.copy(alpha = TokenAlpha.SUBTLE),
                     contentColor = statusColor,
-                    shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-                ) {
-                    Text(
-                        text = transaction.code?.toString() ?: "?",
-                        style = MaterialTheme.typography.titleSmall,
-                        modifier = Modifier.padding(
-                            horizontal = WormaCeptorTokens.Spacing.sm,
-                            vertical = WormaCeptorTokens.Spacing.xxs,
-                        ),
-                    )
-                }
+                )
                 Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
                 Text(
                     text = formatDuration(transaction.tookMs),

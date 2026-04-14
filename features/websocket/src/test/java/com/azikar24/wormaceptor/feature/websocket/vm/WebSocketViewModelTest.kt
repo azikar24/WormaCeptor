@@ -7,6 +7,7 @@ import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageType
 import com.azikar24.wormaceptor.domain.entities.WebSocketState
+import com.azikar24.wormaceptor.feature.websocket.navigator.WebSocketNavigator
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainKey
@@ -34,6 +35,8 @@ class WebSocketViewModelTest {
 
     private val connectionsFlow = MutableStateFlow<List<WebSocketConnection>>(emptyList())
     private val messagesFlow = MutableStateFlow<List<WebSocketMessage>>(emptyList())
+
+    private val navigator = mockk<WebSocketNavigator>(relaxed = true)
 
     private val engine = mockk<WebSocketMonitorEngine>(relaxed = true) {
         every { connections } returns connectionsFlow
@@ -72,7 +75,7 @@ class WebSocketViewModelTest {
     @BeforeEach
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = WebSocketViewModel(engine)
+        viewModel = WebSocketViewModel(engine, navigator)
     }
 
     @AfterEach
@@ -481,7 +484,7 @@ class WebSocketViewModelTest {
             viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
             viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(5))
 
-            viewModel.sendEvent(WebSocketViewEvent.ClearAll)
+            viewModel.sendEvent(WebSocketViewEvent.ClearAllConfirmed)
 
             verify { engine.clear() }
             viewModel.uiState.value.expandedMessageId shouldBe null
@@ -495,7 +498,7 @@ class WebSocketViewModelTest {
         fun `delegates to engine with connection id`() {
             viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
 
-            viewModel.sendEvent(WebSocketViewEvent.ClearCurrentConnectionMessages)
+            viewModel.sendEvent(WebSocketViewEvent.ClearMessagesConfirmed)
 
             verify { engine.clearMessagesForConnection(1L) }
             viewModel.uiState.value.expandedMessageId shouldBe null
@@ -503,7 +506,7 @@ class WebSocketViewModelTest {
 
         @Test
         fun `does nothing when no connection selected`() {
-            viewModel.sendEvent(WebSocketViewEvent.ClearCurrentConnectionMessages)
+            viewModel.sendEvent(WebSocketViewEvent.ClearMessagesConfirmed)
 
             verify(exactly = 0) { engine.clearMessagesForConnection(any()) }
         }
@@ -517,6 +520,27 @@ class WebSocketViewModelTest {
             every { engine.getMessageCountForConnection(1L) } returns 7
 
             viewModel.getMessageCountForConnection(1L) shouldBe 7
+        }
+    }
+
+    @Nested
+    inner class `navigation` {
+
+        @Test
+        fun `selecting a connection navigates to messages screen`() = runTest {
+            connectionsFlow.value = listOf(makeConnection(id = 1L))
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+            verify { navigator.navigateToMessages() }
+        }
+
+        @Test
+        fun `ConnectionBackPressed clears selection and navigates back`() = runTest {
+            connectionsFlow.value = listOf(makeConnection(id = 1L))
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionBackPressed)
+
+            viewModel.uiState.value.selectedConnection shouldBe null
+            verify { navigator.navigateBack() }
         }
     }
 

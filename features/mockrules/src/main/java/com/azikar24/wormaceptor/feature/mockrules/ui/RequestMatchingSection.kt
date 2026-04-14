@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSectionHeader
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorSectionHeader
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType

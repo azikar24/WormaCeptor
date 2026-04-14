@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.loadedlibraries.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import kotlinx.collections.immutable.toImmutableList
@@ -16,8 +17,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class LoadedLibrariesViewModel(
     private val engine: LoadedLibrariesEngine,
-) : BaseViewModel<LoadedLibrariesViewState, LoadedLibrariesViewEffect, LoadedLibrariesViewEvent>(
+) : BaseViewModel<LoadedLibrariesViewState, LoadedLibrariesViewEffect, LoadedLibrariesViewEvent, NoOpNavigator>(
     initialState = LoadedLibrariesViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

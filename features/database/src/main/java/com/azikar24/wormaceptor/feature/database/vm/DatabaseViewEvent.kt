@@ -15,12 +15,15 @@ sealed class DatabaseViewEvent {
         data object ToggleSearch : Tables()
         data class Selected(val name: String) : Tables()
         data object SelectionCleared : Tables()
+        data object NavigateToQuery : Tables()
+        data object BackPressed : Tables()
     }
 
     sealed class Data : DatabaseViewEvent() {
         data object ToggleSchema : Data()
         data object NextPage : Data()
         data object PreviousPage : Data()
+        data object BackPressed : Data()
     }
 
     sealed class Query : DatabaseViewEvent() {
@@ -29,5 +32,6 @@ sealed class DatabaseViewEvent {
         data object Clear : Query()
         data class HistorySelected(val query: String) : Query()
         data class PrefilledRequested(val tableName: String, val queryType: String) : Query()
+        data object BackPressed : Query()
     }
 }

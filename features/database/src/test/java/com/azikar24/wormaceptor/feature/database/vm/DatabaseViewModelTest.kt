@@ -8,6 +8,7 @@ import com.azikar24.wormaceptor.domain.entities.ColumnInfo
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.domain.entities.TableInfo
+import com.azikar24.wormaceptor.feature.database.navigator.DatabaseNavigator
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -55,6 +56,8 @@ class DatabaseViewModelTest {
         rowCount = 2,
     )
 
+    private val navigator = mockk<DatabaseNavigator>(relaxed = true)
+
     private val repository = mockk<DatabaseRepository>(relaxed = true) {
         every { getDatabases() } returns sampleDatabases
         every { getTables(any()) } returns sampleTables
@@ -83,7 +86,7 @@ class DatabaseViewModelTest {
     @BeforeEach
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = DatabaseViewModel(repository, application)
+        viewModel = DatabaseViewModel(repository, application, navigator)
     }
 
     @AfterEach
@@ -195,6 +198,12 @@ class DatabaseViewModelTest {
                 cancelAndIgnoreRemainingEvents()
             }
         }
+
+        @Test
+        fun `navigates to tables screen`() = runTest {
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            verify { navigator.navigateToTables() }
+        }
     }
 
     @Nested
@@ -303,6 +312,13 @@ class DatabaseViewModelTest {
                 state.queryResult shouldBe sampleQueryResult
                 cancelAndIgnoreRemainingEvents()
             }
+        }
+
+        @Test
+        fun `navigates to table data screen`() = runTest {
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
+            verify { navigator.navigateToTableData() }
         }
     }
 
@@ -671,7 +687,7 @@ class DatabaseViewModelTest {
         fun `handles database loading error`() = runTest {
             every { repository.getDatabases() } throws IllegalStateException("Access denied")
 
-            val vm = DatabaseViewModel(repository, application)
+            val vm = DatabaseViewModel(repository, application, navigator)
 
             vm.uiState.test {
                 val state = awaitUntil { it.databasesError != null }
@@ -708,6 +724,44 @@ class DatabaseViewModelTest {
                 state.queryResult?.error shouldBe "Data error"
                 cancelAndIgnoreRemainingEvents()
             }
+        }
+    }
+
+    @Nested
+    inner class `navigation` {
+
+        @Test
+        fun `NavigateToQuery navigates to query screen`() = runTest {
+            viewModel.sendEvent(DatabaseViewEvent.Tables.NavigateToQuery)
+            verify { navigator.navigateToQuery() }
+        }
+
+        @Test
+        fun `Tables BackPressed clears database selection and navigates back`() = runTest {
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.BackPressed)
+
+            viewModel.uiState.value.selectedDatabaseName shouldBe null
+            verify { navigator.navigateBack() }
+        }
+
+        @Test
+        fun `Data BackPressed clears table selection and navigates back`() = runTest {
+            viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
+            viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
+            viewModel.sendEvent(DatabaseViewEvent.Data.BackPressed)
+
+            viewModel.uiState.value.selectedTableName shouldBe null
+            verify { navigator.navigateBack() }
+        }
+
+        @Test
+        fun `Query BackPressed clears query and navigates back`() = runTest {
+            viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT 1"))
+            viewModel.sendEvent(DatabaseViewEvent.Query.BackPressed)
+
+            viewModel.uiState.value.sqlQuery shouldBe ""
+            verify { navigator.navigateBack() }
         }
     }
 

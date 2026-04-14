@@ -22,7 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -139,20 +140,10 @@ private fun RequestStatusBadge(
             request.isFailed -> "ERR"
             else -> "?"
         }
-        Text(
+        WormaCeptorStatusBadge(
             text = statusText,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.SemiBold,
-            color = statusColor,
-            modifier = Modifier
-                .background(
-                    statusColor.copy(alpha = TokenAlpha.SUBTLE),
-                    RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-                )
-                .padding(
-                    horizontal = WormaCeptorTokens.Spacing.sm,
-                    vertical = WormaCeptorTokens.Spacing.xxs,
-                ),
+            containerColor = statusColor.copy(alpha = TokenAlpha.SUBTLE),
+            contentColor = statusColor,
         )
         request.duration?.let { duration ->
             Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))

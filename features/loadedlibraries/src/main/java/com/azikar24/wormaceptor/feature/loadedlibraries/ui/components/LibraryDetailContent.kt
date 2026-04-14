@@ -15,9 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.DetailItem
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailHeader
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailSection
+import com.azikar24.wormaceptor.core.ui.components.detail.DetailItem
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailHeader
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes

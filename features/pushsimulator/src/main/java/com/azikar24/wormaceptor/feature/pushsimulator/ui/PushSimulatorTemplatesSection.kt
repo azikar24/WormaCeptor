@@ -32,10 +32,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.ButtonVariant
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha

@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -68,7 +67,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
@@ -134,7 +133,7 @@ fun CrashDetailPagerScreen(
         transitionSpec = {
             val slideSpec = tween<IntOffset>(
                 durationMillis = WormaCeptorTokens.Animation.NORMAL,
-                easing = FastOutSlowInEasing,
+                easing = WormaCeptorTokens.Easing.standard,
             )
 
             if (navigationDirection >= 0) {

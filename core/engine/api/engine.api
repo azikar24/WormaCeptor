@@ -241,6 +241,7 @@ public final class com/azikar24/wormaceptor/core/engine/MemoryMonitorEngine {
 	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/MemoryMonitorEngine$Companion;
 	public static final field DEFAULT_HISTORY_SIZE I
 	public static final field DEFAULT_INTERVAL_MS J
+	public static final field HEAP_CAUTION_THRESHOLD F
 	public static final field HEAP_WARNING_THRESHOLD F
 	public fun <init> ()V
 	public fun <init> (JI)V

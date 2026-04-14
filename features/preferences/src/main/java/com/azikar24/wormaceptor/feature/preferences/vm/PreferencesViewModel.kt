@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
+import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,8 +27,10 @@ private const val DebounceMillis = 150L
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class PreferencesViewModel(
     private val repository: PreferencesRepository,
-) : BaseViewModel<PreferencesViewState, PreferencesViewEffect, PreferencesViewEvent>(
+    navigator: PreferencesNavigator,
+) : BaseViewModel<PreferencesViewState, PreferencesViewEffect, PreferencesViewEvent, PreferencesNavigator>(
     PreferencesViewState(),
+    navigator,
 ) {
 
     private val _fileSearchQuery = MutableStateFlow("")
@@ -53,8 +56,15 @@ class PreferencesViewModel(
         when (event) {
             is PreferencesViewEvent.List.SearchToggled -> handleToggleFileSearch()
             is PreferencesViewEvent.List.SearchQueryChanged -> handleFileSearchQueryChanged(event.query)
-            is PreferencesViewEvent.List.Selected -> handleSelectFile(event.fileName)
+            is PreferencesViewEvent.List.Selected -> {
+                handleSelectFile(event.fileName)
+                navigator.navigateToDetail()
+            }
             is PreferencesViewEvent.List.SelectionCleared -> handleClearFileSelection()
+            is PreferencesViewEvent.List.BackPressed -> {
+                handleClearFileSelection()
+                navigator.navigateBack()
+            }
         }
     }
 

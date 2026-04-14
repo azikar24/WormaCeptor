@@ -6,6 +6,7 @@ import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
+import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
@@ -14,6 +15,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +51,8 @@ class PreferencesViewModelTest {
         ),
     )
 
+    private val navigator = mockk<PreferencesNavigator>(relaxed = true)
+
     private val repository = mockk<PreferencesRepository>(relaxed = true) {
         every { observePreferenceFiles() } returns filesFlow
         every { observePreferenceItems(any()) } returns itemsFlow
@@ -59,7 +63,7 @@ class PreferencesViewModelTest {
     @BeforeEach
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = PreferencesViewModel(repository)
+        viewModel = PreferencesViewModel(repository, navigator)
     }
 
     @AfterEach
@@ -430,6 +434,25 @@ class PreferencesViewModelTest {
             viewModel.sendEvent(PreferencesViewEvent.Detail.FileCleared)
 
             coVerify(exactly = 0) { repository.clearFile(any()) }
+        }
+    }
+
+    @Nested
+    inner class `navigation` {
+
+        @Test
+        fun `selecting a file navigates to detail screen`() = runTest {
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
+            verify { navigator.navigateToDetail() }
+        }
+
+        @Test
+        fun `BackPressed clears selection and navigates back`() = runTest {
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
+            viewModel.sendEvent(PreferencesViewEvent.List.BackPressed)
+
+            viewModel.uiState.value.selectedFileName shouldBe null
+            verify { navigator.navigateBack() }
         }
     }
 }

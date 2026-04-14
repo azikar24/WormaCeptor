@@ -9,13 +9,16 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.azikar24.wormaceptor.core.ui.theme.tokens.LocalWormaCeptorDensity
 import com.azikar24.wormaceptor.core.ui.theme.tokens.Palette
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenDensity
 
 private val LightColorScheme = lightColorScheme(
     primary = Palette.Teal600,
@@ -95,11 +98,21 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = Palette.Gray925,
 )
 
-/** Applies the WormaCeptor Material 3 theme with optional dynamic color support. */
+/**
+ * Applies the WormaCeptor Material 3 theme with optional dynamic color support.
+ *
+ * @param darkTheme Whether to use the dark color scheme. Defaults to the system setting.
+ * @param dynamicColor Whether to use Material You dynamic color on Android 12+.
+ * @param density Density preference for the subtree. Components that opt in
+ *                (via `Dp.scaled()`) will scale their spacing/sizing
+ *                accordingly. Defaults to [TokenDensity.Default].
+ * @param content Themed content slot.
+ */
 @Composable
 fun WormaCeptorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
+    density: TokenDensity = TokenDensity.Default,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
@@ -120,9 +133,11 @@ fun WormaCeptorTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = WormaCeptorTypography,
-        content = content,
-    )
+    CompositionLocalProvider(LocalWormaCeptorDensity provides density) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = WormaCeptorTypography,
+            content = content,
+        )
+    }
 }

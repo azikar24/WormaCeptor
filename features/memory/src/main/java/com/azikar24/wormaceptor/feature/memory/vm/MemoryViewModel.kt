@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.memory.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
@@ -17,8 +18,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class MemoryViewModel(
     private val engine: MemoryMonitorEngine,
-) : BaseViewModel<MemoryViewState, MemoryViewEffect, MemoryViewEvent>(
+) : BaseViewModel<MemoryViewState, MemoryViewEffect, MemoryViewEvent, NoOpNavigator>(
     initialState = MemoryViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

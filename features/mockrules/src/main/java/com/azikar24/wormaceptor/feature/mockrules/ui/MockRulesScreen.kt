@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -52,9 +51,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorAlertDialog
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.domain.entities.mock.MockRule
@@ -375,20 +375,11 @@ private fun MockRuleItem(
         // Right side: status code + switch + delete
         Column(horizontalAlignment = Alignment.End) {
             // Status code chip
-            Surface(
-                color = ruleStatusColor.copy(alpha = TokenAlpha.SUBTLE),
+            WormaCeptorStatusBadge(
+                text = rule.response.statusCode.toString(),
+                containerColor = ruleStatusColor.copy(alpha = TokenAlpha.SUBTLE),
                 contentColor = ruleStatusColor,
-                shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-            ) {
-                Text(
-                    text = rule.response.statusCode.toString(),
-                    style = MaterialTheme.typography.titleSmall,
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorTokens.Spacing.sm,
-                        vertical = WormaCeptorTokens.Spacing.xxs,
-                    ),
-                )
-            }
+            )
 
             Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
 

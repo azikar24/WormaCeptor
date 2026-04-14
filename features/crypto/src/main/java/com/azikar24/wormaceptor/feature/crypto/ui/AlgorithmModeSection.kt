@@ -7,13 +7,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CipherMode
 import com.azikar24.wormaceptor.domain.entities.CryptoAlgorithm
@@ -59,10 +59,10 @@ private fun AlgorithmChips(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         CryptoAlgorithm.entries.filter { it != CryptoAlgorithm.RSA }.forEach { algorithm ->
-            FilterChip(
+            WormaCeptorChip(
+                label = algorithm.displayName,
                 selected = config.algorithm == algorithm,
                 onClick = { onEvent(CryptoViewEvent.Config.SetAlgorithm(algorithm)) },
-                label = { Text(algorithm.displayName) },
             )
         }
     }
@@ -83,10 +83,10 @@ private fun ModeChips(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         CipherMode.entries.forEach { mode ->
-            FilterChip(
+            WormaCeptorChip(
+                label = mode.displayName,
                 selected = config.mode == mode,
                 onClick = { onEvent(CryptoViewEvent.Config.SetMode(mode)) },
-                label = { Text(mode.displayName) },
             )
         }
     }
@@ -107,10 +107,10 @@ private fun PaddingChips(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         PaddingScheme.entries.forEach { padding ->
-            FilterChip(
+            WormaCeptorChip(
+                label = padding.displayName,
                 selected = config.padding == padding,
                 onClick = { onEvent(CryptoViewEvent.Config.SetPadding(padding)) },
-                label = { Text(padding.displayName) },
             )
         }
     }

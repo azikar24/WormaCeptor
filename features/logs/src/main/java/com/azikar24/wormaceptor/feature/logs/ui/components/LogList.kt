@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -23,13 +22,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.LogEntry
@@ -93,8 +92,15 @@ internal fun LogEntryItem(
                 ),
             verticalAlignment = Alignment.Top,
         ) {
-            LogLevelBadge(tag = entry.level.tag, levelColor = levelColor)
+            WormaCeptorStatusBadge(
+                text = entry.level.tag,
+                containerColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
+                contentColor = levelColor,
+                modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xxs),
+            )
+
             Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+
             LogEntryBody(
                 tag = entry.tag,
                 message = entry.message,
@@ -102,29 +108,6 @@ internal fun LogEntryItem(
                 modifier = Modifier.weight(1f),
             )
         }
-    }
-}
-
-@Composable
-private fun LogLevelBadge(
-    tag: String,
-    levelColor: Color,
-) {
-    Surface(
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-        color = levelColor.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
-        modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xxs),
-    ) {
-        Text(
-            text = tag,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = levelColor,
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorTokens.Radius.sm,
-                vertical = WormaCeptorTokens.Spacing.xxs,
-            ),
-        )
     }
 }
 

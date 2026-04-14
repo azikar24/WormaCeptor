@@ -14,6 +14,7 @@ import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.feature.preferences.PreferencesViewModelFactory
 import com.azikar24.wormaceptor.feature.preferences.data.PreferencesDataSource
 import com.azikar24.wormaceptor.feature.preferences.data.PreferencesRepositoryImpl
+import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
 import com.azikar24.wormaceptor.feature.preferences.ui.PreferenceDetailScreen
 import com.azikar24.wormaceptor.feature.preferences.ui.PreferencesListScreen
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewEvent
@@ -51,7 +52,16 @@ private fun graphScopedViewModel(
         navController.getBackStackEntry(WormaCeptorNavKeys.Preferences.route)
     }
     val repository = remember(context) { PreferencesRepositoryImpl(PreferencesDataSource(context.applicationContext)) }
-    val factory = remember(repository) { PreferencesViewModelFactory(repository) }
+    val navigator = remember(navController) {
+        object : PreferencesNavigator {
+            override fun navigateToDetail() = navController.navigate(WormaCeptorNavKeys.PreferencesDetail.route)
+
+            override fun navigateBack() {
+                navController.popBackStack()
+            }
+        }
+    }
+    val factory = remember(repository, navigator) { PreferencesViewModelFactory(repository, navigator) }
     return viewModel(viewModelStoreOwner = graphEntry, factory = factory)
 }
 
@@ -68,10 +78,7 @@ private fun PreferencesListDestination(
         PreferencesListScreen(
             state = state,
             onEvent = onEvent,
-            onFileClick = { file ->
-                onEvent(PreferencesViewEvent.List.Selected(file.name))
-                navController.navigate(WormaCeptorNavKeys.PreferencesDetail.route)
-            },
+            onFileClick = { file -> onEvent(PreferencesViewEvent.List.Selected(file.name)) },
             onNavigateBack = onNavigateBack,
         )
     }
@@ -89,10 +96,7 @@ private fun PreferencesDetailDestination(
         PreferenceDetailScreen(
             state = state,
             onEvent = onEvent,
-            onBack = {
-                onEvent(PreferencesViewEvent.List.SelectionCleared)
-                navController.popBackStack()
-            },
+            onBack = { onEvent(PreferencesViewEvent.List.BackPressed) },
         )
     }
 }

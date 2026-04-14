@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.viewer.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.domain.entities.Crash
 import kotlinx.collections.immutable.ImmutableList
@@ -25,7 +26,10 @@ import kotlinx.coroutines.launch
  */
 class CrashListViewModel(
     private val queryEngine: QueryEngine,
-) : BaseViewModel<CrashListViewState, CrashListViewEffect, CrashListViewEvent>(CrashListViewState()) {
+) : BaseViewModel<CrashListViewState, CrashListViewEffect, CrashListViewEvent, NoOpNavigator>(
+    CrashListViewState(),
+    NoOpNavigator,
+) {
 
     /** Reactive stream of all recorded crash entries, ordered by most recent first. Syncs into [CrashListViewState]. */
     private val crashes: StateFlow<ImmutableList<Crash>> = queryEngine.observeCrashes()

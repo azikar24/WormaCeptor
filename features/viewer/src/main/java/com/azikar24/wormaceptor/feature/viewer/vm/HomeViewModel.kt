@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,7 +17,7 @@ import kotlinx.coroutines.withContext
  */
 class HomeViewModel(
     context: Context,
-) : BaseViewModel<HomeViewState, HomeViewEffect, HomeViewEvent>(HomeViewState()) {
+) : BaseViewModel<HomeViewState, HomeViewEffect, HomeViewEvent, NoOpNavigator>(HomeViewState(), NoOpNavigator) {
 
     private val collapsePrefs by lazy { context.getSharedPreferences(COLLAPSE_PREFS_NAME, Context.MODE_PRIVATE) }
 

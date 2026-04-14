@@ -41,8 +41,12 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.scaled
  * @param onDismiss Optional trailing close icon callback; when set, a close
  *                  affordance is shown at the end of the chip.
  * @param enabled Whether the chip responds to interactions.
+ * @param accentColor Optional accent color that overrides the default primary color for the
+ *                    selected state (container at [WormaCeptorTokens.Alpha.MEDIUM], label/icon at
+ *                    full opacity). Useful for per-item categorical coloring such as severity or
+ *                    log-level chips. Null falls back to [MaterialTheme.colorScheme.primary].
  */
-@Suppress("LongMethod")
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 fun WormaCeptorChip(
     label: String,
@@ -52,19 +56,22 @@ fun WormaCeptorChip(
     leadingIcon: ImageVector? = null,
     onDismiss: (() -> Unit)? = null,
     enabled: Boolean = true,
+    accentColor: Color? = null,
 ) {
+    val baseColor = accentColor ?: MaterialTheme.colorScheme.primary
+    val containerAlpha = if (accentColor != null) WormaCeptorTokens.Alpha.MEDIUM else WormaCeptorTokens.Alpha.LIGHT
     val container = if (selected) {
-        MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
+        baseColor.copy(alpha = containerAlpha)
     } else {
         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
     }
     val content = if (selected) {
-        MaterialTheme.colorScheme.primary
+        baseColor
     } else {
         MaterialTheme.colorScheme.onSurface
     }
     val borderColor = if (selected) {
-        MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
+        baseColor.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
     } else {
         MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
     }

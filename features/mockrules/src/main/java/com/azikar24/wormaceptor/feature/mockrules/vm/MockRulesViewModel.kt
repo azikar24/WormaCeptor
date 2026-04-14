@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.mockrules.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.MockEngine
 import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
 import com.azikar24.wormaceptor.domain.entities.mock.MockDelay
@@ -18,8 +19,9 @@ import kotlinx.coroutines.launch
 internal class MockRulesViewModel(
     private val repository: MockRuleRepository,
     private val engine: MockEngine,
-) : BaseViewModel<MockRulesViewState, MockRulesEffect, MockRulesViewEvent>(
+) : BaseViewModel<MockRulesViewState, MockRulesEffect, MockRulesViewEvent, NoOpNavigator>(
     initialState = MockRulesViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     private var existingRule: MockRule? = null

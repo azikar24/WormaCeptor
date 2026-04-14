@@ -99,6 +99,9 @@
 -keep class com.azikar24.wormaceptor.** { *; }
 -keepclassmembers class com.azikar24.wormaceptor.** { *; }
 
+# AutoService annotation is compile-only; suppress R8 warning about missing class
+-dontwarn com.google.auto.service.AutoService
+
 # -------------------- Ktor --------------------
 # Ktor classes are referenced by the WormaCeptor Ktor interceptor module
 # but are optional runtime dependencies (only needed if the consumer uses Ktor)

@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.core.ui.components.badge
 
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -41,7 +40,10 @@ fun WormaCeptorWarningBadge(
         initialValue = 1f,
         targetValue = if (reduceMotion) 1f else WormaCeptorTokens.Alpha.BOLD,
         animationSpec = infiniteRepeatable(
-            animation = tween(WormaCeptorTokens.Animation.VERY_SLOW, easing = LinearEasing),
+            animation = tween(
+                durationMillis = WormaCeptorTokens.Animation.VERY_SLOW,
+                easing = WormaCeptorTokens.Easing.standard,
+            ),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "warning_alpha",

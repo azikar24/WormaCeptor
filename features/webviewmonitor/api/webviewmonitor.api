@@ -10,20 +10,11 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
 }
 
-public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewMonitorScreenKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewMonitorScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-}
-
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewRequestDetailScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewRequestDetailScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$ListTopBarKt {

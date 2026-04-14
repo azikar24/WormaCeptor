@@ -4,14 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Memory
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -21,7 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
@@ -52,16 +49,14 @@ private fun TypeChipRow(
     WormaCeptorFlowRow(
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
-        FilterChip(
+        WormaCeptorChip(
+            label = stringResource(R.string.loadedlibraries_filter_all),
             selected = selectedType == null,
             onClick = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 onSelectType(null)
             },
-            label = { Text(stringResource(R.string.loadedlibraries_filter_all)) },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = colors.primary.copy(WormaCeptorTokens.Alpha.MEDIUM),
-            ),
+            accentColor = colors.primary,
         )
         LoadedLibrary.LibraryType.entries.filter { it != LoadedLibrary.LibraryType.AAR_RESOURCE }.forEach { type ->
             val (icon, labelRes, color) = when (type) {
@@ -82,19 +77,15 @@ private fun TypeChipRow(
                 )
                 LoadedLibrary.LibraryType.AAR_RESOURCE -> error("AAR_RESOURCE is filtered out")
             }
-            FilterChip(
+            WormaCeptorChip(
+                label = stringResource(labelRes),
                 selected = selectedType == type,
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     onSelectType(if (selectedType == type) null else type)
                 },
-                label = { Text(stringResource(labelRes)) },
-                leadingIcon = { Icon(icon, null, Modifier.size(WormaCeptorTokens.IconSize.sm)) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(WormaCeptorTokens.Alpha.MEDIUM),
-                    selectedLabelColor = color,
-                    selectedLeadingIconColor = color,
-                ),
+                leadingIcon = icon,
+                accentColor = color,
             )
         }
     }

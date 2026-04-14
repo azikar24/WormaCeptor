@@ -4,12 +4,21 @@ public final class com/azikar24/wormaceptor/common/presentation/BaseScreenKt {
 
 public abstract class com/azikar24/wormaceptor/common/presentation/BaseViewModel : androidx/lifecycle/ViewModel {
 	public static final field $stable I
-	public fun <init> (Ljava/lang/Object;)V
+	public fun <init> (Ljava/lang/Object;Lcom/azikar24/wormaceptor/common/presentation/FeatureNavigator;)V
 	protected final fun emitEffect (Ljava/lang/Object;)V
 	public final fun getEffects ()Lkotlinx/coroutines/flow/SharedFlow;
+	protected final fun getNavigator ()Lcom/azikar24/wormaceptor/common/presentation/FeatureNavigator;
 	public final fun getUiState ()Lkotlinx/coroutines/flow/StateFlow;
 	protected abstract fun handleEvent (Ljava/lang/Object;)V
 	public final fun sendEvent (Ljava/lang/Object;)V
 	protected final fun updateState (Lkotlin/jvm/functions/Function1;)V
+}
+
+public abstract interface class com/azikar24/wormaceptor/common/presentation/FeatureNavigator {
+}
+
+public final class com/azikar24/wormaceptor/common/presentation/NoOpNavigator : com/azikar24/wormaceptor/common/presentation/FeatureNavigator {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/common/presentation/NoOpNavigator;
 }
 

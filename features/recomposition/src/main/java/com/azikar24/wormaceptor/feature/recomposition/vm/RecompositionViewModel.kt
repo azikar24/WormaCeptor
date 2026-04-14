@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.recomposition.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.ui.RecompositionTracker
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
@@ -16,8 +17,9 @@ import java.util.Locale
  */
 class RecompositionViewModel(
     private val tracker: RecompositionTracker = RecompositionTracker,
-) : BaseViewModel<RecompositionViewState, RecompositionEffect, RecompositionViewEvent>(
+) : BaseViewModel<RecompositionViewState, RecompositionEffect, RecompositionViewEvent, NoOpNavigator>(
     initialState = RecompositionViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

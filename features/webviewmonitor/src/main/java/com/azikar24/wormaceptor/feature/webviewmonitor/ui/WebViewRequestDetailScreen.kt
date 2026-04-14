@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.webviewmonitor.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -37,9 +35,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDetailRow
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorInfoCard
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorInfoCard
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
@@ -86,7 +85,16 @@ internal fun WebViewRequestDetailScreen(
                                 overflow = TextOverflow.Ellipsis,
                             )
                         }
-                        DetailStatusBadge(request, statusColor)
+                        WormaCeptorStatusBadge(
+                            text = when {
+                                request.isPending -> "..."
+                                request.statusCode != null -> request.statusCode.toString()
+                                request.isFailed -> "ERR"
+                                else -> "?"
+                            },
+                            containerColor = statusColor.copy(alpha = TokenAlpha.SUBTLE),
+                            contentColor = statusColor,
+                        )
                     }
                 },
                 navigationIcon = {
@@ -143,34 +151,6 @@ internal fun WebViewRequestDetailScreen(
             request.errorMessage?.let { ErrorCard(it) }
         }
     }
-}
-
-@Composable
-private fun DetailStatusBadge(
-    request: WebViewRequest,
-    statusColor: Color,
-) {
-    val statusText = when {
-        request.isPending -> "..."
-        request.statusCode != null -> request.statusCode.toString()
-        request.isFailed -> "ERR"
-        else -> "?"
-    }
-    Text(
-        text = statusText,
-        style = MaterialTheme.typography.titleSmall,
-        fontWeight = FontWeight.SemiBold,
-        color = statusColor,
-        modifier = Modifier
-            .background(
-                statusColor.copy(alpha = TokenAlpha.SUBTLE),
-                RoundedCornerShape(WormaCeptorTokens.Radius.xs),
-            )
-            .padding(
-                horizontal = WormaCeptorTokens.Spacing.sm,
-                vertical = WormaCeptorTokens.Spacing.xxs,
-            ),
-    )
 }
 
 @Composable

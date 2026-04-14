@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.domain.entities.CryptoPreset
@@ -39,11 +39,11 @@ internal fun PresetsSection(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
                 CryptoPreset.entries.forEach { preset ->
-                    FilterChip(
+                    WormaCeptorChip(
+                        label = preset.displayName,
                         selected = config.algorithm == preset.config.algorithm &&
                             config.mode == preset.config.mode,
                         onClick = { onApplyPreset(preset) },
-                        label = { Text(preset.displayName) },
                     )
                 }
             }

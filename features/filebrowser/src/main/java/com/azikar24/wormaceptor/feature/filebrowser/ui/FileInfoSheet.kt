@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,8 @@ import com.azikar24.wormaceptor.domain.entities.FileInfo
 import com.azikar24.wormaceptor.feature.filebrowser.R
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEvent
 
+/** Modal bottom sheet displaying metadata for a selected file. */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FileInfoSheet(
     fileInfo: FileInfo,

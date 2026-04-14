@@ -316,11 +316,11 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/HomeScreenEffectsK
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/HomeScreenKt {
-	public static final fun HomeScreen (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewState;Lcom/azikar24/wormaceptor/feature/viewer/vm/TransactionListViewState;Lcom/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/Flow;Landroidx/compose/runtime/Composer;II)V
+	public static final fun HomeScreen (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewState;Lcom/azikar24/wormaceptor/feature/viewer/vm/TransactionListViewState;Lcom/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlinx/coroutines/flow/Flow;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/HomeTopBarKt {
-	public static final fun HomeTopBar (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewState;Lcom/azikar24/wormaceptor/feature/viewer/vm/TransactionListViewState;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/pager/PagerState;Ljava/util/List;Landroidx/compose/runtime/Composer;I)V
+	public static final fun HomeTopBar (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewState;Lcom/azikar24/wormaceptor/feature/viewer/vm/TransactionListViewState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/foundation/pager/PagerState;Ljava/util/List;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/MetricsCardKt {
@@ -446,17 +446,39 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Composa
 	public final fun getLambda-7$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenBottomControlBarKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenBottomControlBarKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenImageViewerKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenImageViewerKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenTopControlBarKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenTopControlBarKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$ImagePreviewCardKt {
@@ -470,15 +492,14 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Composa
 	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewCardKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewCardKt;
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewStateContentKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewStateContentKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
@@ -486,24 +507,35 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Composa
 	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-6$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$viewer_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewSuccessKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewSuccessKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfViewerScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfViewerScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$TransactionContextMenuKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$TransactionContextMenuKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-10 Lkotlin/jvm/functions/Function2;
+	public static field lambda-11 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
@@ -515,6 +547,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Composa
 	public fun <init> ()V
 	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-10$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-11$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
@@ -527,8 +560,6 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Composa
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/FullscreenImageViewerKt {
 	public static final fun FullscreenImageViewer ([BLcom/azikar24/wormaceptor/domain/entities/ImageMetadata;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
-	public static final fun saveImageToGallery (Landroid/content/Context;[BLjava/lang/String;)Ljava/lang/String;
-	public static final fun shareImage (Landroid/content/Context;[BLjava/lang/String;)Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ImagePreviewCardKt {
@@ -564,60 +595,32 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoad
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$PasswordProtected : com/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState {
 	public static final field $stable I
-	public fun <init> (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;)V
-	public final fun component1 ()Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;
-	public final fun copy (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$PasswordProtected;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$PasswordProtected;Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$PasswordProtected;
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$PasswordProtected;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$PasswordProtected;Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$PasswordProtected;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getMetadata ()Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;
+	public final fun getMetadata ()Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$Success : com/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState {
 	public static final field $stable I
-	public fun <init> (Landroid/graphics/Bitmap;Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;)V
+	public fun <init> (Landroid/graphics/Bitmap;Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;)V
 	public final fun component1 ()Landroid/graphics/Bitmap;
-	public final fun component2 ()Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;
-	public final fun copy (Landroid/graphics/Bitmap;Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$Success;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$Success;Landroid/graphics/Bitmap;Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$Success;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;
+	public final fun copy (Landroid/graphics/Bitmap;Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$Success;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$Success;Landroid/graphics/Bitmap;Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfLoadState$Success;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getMetadata ()Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;
+	public final fun getMetadata ()Lcom/azikar24/wormaceptor/domain/entities/PdfMetadata;
 	public final fun getThumbnail ()Landroid/graphics/Bitmap;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata {
-	public static final field $stable I
-	public fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Z)V
-	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()I
-	public final fun component2 ()Ljava/lang/String;
-	public final fun component3 ()Ljava/lang/String;
-	public final fun component4 ()Ljava/lang/String;
-	public final fun component5 ()Ljava/lang/String;
-	public final fun component6 ()J
-	public final fun component7 ()Ljava/lang/String;
-	public final fun component8 ()Z
-	public final fun copy (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Z)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/ui/components/PdfMetadata;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAuthor ()Ljava/lang/String;
-	public final fun getCreationDate ()Ljava/lang/String;
-	public final fun getCreator ()Ljava/lang/String;
-	public final fun getFileSize ()J
-	public final fun getPageCount ()I
-	public final fun getTitle ()Ljava/lang/String;
-	public final fun getVersion ()Ljava/lang/String;
-	public fun hashCode ()I
-	public final fun isPasswordProtected ()Z
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PdfPreviewCardKt {
 	public static final fun PdfPreviewCard ([BLjava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final fun isPdfContent (Ljava/lang/String;[B)Z
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/PdfViewerScreenKt {
@@ -701,11 +704,58 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/Pr
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/XmlTreeViewKt {
-	public static final fun XmlTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ComposeSyntaxColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun XmlTreeView (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gestures/SwipeBackContainerKt {
 	public static final fun SwipeBackContainer (Lkotlin/jvm/functions/Function0;ZFFLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfBottomNavigationBarKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfBottomNavigationBarKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfOverlaysKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfOverlaysKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfPageJumpDialogKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfPageJumpDialogKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfTopControlBarKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfTopControlBarKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$ZoomablePageKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$ZoomablePageKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/tools/ComposableSingletons$PerformanceOverlayToggleKt {
@@ -736,6 +786,27 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/util/CurlGenerator
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/util/HeaderFormatterKt {
 	public static final fun formatHeaders (Ljava/util/Map;)Ljava/lang/String;
+}
+
+public abstract class com/azikar24/wormaceptor/feature/viewer/ui/util/ImageOperationResult {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getMessage ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/util/ImageOperationResult$Failure : com/azikar24/wormaceptor/feature/viewer/ui/util/ImageOperationResult {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/util/ImageOperationResult$Success : com/azikar24/wormaceptor/feature/viewer/ui/util/ImageOperationResult {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/ui/util/ImageShareUtilsKt {
+	public static final fun saveImageToGallery (Landroid/content/Context;[BLjava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/ui/util/ImageOperationResult;
+	public static final fun shareImage (Landroid/content/Context;[BLjava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/ui/util/ImageOperationResult;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/vm/BinaryPayload {
@@ -852,6 +923,50 @@ public abstract class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect 
 	public static final field $stable I
 }
 
+public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateBack : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateBack;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToCrash : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/Crash;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/Crash;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/Crash;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToCrash;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToCrash;Lcom/azikar24/wormaceptor/domain/entities/Crash;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToCrash;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCrash ()Lcom/azikar24/wormaceptor/domain/entities/Crash;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToTool : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToTool;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToTool;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToTool;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRoute ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToTransaction : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToTransaction;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToTransaction;Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$NavigateToTransaction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSummary ()Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$ShowSnackBar : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect {
 	public static final field $stable I
 	public fun <init> (Ljava/lang/String;)V
@@ -866,6 +981,26 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEffect$Sho
 
 public abstract class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent {
 	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$BackPressed : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$BackPressed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$CrashClicked : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/Crash;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/Crash;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/Crash;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$CrashClicked;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$CrashClicked;Lcom/azikar24/wormaceptor/domain/entities/Crash;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$CrashClicked;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCrash ()Lcom/azikar24/wormaceptor/domain/entities/Crash;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$OverflowMenuVisibilityChanged : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent {
@@ -916,6 +1051,18 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$Tool
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$ToolNavigated : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$ToolNavigated;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$ToolNavigated;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$ToolNavigated;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRoute ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$ToolsSearchActiveChanged : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent {
 	public static final field $stable I
 	public fun <init> (Z)V
@@ -936,6 +1083,18 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$Tool
 	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$ToolsSearchQueryChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$ToolsSearchQueryChanged;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$TransactionClicked : com/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$TransactionClicked;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$TransactionClicked;Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/HomeViewEvent$TransactionClicked;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSummary ()Lcom/azikar24/wormaceptor/domain/entities/TransactionSummary;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -1406,6 +1565,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/TransactionListVie
 	public final fun getDraftFilterStatusRanges ()Ljava/util/Set;
 	public final fun getFilterMethods ()Ljava/util/Set;
 	public final fun getFilterStatusRanges ()Ljava/util/Set;
+	public final fun getHasActiveFilters ()Z
 	public final fun getQuickFilters ()Ljava/util/Set;
 	public final fun getSearchQuery ()Ljava/lang/String;
 	public final fun getSelectedIds ()Ljava/util/Set;

@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.pushtoken.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.PushTokenEngine
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
@@ -10,8 +11,9 @@ import kotlinx.coroutines.flow.launchIn
 /** ViewModel for the Push Token management screen. */
 class PushTokenViewModel(
     private val engine: PushTokenEngine,
-) : BaseViewModel<PushTokenViewState, PushTokenEffect, PushTokenViewEvent>(
+) : BaseViewModel<PushTokenViewState, PushTokenEffect, PushTokenViewEvent, NoOpNavigator>(
     initialState = PushTokenViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

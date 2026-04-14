@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -20,6 +19,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.gestures.SwipeBackContainer
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent
@@ -97,7 +97,7 @@ private fun TransactionPagerContent(
         AnimatedContent(
             targetState = pagerState.currentIndex to pagerState.transaction,
             transitionSpec = {
-                val slideSpec = tween<IntOffset>(animDuration, easing = FastOutSlowInEasing)
+                val slideSpec = tween<IntOffset>(animDuration, easing = WormaCeptorTokens.Easing.standard)
                 if (pagerState.navigationDirection >= 0) {
                     slideInHorizontally(slideSpec) { slideOffset } togetherWith
                         slideOutHorizontally(slideSpec) { -slideOffset }

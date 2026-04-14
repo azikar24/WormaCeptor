@@ -39,6 +39,7 @@ import com.azikar24.wormaceptor.core.ui.modifier.wormaceptorFocusRing
 import com.azikar24.wormaceptor.core.ui.modifier.wormaceptorPressScale
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenDensity
 import com.azikar24.wormaceptor.core.ui.theme.tokens.scaled
 
 private val AccentStripeWidth = 3.dp
@@ -243,6 +244,45 @@ private fun WormaCeptorListItemDarkPreview() {
                     headline = "Simple item",
                     supporting = "Dark mode variant",
                 )
+            }
+        }
+    }
+}
+
+@Preview(name = "ListItem - Density Triptych", heightDp = 420)
+@Composable
+private fun WormaCeptorListItemDensityPreview() {
+    Column {
+        listOf(
+            TokenDensity.Compact to "Compact (85%)",
+            TokenDensity.Default to "Default (100%)",
+            TokenDensity.Expanded to "Expanded (115%)",
+        ).forEach { (density, label) ->
+            WormaCeptorTheme(density = density) {
+                Surface {
+                    Column {
+                        WormaCeptorListItem(
+                            headline = label,
+                            supporting = "200 OK · 128 ms",
+                            accentColor = WormaCeptorTokens.Colors.HttpMethod.get,
+                            leadingContent = {
+                                Spacer(Modifier.width(WormaCeptorTokens.Spacing.xs))
+                                WormaCeptorMethodBadge(method = "GET")
+                            },
+                            onClick = {},
+                        )
+                        WormaCeptorListItem(
+                            headline = "POST /api/v1/auth",
+                            supporting = "312 ms",
+                            accentColor = WormaCeptorTokens.Colors.HttpMethod.post,
+                            leadingContent = {
+                                Spacer(Modifier.width(WormaCeptorTokens.Spacing.xs))
+                                WormaCeptorMethodBadge(method = "POST")
+                            },
+                            onClick = {},
+                        )
+                    }
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.pushsimulator.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.NotificationPermissionException
 import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
 import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
@@ -22,8 +23,9 @@ private const val ActionIdLength = 8
 class PushSimulatorViewModel(
     private val repository: PushSimulatorRepository,
     private val engine: PushSimulatorEngine,
-) : BaseViewModel<PushSimulatorViewState, PushSimulatorViewEffect, PushSimulatorViewEvent>(
+) : BaseViewModel<PushSimulatorViewState, PushSimulatorViewEffect, PushSimulatorViewEvent, NoOpNavigator>(
     PushSimulatorViewState(),
+    NoOpNavigator,
 ) {
 
     init {

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -54,17 +55,39 @@ fun WormaCeptorButton(
     leadingIcon: (@Composable () -> Unit)? = null,
 ) {
     val isEnabled = enabled && !loading
+    val sizedModifier = modifier.defaultMinSize(
+        minHeight = WormaCeptorTokens.TouchTarget.comfortable.scaled(),
+    )
+    val filledContentPadding = PaddingValues(
+        horizontal = WormaCeptorTokens.Spacing.xl.scaled(),
+        vertical = WormaCeptorTokens.Spacing.md.scaled(),
+    )
+    val textContentPadding = PaddingValues(
+        horizontal = WormaCeptorTokens.Spacing.md.scaled(),
+        vertical = WormaCeptorTokens.Spacing.sm.scaled(),
+    )
+    // M3 state-layer opacities applied consistently to disabled containers/content
+    // across every variant so "disabled" looks identical regardless of emphasis level.
+    val disabledContainer = MaterialTheme.colorScheme.onSurface.copy(
+        alpha = WormaCeptorTokens.StateLayer.DISABLED_CONTAINER,
+    )
+    val disabledContent = MaterialTheme.colorScheme.onSurface.copy(
+        alpha = WormaCeptorTokens.StateLayer.DISABLED_CONTENT,
+    )
 
     when (variant) {
         ButtonVariant.Primary -> {
             Button(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = sizedModifier,
                 enabled = isEnabled,
                 shape = WormaCeptorTokens.Shapes.button,
+                contentPadding = filledContentPadding,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = containerColor ?: MaterialTheme.colorScheme.primary,
                     contentColor = contentColor ?: MaterialTheme.colorScheme.onPrimary,
+                    disabledContainerColor = disabledContainer,
+                    disabledContentColor = disabledContent,
                 ),
             ) {
                 ButtonContent(text = text, loading = loading, leadingIcon = leadingIcon)
@@ -74,13 +97,16 @@ fun WormaCeptorButton(
         ButtonVariant.Secondary -> {
             Button(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = sizedModifier,
                 enabled = isEnabled,
                 shape = WormaCeptorTokens.Shapes.button,
+                contentPadding = filledContentPadding,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = containerColor
                         ?: MaterialTheme.colorScheme.surfaceContainerHighest,
                     contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
+                    disabledContainerColor = disabledContainer,
+                    disabledContentColor = disabledContent,
                 ),
             ) {
                 ButtonContent(text = text, loading = loading, leadingIcon = leadingIcon)
@@ -90,12 +116,15 @@ fun WormaCeptorButton(
         ButtonVariant.Destructive -> {
             Button(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = sizedModifier,
                 enabled = isEnabled,
                 shape = WormaCeptorTokens.Shapes.button,
+                contentPadding = filledContentPadding,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = containerColor ?: MaterialTheme.colorScheme.error,
                     contentColor = contentColor ?: MaterialTheme.colorScheme.onError,
+                    disabledContainerColor = disabledContainer,
+                    disabledContentColor = disabledContent,
                 ),
             ) {
                 ButtonContent(text = text, loading = loading, leadingIcon = leadingIcon)
@@ -105,9 +134,10 @@ fun WormaCeptorButton(
         ButtonVariant.Outlined -> {
             OutlinedButton(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = sizedModifier,
                 enabled = isEnabled,
                 shape = WormaCeptorTokens.Shapes.button,
+                contentPadding = filledContentPadding,
                 border = BorderStroke(
                     width = WormaCeptorTokens.BorderWidth.regular,
                     color = if (isEnabled) {
@@ -120,6 +150,7 @@ fun WormaCeptorButton(
                 ),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = contentColor ?: MaterialTheme.colorScheme.onSurface,
+                    disabledContentColor = disabledContent,
                 ),
             ) {
                 ButtonContent(text = text, loading = loading, leadingIcon = leadingIcon)
@@ -129,15 +160,13 @@ fun WormaCeptorButton(
         ButtonVariant.Text -> {
             TextButton(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = sizedModifier,
                 enabled = isEnabled,
                 shape = WormaCeptorTokens.Shapes.button,
+                contentPadding = textContentPadding,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = contentColor ?: MaterialTheme.colorScheme.primary,
-                ),
-                contentPadding = PaddingValues(
-                    horizontal = WormaCeptorTokens.Spacing.md.scaled(),
-                    vertical = WormaCeptorTokens.Spacing.sm.scaled(),
+                    disabledContentColor = disabledContent,
                 ),
             ) {
                 ButtonContent(text = text, loading = loading, leadingIcon = leadingIcon)

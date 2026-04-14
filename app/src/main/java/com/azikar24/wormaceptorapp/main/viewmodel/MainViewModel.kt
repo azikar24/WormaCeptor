@@ -2,6 +2,7 @@ package com.azikar24.wormaceptorapp.main.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptorapp.main.uimodel.MainViewEffect
 import com.azikar24.wormaceptorapp.main.uimodel.MainViewEvent
 import com.azikar24.wormaceptorapp.main.uimodel.MainViewState
@@ -21,7 +22,10 @@ import retrofit2.Response
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
-class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent>(MainViewState()) {
+class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent, NoOpNavigator>(
+    MainViewState(),
+    NoOpNavigator,
+) {
 
     override fun handleEvent(event: MainViewEvent) {
         when (event) {

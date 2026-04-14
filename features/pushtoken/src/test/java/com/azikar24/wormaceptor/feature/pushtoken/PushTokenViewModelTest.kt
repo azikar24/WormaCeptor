@@ -1,11 +1,12 @@
 package com.azikar24.wormaceptor.feature.pushtoken
 
-import app.cash.turbine.test
 import com.azikar24.wormaceptor.core.engine.PushTokenEngine
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
 import com.azikar24.wormaceptor.domain.entities.PushTokenInfo.PushProvider
 import com.azikar24.wormaceptor.domain.entities.TokenHistory
 import com.azikar24.wormaceptor.domain.entities.TokenHistory.TokenEvent
+import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewEvent
+import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewModel
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
@@ -73,20 +74,16 @@ class PushTokenViewModelTest {
 
         @Test
         fun `initial value is null`() = runTest {
-            viewModel.currentToken.test {
-                awaitItem().shouldBeNull()
-            }
+            viewModel.uiState.value.currentToken.shouldBeNull()
         }
 
         @Test
         fun `emits updated token from engine`() = runTest {
             val token = makeSampleToken()
 
-            viewModel.currentToken.test {
-                awaitItem().shouldBeNull()
-                currentTokenFlow.value = token
-                awaitItem() shouldBe token
-            }
+            currentTokenFlow.value = token
+
+            viewModel.uiState.value.currentToken shouldBe token
         }
     }
 
@@ -95,9 +92,7 @@ class PushTokenViewModelTest {
 
         @Test
         fun `initial value is empty list`() = runTest {
-            viewModel.tokenHistory.test {
-                awaitItem().shouldBeEmpty()
-            }
+            viewModel.uiState.value.tokenHistory.shouldBeEmpty()
         }
 
         @Test
@@ -115,13 +110,11 @@ class PushTokenViewModelTest {
                 ),
             )
 
-            viewModel.tokenHistory.test {
-                awaitItem().shouldBeEmpty()
-                tokenHistoryFlow.value = history
-                val items = awaitItem()
-                items shouldHaveSize 2
-                items.first().event shouldBe TokenEvent.CREATED
-            }
+            tokenHistoryFlow.value = history
+
+            val items = viewModel.uiState.value.tokenHistory
+            items shouldHaveSize 2
+            items.first().event shouldBe TokenEvent.CREATED
         }
     }
 
@@ -130,18 +123,14 @@ class PushTokenViewModelTest {
 
         @Test
         fun `initial value is false`() = runTest {
-            viewModel.isLoading.test {
-                awaitItem() shouldBe false
-            }
+            viewModel.uiState.value.isLoading shouldBe false
         }
 
         @Test
         fun `reflects engine loading state`() = runTest {
-            viewModel.isLoading.test {
-                awaitItem() shouldBe false
-                isLoadingFlow.value = true
-                awaitItem() shouldBe true
-            }
+            isLoadingFlow.value = true
+
+            viewModel.uiState.value.isLoading shouldBe true
         }
     }
 
@@ -150,18 +139,14 @@ class PushTokenViewModelTest {
 
         @Test
         fun `initial value is null`() = runTest {
-            viewModel.error.test {
-                awaitItem().shouldBeNull()
-            }
+            viewModel.uiState.value.error.shouldBeNull()
         }
 
         @Test
         fun `reflects engine error state`() = runTest {
-            viewModel.error.test {
-                awaitItem().shouldBeNull()
-                errorFlow.value = "Token fetch failed"
-                awaitItem() shouldBe "Token fetch failed"
-            }
+            errorFlow.value = "Token fetch failed"
+
+            viewModel.uiState.value.error shouldBe "Token fetch failed"
         }
     }
 
@@ -169,8 +154,9 @@ class PushTokenViewModelTest {
     inner class `fetchToken` {
 
         @Test
-        fun `delegates to engine fetchCurrentToken`() {
-            viewModel.fetchToken()
+        fun `delegates to engine fetchCurrentToken`() = runTest {
+            viewModel.sendEvent(PushTokenViewEvent.FetchToken)
+
             verify { engine.fetchCurrentToken() }
         }
     }
@@ -179,8 +165,9 @@ class PushTokenViewModelTest {
     inner class `refreshToken` {
 
         @Test
-        fun `delegates to engine requestNewToken`() {
-            viewModel.refreshToken()
+        fun `delegates to engine requestNewToken`() = runTest {
+            viewModel.sendEvent(PushTokenViewEvent.RefreshToken)
+
             verify { engine.requestNewToken() }
         }
     }
@@ -189,8 +176,9 @@ class PushTokenViewModelTest {
     inner class `deleteToken` {
 
         @Test
-        fun `delegates to engine deleteToken`() {
-            viewModel.deleteToken()
+        fun `delegates to engine deleteToken`() = runTest {
+            viewModel.sendEvent(PushTokenViewEvent.DeleteToken)
+
             verify { engine.deleteToken() }
         }
     }
@@ -199,8 +187,9 @@ class PushTokenViewModelTest {
     inner class `clearHistory` {
 
         @Test
-        fun `delegates to engine clearHistory`() {
-            viewModel.clearHistory()
+        fun `delegates to engine clearHistory`() = runTest {
+            viewModel.sendEvent(PushTokenViewEvent.ClearHistory)
+
             verify { engine.clearHistory() }
         }
     }
@@ -209,8 +198,9 @@ class PushTokenViewModelTest {
     inner class `clearError` {
 
         @Test
-        fun `delegates to engine clearError`() {
-            viewModel.clearError()
+        fun `delegates to engine clearError`() = runTest {
+            viewModel.sendEvent(PushTokenViewEvent.DismissError)
+
             verify { engine.clearError() }
         }
     }

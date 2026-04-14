@@ -6,13 +6,15 @@ import android.security.keystore.KeyProperties
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import java.security.KeyStore
 import javax.crypto.KeyGenerator
 
 class SecureStorageTestViewModel(
     private val application: Application,
-) : BaseViewModel<SecureStorageTestViewState, SecureStorageTestViewEffect, SecureStorageTestViewEvent>(
+) : BaseViewModel<SecureStorageTestViewState, SecureStorageTestViewEffect, SecureStorageTestViewEvent, NoOpNavigator>(
     SecureStorageTestViewState(),
+    NoOpNavigator,
 ) {
 
     init {

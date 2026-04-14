@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.securestorage.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.SecureStorageEngine
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
@@ -19,8 +20,9 @@ import kotlinx.coroutines.flow.launchIn
  */
 class SecureStorageViewModel(
     private val engine: SecureStorageEngine,
-) : BaseViewModel<SecureStorageViewState, SecureStorageViewEffect, SecureStorageViewEvent>(
+) : BaseViewModel<SecureStorageViewState, SecureStorageViewEffect, SecureStorageViewEvent, NoOpNavigator>(
     initialState = SecureStorageViewState(),
+    navigator = NoOpNavigator,
 ) {
 
     init {

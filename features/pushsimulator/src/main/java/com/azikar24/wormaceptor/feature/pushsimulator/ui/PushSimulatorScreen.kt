@@ -18,11 +18,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -37,8 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
-import com.azikar24.wormaceptor.core.ui.components.ButtonVariant
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.pushsimulator.R
@@ -229,22 +226,13 @@ internal fun PushSimulatorScreenContent(
     }
 
     if (state.showPermissionDialog) {
-        AlertDialog(
-            onDismissRequest = { onEvent(PushSimulatorViewEvent.DismissPermissionDialog) },
-            title = { Text(stringResource(R.string.pushsimulator_permission_title)) },
-            text = {
-                Text(
-                    text = stringResource(R.string.pushsimulator_permission_message),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            },
-            confirmButton = {
-                WormaCeptorButton(
-                    text = stringResource(R.string.pushsimulator_ok),
-                    onClick = { onEvent(PushSimulatorViewEvent.DismissPermissionDialog) },
-                    variant = ButtonVariant.Primary,
-                )
-            },
+        WormaCeptorAlertDialog(
+            title = stringResource(R.string.pushsimulator_permission_title),
+            message = stringResource(R.string.pushsimulator_permission_message),
+            confirmLabel = stringResource(R.string.pushsimulator_ok),
+            onConfirm = { onEvent(PushSimulatorViewEvent.DismissPermissionDialog) },
+            dismissLabel = stringResource(R.string.pushsimulator_dialog_cancel),
+            onDismiss = { onEvent(PushSimulatorViewEvent.DismissPermissionDialog) },
         )
     }
 }

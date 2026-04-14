@@ -19,7 +19,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -33,9 +32,10 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMonitoringIndicator
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorPlayPauseButton
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
+import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringIndicator
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
@@ -174,16 +174,12 @@ fun ThreadViolationScreen(
         }
 
         state.selectedViolation?.let { violation ->
-            ModalBottomSheet(
+            WormaCeptorBottomSheet(
                 modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xxxl),
                 onDismissRequest = { onEvent(ThreadViolationViewEvent.DismissDetail) },
                 sheetState = sheetState,
-                shape = WormaCeptorTokens.Shapes.sheet,
             ) {
-                ViolationDetailContent(
-                    violation = violation,
-                    modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
-                )
+                ViolationDetailContent(violation = violation)
             }
         }
     }

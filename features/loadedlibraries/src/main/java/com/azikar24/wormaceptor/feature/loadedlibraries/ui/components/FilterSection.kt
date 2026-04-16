@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.loadedlibraries.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -18,7 +19,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
@@ -46,9 +47,7 @@ private fun TypeChipRow(
     colors: ToolColors.LoadedLibraries.Scheme,
 ) {
     val haptic = LocalHapticFeedback.current
-    WormaCeptorFlowRow(
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-    ) {
+    WormaCeptorScrollableRow(contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg)) {
         WormaCeptorChip(
             label = stringResource(R.string.loadedlibraries_filter_all),
             selected = selectedType == null,
@@ -65,16 +64,19 @@ private fun TypeChipRow(
                     labelRes = R.string.loadedlibraries_filter_native,
                     color = colors.nativeSo,
                 )
+
                 LoadedLibrary.LibraryType.DEX -> ChipConfig(
                     icon = Icons.Default.Android,
                     labelRes = R.string.loadedlibraries_filter_dex,
                     color = colors.dex,
                 )
+
                 LoadedLibrary.LibraryType.JAR -> ChipConfig(
                     icon = Icons.Default.Code,
                     labelRes = R.string.loadedlibraries_filter_jar,
                     color = colors.jar,
                 )
+
                 LoadedLibrary.LibraryType.AAR_RESOURCE -> error("AAR_RESOURCE is filtered out")
             }
             WormaCeptorChip(

@@ -213,9 +213,7 @@ class WebSocketViewModelTest {
             viewModel.sendEvent(WebSocketViewEvent.ConnectionSelectionCleared)
             advanceUntilIdle()
 
-            viewModel.uiState.test {
-                awaitUntil { it.selectedConnection == null }.selectedConnection shouldBe null
-            }
+            viewModel.uiState.value.selectedConnection shouldBe null
         }
     }
 

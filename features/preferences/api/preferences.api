@@ -78,11 +78,17 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/ComposableSin
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public static field lambda-6 Lkotlin/jvm/functions/Function2;
+	public static field lambda-7 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$preferences_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-6$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-7$preferences_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/PreferenceDetailScreenKt {
@@ -395,24 +401,26 @@ public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesVi
 public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/PreferenceItem;ZLjava/lang/String;Z)V
-	public synthetic fun <init> (ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/PreferenceItem;ZLjava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/PreferenceItem;ZLjava/lang/String;Z)V
+	public synthetic fun <init> (ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/PreferenceItem;ZLjava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Z
-	public final fun component10 ()I
-	public final fun component11 ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceItem;
-	public final fun component12 ()Z
-	public final fun component13 ()Ljava/lang/String;
+	public final fun component10 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component11 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component12 ()I
+	public final fun component13 ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceItem;
 	public final fun component14 ()Z
+	public final fun component15 ()Ljava/lang/String;
+	public final fun component16 ()Z
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4 ()Ljava/lang/String;
 	public final fun component5 ()Ljava/lang/String;
 	public final fun component6 ()Z
-	public final fun component7 ()Lkotlinx/collections/immutable/ImmutableList;
-	public final fun component8 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component7 ()Z
+	public final fun component8 ()Z
 	public final fun component9 ()Lkotlinx/collections/immutable/ImmutableList;
-	public final fun copy (ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/PreferenceItem;ZLjava/lang/String;Z)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/PreferenceItem;ZLjava/lang/String;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;
+	public final fun copy (ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/PreferenceItem;ZLjava/lang/String;Z)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;ZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZZLkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;ILcom/azikar24/wormaceptor/domain/entities/PreferenceItem;ZLjava/lang/String;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/preferences/vm/PreferencesViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAvailableTypes ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun getEditingItem ()Lcom/azikar24/wormaceptor/domain/entities/PreferenceItem;
@@ -428,6 +436,8 @@ public final class com/azikar24/wormaceptor/feature/preferences/vm/PreferencesVi
 	public final fun getTypeFilter ()Ljava/lang/String;
 	public fun hashCode ()I
 	public final fun isFileSearchActive ()Z
+	public final fun isFilesLoading ()Z
+	public final fun isItemsLoading ()Z
 	public final fun isLoading ()Z
 	public fun toString ()Ljava/lang/String;
 }

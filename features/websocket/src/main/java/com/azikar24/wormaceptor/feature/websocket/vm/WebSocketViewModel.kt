@@ -6,6 +6,7 @@ import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
 import com.azikar24.wormaceptor.feature.websocket.navigator.WebSocketNavigator
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,12 +24,6 @@ import kotlinx.coroutines.flow.onEach
 private const val ConnectionSearchDebounceMs = 150L
 private const val MessageSearchDebounceMs = 150L
 
-/**
- * ViewModel for the WebSocket Monitoring feature, using MVI via BaseViewModel.
- *
- * Provides filtered and searchable access to WebSocket connections and messages,
- * along with controls for direction filtering and search.
- */
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class WebSocketViewModel(
     private val engine: WebSocketMonitorEngine,
@@ -102,6 +97,8 @@ class WebSocketViewModel(
                 messageSearchQuery = "",
                 directionFilter = null,
                 expandedMessageId = null,
+                messages = persistentListOf(),
+                isMessagesLoading = true,
             )
         }
     }
@@ -116,6 +113,8 @@ class WebSocketViewModel(
                 messageSearchQuery = "",
                 directionFilter = null,
                 expandedMessageId = null,
+                messages = persistentListOf(),
+                isMessagesLoading = false,
             )
         }
     }
@@ -175,7 +174,7 @@ class WebSocketViewModel(
                 .toImmutableList()
         }.flowOn(Dispatchers.Default)
             .onEach { filtered ->
-                updateState { copy(connections = filtered) }
+                updateState { copy(connections = filtered, isConnectionsLoading = false) }
             }
             .launchIn(viewModelScope)
     }
@@ -228,7 +227,7 @@ class WebSocketViewModel(
         }.map { it.toImmutableList() }
             .flowOn(Dispatchers.Default)
             .onEach { filtered ->
-                updateState { copy(messages = filtered) }
+                updateState { copy(messages = filtered, isMessagesLoading = false) }
             }
             .launchIn(viewModelScope)
     }

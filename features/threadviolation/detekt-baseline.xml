@@ -15,6 +15,7 @@
     <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$SelectType : ThreadViolationViewEvent</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$SelectViolation : ThreadViolationViewEvent</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewEvent.kt$ThreadViolationViewEvent$ToggleMonitoring : ThreadViolationViewEvent</ID>
+    <ID>UndocumentedPublicClass:ThreadViolationViewModel.kt$ThreadViolationViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewModelFactory.kt$ThreadViolationViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:ThreadViolationViewState.kt$ThreadViolationViewState</ID>
     <ID>UndocumentedPublicFunction:ThreadViolationScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun ThreadViolationScreen( state: ThreadViolationViewState, onEvent: (ThreadViolationViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
@@ -22,6 +23,7 @@
     <ID>UndocumentedPublicProperty:ThreadViolationViewEvent.kt$ThreadViolationViewEvent.SelectViolation$val violation: ThreadViolation</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val filteredViolations: ImmutableList&lt;ThreadViolation&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val isMonitoring: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val isViolationsLoading: Boolean = true</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val selectedType: ViolationType? = null</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val selectedViolation: ThreadViolation? = null</ID>
     <ID>UndocumentedPublicProperty:ThreadViolationViewState.kt$ThreadViolationViewState$val stats: ViolationStats = ViolationStats.empty()</ID>

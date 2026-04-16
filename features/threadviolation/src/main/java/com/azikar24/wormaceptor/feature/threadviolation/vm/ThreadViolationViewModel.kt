@@ -11,12 +11,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
-/**
- * ViewModel for the Thread Violation Detection screen.
- *
- * Consolidates violation data from [ThreadViolationEngine] into a single
- * [ThreadViolationViewState] and exposes user actions via [ThreadViolationViewEvent].
- */
 class ThreadViolationViewModel(
     private val engine: ThreadViolationEngine,
 ) : BaseViewModel<ThreadViolationViewState, ThreadViolationViewEffect, ThreadViolationViewEvent, NoOpNavigator>(
@@ -35,6 +29,7 @@ class ThreadViolationViewModel(
                     filteredViolations = filterViolations(violations, selectedType),
                     stats = stats,
                     isMonitoring = isMonitoring,
+                    isViolationsLoading = false,
                 )
             }
         }.launchIn(viewModelScope)

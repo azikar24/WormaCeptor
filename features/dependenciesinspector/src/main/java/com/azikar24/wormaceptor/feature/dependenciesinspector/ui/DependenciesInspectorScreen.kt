@@ -46,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -240,38 +242,45 @@ private fun DependenciesListOrEmpty(
     colors: ToolColors.DependenciesInspector.Scheme,
     onEvent: (DependenciesInspectorViewEvent) -> Unit,
 ) {
-    if (state.filteredDependencies.isEmpty() && !state.isLoading) {
-        WormaCeptorEmptyState(
-            title = stringResource(R.string.dependenciesinspector_empty_title),
-            modifier = Modifier.fillMaxSize(),
-            subtitle = stringResource(R.string.dependenciesinspector_empty_subtitle),
-            icon = Icons.AutoMirrored.Filled.HelpOutline,
-        )
-    } else {
-        LazyColumn(
-            Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            contentPadding = PaddingValues(
-                start = WormaCeptorTokens.Spacing.lg,
-                end = WormaCeptorTokens.Spacing.lg,
-                bottom = WormaCeptorTokens.Spacing.lg +
-                    WindowInsets.navigationBars.asPaddingValues()
-                        .calculateBottomPadding(),
-            ),
-        ) {
-            items(
-                count = state.filteredDependencies.size,
-                key = { state.filteredDependencies[it].packageName },
-            ) { index ->
-                val dep = state.filteredDependencies[index]
-                DependencyCard(
-                    dep,
-                    { onEvent(DependenciesInspectorViewEvent.SelectDependency(dep)) },
-                    colors,
-                )
+    WormaCeptorLoadableContent(
+        isLoading = state.isDependenciesLoading,
+        isEmpty = state.filteredDependencies.isEmpty(),
+        loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+        empty = {
+            WormaCeptorEmptyState(
+                title = stringResource(R.string.dependenciesinspector_empty_title),
+                modifier = Modifier.fillMaxSize(),
+                subtitle = stringResource(R.string.dependenciesinspector_empty_subtitle),
+                icon = Icons.AutoMirrored.Filled.HelpOutline,
+            )
+        },
+        content = {
+            LazyColumn(
+                Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                contentPadding = PaddingValues(
+                    start = WormaCeptorTokens.Spacing.lg,
+                    end = WormaCeptorTokens.Spacing.lg,
+                    bottom = WormaCeptorTokens.Spacing.lg +
+                        WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding(),
+                ),
+            ) {
+                items(
+                    count = state.filteredDependencies.size,
+                    key = { state.filteredDependencies[it].packageName },
+                ) { index ->
+                    val dep = state.filteredDependencies[index]
+                    DependencyCard(
+                        dep,
+                        { onEvent(DependenciesInspectorViewEvent.SelectDependency(dep)) },
+                        colors,
+                    )
+                }
             }
-        }
-    }
+        },
+        modifier = Modifier.fillMaxSize(),
+    )
 }
 
 @Preview(showBackground = true, name = "Loaded")

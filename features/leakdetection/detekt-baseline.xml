@@ -9,11 +9,13 @@
     <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$SelectLeak : LeakDetectionViewEvent</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$SelectSeverity : LeakDetectionViewEvent</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewEvent.kt$LeakDetectionViewEvent$TriggerCheck : LeakDetectionViewEvent</ID>
+    <ID>UndocumentedPublicClass:LeakDetectionViewModel.kt$LeakDetectionViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewModelFactory.kt$LeakDetectionViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:LeakDetectionViewState.kt$LeakDetectionViewState</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewEvent.kt$LeakDetectionViewEvent.SelectLeak$val leak: LeakInfo</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewEvent.kt$LeakDetectionViewEvent.SelectSeverity$val severity: LeakSeverity?</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val filteredLeaks: ImmutableList&lt;LeakInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val isLeaksLoading: Boolean = true</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val isRunning: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val selectedLeak: LeakInfo? = null</ID>
     <ID>UndocumentedPublicProperty:LeakDetectionViewState.kt$LeakDetectionViewState$val selectedSeverity: LeakSeverity? = null</ID>

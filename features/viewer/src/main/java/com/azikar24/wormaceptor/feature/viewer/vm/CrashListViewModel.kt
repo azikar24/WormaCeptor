@@ -18,12 +18,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-/**
- * MVI ViewModel for the crash list tab.
- *
- * Manages crash-related UI state via [CrashListViewState] and exposes
- * engine-driven reactive data stream ([crashes]) as a [StateFlow] property.
- */
 class CrashListViewModel(
     private val queryEngine: QueryEngine,
 ) : BaseViewModel<CrashListViewState, CrashListViewEffect, CrashListViewEvent, NoOpNavigator>(
@@ -34,7 +28,7 @@ class CrashListViewModel(
     /** Reactive stream of all recorded crash entries, ordered by most recent first. Syncs into [CrashListViewState]. */
     private val crashes: StateFlow<ImmutableList<Crash>> = queryEngine.observeCrashes()
         .map { it.toImmutableList() }
-        .onEach { updateState { copy(crashes = it) } }
+        .onEach { updateState { copy(crashes = it, isCrashesLoading = false) } }
         .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.Eagerly, persistentListOf())
 

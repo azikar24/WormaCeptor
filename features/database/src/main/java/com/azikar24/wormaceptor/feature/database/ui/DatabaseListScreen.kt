@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,6 +38,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.list.WormaCeptorListItem
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
@@ -149,36 +150,24 @@ private fun DatabaseListBody(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize().imePadding()) {
-        when {
-            state.isDatabasesLoading -> {
-                DatabaseLoadingState()
-            }
-
-            state.databasesError != null -> {
-                DatabaseErrorState(error = state.databasesError)
-            }
-
-            state.databases.isEmpty() -> {
-                DatabaseEmptyState()
-            }
-
-            else -> {
-                DatabaseLoadedList(
-                    databases = state.databases,
-                    onDatabaseClick = onDatabaseClick,
-                )
-            }
+        val error = state.databasesError
+        if (error != null) {
+            DatabaseErrorState(error = error)
+        } else {
+            WormaCeptorLoadableContent(
+                isLoading = state.isDatabasesLoading,
+                isEmpty = state.databases.isEmpty(),
+                loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+                empty = { DatabaseEmptyState() },
+                content = {
+                    DatabaseLoadedList(
+                        databases = state.databases,
+                        onDatabaseClick = onDatabaseClick,
+                    )
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
         }
-    }
-}
-
-@Composable
-private fun DatabaseLoadingState(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator()
     }
 }
 

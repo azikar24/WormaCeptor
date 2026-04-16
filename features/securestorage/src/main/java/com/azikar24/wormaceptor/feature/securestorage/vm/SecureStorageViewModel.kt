@@ -12,12 +12,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
-/**
- * ViewModel for the Secure Storage Viewer screen.
- *
- * Consolidates secure storage data from [SecureStorageEngine] into a single
- * [SecureStorageViewState] and exposes user actions via [SecureStorageViewEvent].
- */
 class SecureStorageViewModel(
     private val engine: SecureStorageEngine,
 ) : BaseViewModel<SecureStorageViewState, SecureStorageViewEffect, SecureStorageViewEvent, NoOpNavigator>(
@@ -48,6 +42,7 @@ class SecureStorageViewModel(
                     filteredEntries = filterEntries(a.entries, selectedType, searchQuery),
                     summary = a.summary,
                     isLoading = a.isLoading,
+                    isEntriesLoading = false,
                     error = a.error,
                     keystoreAccessible = b.keystoreAccessible,
                     encryptedPrefsAccessible = b.encryptedPrefsAccessible,

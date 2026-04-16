@@ -17,6 +17,15 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/Composable
 	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$ListContentKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$ListContentKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$ListTopBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$ListTopBarKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -123,16 +132,17 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMon
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableSet;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;)V
-	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableSet;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableSet;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Z)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableSet;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component2 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;
 	public final fun component4 ()Ljava/lang/String;
 	public final fun component5 ()Lkotlinx/collections/immutable/ImmutableSet;
 	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;
-	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableSet;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;)Lcom/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewState;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableSet;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewState;
+	public final fun component7 ()Z
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableSet;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;Z)Lcom/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewState;Lkotlinx/collections/immutable/ImmutableList;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableSet;Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getFilteredRequests ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun getRequests ()Lkotlinx/collections/immutable/ImmutableList;
@@ -141,6 +151,7 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMon
 	public final fun getSelectedRequest ()Lcom/azikar24/wormaceptor/domain/entities/WebViewRequest;
 	public final fun getStats ()Lcom/azikar24/wormaceptor/domain/entities/WebViewRequestStats;
 	public fun hashCode ()I
+	public final fun isRequestsLoading ()Z
 	public fun toString ()Ljava/lang/String;
 }
 

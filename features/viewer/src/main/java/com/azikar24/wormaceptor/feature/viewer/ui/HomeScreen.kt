@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,7 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash
@@ -70,7 +69,7 @@ import java.util.UUID
 /**
  * HomeScreen with multi-select, context menus, and consolidated event dispatch.
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     homeState: HomeViewState,
@@ -253,6 +252,7 @@ fun HomeScreen(
                     1 -> CrashListScreen(
                         crashes = crashState.crashes,
                         onCrashClick = { onHomeEvent(HomeViewEvent.CrashClicked(it)) },
+                        isInitialLoading = crashState.isCrashesLoading,
                         isRefreshing = crashState.isRefreshingCrashes,
                         onRefresh = { onCrashEvent(CrashListViewEvent.RefreshCrashes) },
                     )
@@ -286,7 +286,6 @@ fun HomeScreen(
  * Banner showing active filters with dismiss chips.
  * Only visible on the Transactions tab when not in selection mode.
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ActiveFiltersBanner(
     transactionState: TransactionListViewState,
@@ -312,8 +311,7 @@ private fun ActiveFiltersBanner(
                 horizontalAlignment = Alignment.Start,
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
@@ -339,10 +337,8 @@ private fun ActiveFiltersBanner(
                     }
                 }
 
-                WormaCeptorFlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(
-                        WormaCeptorTokens.Spacing.xs,
-                    ),
+                WormaCeptorScrollableRow(
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
                 ) {
                     if (transactionState.searchQuery.isNotBlank()) {
                         AssistChip(

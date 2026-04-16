@@ -33,6 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.components.status.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -176,37 +178,45 @@ internal fun WebSocketDetailScreen(
             }
         },
     ) { paddingValues ->
-        Box(modifier = Modifier.imePadding()) {
-            if (state.messages.isEmpty()) {
-                WormaCeptorEmptyState(
-                    title = stringResource(
-                        if (state.messageSearchQuery.isNotBlank() || state.directionFilter != null) {
-                            R.string.websocket_empty_no_matching_messages
-                        } else {
-                            R.string.websocket_empty_no_messages
-                        },
-                    ),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    subtitle = stringResource(
-                        if (state.messageSearchQuery.isNotBlank() || state.directionFilter != null) {
-                            R.string.websocket_empty_filter_hint
-                        } else {
-                            R.string.websocket_empty_messages_hint
-                        },
-                    ),
-                )
-            } else {
-                MessageList(
-                    messages = state.messages,
-                    expandedMessageId = state.expandedMessageId,
-                    onMessageClick = { onEvent(WebSocketViewEvent.MessageExpandToggled(it)) },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                )
-            }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .imePadding(),
+        ) {
+            WormaCeptorLoadableContent(
+                isLoading = state.isMessagesLoading,
+                isEmpty = state.messages.isEmpty(),
+                loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+                empty = {
+                    WormaCeptorEmptyState(
+                        title = stringResource(
+                            if (state.messageSearchQuery.isNotBlank() || state.directionFilter != null) {
+                                R.string.websocket_empty_no_matching_messages
+                            } else {
+                                R.string.websocket_empty_no_messages
+                            },
+                        ),
+                        modifier = Modifier.fillMaxSize(),
+                        subtitle = stringResource(
+                            if (state.messageSearchQuery.isNotBlank() || state.directionFilter != null) {
+                                R.string.websocket_empty_filter_hint
+                            } else {
+                                R.string.websocket_empty_messages_hint
+                            },
+                        ),
+                    )
+                },
+                content = {
+                    MessageList(
+                        messages = state.messages,
+                        expandedMessageId = state.expandedMessageId,
+                        onMessageClick = { onEvent(WebSocketViewEvent.MessageExpandToggled(it)) },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
         }
     }
 }

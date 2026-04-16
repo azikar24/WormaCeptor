@@ -25,6 +25,7 @@
     <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$DirectionFilterToggled : WebSocketViewEvent</ID>
     <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$MessageExpandToggled : WebSocketViewEvent</ID>
     <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$MessageSearchQueryChanged : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewModel.kt$WebSocketViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:WebSocketViewModelFactory.kt$WebSocketViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:WebSocketViewState.kt$WebSocketViewState</ID>
     <ID>UndocumentedPublicFunction:WebSocketNavigation.kt$fun NavGraphBuilder.webSocketGraph( navController: NavHostController, onNavigateBack: () -&gt; Unit, )</ID>
@@ -40,6 +41,8 @@
     <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val directionCounts: Map&lt;WebSocketMessageDirection, Int&gt; = emptyMap()</ID>
     <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val directionFilter: WebSocketMessageDirection? = null</ID>
     <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val expandedMessageId: Long? = null</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val isConnectionsLoading: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val isMessagesLoading: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val messageSearchQuery: String = ""</ID>
     <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val messages: ImmutableList&lt;WebSocketMessage&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val selectedConnection: WebSocketConnection? = null</ID>

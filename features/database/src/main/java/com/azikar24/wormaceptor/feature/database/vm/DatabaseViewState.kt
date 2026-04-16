@@ -11,7 +11,7 @@ data class DatabaseViewState(
     val databases: ImmutableList<DatabaseInfo> = persistentListOf(),
     val databaseSearchQuery: String = "",
     val isDatabaseSearchActive: Boolean = false,
-    val isDatabasesLoading: Boolean = false,
+    val isDatabasesLoading: Boolean = true,
     val databasesError: String? = null,
 
     val selectedDatabaseName: String? = null,

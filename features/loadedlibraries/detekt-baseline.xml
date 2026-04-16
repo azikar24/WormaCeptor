@@ -10,13 +10,16 @@
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetSelectedType : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$SetShowSystemLibs : LoadedLibrariesViewEvent</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent$ToggleSearch : LoadedLibrariesViewEvent</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewModelFactory.kt$LoadedLibrariesViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicClass:LoadedLibrariesViewState.kt$LoadedLibrariesViewState</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SelectLibrary$val library: LoadedLibrary</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSearchQuery$val query: String</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSelectedType$val type: LoadedLibrary.LibraryType?</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetShowSystemLibs$val show: Boolean</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val error: String? = null</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val filteredLibraries: ImmutableList&lt;LoadedLibrary&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val isLibrariesLoading: Boolean = true</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val isLoading: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val searchActive: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewState.kt$LoadedLibrariesViewState$val searchQuery: String = ""</ID>

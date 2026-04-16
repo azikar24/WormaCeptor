@@ -12,10 +12,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
-/**
- * ViewModel for the File Browser feature.
- * Manages navigation stack, file listing, and file operations.
- */
 class FileBrowserViewModel(
     private val repository: FileSystemRepository,
     private val application: Application,
@@ -54,6 +50,7 @@ class FileBrowserViewModel(
                 updateState {
                     copy(
                         isLoading = false,
+                        isFilesLoading = false,
                         filteredFiles = roots.toImmutableList(),
                         currentPath = null,
                         navigationStack = persistentListOf(),
@@ -63,6 +60,7 @@ class FileBrowserViewModel(
                 updateState {
                     copy(
                         isLoading = false,
+                        isFilesLoading = false,
                         error = application.getString(R.string.filebrowser_error_load_root, e.message),
                     )
                 }

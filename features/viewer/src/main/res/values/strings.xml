@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- HomeScreen -->
-    <string name="viewer_home_title">WormaCeptor V2</string>
+    <string name="viewer_home_title">WormaCeptor</string>
     <string name="viewer_home_back">Back</string>
     <string name="viewer_home_filter">Filter</string>
     <string name="viewer_home_more_options">More options</string>

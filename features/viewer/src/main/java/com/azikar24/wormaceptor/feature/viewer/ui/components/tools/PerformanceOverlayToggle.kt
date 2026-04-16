@@ -77,7 +77,7 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
     val borderColor = when {
         !canDrawOverlays -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
         isOverlayEnabled -> WormaCeptorTokens.Colors.Category.performance.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
-        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
     }
 
     Surface(

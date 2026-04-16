@@ -11,12 +11,6 @@ import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
-/**
- * ViewModel for the WebView Monitor feature.
- *
- * Observes [WebViewMonitorEngine] flows and consolidates them into
- * a single [WebViewMonitorViewState] exposed via [uiState].
- */
 class WebViewMonitorViewModel(
     private val engine: WebViewMonitorEngine,
 ) : BaseViewModel<WebViewMonitorViewState, WebViewMonitorViewEffect, WebViewMonitorViewEvent, NoOpNavigator>(
@@ -65,24 +59,6 @@ class WebViewMonitorViewModel(
         }
     }
 
-    /**
-     * Creates a WebViewClient that monitors network requests.
-     *
-     * This method is intentionally kept as a public function (not an event)
-     * because it returns a value and is called by the host Activity/Fragment,
-     * not the Composable UI layer.
-     *
-     * @param webViewId Unique identifier for the WebView being monitored
-     * @param delegate Optional delegate WebViewClient to forward calls to
-     * @return A WebViewClient that intercepts and logs requests
-     */
-    fun createMonitoringClient(
-        webViewId: String,
-        delegate: android.webkit.WebViewClient? = null,
-    ): android.webkit.WebViewClient {
-        return engine.createMonitoringClient(webViewId, delegate)
-    }
-
     private fun observeEngine() {
         combine(
             engine.requests,
@@ -98,6 +74,7 @@ class WebViewMonitorViewModel(
                     filteredRequests = filtered.toImmutableList(),
                     stats = stats,
                     resourceTypeFilter = typeFilter.toImmutableSet(),
+                    isRequestsLoading = false,
                 )
             }
         }.launchIn(viewModelScope)

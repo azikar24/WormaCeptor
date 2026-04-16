@@ -9,12 +9,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
-/**
- * ViewModel for the Loaded Libraries Inspector screen.
- *
- * Extends [BaseViewModel] following MVI: all user actions arrive via [LoadedLibrariesViewEvent],
- * the single [uiState] drives recomposition, and one-time effects use [LoadedLibrariesViewEffect].
- */
 class LoadedLibrariesViewModel(
     private val engine: LoadedLibrariesEngine,
 ) : BaseViewModel<LoadedLibrariesViewState, LoadedLibrariesViewEffect, LoadedLibrariesViewEvent, NoOpNavigator>(
@@ -73,6 +67,7 @@ class LoadedLibrariesViewModel(
                     isLoading = loading,
                     error = err,
                     summary = summary,
+                    isLibrariesLoading = false,
                 )
             }
         }.launchIn(viewModelScope)

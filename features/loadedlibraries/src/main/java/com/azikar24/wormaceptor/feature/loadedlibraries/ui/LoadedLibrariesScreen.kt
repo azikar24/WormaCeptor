@@ -46,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -230,33 +232,40 @@ private fun LibrariesListOrEmpty(
     colors: ToolColors.LoadedLibraries.Scheme,
     onEvent: (LoadedLibrariesViewEvent) -> Unit,
 ) {
-    if (state.filteredLibraries.isEmpty() && !state.isLoading) {
-        WormaCeptorEmptyState(
-            title = stringResource(R.string.loadedlibraries_empty),
-            modifier = Modifier.fillMaxSize(),
-            icon = Icons.Default.Extension,
-        )
-    } else {
-        LazyColumn(
-            Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            contentPadding = PaddingValues(
-                start = WormaCeptorTokens.Spacing.lg,
-                end = WormaCeptorTokens.Spacing.lg,
-                bottom = WormaCeptorTokens.Spacing.lg +
-                    WindowInsets.navigationBars.asPaddingValues()
-                        .calculateBottomPadding(),
-            ),
-        ) {
-            items(state.filteredLibraries, key = { it.path }) { lib ->
-                LibraryCard(
-                    lib,
-                    { onEvent(LoadedLibrariesViewEvent.SelectLibrary(lib)) },
-                    colors,
-                )
+    WormaCeptorLoadableContent(
+        isLoading = state.isLibrariesLoading,
+        isEmpty = state.filteredLibraries.isEmpty(),
+        loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+        empty = {
+            WormaCeptorEmptyState(
+                title = stringResource(R.string.loadedlibraries_empty),
+                modifier = Modifier.fillMaxSize(),
+                icon = Icons.Default.Extension,
+            )
+        },
+        content = {
+            LazyColumn(
+                Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                contentPadding = PaddingValues(
+                    start = WormaCeptorTokens.Spacing.lg,
+                    end = WormaCeptorTokens.Spacing.lg,
+                    bottom = WormaCeptorTokens.Spacing.lg +
+                        WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding(),
+                ),
+            ) {
+                items(state.filteredLibraries, key = { it.path }) { lib ->
+                    LibraryCard(
+                        lib,
+                        { onEvent(LoadedLibrariesViewEvent.SelectLibrary(lib)) },
+                        colors,
+                    )
+                }
             }
-        }
-    }
+        },
+        modifier = Modifier.fillMaxSize(),
+    )
 }
 
 @Suppress("UnusedPrivateMember", "MagicNumber")
@@ -266,6 +275,7 @@ private fun LoadedLibrariesScreenPreview() {
     WormaCeptorTheme {
         LoadedLibrariesScreen(
             state = LoadedLibrariesViewState(
+                isLibrariesLoading = false,
                 filteredLibraries = persistentListOf(
                     LoadedLibrary(
                         name = "libc.so",

@@ -1,7 +1,6 @@
 package com.azikar24.wormaceptor.feature.securestorage.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,10 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DataObject
 import androidx.compose.material.icons.filled.EnhancedEncryption
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -82,7 +81,6 @@ internal fun SummarySection(
             )
         }
 
-        // Last refresh time
         lastRefreshTime?.let { time ->
             Text(
                 text = stringResource(R.string.securestorage_last_scanned, formatDateShort(time)),
@@ -105,10 +103,16 @@ private fun SummaryCard(
     notAccessibleText: String,
     modifier: Modifier = Modifier,
 ) {
+    val contentAlpha = if (isAccessible) {
+        WormaCeptorTokens.Alpha.PROMINENT
+    } else {
+        WormaCeptorTokens.Alpha.MODERATE
+    }
+    val statusDescription = if (isAccessible) accessibleText else notAccessibleText
     WormaCeptorCard(
-        modifier = modifier,
+        modifier = modifier.semantics { contentDescription = statusDescription },
         shape = WormaCeptorTokens.Shapes.cardLarge,
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        backgroundColor = color.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
     ) {
         Column(
             modifier = Modifier
@@ -116,30 +120,18 @@ private fun SummaryCard(
                 .padding(WormaCeptorTokens.Spacing.md),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // Icon with status indicator
-            Box {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = label,
-                    tint = color,
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                )
-                // Small status dot in corner
-                Icon(
-                    imageVector = if (isAccessible) Icons.Default.CheckCircle else Icons.Default.Error,
-                    contentDescription = if (isAccessible) accessibleText else notAccessibleText,
-                    tint = if (isAccessible) WormaCeptorTokens.Colors.SecureStorage.encrypted else WormaCeptorTokens.Colors.SecureStorage.unencrypted,
-                    modifier = Modifier
-                        .size(WormaCeptorTokens.IconSize.xxs)
-                        .align(Alignment.TopEnd),
-                )
-            }
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = color.copy(alpha = contentAlpha),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+            )
             Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
             Text(
                 text = count.toString(),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = color,
+                color = color.copy(alpha = contentAlpha),
             )
             Text(
                 text = label,

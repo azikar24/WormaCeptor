@@ -128,11 +128,13 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingleto
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$CrashListScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$CrashListScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$FilterBottomSheetContentKt {
@@ -250,8 +252,10 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingleto
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionListScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionListScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionOverviewSectionKt {
@@ -268,7 +272,7 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashDetailScreenK
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashListScreenKt {
 	public static final fun CrashItem (Lcom/azikar24/wormaceptor/domain/entities/Crash;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
-	public static final fun CrashListScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun CrashListScreen (Lkotlinx/collections/immutable/ImmutableList;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashUtils {
@@ -904,17 +908,19 @@ public final class com/azikar24/wormaceptor/feature/viewer/vm/CrashListViewModel
 public final class com/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;ZZ)V
-	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;ZZZ)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;ZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component2 ()Z
 	public final fun component3 ()Z
-	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;ZZ)Lcom/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState;Lkotlinx/collections/immutable/ImmutableList;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState;
+	public final fun component4 ()Z
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;ZZZ)Lcom/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState;Lkotlinx/collections/immutable/ImmutableList;ZZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/viewer/vm/CrashListViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getCrashes ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun getShowClearCrashesDialog ()Z
 	public fun hashCode ()I
+	public final fun isCrashesLoading ()Z
 	public final fun isRefreshingCrashes ()Z
 	public fun toString ()Ljava/lang/String;
 }

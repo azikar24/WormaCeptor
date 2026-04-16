@@ -67,7 +67,7 @@
     <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val databasesError: String? = null</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isDataLoading: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isDatabaseSearchActive: Boolean = false</ID>
-    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isDatabasesLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isDatabasesLoading: Boolean = true</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isQueryExecuting: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isTableSearchActive: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewState.kt$DatabaseViewState$val isTablesLoading: Boolean = false</ID>

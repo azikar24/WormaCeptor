@@ -40,17 +40,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.list.WormaCeptorListItem
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
 import com.azikar24.wormaceptor.feature.preferences.R
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewEvent
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewState
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-/**
- * Screen displaying a list of SharedPreferences files.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreferencesListScreen(
@@ -139,42 +139,61 @@ private fun PreferencesListBody(
             )
         }
 
-        if (state.preferenceFiles.isEmpty()) {
-            WormaCeptorEmptyState(
-                title = if (state.fileSearchQuery.isNotBlank()) {
-                    stringResource(R.string.preferences_empty_no_matches)
-                } else {
-                    stringResource(R.string.preferences_empty_no_files)
-                },
-                modifier = Modifier.fillMaxSize(),
-                subtitle = if (state.fileSearchQuery.isNotBlank()) {
-                    stringResource(R.string.preferences_empty_try_different_search)
-                } else {
-                    stringResource(R.string.preferences_empty_files_will_appear)
-                },
-                icon = Icons.Default.Settings,
+        WormaCeptorLoadableContent(
+            isLoading = state.isFilesLoading,
+            isEmpty = state.preferenceFiles.isEmpty(),
+            loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+            empty = { PreferencesEmptyState(state.fileSearchQuery) },
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            PreferencesFilesList(
+                files = state.preferenceFiles,
+                onFileClick = onFileClick,
             )
+        }
+    }
+}
+
+@Composable
+private fun PreferencesEmptyState(searchQuery: String) {
+    WormaCeptorEmptyState(
+        title = if (searchQuery.isNotBlank()) {
+            stringResource(R.string.preferences_empty_no_matches)
         } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    start = WormaCeptorTokens.Spacing.md,
-                    end = WormaCeptorTokens.Spacing.md,
-                    top = WormaCeptorTokens.Spacing.sm,
-                    bottom = WormaCeptorTokens.Spacing.xs +
-                        WindowInsets.navigationBars.asPaddingValues()
-                            .calculateBottomPadding(),
-                ),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            ) {
-                items(state.preferenceFiles, key = { it.name }) { file ->
-                    PreferenceFileItem(
-                        file = file,
-                        onClick = { onFileClick(file) },
-                        modifier = Modifier.animateItem(),
-                    )
-                }
-            }
+            stringResource(R.string.preferences_empty_no_files)
+        },
+        modifier = Modifier.fillMaxSize(),
+        subtitle = if (searchQuery.isNotBlank()) {
+            stringResource(R.string.preferences_empty_try_different_search)
+        } else {
+            stringResource(R.string.preferences_empty_files_will_appear)
+        },
+        icon = Icons.Default.Settings,
+    )
+}
+
+@Composable
+private fun PreferencesFilesList(
+    files: ImmutableList<PreferenceFile>,
+    onFileClick: (PreferenceFile) -> Unit,
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            start = WormaCeptorTokens.Spacing.md,
+            end = WormaCeptorTokens.Spacing.md,
+            top = WormaCeptorTokens.Spacing.sm,
+            bottom = WormaCeptorTokens.Spacing.xs +
+                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+        ),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    ) {
+        items(files, key = { it.name }) { file ->
+            PreferenceFileItem(
+                file = file,
+                onClick = { onFileClick(file) },
+                modifier = Modifier.animateItem(),
+            )
         }
     }
 }

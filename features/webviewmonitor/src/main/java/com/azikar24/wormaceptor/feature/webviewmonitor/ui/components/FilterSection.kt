@@ -1,8 +1,7 @@
 package com.azikar24.wormaceptor.feature.webviewmonitor.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,13 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorExpandableCard
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.WebViewResourceType
 import com.azikar24.wormaceptor.feature.webviewmonitor.R
 import com.azikar24.wormaceptor.feature.webviewmonitor.ui.getResourceTypeIcon
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun FilterSection(
     resourceTypeFilter: Set<WebViewResourceType>,
@@ -53,9 +51,8 @@ internal fun FilterSection(
             }
         },
     ) {
-        WormaCeptorFlowRow(
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+        WormaCeptorScrollableRow(
+            contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.md),
         ) {
             WebViewResourceType.entries
                 .filter { it != WebViewResourceType.UNKNOWN }

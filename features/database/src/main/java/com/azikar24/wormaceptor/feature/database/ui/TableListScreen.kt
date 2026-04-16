@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.TableChart
 import androidx.compose.material.icons.filled.Terminal
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.list.WormaCeptorListItem
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.TableInfo
@@ -69,9 +70,7 @@ fun TableListScreen(
         modifier = modifier,
     ) { padding ->
         TableListBody(
-            isLoading = state.isTablesLoading,
-            error = state.tablesError,
-            tables = state.tables,
+            state = state,
             onTableClick = onTableClick,
             modifier = Modifier.padding(padding),
         )
@@ -138,43 +137,29 @@ private fun TableListTopBar(
 
 @Composable
 private fun TableListBody(
-    isLoading: Boolean,
-    error: String?,
-    tables: ImmutableList<TableInfo>,
+    state: DatabaseViewState,
     onTableClick: (TableInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.fillMaxSize().imePadding()) {
-        when {
-            isLoading -> {
-                TableLoadingState()
-            }
-
-            error != null -> {
-                TableErrorState(error = error)
-            }
-
-            tables.isEmpty() -> {
-                TableEmptyState()
-            }
-
-            else -> {
-                TableLoadedList(
-                    tables = tables,
-                    onTableClick = onTableClick,
-                )
-            }
+        val error = state.tablesError
+        if (error != null) {
+            TableErrorState(error = error)
+        } else {
+            WormaCeptorLoadableContent(
+                isLoading = state.isTablesLoading,
+                isEmpty = state.tables.isEmpty(),
+                loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+                empty = { TableEmptyState() },
+                content = {
+                    TableLoadedList(
+                        tables = state.tables,
+                        onTableClick = onTableClick,
+                    )
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
         }
-    }
-}
-
-@Composable
-private fun TableLoadingState(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize().navigationBarsPadding(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator()
     }
 }
 

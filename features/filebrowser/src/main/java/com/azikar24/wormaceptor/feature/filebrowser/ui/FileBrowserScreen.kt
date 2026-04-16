@@ -21,7 +21,6 @@ import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,13 +39,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.FileEntry
@@ -228,33 +228,28 @@ private fun FileBrowserBody(
     padding: PaddingValues,
 ) {
     Box(modifier = Modifier.imePadding()) {
-        when {
-            state.isLoading -> LoadingIndicator(padding)
-            state.filteredFiles.isEmpty() -> WormaCeptorEmptyState(
-                title = stringResource(R.string.filebrowser_no_files_found),
-                icon = Icons.Default.Folder,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-            )
-            else -> FileList(
-                files = state.filteredFiles,
-                onEvent = onEvent,
-                padding = padding,
-            )
-        }
-    }
-}
-
-@Composable
-private fun LoadingIndicator(padding: PaddingValues) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator()
+        WormaCeptorLoadableContent(
+            isLoading = state.isLoading || state.isFilesLoading,
+            isEmpty = state.filteredFiles.isEmpty(),
+            loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize().padding(padding)) },
+            empty = {
+                WormaCeptorEmptyState(
+                    title = stringResource(R.string.filebrowser_no_files_found),
+                    icon = Icons.Default.Folder,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                )
+            },
+            content = {
+                FileList(
+                    files = state.filteredFiles,
+                    onEvent = onEvent,
+                    padding = padding,
+                )
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 

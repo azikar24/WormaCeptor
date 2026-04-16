@@ -16,4 +16,5 @@ data class WebViewMonitorViewState(
     val searchQuery: String = "",
     val resourceTypeFilter: ImmutableSet<WebViewResourceType> = persistentSetOf(),
     val selectedRequest: WebViewRequest? = null,
+    val isRequestsLoading: Boolean = true,
 )

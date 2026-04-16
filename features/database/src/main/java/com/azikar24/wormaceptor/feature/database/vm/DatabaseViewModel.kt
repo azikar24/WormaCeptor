@@ -43,7 +43,7 @@ class DatabaseViewModel(
     private fun observeFilteredLists() {
         combine(
             _allDatabases,
-            uiState.map { it.databaseSearchQuery }.debounce(SEARCH_DEBOUNCE_MS),
+            uiState.map { it.databaseSearchQuery }.debounce { if (it.isBlank()) 0L else SEARCH_DEBOUNCE_MS },
         ) { databases, query ->
             if (query.isBlank()) {
                 databases.toImmutableList()
@@ -59,7 +59,7 @@ class DatabaseViewModel(
 
         combine(
             _allTables,
-            uiState.map { it.tableSearchQuery }.debounce(SEARCH_DEBOUNCE_MS),
+            uiState.map { it.tableSearchQuery }.debounce { if (it.isBlank()) 0L else SEARCH_DEBOUNCE_MS },
         ) { tables, query ->
             if (query.isBlank()) {
                 tables.toImmutableList()
@@ -167,6 +167,14 @@ class DatabaseViewModel(
                     repository.getDatabases()
                 }
                 _allDatabases.value = databases
+                // Eagerly reflect the load so the UI transitions loading → content in one frame,
+                // without flashing the empty state while combine's query debounce is pending.
+                updateState {
+                    copy(
+                        databases = databases.toImmutableList(),
+                        isDatabasesLoading = false,
+                    )
+                }
             } catch (e: IllegalStateException) {
                 updateState {
                     copy(
@@ -174,8 +182,6 @@ class DatabaseViewModel(
                         isDatabasesLoading = false,
                     )
                 }
-            } finally {
-                updateState { copy(isDatabasesLoading = false) }
             }
         }
     }
@@ -202,12 +208,21 @@ class DatabaseViewModel(
                     repository.getTables(dbName)
                 }
                 _allTables.value = tables
+                // Eagerly reflect the load so the UI transitions loading → content in one frame,
+                // without flashing the empty state while combine's query debounce is pending.
+                updateState {
+                    copy(
+                        tables = tables.toImmutableList(),
+                        isTablesLoading = false,
+                    )
+                }
             } catch (e: IllegalStateException) {
                 updateState {
-                    copy(tablesError = e.message ?: application.getString(R.string.database_error_load_tables))
+                    copy(
+                        tablesError = e.message ?: application.getString(R.string.database_error_load_tables),
+                        isTablesLoading = false,
+                    )
                 }
-            } finally {
-                updateState { copy(isTablesLoading = false) }
             }
         }
     }

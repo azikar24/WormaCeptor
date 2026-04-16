@@ -2,18 +2,18 @@ package com.azikar24.wormaceptor.feature.location.ui
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
@@ -21,13 +21,14 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -36,7 +37,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
-import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
@@ -125,24 +125,21 @@ internal fun MockLocationStatusCard(
     isEnabled: Boolean,
     isInputValid: Boolean,
 ) {
+    val statusColor = if (isMockEnabled) {
+        WormaCeptorTokens.Colors.Location.enabled
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
     val containerColor = if (isMockEnabled) {
         WormaCeptorTokens.Colors.Location.enabled.copy(alpha = TokenAlpha.SUBTLE)
     } else {
-        MaterialTheme.colorScheme.surface
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
     }
 
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
         backgroundColor = containerColor,
         shape = WormaCeptorTokens.Shapes.cardLarge,
-        style = CardStyle.Outlined,
-        borderColor = if (isMockEnabled) {
-            null
-        } else {
-            MaterialTheme.colorScheme.outlineVariant.copy(
-                alpha = WormaCeptorTokens.Alpha.MODERATE,
-            )
-        },
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             MockLocationToggleRow(
@@ -150,6 +147,7 @@ internal fun MockLocationStatusCard(
                 isMockEnabled = isMockEnabled,
                 onToggle = onToggle,
                 isEnabled = isEnabled,
+                statusColor = statusColor,
             )
 
             val showHint = isEnabled && !isMockEnabled && !isInputValid
@@ -175,6 +173,7 @@ private fun MockLocationToggleRow(
     isMockEnabled: Boolean,
     onToggle: () -> Unit,
     isEnabled: Boolean,
+    statusColor: Color,
 ) {
     val haptic = LocalHapticFeedback.current
 
@@ -191,11 +190,17 @@ private fun MockLocationToggleRow(
                 },
             )
             .padding(WormaCeptorTokens.Spacing.lg),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        MockLocationIcon(isMockEnabled)
-        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.lg))
-        MockLocationLabel(currentMockLocation, isMockEnabled, Modifier.weight(1f))
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+        ) {
+            MockLocationIcon(isMockEnabled = isMockEnabled, statusColor = statusColor)
+            MockLocationLabel(currentMockLocation, isMockEnabled, Modifier)
+        }
         Switch(
             checked = isMockEnabled,
             onCheckedChange = null,
@@ -209,30 +214,25 @@ private fun MockLocationToggleRow(
 }
 
 @Composable
-private fun MockLocationIcon(isMockEnabled: Boolean) {
-    Surface(
-        shape = CircleShape,
-        color = if (isMockEnabled) {
-            WormaCeptorTokens.Colors.Location.enabled
-        } else {
-            MaterialTheme.colorScheme.surfaceVariant
-        },
-        modifier = Modifier.size(WormaCeptorTokens.Spacing.xxxl),
+private fun MockLocationIcon(
+    isMockEnabled: Boolean,
+    statusColor: Color,
+) {
+    Box(
+        modifier = Modifier
+            .size(WormaCeptorTokens.Spacing.xxxl)
+            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
+            .background(statusColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            Icon(
-                imageVector = Icons.Default.LocationOn,
-                contentDescription = stringResource(
-                    if (isMockEnabled) R.string.location_mock_active else R.string.location_mock_disabled,
-                ),
-                tint = if (isMockEnabled) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
-                modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
-            )
-        }
+        Icon(
+            imageVector = Icons.Default.LocationOn,
+            contentDescription = stringResource(
+                if (isMockEnabled) R.string.location_mock_active else R.string.location_mock_disabled,
+            ),
+            tint = statusColor,
+            modifier = Modifier.size(WormaCeptorTokens.Spacing.xl),
+        )
     }
 }
 

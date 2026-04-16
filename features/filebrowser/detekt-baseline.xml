@@ -8,10 +8,10 @@
     <ID>MagicNumber:FileViewerScreen.kt$28</ID>
     <ID>TooGenericExceptionCaught:FileSystemDataSource.kt$FileSystemDataSource$e: Exception</ID>
     <ID>UndocumentedPublicClass:FileBrowserNavigationContributor.kt$FileBrowserNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:FileBrowserViewModel.kt$FileBrowserViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:FileBrowserViewModelFactory.kt$FileBrowserViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicFunction:BreadcrumbBar.kt$@Composable fun BreadcrumbBar( isAtRoot: Boolean, navigationStack: ImmutableList&lt;String&gt;, onRootClick: () -&gt; Unit, onBreadcrumbClick: (index: Int) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicFunction:FileBrowserScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun FileBrowserScreen( state: FileBrowserViewState, onEvent: (FileBrowserViewEvent) -&gt; Unit, modifier: Modifier = Modifier, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
-    <ID>UndocumentedPublicFunction:FileInfoSheet.kt$@Composable fun FileInfoSheet( fileInfo: FileInfo, onEvent: (FileBrowserViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicFunction:FileListItem.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun FileListItem( file: FileEntry, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>ViewModelInjection:FileBrowserNavigationContributor.kt$viewModel</ID>
   </CurrentIssues>

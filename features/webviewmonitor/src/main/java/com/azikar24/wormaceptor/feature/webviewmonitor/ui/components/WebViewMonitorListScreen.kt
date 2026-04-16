@@ -46,6 +46,7 @@ internal fun WebViewMonitorListScreen(
             onClearFilters = { onEvent(WebViewMonitorViewEvent.ClearFilters) },
             onRequestClick = { request -> onEvent(WebViewMonitorViewEvent.SelectRequest(request)) },
             modifier = Modifier.padding(padding).imePadding(),
+            isLoading = state.isRequestsLoading,
         )
     }
 }

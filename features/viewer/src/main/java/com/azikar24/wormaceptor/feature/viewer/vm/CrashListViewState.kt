@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class CrashListViewState(
     val crashes: ImmutableList<Crash> = persistentListOf(),
+    val isCrashesLoading: Boolean = true,
     val isRefreshingCrashes: Boolean = false,
     val showClearCrashesDialog: Boolean = false,
 )

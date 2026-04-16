@@ -15,21 +15,16 @@ public final class com/azikar24/wormaceptor/feature/securestorage/ui/ComposableS
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$securestorage_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$securestorage_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$securestorage_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$securestorage_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/ui/SecureStorageScreenKt {
 	public static final fun SecureStorageScreen (Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
-}
-
-public final class com/azikar24/wormaceptor/feature/securestorage/ui/components/ComposableSingletons$TypeFilterChipsKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/securestorage/ui/components/ComposableSingletons$TypeFilterChipsKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public fun <init> ()V
-	public final fun getLambda-1$securestorage_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEffect {
@@ -101,20 +96,21 @@ public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStora
 public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;)V
-	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
-	public final fun component10 ()Ljava/lang/Long;
+	public final fun component10 ()Z
+	public final fun component11 ()Ljava/lang/Long;
 	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;
 	public final fun component3 ()Z
-	public final fun component4 ()Ljava/lang/String;
-	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
-	public final fun component6 ()Ljava/lang/String;
-	public final fun component7 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
-	public final fun component8 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
 	public final fun component9 ()Z
-	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getEncryptedPrefsAccessible ()Z
 	public final fun getError ()Ljava/lang/String;
@@ -126,6 +122,7 @@ public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStora
 	public final fun getSelectedType ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
 	public final fun getSummary ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;
 	public fun hashCode ()I
+	public final fun isEntriesLoading ()Z
 	public final fun isLoading ()Z
 	public fun toString ()Ljava/lang/String;
 }

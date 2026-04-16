@@ -47,6 +47,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.components.state.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -61,9 +63,10 @@ import kotlinx.collections.immutable.ImmutableList
  *
  * @param crashes List of crashes to display
  * @param onCrashClick Callback when a crash is clicked
+ * @param modifier Modifier for the screen
+ * @param isInitialLoading Whether the initial data load is still in progress
  * @param isRefreshing Whether the list is currently refreshing
  * @param onRefresh Callback triggered on pull-to-refresh
- * @param modifier Modifier for the screen
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,6 +74,7 @@ fun CrashListScreen(
     crashes: ImmutableList<Crash>,
     onCrashClick: (Crash) -> Unit,
     modifier: Modifier = Modifier,
+    isInitialLoading: Boolean = false,
     isRefreshing: Boolean = false,
     onRefresh: (() -> Unit)? = null,
 ) {
@@ -94,57 +98,20 @@ fun CrashListScreen(
         }
     }
 
-    if (crashes.isEmpty()) {
-        // Empty state with pull-to-refresh
-        if (onRefresh != null) {
-            PullToRefreshBox(
-                isRefreshing = isRefreshing,
-                onRefresh = onRefresh,
-                state = pullToRefreshState,
-                modifier = modifier.fillMaxSize(),
-                indicator = {
-                    Indicator(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        isRefreshing = isRefreshing,
-                        state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                },
-            ) {
+    val loadable: @Composable () -> Unit = {
+        WormaCeptorLoadableContent(
+            isLoading = isInitialLoading,
+            isEmpty = crashes.isEmpty(),
+            loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+            empty = {
                 WormaCeptorEmptyState(
                     title = stringResource(R.string.viewer_crash_list_no_crashes_title),
                     subtitle = stringResource(R.string.viewer_crash_list_no_crashes_description),
                     icon = Icons.Default.BugReport,
                     modifier = Modifier.fillMaxSize(),
                 )
-            }
-        } else {
-            WormaCeptorEmptyState(
-                title = stringResource(R.string.viewer_crash_list_no_crashes_title),
-                subtitle = stringResource(R.string.viewer_crash_list_no_crashes_description),
-                icon = Icons.Default.BugReport,
-                modifier = modifier,
-            )
-        }
-    } else {
-        // List with pull-to-refresh
-        if (onRefresh != null) {
-            PullToRefreshBox(
-                isRefreshing = isRefreshing,
-                onRefresh = onRefresh,
-                state = pullToRefreshState,
-                modifier = modifier.fillMaxSize(),
-                indicator = {
-                    Indicator(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        isRefreshing = isRefreshing,
-                        state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                },
-            ) {
+            },
+            content = {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(
@@ -162,25 +129,32 @@ fun CrashListScreen(
                         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                     }
                 }
-            }
-        } else {
-            LazyColumn(
-                modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    start = WormaCeptorTokens.Spacing.md,
-                    top = WormaCeptorTokens.Spacing.md,
-                    end = WormaCeptorTokens.Spacing.md,
-                    bottom = WormaCeptorTokens.Spacing.md + navigationBarPadding,
-                ),
-            ) {
-                items(crashes, key = { it.id }) { crash ->
-                    CrashItem(
-                        crash = crash,
-                        onClick = { onCrashClick(crash) },
-                    )
-                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
-                }
-            }
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+
+    if (onRefresh != null) {
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            state = pullToRefreshState,
+            modifier = modifier.fillMaxSize(),
+            indicator = {
+                Indicator(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    isRefreshing = isRefreshing,
+                    state = pullToRefreshState,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            },
+        ) {
+            loadable()
+        }
+    } else {
+        Box(modifier = modifier.fillMaxSize()) {
+            loadable()
         }
     }
 }

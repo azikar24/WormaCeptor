@@ -5,8 +5,8 @@ import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-/** Consolidated UI state for the Loaded Libraries Inspector screen. */
 data class LoadedLibrariesViewState(
+    val isLibrariesLoading: Boolean = true,
     val filteredLibraries: ImmutableList<LoadedLibrary> = persistentListOf(),
     val summary: LibrarySummary = LibrarySummary.empty(),
     val isLoading: Boolean = false,

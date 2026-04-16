@@ -5,9 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
@@ -77,7 +74,6 @@ internal fun ToolCategorySection(
             .fillMaxWidth()
             .animateContentSize(animationSpec = tween(WormaCeptorTokens.Animation.NORMAL)),
     ) {
-        // Category header
         Surface(
             onClick = onToggleCollapse,
             modifier = Modifier
@@ -97,18 +93,6 @@ internal fun ToolCategorySection(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Category accent dot
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .background(
-                                color = categoryColor,
-                                shape = CircleShape,
-                            ),
-                    )
-
-                    Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
-
                     Icon(
                         imageVector = categoryIcon,
                         contentDescription = null,
@@ -127,7 +111,6 @@ internal fun ToolCategorySection(
 
                     Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
-                    // Tool count badge
                     Surface(
                         shape = WormaCeptorTokens.Shapes.badge,
                         color = MaterialTheme.colorScheme.surfaceVariant,
@@ -161,7 +144,6 @@ internal fun ToolCategorySection(
             }
         }
 
-        // Tools grid
         AnimatedVisibility(
             visible = !isCollapsed,
             enter = WormaCeptorTokens.Animations.expandFadeIn,
@@ -197,7 +179,6 @@ internal fun ToolCategorySection(
                                     modifier = Modifier.weight(1f),
                                 )
                             }
-                            // Fill empty slots in last row
                             repeat(columns - rowTools.size) {
                                 Spacer(modifier = Modifier.weight(1f))
                             }

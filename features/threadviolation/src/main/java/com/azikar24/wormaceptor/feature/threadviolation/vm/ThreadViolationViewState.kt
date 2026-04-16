@@ -7,6 +7,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class ThreadViolationViewState(
+    val isViolationsLoading: Boolean = true,
     val filteredViolations: ImmutableList<ThreadViolation> = persistentListOf(),
     val stats: ViolationStats = ViolationStats.empty(),
     val isMonitoring: Boolean = false,

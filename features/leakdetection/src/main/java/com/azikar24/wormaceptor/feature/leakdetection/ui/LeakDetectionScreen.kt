@@ -37,6 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringIndicator
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
@@ -185,20 +187,27 @@ private fun LeakDetectionBody(
             onSelectSeverity = { onEvent(LeakDetectionViewEvent.SelectSeverity(it)) },
         )
 
-        if (state.filteredLeaks.isEmpty()) {
-            LeakEmptyState(
-                isRunning = state.isRunning,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-            )
-        } else {
-            LeakList(
-                leaks = state.filteredLeaks,
-                onSelectLeak = { onEvent(LeakDetectionViewEvent.SelectLeak(it)) },
-                modifier = Modifier.weight(1f),
-            )
-        }
+        WormaCeptorLoadableContent(
+            isLoading = state.isLeaksLoading,
+            isEmpty = state.filteredLeaks.isEmpty(),
+            loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+            empty = {
+                LeakEmptyState(
+                    isRunning = state.isRunning,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            },
+            content = {
+                LeakList(
+                    leaks = state.filteredLeaks,
+                    onSelectLeak = { onEvent(LeakDetectionViewEvent.SelectLeak(it)) },
+                    modifier = Modifier.fillMaxSize(),
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+        )
     }
 }
 

@@ -10,6 +10,7 @@ data class LeakDetectionViewState(
     val filteredLeaks: ImmutableList<LeakInfo> = persistentListOf(),
     val summary: LeakSummary = LeakSummary.empty(),
     val isRunning: Boolean = false,
+    val isLeaksLoading: Boolean = true,
     val selectedSeverity: LeakSeverity? = null,
     val selectedLeak: LeakInfo? = null,
 )

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -43,12 +42,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -233,49 +235,61 @@ private fun PreferenceDetailBody(
             onEvent = onEvent,
         )
 
-        if (state.preferenceItems.isEmpty()) {
-            WormaCeptorEmptyState(
-                title = if (state.itemSearchQuery.isNotBlank() || state.typeFilter != null) {
-                    stringResource(R.string.preferences_empty_no_matches)
-                } else {
-                    stringResource(R.string.preferences_empty_no_preferences)
-                },
-                modifier = Modifier.fillMaxSize(),
-                subtitle = if (state.itemSearchQuery.isNotBlank() || state.typeFilter != null) {
-                    stringResource(R.string.preferences_empty_try_adjusting_filters)
-                } else {
-                    stringResource(R.string.preferences_empty_add_using_button)
-                },
-                icon = Icons.Default.Key,
-            )
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    start = WormaCeptorTokens.Spacing.md,
-                    end = WormaCeptorTokens.Spacing.md,
-                    top = WormaCeptorTokens.Spacing.sm,
-                    bottom = WormaCeptorTokens.Spacing.xs +
-                        WindowInsets.navigationBars.asPaddingValues()
-                            .calculateBottomPadding(),
-                ),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            ) {
-                items(state.preferenceItems, key = { it.key }) { item ->
-                    PreferenceItemCard(
-                        item = item,
-                        typeColors = typeColors,
-                        onClick = {
-                            onEvent(PreferencesViewEvent.Detail.EditSheetOpened(item))
-                        },
-                        onLongClick = {
-                            onEvent(PreferencesViewEvent.Detail.DeleteConfirmShown(item.key))
-                        },
-                        modifier = Modifier.animateItem(),
-                    )
+        WormaCeptorLoadableContent(
+            isLoading = state.isItemsLoading,
+            isEmpty = state.preferenceItems.isEmpty(),
+            loading = {
+                WormaCeptorListSkeleton(
+                    modifier = Modifier.fillMaxSize(),
+                    rowHeight = 76.dp,
+                )
+            },
+            empty = {
+                WormaCeptorEmptyState(
+                    title = if (state.itemSearchQuery.isNotBlank() || state.typeFilter != null) {
+                        stringResource(R.string.preferences_empty_no_matches)
+                    } else {
+                        stringResource(R.string.preferences_empty_no_preferences)
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                    subtitle = if (state.itemSearchQuery.isNotBlank() || state.typeFilter != null) {
+                        stringResource(R.string.preferences_empty_try_adjusting_filters)
+                    } else {
+                        stringResource(R.string.preferences_empty_add_using_button)
+                    },
+                    icon = Icons.Default.Key,
+                )
+            },
+            content = {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(
+                        start = WormaCeptorTokens.Spacing.md,
+                        end = WormaCeptorTokens.Spacing.md,
+                        top = WormaCeptorTokens.Spacing.sm,
+                        bottom = WormaCeptorTokens.Spacing.xs +
+                            WindowInsets.navigationBars.asPaddingValues()
+                                .calculateBottomPadding(),
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                ) {
+                    items(state.preferenceItems, key = { it.key }) { item ->
+                        PreferenceItemCard(
+                            item = item,
+                            typeColors = typeColors,
+                            onClick = {
+                                onEvent(PreferencesViewEvent.Detail.EditSheetOpened(item))
+                            },
+                            onLongClick = {
+                                onEvent(PreferencesViewEvent.Detail.DeleteConfirmShown(item.key))
+                            },
+                            modifier = Modifier.animateItem(),
+                        )
+                    }
                 }
-            }
-        }
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
@@ -287,11 +301,11 @@ private fun PreferenceDetailFilterChips(
 ) {
     if (state.availableTypes.isEmpty()) return
 
-    WormaCeptorFlowRow(
+    WormaCeptorScrollableRow(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(horizontal = WormaCeptorTokens.Spacing.md)
             .padding(bottom = WormaCeptorTokens.Spacing.sm),
+        contentPadding = PaddingValues(0.dp),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
     ) {
         WormaCeptorChip(

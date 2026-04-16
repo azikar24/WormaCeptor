@@ -10,12 +10,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
-/**
- * ViewModel for the Dependencies Inspector screen.
- *
- * Extends [BaseViewModel] following MVI: all user actions arrive via [DependenciesInspectorViewEvent],
- * the single [uiState] drives recomposition, and one-time effects use [DependenciesInspectorViewEffect].
- */
 class DependenciesInspectorViewModel(
     private val engine: DependenciesInspectorEngine,
 ) : BaseViewModel<
@@ -80,6 +74,7 @@ class DependenciesInspectorViewModel(
                 copy(
                     filteredDependencies = filterDependencies(deps, selectedCategory, searchQuery, showVersionedOnly),
                     isLoading = loading,
+                    isDependenciesLoading = false,
                     error = err,
                     summary = summary,
                 )

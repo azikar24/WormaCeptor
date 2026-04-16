@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,6 +35,8 @@ import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseBu
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringIndicator
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
@@ -139,38 +140,45 @@ fun ThreadViolationScreen(
             )
 
             // Violations list
-            if (state.filteredViolations.isEmpty()) {
-                WormaCeptorEmptyState(
-                    title = stringResource(
-                        if (state.isMonitoring) {
-                            R.string.threadviolation_empty_monitoring
-                        } else {
-                            R.string.threadviolation_empty_no_violations
-                        },
-                    ),
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                    subtitle = stringResource(
-                        if (state.isMonitoring) {
-                            R.string.threadviolation_empty_hint_monitoring
-                        } else {
-                            R.string.threadviolation_empty_hint_start
-                        },
-                    ),
-                    icon = Icons.Default.Warning,
-                )
-            } else {
-                LazyColumn(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-                ) {
-                    items(state.filteredViolations, key = { it.id }) { violation ->
-                        ViolationCard(
-                            violation = violation,
-                            onClick = { onEvent(ThreadViolationViewEvent.SelectViolation(violation)) },
-                        )
+            WormaCeptorLoadableContent(
+                isLoading = state.isViolationsLoading,
+                isEmpty = state.filteredViolations.isEmpty(),
+                loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+                empty = {
+                    WormaCeptorEmptyState(
+                        title = stringResource(
+                            if (state.isMonitoring) {
+                                R.string.threadviolation_empty_monitoring
+                            } else {
+                                R.string.threadviolation_empty_no_violations
+                            },
+                        ),
+                        modifier = Modifier.fillMaxSize(),
+                        subtitle = stringResource(
+                            if (state.isMonitoring) {
+                                R.string.threadviolation_empty_hint_monitoring
+                            } else {
+                                R.string.threadviolation_empty_hint_start
+                            },
+                        ),
+                        icon = Icons.Default.Warning,
+                    )
+                },
+                content = {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                    ) {
+                        items(state.filteredViolations, key = { it.id }) { violation ->
+                            ViolationCard(
+                                violation = violation,
+                                onClick = { onEvent(ThreadViolationViewEvent.SelectViolation(violation)) },
+                            )
+                        }
                     }
-                }
-            }
+                },
+                modifier = Modifier.fillMaxSize().weight(1f),
+            )
         }
 
         state.selectedViolation?.let { violation ->
@@ -192,6 +200,7 @@ private fun ThreadViolationScreenPreview() {
     WormaCeptorTheme {
         ThreadViolationScreen(
             state = ThreadViolationViewState(
+                isViolationsLoading = false,
                 filteredViolations = persistentListOf(
                     ThreadViolation(
                         id = 1L,

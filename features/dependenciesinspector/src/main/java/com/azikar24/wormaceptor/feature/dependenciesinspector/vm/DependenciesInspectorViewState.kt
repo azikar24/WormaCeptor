@@ -11,6 +11,7 @@ data class DependenciesInspectorViewState(
     val filteredDependencies: ImmutableList<DependencyInfo> = persistentListOf(),
     val summary: DependencySummary = DependencySummary.empty(),
     val isLoading: Boolean = false,
+    val isDependenciesLoading: Boolean = true,
     val error: String? = null,
     val selectedCategory: DependencyCategory? = null,
     val searchQuery: String = "",

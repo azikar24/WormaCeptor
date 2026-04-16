@@ -11,12 +11,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
-/**
- * ViewModel for the Memory Leak Detection screen.
- *
- * Consolidates leak data from [LeakDetectionEngine] into a single
- * [LeakDetectionViewState] and exposes user actions via [LeakDetectionViewEvent].
- */
 class LeakDetectionViewModel(
     private val engine: LeakDetectionEngine,
 ) : BaseViewModel<LeakDetectionViewState, LeakDetectionViewEffect, LeakDetectionViewEvent, NoOpNavigator>(
@@ -35,6 +29,7 @@ class LeakDetectionViewModel(
                     filteredLeaks = filterLeaks(leaks, selectedSeverity),
                     summary = summary,
                     isRunning = isRunning,
+                    isLeaksLoading = false,
                 )
             }
         }.launchIn(viewModelScope)

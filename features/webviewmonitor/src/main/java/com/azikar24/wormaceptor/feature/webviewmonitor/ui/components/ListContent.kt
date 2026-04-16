@@ -14,6 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.WebViewRequest
 import com.azikar24.wormaceptor.domain.entities.WebViewRequestStats
@@ -30,58 +32,66 @@ internal fun ListContent(
     onClearFilters: () -> Unit,
     onRequestClick: (WebViewRequest) -> Unit,
     modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
 ) {
-    if (requests.isEmpty() && stats.totalRequests == 0) {
-        WormaCeptorEmptyState(
-            title = stringResource(R.string.webviewmonitor_empty_state_enabled),
-            subtitle = stringResource(R.string.webviewmonitor_empty_subtitle),
-            icon = Icons.Default.Language,
-            modifier = modifier.fillMaxSize(),
-        )
-    } else {
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(
-                bottom = WormaCeptorTokens.Spacing.lg +
-                    WindowInsets.navigationBars.asPaddingValues()
-                        .calculateBottomPadding(),
-            ),
-        ) {
-            if (stats.totalRequests > 0) {
+    WormaCeptorLoadableContent(
+        isLoading = isLoading,
+        isEmpty = requests.isEmpty() && stats.totalRequests == 0,
+        loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+        empty = {
+            WormaCeptorEmptyState(
+                title = stringResource(R.string.webviewmonitor_empty_state_enabled),
+                subtitle = stringResource(R.string.webviewmonitor_empty_subtitle),
+                icon = Icons.Default.Language,
+                modifier = Modifier.fillMaxSize(),
+            )
+        },
+        content = {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(
+                    bottom = WormaCeptorTokens.Spacing.lg +
+                        WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding(),
+                ),
+            ) {
+                if (stats.totalRequests > 0) {
+                    item {
+                        StatsRow(
+                            stats = stats,
+                            modifier = Modifier.padding(
+                                horizontal = WormaCeptorTokens.Spacing.lg,
+                                vertical = WormaCeptorTokens.Spacing.sm,
+                            ),
+                        )
+                    }
+                }
                 item {
-                    StatsRow(
-                        stats = stats,
+                    FilterSection(
+                        resourceTypeFilter = resourceTypeFilter,
+                        onToggleResourceTypeFilter = onToggleResourceTypeFilter,
+                        onClearFilters = onClearFilters,
+                        modifier = Modifier.padding(horizontal = WormaCeptorTokens.Spacing.lg),
+                    )
+                }
+                item {
+                    CountText(
+                        filteredCount = requests.size,
+                        totalCount = totalCount,
                         modifier = Modifier.padding(
                             horizontal = WormaCeptorTokens.Spacing.lg,
-                            vertical = WormaCeptorTokens.Spacing.sm,
+                            vertical = WormaCeptorTokens.Spacing.xs,
                         ),
                     )
                 }
+                items(requests, key = { it.id }) { request ->
+                    WebViewRequestItem(
+                        request = request,
+                        onClick = { onRequestClick(request) },
+                    )
+                }
             }
-            item {
-                FilterSection(
-                    resourceTypeFilter = resourceTypeFilter,
-                    onToggleResourceTypeFilter = onToggleResourceTypeFilter,
-                    onClearFilters = onClearFilters,
-                    modifier = Modifier.padding(horizontal = WormaCeptorTokens.Spacing.lg),
-                )
-            }
-            item {
-                CountText(
-                    filteredCount = requests.size,
-                    totalCount = totalCount,
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorTokens.Spacing.lg,
-                        vertical = WormaCeptorTokens.Spacing.xs,
-                    ),
-                )
-            }
-            items(requests, key = { it.id }) { request ->
-                WebViewRequestItem(
-                    request = request,
-                    onClick = { onRequestClick(request) },
-                )
-            }
-        }
-    }
+        },
+        modifier = modifier.fillMaxSize(),
+    )
 }

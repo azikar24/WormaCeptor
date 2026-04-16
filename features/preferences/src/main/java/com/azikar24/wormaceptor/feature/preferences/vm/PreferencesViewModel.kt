@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,10 +21,6 @@ import kotlinx.coroutines.launch
 
 private const val DebounceMillis = 150L
 
-/**
- * ViewModel for the SharedPreferences Inspector feature.
- * Handles search, filtering, and CRUD operations on preferences.
- */
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class PreferencesViewModel(
     private val repository: PreferencesRepository,
@@ -121,6 +118,8 @@ class PreferencesViewModel(
                 selectedFileName = fileName,
                 itemSearchQuery = "",
                 typeFilter = null,
+                isItemsLoading = true,
+                preferenceItems = persistentListOf(),
             )
         }
     }
@@ -134,6 +133,7 @@ class PreferencesViewModel(
                 selectedFileName = null,
                 itemSearchQuery = "",
                 typeFilter = null,
+                isItemsLoading = false,
             )
         }
     }
@@ -204,7 +204,7 @@ class PreferencesViewModel(
                 }.sortedBy { it.name.lowercase() }.toImmutableList()
             }.flowOn(Dispatchers.Default)
                 .collect { files ->
-                    updateState { copy(preferenceFiles = files) }
+                    updateState { copy(preferenceFiles = files, isFilesLoading = false) }
                 }
         }
     }
@@ -237,7 +237,7 @@ class PreferencesViewModel(
                 .map { it.toImmutableList() }
                 .flowOn(Dispatchers.Default)
                 .collect { items ->
-                    updateState { copy(preferenceItems = items) }
+                    updateState { copy(preferenceItems = items, isItemsLoading = false) }
                 }
         }
     }

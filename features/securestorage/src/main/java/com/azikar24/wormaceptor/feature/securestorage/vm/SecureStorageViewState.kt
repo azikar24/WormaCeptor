@@ -10,6 +10,7 @@ data class SecureStorageViewState(
     val filteredEntries: ImmutableList<SecureStorageEntry> = persistentListOf(),
     val summary: SecureStorageSummary = SecureStorageSummary.empty(),
     val isLoading: Boolean = false,
+    val isEntriesLoading: Boolean = true,
     val error: String? = null,
     val selectedType: StorageType? = null,
     val searchQuery: String = "",

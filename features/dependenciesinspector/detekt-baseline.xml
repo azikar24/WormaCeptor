@@ -12,12 +12,14 @@
     <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$SetSelectedCategory : DependenciesInspectorViewEvent</ID>
     <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$SetShowVersionedOnly : DependenciesInspectorViewEvent</ID>
     <ID>UndocumentedPublicClass:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent$ToggleSearch : DependenciesInspectorViewEvent</ID>
+    <ID>UndocumentedPublicClass:DependenciesInspectorViewModel.kt$DependenciesInspectorViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent.SelectDependency$val dependency: DependencyInfo</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent.SetSearchQuery$val query: String</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent.SetSelectedCategory$val category: DependencyCategory?</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewEvent.kt$DependenciesInspectorViewEvent.SetShowVersionedOnly$val show: Boolean</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val error: String? = null</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val filteredDependencies: ImmutableList&lt;DependencyInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val isDependenciesLoading: Boolean = true</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val isLoading: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val isSearchActive: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:DependenciesInspectorViewState.kt$DependenciesInspectorViewState$val searchQuery: String = ""</ID>

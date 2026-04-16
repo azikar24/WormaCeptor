@@ -50,6 +50,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
@@ -235,41 +237,48 @@ private fun SecureStorageContent(
             }
         }
 
-        if (state.filteredEntries.isEmpty() && !state.isLoading) {
-            WormaCeptorEmptyState(
-                title = if (state.selectedType != null || state.searchQuery.isNotBlank()) {
-                    stringResource(R.string.securestorage_empty_no_matches)
-                } else {
-                    stringResource(R.string.securestorage_empty_no_storage)
-                },
-                modifier = Modifier.fillMaxSize(),
-                subtitle = if (state.selectedType != null || state.searchQuery.isNotBlank()) {
-                    stringResource(R.string.securestorage_empty_adjust_filters)
-                } else {
-                    stringResource(R.string.securestorage_empty_description)
-                },
-                icon = Icons.Default.Storage,
-            )
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-                contentPadding = PaddingValues(
-                    start = WormaCeptorTokens.Spacing.lg,
-                    end = WormaCeptorTokens.Spacing.lg,
-                    bottom = WormaCeptorTokens.Spacing.lg +
-                        WindowInsets.navigationBars.asPaddingValues()
-                            .calculateBottomPadding(),
-                ),
-            ) {
-                items(state.filteredEntries, key = { it.key }) { entry ->
-                    EntryCard(
-                        entry = entry,
-                        onClick = { onEvent(SecureStorageViewEvent.SelectEntry(entry)) },
-                    )
+        WormaCeptorLoadableContent(
+            isLoading = state.isEntriesLoading,
+            isEmpty = state.filteredEntries.isEmpty(),
+            loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+            empty = {
+                WormaCeptorEmptyState(
+                    title = if (state.selectedType != null || state.searchQuery.isNotBlank()) {
+                        stringResource(R.string.securestorage_empty_no_matches)
+                    } else {
+                        stringResource(R.string.securestorage_empty_no_storage)
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                    subtitle = if (state.selectedType != null || state.searchQuery.isNotBlank()) {
+                        stringResource(R.string.securestorage_empty_adjust_filters)
+                    } else {
+                        stringResource(R.string.securestorage_empty_description)
+                    },
+                    icon = Icons.Default.Storage,
+                )
+            },
+            content = {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                    contentPadding = PaddingValues(
+                        start = WormaCeptorTokens.Spacing.lg,
+                        end = WormaCeptorTokens.Spacing.lg,
+                        bottom = WormaCeptorTokens.Spacing.lg +
+                            WindowInsets.navigationBars.asPaddingValues()
+                                .calculateBottomPadding(),
+                    ),
+                ) {
+                    items(state.filteredEntries, key = { it.key }) { entry ->
+                        EntryCard(
+                            entry = entry,
+                            onClick = { onEvent(SecureStorageViewEvent.SelectEntry(entry)) },
+                        )
+                    }
                 }
-            }
-        }
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 

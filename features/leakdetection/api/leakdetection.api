@@ -16,11 +16,13 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/ui/ComposableS
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$leakdetection_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$leakdetection_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$leakdetection_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$leakdetection_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/ui/LeakDetectionScreenKt {
@@ -59,13 +61,11 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/ui/components/
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$leakdetection_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$leakdetection_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$leakdetection_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-4$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$leakdetection_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEffect {
@@ -133,21 +133,23 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetecti
 public final class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)V
-	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;
 	public final fun component3 ()Z
-	public final fun component4 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
-	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
-	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;
+	public final fun component4 ()Z
+	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;ZZLcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getFilteredLeaks ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun getSelectedLeak ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo;
 	public final fun getSelectedSeverity ()Lcom/azikar24/wormaceptor/domain/entities/LeakInfo$LeakSeverity;
 	public final fun getSummary ()Lcom/azikar24/wormaceptor/domain/entities/LeakSummary;
 	public fun hashCode ()I
+	public final fun isLeaksLoading ()Z
 	public final fun isRunning ()Z
 	public fun toString ()Ljava/lang/String;
 }

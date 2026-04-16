@@ -46,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.components.status.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -154,38 +156,46 @@ internal fun WebSocketListScreen(
             }
         },
     ) { paddingValues ->
-        Box(modifier = Modifier.imePadding()) {
-            if (state.connections.isEmpty()) {
-                WormaCeptorEmptyState(
-                    title = stringResource(
-                        if (state.connectionSearchQuery.isNotBlank()) {
-                            R.string.websocket_empty_no_matching_connections
-                        } else {
-                            R.string.websocket_empty_no_connections
-                        },
-                    ),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    subtitle = stringResource(
-                        if (state.connectionSearchQuery.isNotBlank()) {
-                            R.string.websocket_empty_search_hint
-                        } else {
-                            R.string.websocket_empty_connections_hint
-                        },
-                    ),
-                    icon = Icons.Default.Sync,
-                )
-            } else {
-                ConnectionList(
-                    connections = state.connections,
-                    onConnectionClick = onConnectionClick,
-                    getMessageCount = getMessageCount,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                )
-            }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .imePadding(),
+        ) {
+            WormaCeptorLoadableContent(
+                isLoading = state.isConnectionsLoading,
+                isEmpty = state.connections.isEmpty(),
+                loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+                empty = {
+                    WormaCeptorEmptyState(
+                        title = stringResource(
+                            if (state.connectionSearchQuery.isNotBlank()) {
+                                R.string.websocket_empty_no_matching_connections
+                            } else {
+                                R.string.websocket_empty_no_connections
+                            },
+                        ),
+                        modifier = Modifier.fillMaxSize(),
+                        subtitle = stringResource(
+                            if (state.connectionSearchQuery.isNotBlank()) {
+                                R.string.websocket_empty_search_hint
+                            } else {
+                                R.string.websocket_empty_connections_hint
+                            },
+                        ),
+                        icon = Icons.Default.Sync,
+                    )
+                },
+                content = {
+                    ConnectionList(
+                        connections = state.connections,
+                        onConnectionClick = onConnectionClick,
+                        getMessageCount = getMessageCount,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
         }
     }
 }

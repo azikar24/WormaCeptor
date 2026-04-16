@@ -1,15 +1,13 @@
 package com.azikar24.wormaceptor.feature.leakdetection.ui.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
@@ -20,10 +18,7 @@ internal fun SeverityFilterChips(
     selectedSeverity: LeakInfo.LeakSeverity?,
     onSelectSeverity: (LeakInfo.LeakSeverity?) -> Unit,
 ) {
-    WormaCeptorFlowRow(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-    ) {
+    WormaCeptorScrollableRow(contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg)) {
         WormaCeptorChip(
             label = stringResource(R.string.leakdetection_filter_all),
             selected = selectedSeverity == null,

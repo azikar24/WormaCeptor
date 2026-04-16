@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Wifi
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -23,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.components.state.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -129,107 +130,65 @@ fun SelectableTransactionListScreen(
         }
     }
 
-    if (transactions.isEmpty()) {
-        if (isInitialLoading) {
-            // Show loading state while data is being fetched
-            Box(
-                modifier = modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
-        } else if (onRefresh != null) {
-            // Empty state with pull-to-refresh
-            PullToRefreshBox(
-                isRefreshing = isRefreshing,
-                onRefresh = onRefresh,
-                state = pullToRefreshState,
-                modifier = modifier.fillMaxSize(),
-                indicator = {
-                    Indicator(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        isRefreshing = isRefreshing,
-                        state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                },
-            ) {
-                WormaCeptorEmptyState(
-                    title = stringResource(
-                        if (hasActiveFilters) {
-                            R.string.viewer_transaction_list_no_matches_title
-                        } else {
-                            R.string.viewer_transaction_list_no_transactions_title
-                        },
-                    ),
-                    subtitle = stringResource(
-                        if (hasActiveFilters) {
-                            R.string.viewer_transaction_list_no_matches_description
-                        } else {
-                            R.string.viewer_transaction_list_no_transactions_description
-                        },
-                    ),
-                    icon = Icons.Default.Wifi,
-                    actionLabel = if (hasActiveFilters) {
-                        stringResource(R.string.viewer_transaction_list_clear_filters)
-                    } else {
-                        null
-                    },
-                    onAction = if (hasActiveFilters) onClearFilters else null,
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
-        } else {
-            WormaCeptorEmptyState(
-                title = stringResource(
-                    if (hasActiveFilters) {
-                        R.string.viewer_transaction_list_no_matches_title
-                    } else {
-                        R.string.viewer_transaction_list_no_transactions_title
-                    },
-                ),
-                subtitle = stringResource(
-                    if (hasActiveFilters) {
-                        R.string.viewer_transaction_list_no_matches_description
-                    } else {
-                        R.string.viewer_transaction_list_no_transactions_description
-                    },
-                ),
-                icon = Icons.Default.Wifi,
-                actionLabel = if (hasActiveFilters) {
-                    stringResource(R.string.viewer_transaction_list_clear_filters)
+    val emptyState: @Composable () -> Unit = {
+        WormaCeptorEmptyState(
+            title = stringResource(
+                if (hasActiveFilters) {
+                    R.string.viewer_transaction_list_no_matches_title
                 } else {
-                    null
+                    R.string.viewer_transaction_list_no_transactions_title
                 },
-                onAction = if (hasActiveFilters) onClearFilters else null,
-                modifier = modifier.fillMaxSize(),
-            )
+            ),
+            subtitle = stringResource(
+                if (hasActiveFilters) {
+                    R.string.viewer_transaction_list_no_matches_description
+                } else {
+                    R.string.viewer_transaction_list_no_transactions_description
+                },
+            ),
+            icon = Icons.Default.Wifi,
+            actionLabel = if (hasActiveFilters) {
+                stringResource(R.string.viewer_transaction_list_clear_filters)
+            } else {
+                null
+            },
+            onAction = if (hasActiveFilters) onClearFilters else null,
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+
+    val loadable: @Composable () -> Unit = {
+        WormaCeptorLoadableContent(
+            isLoading = isInitialLoading,
+            isEmpty = transactions.isEmpty(),
+            loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+            empty = emptyState,
+            content = listContent,
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+
+    if (onRefresh != null) {
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            state = pullToRefreshState,
+            modifier = modifier.fillMaxSize(),
+            indicator = {
+                Indicator(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    isRefreshing = isRefreshing,
+                    state = pullToRefreshState,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            },
+        ) {
+            loadable()
         }
     } else {
-        // List with pull-to-refresh
-        if (onRefresh != null) {
-            PullToRefreshBox(
-                isRefreshing = isRefreshing,
-                onRefresh = onRefresh,
-                state = pullToRefreshState,
-                modifier = modifier.fillMaxSize(),
-                indicator = {
-                    Indicator(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        isRefreshing = isRefreshing,
-                        state = pullToRefreshState,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                },
-            ) {
-                listContent()
-            }
-        } else {
-            Box(modifier = modifier.fillMaxSize()) {
-                listContent()
-            }
+        Box(modifier = modifier.fillMaxSize()) {
+            loadable()
         }
     }
 }

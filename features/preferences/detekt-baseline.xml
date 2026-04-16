@@ -6,7 +6,6 @@
     <ID>LongMethod:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun PreferenceDetailTopBar( fileName: String, totalItemCount: Int, searchActive: Boolean, onToggleSearch: () -&gt; Unit, onClearAll: () -&gt; Unit, onBack: () -&gt; Unit, )</ID>
     <ID>LongParameterList:PreferenceDetailScreen.kt$( fileName: String, totalItemCount: Int, searchActive: Boolean, onToggleSearch: () -&gt; Unit, onClearAll: () -&gt; Unit, onBack: () -&gt; Unit, )</ID>
     <ID>ModifierMissing:PreferenceDetailScreen.kt$PreferenceDetailScreen</ID>
-    <ID>OutdatedDocumentation:PreferencesViewState.kt$PreferencesViewState</ID>
     <ID>UndocumentedPublicClass:PreferenceEditFormState.kt$PreferenceEditFormState$Companion</ID>
     <ID>UndocumentedPublicClass:PreferencesNavigator.kt$PreferencesNavigator : FeatureNavigator</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent</ID>
@@ -30,7 +29,9 @@
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SearchToggled : List</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$Selected : List</ID>
     <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SelectionCleared : List</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewModel.kt$PreferencesViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:PreferencesViewModelFactory.kt$PreferencesViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewState.kt$PreferencesViewState</ID>
     <ID>UndocumentedPublicFunction:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceDetailScreen( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, onBack: () -&gt; Unit, )</ID>
     <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$@Composable fun rememberPreferenceEditFormState(item: PreferenceItem?): PreferenceEditFormState</ID>
     <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$PreferenceEditFormState$fun addStringSetItem()</ID>
@@ -38,6 +39,7 @@
     <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$PreferenceEditFormState$fun selectType(type: String)</ID>
     <ID>UndocumentedPublicFunction:PreferenceEditFormState.kt$PreferenceEditFormState$fun toPreferenceValue(): PreferenceValue</ID>
     <ID>UndocumentedPublicFunction:PreferenceItemCard.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun PreferenceItemCard( item: PreferenceItem, typeColors: ToolColors.Preferences.TypeScheme, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:PreferencesListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferencesListScreen( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, onFileClick: (PreferenceFile) -&gt; Unit, onNavigateBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicFunction:PreferencesNavigator.kt$PreferencesNavigator$fun navigateBack()</ID>
     <ID>UndocumentedPublicFunction:PreferencesNavigator.kt$PreferencesNavigator$fun navigateToDetail()</ID>
     <ID>UndocumentedPublicProperty:PreferenceEditFormState.kt$PreferenceEditFormState$val canSave: Boolean get() = isKeyValid &amp;&amp; isValueValid</ID>
@@ -76,10 +78,21 @@
     <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.TypeFilterChanged$val typeName: String?</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.List.SearchQueryChanged$val query: String</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.List.Selected$val fileName: String</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val availableTypes: ImmutableList&lt;String&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val editingItem: PreferenceItem? = null</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val fileSearchQuery: String = ""</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val isFileSearchActive: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val isFilesLoading: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val isItemsLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val isLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val itemSearchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val preferenceFiles: ImmutableList&lt;PreferenceFile&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val preferenceItems: ImmutableList&lt;PreferenceItem&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val selectedFileName: String? = null</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showClearConfirmDialog: Boolean = false</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showDeleteConfirmKey: String? = null</ID>
     <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showEditSheet: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val totalItemCount: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val typeFilter: String? = null</ID>
   </CurrentIssues>
 </SmellBaseline>

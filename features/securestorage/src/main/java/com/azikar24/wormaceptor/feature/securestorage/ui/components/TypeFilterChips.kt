@@ -1,7 +1,5 @@
 package com.azikar24.wormaceptor.feature.securestorage.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DataObject
 import androidx.compose.material.icons.filled.EnhancedEncryption
@@ -10,22 +8,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.feature.securestorage.R
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun TypeFilterChips(
     selectedType: StorageType?,
     onTypeSelected: (StorageType?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    WormaCeptorFlowRow(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-    ) {
+    WormaCeptorScrollableRow(modifier = modifier) {
         WormaCeptorChip(
             label = stringResource(R.string.securestorage_filter_all),
             selected = selectedType == null,

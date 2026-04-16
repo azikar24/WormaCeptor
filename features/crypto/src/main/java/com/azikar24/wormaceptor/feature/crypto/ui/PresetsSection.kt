@@ -1,18 +1,17 @@
 package com.azikar24.wormaceptor.feature.crypto.ui
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.domain.entities.CryptoPreset
@@ -34,9 +33,8 @@ internal fun PresetsSection(
                 stringResource(R.string.crypto_presets),
                 style = WormaCeptorTokens.Typography.sectionHeader,
             )
-            Row(
-                modifier = Modifier.horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            WormaCeptorScrollableRow(
+                contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
             ) {
                 CryptoPreset.entries.forEach { preset ->
                     WormaCeptorChip(

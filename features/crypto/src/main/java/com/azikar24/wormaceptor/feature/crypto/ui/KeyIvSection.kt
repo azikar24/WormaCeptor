@@ -7,7 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,7 +31,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.domain.entities.KeyFormat
@@ -40,7 +40,6 @@ import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEvent
 
 private const val BitsPerByte = 8
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun KeyIvSection(
     config: CryptoConfig,
@@ -73,7 +72,6 @@ internal fun KeyIvSection(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun KeyFormatChips(
     config: CryptoConfig,
@@ -83,9 +81,8 @@ private fun KeyFormatChips(
         stringResource(R.string.crypto_key_format),
         style = WormaCeptorTokens.Typography.sectionHeader,
     )
-    WormaCeptorFlowRow(
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    WormaCeptorScrollableRow(
+        contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
     ) {
         KeyFormat.entries.forEach { format ->
             WormaCeptorChip(

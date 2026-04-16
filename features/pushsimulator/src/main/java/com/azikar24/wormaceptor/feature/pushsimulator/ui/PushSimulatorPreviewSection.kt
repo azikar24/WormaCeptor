@@ -10,7 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
@@ -46,7 +46,6 @@ import com.azikar24.wormaceptor.domain.entities.NotificationAction
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.feature.pushsimulator.R
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun NotificationPreview(
     title: String,
@@ -191,7 +190,8 @@ internal fun NotificationPreview(
                         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
                         WormaCeptorDivider(style = DividerStyle.Section)
                         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
-                        WormaCeptorFlowRow(
+                        WormaCeptorScrollableRow(
+                            contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.md),
                             horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
                         ) {
                             actions.forEach { action ->

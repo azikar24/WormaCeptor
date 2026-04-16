@@ -2,7 +2,7 @@ package com.azikar24.wormaceptor.feature.ratelimit.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
@@ -41,7 +41,6 @@ import com.azikar24.wormaceptor.feature.ratelimit.R
 import com.azikar24.wormaceptor.feature.ratelimit.ui.util.formatSpeed
 
 @Suppress("LongMethod")
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun NetworkPresetsCard(
     selectedPreset: RateLimitConfig.NetworkPreset?,
@@ -66,9 +65,8 @@ internal fun NetworkPresetsCard(
                 modifier = Modifier.semantics { heading() },
             )
 
-            WormaCeptorFlowRow(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            WormaCeptorScrollableRow(
+                contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
             ) {
                 RateLimitConfig.NetworkPreset.entries.forEach { preset ->
                     PresetChip(

@@ -10,6 +10,7 @@
 
     <!-- Section headers -->
     <string name="crypto_presets">Presets</string>
+    <string name="crypto_advanced">Advanced</string>
     <string name="crypto_algorithm">Algorithm</string>
     <string name="crypto_mode">Mode</string>
     <string name="crypto_padding">Padding</string>

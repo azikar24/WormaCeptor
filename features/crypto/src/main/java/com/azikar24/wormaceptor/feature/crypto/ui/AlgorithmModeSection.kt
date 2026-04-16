@@ -2,18 +2,25 @@ package com.azikar24.wormaceptor.feature.crypto.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorExpandableCard
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CipherMode
 import com.azikar24.wormaceptor.domain.entities.CryptoAlgorithm
@@ -22,29 +29,44 @@ import com.azikar24.wormaceptor.domain.entities.PaddingScheme
 import com.azikar24.wormaceptor.feature.crypto.R
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEvent
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun AlgorithmModeSection(
     config: CryptoConfig,
     onEvent: (CryptoViewEvent) -> Unit,
 ) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
     WormaCeptorContainer(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Column(
+        WormaCeptorExpandableCard(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+            isExpanded = expanded,
+            onToggle = { expanded = !expanded },
+            showDivider = false,
+            header = {
+                Text(
+                    text = stringResource(R.string.crypto_advanced),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            },
         ) {
-            AlgorithmChips(config, onEvent)
-            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
-            ModeChips(config, onEvent)
-            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
-            PaddingChips(config, onEvent)
+            Column(
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+            ) {
+                AlgorithmChips(config, onEvent)
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
+                ModeChips(config, onEvent)
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
+                PaddingChips(config, onEvent)
+            }
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AlgorithmChips(
     config: CryptoConfig,
@@ -54,9 +76,8 @@ private fun AlgorithmChips(
         stringResource(R.string.crypto_algorithm),
         style = WormaCeptorTokens.Typography.sectionHeader,
     )
-    WormaCeptorFlowRow(
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    WormaCeptorScrollableRow(
+        contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
     ) {
         CryptoAlgorithm.entries.filter { it != CryptoAlgorithm.RSA }.forEach { algorithm ->
             WormaCeptorChip(
@@ -68,7 +89,6 @@ private fun AlgorithmChips(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ModeChips(
     config: CryptoConfig,
@@ -78,9 +98,8 @@ private fun ModeChips(
         stringResource(R.string.crypto_mode),
         style = WormaCeptorTokens.Typography.sectionHeader,
     )
-    WormaCeptorFlowRow(
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    WormaCeptorScrollableRow(
+        contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
     ) {
         CipherMode.entries.forEach { mode ->
             WormaCeptorChip(
@@ -92,7 +111,6 @@ private fun ModeChips(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PaddingChips(
     config: CryptoConfig,
@@ -102,9 +120,8 @@ private fun PaddingChips(
         stringResource(R.string.crypto_padding),
         style = WormaCeptorTokens.Typography.sectionHeader,
     )
-    WormaCeptorFlowRow(
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    WormaCeptorScrollableRow(
+        contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
     ) {
         PaddingScheme.entries.forEach { padding ->
             WormaCeptorChip(

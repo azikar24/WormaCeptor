@@ -14,7 +14,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -62,7 +62,7 @@ import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -384,7 +384,6 @@ private fun ImportanceBadge(importance: Int) {
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PrioritySelector(
     selectedPriority: NotificationPriority,
@@ -399,8 +398,8 @@ private fun PrioritySelector(
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
-        WormaCeptorFlowRow(
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+        WormaCeptorScrollableRow(
+            contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
         ) {
             NotificationPriority.entries.forEach { priority ->
                 val priorityColor = ToolColors.PushSimulator.Priority.forPriority(priority.name)
@@ -445,7 +444,6 @@ private fun PrioritySelector(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ActionButtonsSection(
     actions: List<NotificationAction>,
@@ -485,9 +483,9 @@ private fun ActionButtonsSection(
             enter = fadeIn() + scaleIn(initialScale = 0.95f),
             exit = fadeOut() + scaleOut(targetScale = 0.95f),
         ) {
-            WormaCeptorFlowRow(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            WormaCeptorScrollableRow(
                 modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.sm),
+                contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
             ) {
                 actions.forEach { action ->
                     InputChip(

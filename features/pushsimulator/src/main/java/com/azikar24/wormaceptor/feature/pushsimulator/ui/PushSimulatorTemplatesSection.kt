@@ -5,7 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
-import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorFlowRow
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -101,7 +101,6 @@ internal fun EmptyTemplatesCard() {
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun TemplateCard(
     template: NotificationTemplate,
@@ -134,9 +133,9 @@ internal fun TemplateCard(
                 .padding(WormaCeptorTokens.Spacing.md),
             verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
         ) {
-            WormaCeptorFlowRow(
+            WormaCeptorScrollableRow(
+                contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.md),
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
             ) {
                 Surface(
                     shape = WormaCeptorTokens.Shapes.chip,

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
@@ -41,7 +40,7 @@ internal fun DroppedFramesCard(
 ) {
     WormaCeptorCard(
         modifier = modifier,
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.lg),
+        shape = WormaCeptorTokens.Shapes.cardLarge,
         backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(
             alpha = WormaCeptorTokens.Alpha.BOLD,
         ),

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Speed
@@ -42,7 +41,7 @@ internal fun SystemInfoCard(
 ) {
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
+        shape = WormaCeptorTokens.Shapes.cardExtraLarge,
         backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.Icon
@@ -117,7 +116,7 @@ fun LocationMapCard(
                 if (realLocation != null && mockLocation != null) {
                     val distance = calculateDistance(realLocation, mockLocation)
                     Surface(
-                        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                        shape = WormaCeptorTokens.Shapes.chip,
                         color = MaterialTheme.colorScheme.surfaceContainerHighest,
                     ) {
                         Text(

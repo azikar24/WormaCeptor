@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,7 +50,7 @@ internal fun CpuChartCard(
 ) {
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
+        shape = WormaCeptorTokens.Shapes.cardExtraLarge,
         backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
@@ -71,7 +70,7 @@ internal fun CpuChartCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(ChartHeight)
-                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+                        .clip(WormaCeptorTokens.Shapes.card)
                         .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -112,7 +111,7 @@ private fun CpuLineChart(
 
     Canvas(
         modifier = modifier
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+            .clip(WormaCeptorTokens.Shapes.card)
             .background(MaterialTheme.colorScheme.surfaceVariant),
     ) {
         val padding = WormaCeptorTokens.Spacing.lg.toPx()

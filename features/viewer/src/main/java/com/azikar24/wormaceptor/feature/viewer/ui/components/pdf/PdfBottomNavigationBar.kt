@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.LastPage
 import androidx.compose.material.icons.filled.ChevronLeft
@@ -80,7 +79,7 @@ internal fun PdfBottomNavigationBar(
             }
 
             Surface(
-                shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+                shape = WormaCeptorTokens.Shapes.card,
                 color = darkColors.textPrimary.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
             ) {
                 Text(

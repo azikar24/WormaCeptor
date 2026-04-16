@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
@@ -75,7 +74,7 @@ internal fun EntryCard(
             Box(
                 modifier = Modifier
                     .size(WormaCeptorTokens.TouchTarget.minimum)
-                    .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+                    .clip(WormaCeptorTokens.Shapes.card)
                     .background(encryptionColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT))
                     .semantics { stateDescription = encryptionState },
                 contentAlignment = Alignment.Center,
@@ -122,7 +121,7 @@ internal fun EntryCard(
 
             // Type badge
             Surface(
-                shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                shape = WormaCeptorTokens.Shapes.chip,
                 color = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
             ) {
                 Text(

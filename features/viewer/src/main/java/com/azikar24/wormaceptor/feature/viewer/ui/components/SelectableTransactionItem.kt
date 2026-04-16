@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -192,7 +191,7 @@ fun SelectableTransactionItem(
 private fun HostChip(host: String) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.pill),
+        shape = WormaCeptorTokens.Shapes.pill,
     ) {
         Text(
             text = host,

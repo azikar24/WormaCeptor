@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -176,7 +175,7 @@ private fun EditSheetTypeSelector(formState: PreferenceEditFormState) {
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable),
             enabled = formState.isCreating,
-            shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+            shape = WormaCeptorTokens.Shapes.button,
         )
         if (formState.isCreating) {
             ExposedDropdownMenu(
@@ -193,9 +192,7 @@ private fun EditSheetTypeSelector(formState: PreferenceEditFormState) {
                                     color = typeColor.copy(
                                         alpha = WormaCeptorTokens.Alpha.MEDIUM,
                                     ),
-                                    shape = RoundedCornerShape(
-                                        WormaCeptorTokens.Radius.xs,
-                                    ),
+                                    shape = WormaCeptorTokens.Shapes.chip,
                                 ) {
                                     Text(
                                         text = type,

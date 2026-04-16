@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,12 +63,12 @@ internal fun PrettyRawToggle(
     Row(
         modifier = Modifier
             .clip(
-                RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                WormaCeptorTokens.Shapes.chip,
             )
             .border(
                 width = WormaCeptorTokens.BorderWidth.thin,
                 color = borderColor,
-                shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                shape = WormaCeptorTokens.Shapes.chip,
             ),
     ) {
         SegmentOption(

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Share
@@ -67,7 +66,7 @@ internal fun FullscreenBottomControlBar(
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
                     Surface(
-                        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                        shape = WormaCeptorTokens.Shapes.chip,
                         color = Color.White.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
                     ) {
                         Text(
@@ -138,7 +137,7 @@ private fun ActionChip(
 ) {
     Surface(
         onClick = onClick,
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.pill),
+        shape = WormaCeptorTokens.Shapes.pill,
         color = Color.White.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
     ) {
         Row(

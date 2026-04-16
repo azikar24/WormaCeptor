@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BrokenImage
 import androidx.compose.material.icons.filled.Download
@@ -213,7 +212,7 @@ fun ImagePreviewCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+                        .clip(WormaCeptorTokens.Shapes.card)
                         .background(
                             MaterialTheme.colorScheme.surfaceVariant.copy(
                                 alpha = WormaCeptorTokens.Alpha.MODERATE,

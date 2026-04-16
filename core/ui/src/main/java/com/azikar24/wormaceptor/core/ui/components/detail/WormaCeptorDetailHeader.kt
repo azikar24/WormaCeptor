@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material3.Icon
@@ -45,7 +44,7 @@ fun WormaCeptorDetailHeader(
         Box(
             modifier = Modifier
                 .size(WormaCeptorTokens.Spacing.xxxl.scaled())
-                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
+                .clip(WormaCeptorTokens.Shapes.cardLarge)
                 .background(iconBackgroundColor),
             contentAlignment = Alignment.Center,
         ) {

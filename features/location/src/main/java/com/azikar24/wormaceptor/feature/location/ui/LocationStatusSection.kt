@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Settings
@@ -53,7 +52,7 @@ internal fun MockLocationWarningBanner() {
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
         backgroundColor = WormaCeptorTokens.Colors.Location.warning.copy(alpha = TokenAlpha.SUBTLE),
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+        shape = WormaCeptorTokens.Shapes.card,
     ) {
         Column(
             modifier = Modifier
@@ -232,7 +231,7 @@ private fun MockLocationIcon(
     Box(
         modifier = Modifier
             .size(WormaCeptorTokens.Spacing.xxxl)
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
+            .clip(WormaCeptorTokens.Shapes.cardLarge)
             .background(statusColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)),
         contentAlignment = Alignment.Center,
     ) {

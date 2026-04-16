@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -80,7 +79,7 @@ internal fun NativeHeapCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(WormaCeptorTokens.Elevation.lg)
-                    .clip(RoundedCornerShape(WormaCeptorTokens.Radius.xs)),
+                    .clip(WormaCeptorTokens.Shapes.chip),
                 color = mem.nativeHeap,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )

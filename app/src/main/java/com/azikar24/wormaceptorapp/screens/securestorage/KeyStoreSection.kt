@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.VpnKey
@@ -88,7 +87,7 @@ private fun KeyStoreItem(
 @Composable
 private fun KeyStoreIcon() {
     Surface(
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+        shape = WormaCeptorTokens.Shapes.button,
         color = WormaCeptorTokens.Colors.SecureStorage.encrypted.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
         modifier = Modifier.size(WormaCeptorTokens.IconSize.xxl),
     ) {

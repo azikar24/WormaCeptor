@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
@@ -88,7 +87,7 @@ internal fun GridFilterCard(
     Box(
         modifier = modifier
             .scale(scale)
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+            .clip(WormaCeptorTokens.Shapes.card)
             .background(backgroundColor)
             .border(
                 width = if (isSelected) {
@@ -97,7 +96,7 @@ internal fun GridFilterCard(
                     WormaCeptorTokens.BorderWidth.thin
                 },
                 color = borderColor,
-                shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+                shape = WormaCeptorTokens.Shapes.card,
             )
             .clickable(
                 interactionSource = interactionSource,

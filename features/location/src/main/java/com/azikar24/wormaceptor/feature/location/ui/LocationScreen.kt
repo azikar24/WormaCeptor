@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
@@ -85,7 +84,7 @@ fun LocationScreen(
                         )
                         if (state.isMockEnabled) {
                             Surface(
-                                shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                                shape = WormaCeptorTokens.Shapes.chip,
                                 color = WormaCeptorTokens.Colors.Location.enabled.copy(
                                     alpha = WormaCeptorTokens.Alpha.SOFT,
                                 ),

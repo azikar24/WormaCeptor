@@ -195,7 +195,7 @@ fun CrashItem(
         ) {
             // Icon badge
             Surface(
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                shape = WormaCeptorTokens.Shapes.chip,
                 color = WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
                 contentColor = WormaCeptorTokens.Colors.Status.red,
                 modifier = Modifier.size(WormaCeptorTokens.Spacing.xxl),
@@ -253,9 +253,7 @@ fun CrashItem(
                 // Stack trace location in monospace
                 if (location != null) {
                     Surface(
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(
-                            WormaCeptorTokens.Radius.xs,
-                        ),
+                        shape = WormaCeptorTokens.Shapes.chip,
                         color = MaterialTheme.colorScheme.surfaceVariant.copy(
                             alpha = WormaCeptorTokens.Alpha.STRONG,
                         ),

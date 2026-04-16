@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,7 +31,7 @@ internal fun EmptyRecompositionState(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
     ) {
         Surface(
-            shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
+            shape = WormaCeptorTokens.Shapes.cardExtraLarge,
             color = MaterialTheme.colorScheme.surfaceVariant.copy(
                 alpha = WormaCeptorTokens.Alpha.MODERATE,
             ),

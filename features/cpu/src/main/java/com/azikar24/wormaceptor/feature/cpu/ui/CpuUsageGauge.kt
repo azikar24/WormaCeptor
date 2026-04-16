@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Warning
@@ -72,7 +71,7 @@ internal fun CpuUsageGaugeCard(
 
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
+        shape = WormaCeptorTokens.Shapes.cardExtraLarge,
         backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
@@ -143,7 +142,7 @@ private fun GaugeHeader(
 @Composable
 private fun CpuWarningBadge() {
     Surface(
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+        shape = WormaCeptorTokens.Shapes.card,
         color = WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
     ) {
         Row(

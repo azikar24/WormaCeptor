@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -44,7 +43,7 @@ internal fun PerCoreUsageCard(
 ) {
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
+        shape = WormaCeptorTokens.Shapes.cardExtraLarge,
         backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
@@ -111,7 +110,7 @@ private fun CoreUsageBar(
             modifier = Modifier
                 .weight(1f)
                 .height(WormaCeptorTokens.Spacing.sm)
-                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.xs)),
+                .clip(WormaCeptorTokens.Shapes.chip),
             color = color,
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
         )

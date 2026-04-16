@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material3.Icon
@@ -85,7 +84,7 @@ internal fun EnableToggleCard(
                 Box(
                     modifier = Modifier
                         .size(WormaCeptorTokens.Spacing.xxxl)
-                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
+                        .clip(WormaCeptorTokens.Shapes.cardLarge)
                         .background(statusColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)),
                     contentAlignment = Alignment.Center,
                 ) {

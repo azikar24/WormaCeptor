@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
@@ -84,7 +83,7 @@ internal fun PresetItem(
         modifier = modifier
             .fillMaxWidth()
             .scale(scale)
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+            .clip(WormaCeptorTokens.Shapes.card)
             .border(
                 width = if (isSelected) {
                     WormaCeptorTokens.BorderWidth.thick
@@ -96,7 +95,7 @@ internal fun PresetItem(
                 } else {
                     MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
                 },
-                shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+                shape = WormaCeptorTokens.Shapes.card,
             )
             .background(
                 color = if (isSelected) {
@@ -104,7 +103,7 @@ internal fun PresetItem(
                 } else {
                     MaterialTheme.colorScheme.surface
                 },
-                shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+                shape = WormaCeptorTokens.Shapes.card,
             )
             .clickable(
                 interactionSource = interactionSource,
@@ -116,7 +115,7 @@ internal fun PresetItem(
     ) {
         // Location icon
         Surface(
-            shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+            shape = WormaCeptorTokens.Shapes.button,
             color = if (preset.isBuiltIn) {
                 WormaCeptorTokens.Colors.Location.builtInPreset.copy(alpha = TokenAlpha.SUBTLE)
             } else {
@@ -238,7 +237,7 @@ internal fun CollapsibleMapSection(
                     )
                     if (isMockActive) {
                         Surface(
-                            shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                            shape = WormaCeptorTokens.Shapes.chip,
                             color = WormaCeptorTokens.Colors.Location.enabled.copy(
                                 alpha = WormaCeptorTokens.Alpha.SOFT,
                             ),

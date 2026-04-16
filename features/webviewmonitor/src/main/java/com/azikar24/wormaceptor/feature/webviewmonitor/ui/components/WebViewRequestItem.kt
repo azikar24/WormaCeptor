@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -119,7 +118,7 @@ private fun RequestHostChip(host: String) {
                 MaterialTheme.colorScheme.surfaceVariant.copy(
                     alpha = WormaCeptorTokens.Alpha.PROMINENT,
                 ),
-                RoundedCornerShape(WormaCeptorTokens.Radius.pill),
+                WormaCeptorTokens.Shapes.pill,
             )
             .padding(
                 horizontal = WormaCeptorTokens.Spacing.sm,

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Code
@@ -75,7 +74,7 @@ private fun CategoryIcon(categoryColor: Color) {
     Box(
         Modifier
             .size(WormaCeptorTokens.IconSize.xxl)
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+            .clip(WormaCeptorTokens.Shapes.card)
             .background(categoryColor.copy(CategoryIconBackgroundAlpha)),
         Alignment.Center,
     ) {

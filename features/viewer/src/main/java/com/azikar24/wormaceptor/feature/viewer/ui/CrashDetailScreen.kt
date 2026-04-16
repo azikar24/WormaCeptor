@@ -31,7 +31,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -292,7 +291,7 @@ private fun ExceptionInfoCard(
                 Box(
                     modifier = Modifier
                         .size(WormaCeptorTokens.Spacing.sm)
-                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.pill))
+                        .clip(WormaCeptorTokens.Shapes.pill)
                         .background(MaterialTheme.colorScheme.error),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
@@ -533,7 +532,7 @@ private fun StackFrameItem(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(backgroundColor, RoundedCornerShape(WormaCeptorTokens.Radius.xs))
+            .background(backgroundColor, WormaCeptorTokens.Shapes.chip)
             .padding(
                 horizontal = WormaCeptorTokens.Spacing.sm,
                 vertical = WormaCeptorTokens.Spacing.xs,

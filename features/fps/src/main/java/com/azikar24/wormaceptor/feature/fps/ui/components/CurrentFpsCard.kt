@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,7 +50,7 @@ internal fun CurrentFpsCard(
 
     WormaCeptorCard(
         modifier = modifier,
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.xl),
+        shape = WormaCeptorTokens.Shapes.cardExtraLarge,
         backgroundColor = backgroundColor,
     ) {
         FpsCardContent(

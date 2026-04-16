@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -88,7 +87,7 @@ private fun MemoryChartEmptyState() {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
+            .clip(WormaCeptorTokens.Shapes.button)
             .background(MaterialTheme.colorScheme.surfaceVariant),
         contentAlignment = Alignment.Center,
     ) {
@@ -135,7 +134,7 @@ private fun MemoryLineChart(
 
     Canvas(
         modifier = modifier
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
+            .clip(WormaCeptorTokens.Shapes.button)
             .background(MaterialTheme.colorScheme.surfaceVariant),
     ) {
         val padding = WormaCeptorTokens.Spacing.lg.toPx()

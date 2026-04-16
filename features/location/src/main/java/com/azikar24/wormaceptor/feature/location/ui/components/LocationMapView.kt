@@ -7,7 +7,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -93,11 +92,11 @@ fun LocationMapView(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
+            .clip(WormaCeptorTokens.Shapes.cardLarge)
             .border(
                 width = borderWidth,
                 color = borderColor,
-                shape = RoundedCornerShape(WormaCeptorTokens.Radius.lg),
+                shape = WormaCeptorTokens.Shapes.cardLarge,
             ),
     ) {
         AndroidView(

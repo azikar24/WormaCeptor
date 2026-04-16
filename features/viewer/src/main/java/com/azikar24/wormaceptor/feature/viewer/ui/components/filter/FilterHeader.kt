@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -60,7 +59,7 @@ internal fun FilterHeader(
         }
 
         Surface(
-            shape = RoundedCornerShape(WormaCeptorTokens.Radius.pill),
+            shape = WormaCeptorTokens.Shapes.pill,
             color = if (filtersActive) {
                 MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
             } else {

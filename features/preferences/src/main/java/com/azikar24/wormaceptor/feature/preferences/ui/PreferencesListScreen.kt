@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -233,7 +232,7 @@ private fun PreferenceFileItem(
 @Composable
 private fun PreferenceFileIcon() {
     Surface(
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+        shape = WormaCeptorTokens.Shapes.button,
         color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         modifier = Modifier
             .padding(top = WormaCeptorTokens.Spacing.xxs)

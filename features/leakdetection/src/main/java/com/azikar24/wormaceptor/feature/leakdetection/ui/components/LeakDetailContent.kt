@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material3.MaterialTheme
@@ -61,7 +60,7 @@ internal fun LeakDetailContent(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Surface(
-                            shape = RoundedCornerShape(WormaCeptorTokens.Radius.xs),
+                            shape = WormaCeptorTokens.Shapes.chip,
                             color = background,
                         ) {
                             Text(
@@ -126,7 +125,7 @@ private fun ReferencePathSection(referencePath: List<String>) {
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+            shape = WormaCeptorTokens.Shapes.card,
             color = MaterialTheme.colorScheme.surfaceVariant,
         ) {
             Column(

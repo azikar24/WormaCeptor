@@ -99,11 +99,11 @@ private fun ThumbnailItem(
             modifier = Modifier
                 .width(thumbnailWidth)
                 .aspectRatio(ThumbnailAspectRatio)
-                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
+                .clip(WormaCeptorTokens.Shapes.button)
                 .border(
                     width = WormaCeptorTokens.BorderWidth.thick,
                     color = borderColor,
-                    shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+                    shape = WormaCeptorTokens.Shapes.button,
                 ),
         ) {
             Image(

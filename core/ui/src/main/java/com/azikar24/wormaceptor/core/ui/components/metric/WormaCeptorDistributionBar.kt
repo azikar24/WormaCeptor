@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -96,7 +95,7 @@ fun WormaCeptorDistributionBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.xs))
+                .clip(WormaCeptorTokens.Shapes.chip)
                 .background(
                     MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
                 ),
@@ -105,7 +104,7 @@ fun WormaCeptorDistributionBar(
                 modifier = Modifier
                     .fillMaxWidth(animatedPercentage / PercentMultiplier)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(WormaCeptorTokens.Radius.xs))
+                    .clip(WormaCeptorTokens.Shapes.chip)
                     .background(color),
             )
         }

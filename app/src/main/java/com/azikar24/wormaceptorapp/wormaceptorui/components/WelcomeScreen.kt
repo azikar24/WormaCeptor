@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BugReport
@@ -189,7 +188,7 @@ private fun FeatureCard(
                     Modifier
                 },
             ),
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.lg),
+        shape = WormaCeptorTokens.Shapes.cardLarge,
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
         tonalElevation = 0.dp,
     ) {
@@ -211,7 +210,7 @@ private fun FeatureIcon(feature: WelcomeFeature) {
     Box(
         modifier = Modifier
             .size(WormaCeptorTokens.TouchTarget.minimum)
-            .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
+            .clip(WormaCeptorTokens.Shapes.card)
             .background(feature.accentColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)),
         contentAlignment = Alignment.Center,
     ) {
@@ -289,7 +288,7 @@ private fun Footer(onGitHubClick: () -> Unit) {
     ) {
         // Version badge
         Surface(
-            shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+            shape = WormaCeptorTokens.Shapes.button,
             color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.STRONG),
         ) {
             Text(
@@ -306,7 +305,7 @@ private fun Footer(onGitHubClick: () -> Unit) {
         // GitHub link
         Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
+                .clip(WormaCeptorTokens.Shapes.button)
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null,

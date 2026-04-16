@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.CloudUpload
@@ -82,7 +81,7 @@ internal fun NetworkPresetsCard(
             // Preset info
             selectedPreset?.let { preset ->
                 Surface(
-                    shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+                    shape = WormaCeptorTokens.Shapes.card,
                     color = colors.primary.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
                 ) {
                     Row(

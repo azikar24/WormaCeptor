@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Warning
@@ -114,7 +113,7 @@ private fun HeapHeader(
 @Composable
 private fun HeapWarningBadge(warningColor: Color) {
     Surface(
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.sm),
+        shape = WormaCeptorTokens.Shapes.button,
         color = warningColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
     ) {
         Row(
@@ -175,7 +174,7 @@ private fun HeapProgressSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(WormaCeptorTokens.Spacing.sm)
-                .clip(RoundedCornerShape(WormaCeptorTokens.Radius.xs)),
+                .clip(WormaCeptorTokens.Shapes.chip),
             color = statusColor,
             trackColor = MaterialTheme.colorScheme.surfaceVariant,
         )

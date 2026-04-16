@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCopy
@@ -111,7 +110,7 @@ internal fun ResultCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.sm))
+                        .clip(WormaCeptorTokens.Shapes.button)
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(WormaCeptorTokens.Spacing.md),
                 ) {

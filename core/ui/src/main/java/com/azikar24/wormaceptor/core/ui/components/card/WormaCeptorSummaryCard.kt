@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -44,7 +43,7 @@ fun WormaCeptorSummaryCard(
 ) {
     WormaCeptorCard(
         modifier = modifier,
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.lg),
+        shape = WormaCeptorTokens.Shapes.cardLarge,
         backgroundColor = backgroundColor,
     ) {
         Column(

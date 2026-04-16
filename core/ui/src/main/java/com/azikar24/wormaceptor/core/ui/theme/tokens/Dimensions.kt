@@ -153,6 +153,7 @@ object TokenEasing {
 object TokenShapes {
     val card = RoundedCornerShape(TokenRadius.md)
     val cardLarge = RoundedCornerShape(TokenRadius.lg)
+    val cardExtraLarge = RoundedCornerShape(TokenRadius.xl)
     val button = RoundedCornerShape(TokenRadius.sm)
     val chip = RoundedCornerShape(TokenRadius.xs)
     val badge = RoundedCornerShape(TokenRadius.xs)

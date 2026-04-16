@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -278,7 +277,7 @@ private fun MasterToggleCard(
                 Box(
                     modifier = Modifier
                         .size(WormaCeptorTokens.Spacing.xxxl)
-                        .clip(RoundedCornerShape(WormaCeptorTokens.Radius.lg))
+                        .clip(WormaCeptorTokens.Shapes.cardLarge)
                         .background(statusColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)),
                     contentAlignment = Alignment.Center,
                 ) {

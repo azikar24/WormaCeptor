@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -74,7 +73,7 @@ fun WormaCeptorSearchBar(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         singleLine = true,
-        shape = RoundedCornerShape(WormaCeptorTokens.Radius.md),
+        shape = WormaCeptorTokens.Shapes.card,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         colors = OutlinedTextFieldDefaults.colors(

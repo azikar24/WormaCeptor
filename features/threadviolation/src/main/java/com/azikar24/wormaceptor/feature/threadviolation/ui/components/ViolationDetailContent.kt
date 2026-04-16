@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Warning
@@ -130,7 +129,7 @@ internal fun ViolationDetailContent(
                     }
                     Surface(
                         Modifier.fillMaxWidth(),
-                        RoundedCornerShape(WormaCeptorTokens.Radius.md),
+                        WormaCeptorTokens.Shapes.card,
                         MaterialTheme.colorScheme.surfaceVariant,
                     ) {
                         Column(

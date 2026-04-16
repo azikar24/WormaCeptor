@@ -303,8 +303,10 @@ private fun PreferenceDetailFilterChips(
 
     WormaCeptorScrollableRow(
         modifier = Modifier
-            .padding(horizontal = WormaCeptorTokens.Spacing.md)
-            .padding(bottom = WormaCeptorTokens.Spacing.sm),
+            .padding(
+                vertical = WormaCeptorTokens.Spacing.sm,
+                horizontal = WormaCeptorTokens.Spacing.md,
+            ),
         contentPadding = PaddingValues(0.dp),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
     ) {

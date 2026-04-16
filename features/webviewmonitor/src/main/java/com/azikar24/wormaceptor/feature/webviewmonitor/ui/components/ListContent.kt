@@ -71,7 +71,6 @@ internal fun ListContent(
                         resourceTypeFilter = resourceTypeFilter,
                         onToggleResourceTypeFilter = onToggleResourceTypeFilter,
                         onClearFilters = onClearFilters,
-                        modifier = Modifier.padding(horizontal = WormaCeptorTokens.Spacing.lg),
                     )
                 }
                 item {

@@ -26,7 +26,6 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.scaled
 
-/** Unified tile for tool items in the tools grid and favorites strip. */
 @Suppress("LongParameterList")
 @Composable
 fun WormaCeptorToolTile(
@@ -102,6 +101,7 @@ private fun TileContent(
             text = label,
             style = MaterialTheme.typography.labelSmall,
             textAlign = TextAlign.Center,
+            minLines = 2,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.onSurface,

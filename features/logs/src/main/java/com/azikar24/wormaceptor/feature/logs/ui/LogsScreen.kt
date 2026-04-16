@@ -45,6 +45,8 @@ import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.LogEntry
@@ -169,6 +171,7 @@ internal fun LogsScreenContent(
     ) { paddingValues ->
         LogsBody(
             logs = state.logs,
+            isLoading = state.isLogsLoading,
             isCapturing = state.isCapturing,
             onStartCapture = { onEvent(LogsViewEvent.CaptureStarted) },
             listState = listState,
@@ -245,27 +248,39 @@ private fun ScrollToBottomFab(
 @Composable
 private fun LogsBody(
     logs: ImmutableList<LogEntry>,
+    isLoading: Boolean,
     isCapturing: Boolean,
     onStartCapture: () -> Unit,
     listState: LazyListState,
     paddingValues: PaddingValues,
 ) {
-    Box(modifier = Modifier.imePadding()) {
-        if (logs.isEmpty()) {
-            LogsEmptyState(
-                isCapturing = isCapturing,
-                onStartCapture = onStartCapture,
-                paddingValues = paddingValues,
-            )
-        } else {
-            LogList(
-                logs = logs,
-                listState = listState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-            )
-        }
+    Box(modifier = Modifier.fillMaxSize().imePadding()) {
+        WormaCeptorLoadableContent(
+            isLoading = isLoading,
+            isEmpty = logs.isEmpty(),
+            loading = {
+                WormaCeptorListSkeleton(
+                    modifier = Modifier.fillMaxSize().padding(paddingValues),
+                )
+            },
+            empty = {
+                LogsEmptyState(
+                    isCapturing = isCapturing,
+                    onStartCapture = onStartCapture,
+                    paddingValues = paddingValues,
+                )
+            },
+            content = {
+                LogList(
+                    logs = logs,
+                    listState = listState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                )
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
@@ -312,6 +327,7 @@ private fun LogsScreenContentPreview(@PreviewParameter(LogsStatePreviewProvider:
 private class LogsStatePreviewProvider : PreviewParameterProvider<LogsViewState> {
     override val values: Sequence<LogsViewState> = sequenceOf(
         LogsViewState(
+            isLogsLoading = false,
             logs = kotlinx.collections.immutable.persistentListOf(
                 LogEntry(
                     id = 1L,
@@ -350,7 +366,7 @@ private class LogsStatePreviewProvider : PreviewParameterProvider<LogsViewState>
             ),
             currentPid = 12_345,
         ),
-        LogsViewState(isCapturing = true, currentPid = 12_345),
-        LogsViewState(isCapturing = false, currentPid = 12_345),
+        LogsViewState(isLogsLoading = false, isCapturing = true, currentPid = 12_345),
+        LogsViewState(isLogsLoading = false, isCapturing = false, currentPid = 12_345),
     )
 }

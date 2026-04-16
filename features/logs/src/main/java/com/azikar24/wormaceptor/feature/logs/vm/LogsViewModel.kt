@@ -18,12 +18,6 @@ import kotlinx.coroutines.flow.onEach
 
 private const val SearchDebounceMs = 100L
 
-/**
- * ViewModel for the Logs screen, using MVI via BaseViewModel.
- *
- * Provides filtered and searchable access to captured log entries,
- * along with controls for log level filtering and auto-scroll behavior.
- */
 @OptIn(FlowPreview::class)
 class LogsViewModel(
     private val logCaptureEngine: LogCaptureEngine,
@@ -139,19 +133,13 @@ class LogsViewModel(
             _searchQuery.debounce(SearchDebounceMs),
             _selectedLevels,
         ) { logs, query, levels ->
+            val parsed = LogQuery.parse(query)
             logs.filter { entry ->
-                val matchesLevel = entry.level in levels
-                val matchesSearch = if (query.isBlank()) {
-                    true
-                } else {
-                    entry.tag.contains(query, ignoreCase = true) ||
-                        entry.message.contains(query, ignoreCase = true)
-                }
-                matchesLevel && matchesSearch
+                entry.level in levels && parsed.matches(entry.tag, entry.message)
             }.toImmutableList()
         }.flowOn(Dispatchers.Default)
             .onEach { filtered ->
-                updateState { copy(logs = filtered) }
+                updateState { copy(logs = filtered, isLogsLoading = false) }
             }
             .launchIn(viewModelScope)
     }

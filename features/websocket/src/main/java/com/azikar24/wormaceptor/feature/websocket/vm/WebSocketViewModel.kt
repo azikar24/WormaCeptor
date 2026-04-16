@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.websocket.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
@@ -20,9 +21,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-
-private const val ConnectionSearchDebounceMs = 150L
-private const val MessageSearchDebounceMs = 150L
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class WebSocketViewModel(
@@ -166,7 +164,7 @@ class WebSocketViewModel(
     private fun observeFilteredConnections() {
         combine(
             rawConnections,
-            _connectionSearchQuery.debounce(ConnectionSearchDebounceMs),
+            _connectionSearchQuery.debounce(SearchDebounce.DEFAULT),
         ) { connections, query ->
             connections.filter { conn ->
                 query.isBlank() || conn.url.contains(query, ignoreCase = true)
@@ -209,7 +207,7 @@ class WebSocketViewModel(
         combine(
             rawMessages,
             _selectedConnectionId,
-            _messageSearchQuery.debounce(MessageSearchDebounceMs),
+            _messageSearchQuery.debounce(SearchDebounce.DEFAULT),
             _directionFilter,
         ) { messages, connectionId, query, direction ->
             if (connectionId == null) {

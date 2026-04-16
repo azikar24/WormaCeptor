@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>LongMethod:EnableToggleCard.kt$@Composable internal fun EnableToggleCard( enabled: Boolean, onToggle: () -&gt; Unit, colors: ToolColors.RateLimit.Scheme, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicClass:RateLimitNavigationContributor.kt$RateLimitNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ClearStats : RateLimitViewEvent</ID>
     <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ResetToDefaults : RateLimitViewEvent</ID>

@@ -5,6 +5,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
+import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.entities.ExportFormat
@@ -58,7 +59,7 @@ class TransactionListViewModel(
     /** Paginated transaction stream that reacts to search query and filter state changes. */
     val pagedTransactions: Flow<PagingData<TransactionSummary>> =
         combine(
-            uiState.map { it.searchQuery }.debounce(SEARCH_DEBOUNCE_PAGED),
+            uiState.map { it.searchQuery }.debounce(SearchDebounce.DEFAULT),
             uiState.map { it.filterMethods },
             uiState.map { it.filterStatusRanges },
         ) { query, methods, statusRanges ->
@@ -81,7 +82,7 @@ class TransactionListViewModel(
 
     /** Filtered and search-aware transaction list with quick-filter support. Syncs into [TransactionListViewState]. */
     private val transactions: StateFlow<ImmutableList<TransactionSummary>> = combine(
-        uiState.map { it.searchQuery }.debounce(SEARCH_DEBOUNCE_LIST),
+        uiState.map { it.searchQuery }.debounce(SearchDebounce.DEFAULT),
         uiState.map { it.filterMethods },
         uiState.map { it.filterStatusRanges },
         uiState.map { it.quickFilters },
@@ -357,8 +358,6 @@ class TransactionListViewModel(
 
     companion object {
         private const val SUBSCRIPTION_TIMEOUT = 5000L
-        private const val SEARCH_DEBOUNCE_PAGED = 100L
-        private const val SEARCH_DEBOUNCE_LIST = 150L
         private const val PAGE_SIZE = 30
         private const val REFRESH_DELAY = 500L
 

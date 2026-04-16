@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.viewer.vm
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
+import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.domain.contracts.ContentType
@@ -296,7 +297,7 @@ internal class TransactionDetailViewModel(
         }
 
         searchDebounceJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_MS)
+            delay(SearchDebounce.DEFAULT)
             updateState { copy(debouncedSearchQuery = query) }
             findMatches(query)
         }
@@ -589,7 +590,6 @@ internal class TransactionDetailViewModel(
     }
 
     companion object {
-        private const val SEARCH_DEBOUNCE_MS = 150L
         private const val TAB_REQUEST = 1
         private const val TAB_RESPONSE = 2
     }

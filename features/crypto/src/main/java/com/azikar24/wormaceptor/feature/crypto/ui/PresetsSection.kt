@@ -9,9 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.domain.entities.CryptoPreset
@@ -46,5 +48,28 @@ internal fun PresetsSection(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PresetsSectionPreview() {
+    WormaCeptorTheme {
+        PresetsSection(
+            config = CryptoConfig.default(),
+            onApplyPreset = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PresetsSectionSelectedPreview() {
+    val firstPreset = CryptoPreset.entries.first()
+    WormaCeptorTheme {
+        PresetsSection(
+            config = firstPreset.config,
+            onApplyPreset = {},
+        )
     }
 }

@@ -28,11 +28,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.domain.entities.CipherMode
 import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.domain.entities.KeyFormat
 import com.azikar24.wormaceptor.feature.crypto.R
@@ -182,6 +185,36 @@ private fun IvInput(
                 }
             },
             singleLine = true,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun KeyIvSectionPreview() {
+    WormaCeptorTheme {
+        KeyIvSection(
+            config = CryptoConfig.default().copy(
+                key = "c29tZS1zYW1wbGUta2V5LWZvci1wcmV2aWV3cw==",
+                iv = "MTIzNDU2Nzg5MDEyMzQ1Ng==",
+            ),
+            onEvent = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun KeyIvSectionNoIvPreview() {
+    WormaCeptorTheme {
+        KeyIvSection(
+            config = CryptoConfig.default().copy(
+                mode = CipherMode.ECB,
+                keyFormat = KeyFormat.HEX,
+                key = "00112233445566778899aabbccddeeff",
+                iv = "",
+            ),
+            onEvent = {},
         )
     }
 }

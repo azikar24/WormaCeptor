@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -49,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -249,7 +251,6 @@ private fun MasterToggleCard(
     )
 
     WormaCeptorCard(
-        onClick = onToggle,
         modifier = modifier.fillMaxWidth(),
         shape = WormaCeptorTokens.Shapes.cardLarge,
         backgroundColor = backgroundColor,
@@ -257,6 +258,14 @@ private fun MasterToggleCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .toggleable(
+                    value = enabled,
+                    role = Role.Switch,
+                    onValueChange = {
+                        haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        onToggle()
+                    },
+                )
                 .padding(WormaCeptorTokens.Spacing.lg),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -307,10 +316,7 @@ private fun MasterToggleCard(
 
             Switch(
                 checked = enabled,
-                onCheckedChange = {
-                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                    onToggle()
-                },
+                onCheckedChange = null,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.primary,
                     checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,

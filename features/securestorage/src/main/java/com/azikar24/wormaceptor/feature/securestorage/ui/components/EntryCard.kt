@@ -27,7 +27,9 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatDateShort
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
@@ -64,18 +66,24 @@ internal fun EntryCard(
             } else {
                 stringResource(R.string.securestorage_detail_not_encrypted)
             }
+            val encryptionColor = if (entry.isEncrypted) {
+                WormaCeptorTokens.Colors.SecureStorage.encrypted
+            } else {
+                WormaCeptorTokens.Colors.SecureStorage.unencrypted
+            }
+
             Box(
                 modifier = Modifier
                     .size(WormaCeptorTokens.TouchTarget.minimum)
                     .clip(RoundedCornerShape(WormaCeptorTokens.Radius.md))
-                    .background(typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT))
+                    .background(encryptionColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT))
                     .semantics { stateDescription = encryptionState },
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = if (entry.isEncrypted) Icons.Default.Lock else Icons.Default.LockOpen,
                     contentDescription = encryptionState,
-                    tint = if (entry.isEncrypted) WormaCeptorTokens.Colors.SecureStorage.encrypted else WormaCeptorTokens.Colors.SecureStorage.unencrypted,
+                    tint = encryptionColor,
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 )
             }
@@ -133,5 +141,56 @@ internal fun EntryCard(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EntryCardEncryptedPrefsPreview() {
+    WormaCeptorTheme {
+        EntryCard(
+            entry = SecureStorageEntry(
+                key = "user_token",
+                value = "eyJhbGciOiJIUzI1NiJ9.test",
+                storageType = StorageType.ENCRYPTED_SHARED_PREFS,
+                isEncrypted = true,
+                lastModified = 1_712_000_000_000L,
+            ),
+            onClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EntryCardKeystorePreview() {
+    WormaCeptorTheme {
+        EntryCard(
+            entry = SecureStorageEntry(
+                key = "test_signing_key",
+                value = "AES-256",
+                storageType = StorageType.KEYSTORE,
+                isEncrypted = true,
+                lastModified = null,
+            ),
+            onClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EntryCardDataStoreUnencryptedPreview() {
+    WormaCeptorTheme {
+        EntryCard(
+            entry = SecureStorageEntry(
+                key = "feature_flags",
+                value = "{\"dark_mode\":true}",
+                storageType = StorageType.DATASTORE,
+                isEncrypted = false,
+                lastModified = 1_712_000_000_000L,
+            ),
+            onClick = {},
+        )
     }
 }

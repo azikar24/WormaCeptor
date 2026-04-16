@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.preferences.vm
 
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
@@ -18,8 +19,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-
-private const val DebounceMillis = 150L
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class PreferencesViewModel(
@@ -197,7 +196,7 @@ class PreferencesViewModel(
         viewModelScope.launch {
             combine(
                 repository.observePreferenceFiles(),
-                _fileSearchQuery.debounce(DebounceMillis),
+                _fileSearchQuery.debounce(SearchDebounce.DEFAULT),
             ) { files, query ->
                 files.filter { file ->
                     query.isBlank() || file.name.contains(query, ignoreCase = true)
@@ -218,7 +217,7 @@ class PreferencesViewModel(
                     } else {
                         combine(
                             repository.observePreferenceItems(fileName),
-                            _itemSearchQuery.debounce(DebounceMillis),
+                            _itemSearchQuery.debounce(SearchDebounce.DEFAULT),
                             _typeFilter,
                         ) { items, query, typeFilter ->
                             items.filter { item ->

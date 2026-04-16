@@ -2,6 +2,8 @@ package com.azikar24.wormaceptor.feature.location.ui
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +27,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -125,16 +128,24 @@ internal fun MockLocationStatusCard(
     isEnabled: Boolean,
     isInputValid: Boolean,
 ) {
-    val statusColor = if (isMockEnabled) {
-        WormaCeptorTokens.Colors.Location.enabled
-    } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
-    }
-    val containerColor = if (isMockEnabled) {
-        WormaCeptorTokens.Colors.Location.enabled.copy(alpha = TokenAlpha.SUBTLE)
-    } else {
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
-    }
+    val statusColor by animateColorAsState(
+        targetValue = if (isMockEnabled) {
+            WormaCeptorTokens.Colors.Location.enabled
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        },
+        animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
+        label = "location_toggle_status",
+    )
+    val containerColor by animateColorAsState(
+        targetValue = if (isMockEnabled) {
+            WormaCeptorTokens.Colors.Location.enabled.copy(alpha = TokenAlpha.SUBTLE)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
+        },
+        animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
+        label = "location_toggle_bg",
+    )
 
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),

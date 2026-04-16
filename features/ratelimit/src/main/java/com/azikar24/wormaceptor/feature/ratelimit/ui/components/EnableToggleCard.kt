@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Speed
@@ -26,13 +27,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.feature.ratelimit.R
 
-@Suppress("LongMethod")
 @Composable
 internal fun EnableToggleCard(
     enabled: Boolean,
@@ -44,22 +45,40 @@ internal fun EnableToggleCard(
     val statusColor by animateColorAsState(
         targetValue = if (enabled) colors.enabled else colors.disabled,
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
-        label = "status",
+        label = "ratelimit_toggle_status",
+    )
+    val backgroundColor by animateColorAsState(
+        targetValue = if (enabled) {
+            colors.enabled.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
+        } else {
+            colors.cardBackground
+        },
+        animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
+        label = "ratelimit_toggle_bg",
     )
 
     WormaCeptorCard(
-        onClick = onToggle,
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = colors.cardBackground,
+        shape = WormaCeptorTokens.Shapes.cardLarge,
+        backgroundColor = backgroundColor,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .toggleable(
+                    value = enabled,
+                    role = Role.Switch,
+                    onValueChange = {
+                        haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        onToggle()
+                    },
+                )
                 .padding(WormaCeptorTokens.Spacing.lg),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
+                modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
             ) {
@@ -87,9 +106,7 @@ internal fun EnableToggleCard(
                     )
                     Text(
                         text = if (enabled) {
-                            stringResource(
-                                R.string.ratelimit_toggle_status_active,
-                            )
+                            stringResource(R.string.ratelimit_toggle_status_active)
                         } else {
                             stringResource(R.string.ratelimit_toggle_status_disabled)
                         },
@@ -101,10 +118,7 @@ internal fun EnableToggleCard(
 
             Switch(
                 checked = enabled,
-                onCheckedChange = {
-                    haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                    onToggle()
-                },
+                onCheckedChange = null,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = colors.enabled,
                     checkedTrackColor = colors.enabled.copy(alpha = WormaCeptorTokens.Alpha.STRONG),

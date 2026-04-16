@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.logs.vm
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
+import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import kotlinx.collections.immutable.toImmutableList
@@ -15,8 +16,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-
-private const val SearchDebounceMs = 100L
 
 @OptIn(FlowPreview::class)
 class LogsViewModel(
@@ -130,7 +129,7 @@ class LogsViewModel(
     private fun observeFilteredLogs() {
         combine(
             rawLogs,
-            _searchQuery.debounce(SearchDebounceMs),
+            _searchQuery.debounce(SearchDebounce.DEFAULT),
             _selectedLevels,
         ) { logs, query, levels ->
             val parsed = LogQuery.parse(query)

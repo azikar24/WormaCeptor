@@ -100,8 +100,8 @@ fun WormaCeptorChip(
     ) {
         Row(
             modifier = Modifier.padding(
-                horizontal = WormaCeptorTokens.Spacing.md.scaled(),
-                vertical = WormaCeptorTokens.Spacing.xs.scaled(),
+                horizontal = WormaCeptorTokens.Spacing.lg.scaled(),
+                vertical = WormaCeptorTokens.Spacing.sm.scaled(),
             ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs.scaled()),

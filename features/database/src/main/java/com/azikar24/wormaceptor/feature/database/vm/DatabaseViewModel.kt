@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.database.vm
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.domain.contracts.DatabaseRepository
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
@@ -43,7 +44,7 @@ class DatabaseViewModel(
     private fun observeFilteredLists() {
         combine(
             _allDatabases,
-            uiState.map { it.databaseSearchQuery }.debounce { if (it.isBlank()) 0L else SEARCH_DEBOUNCE_MS },
+            uiState.map { it.databaseSearchQuery }.debounce { if (it.isBlank()) 0L else SearchDebounce.HEAVY },
         ) { databases, query ->
             if (query.isBlank()) {
                 databases.toImmutableList()
@@ -59,7 +60,7 @@ class DatabaseViewModel(
 
         combine(
             _allTables,
-            uiState.map { it.tableSearchQuery }.debounce { if (it.isBlank()) 0L else SEARCH_DEBOUNCE_MS },
+            uiState.map { it.tableSearchQuery }.debounce { if (it.isBlank()) 0L else SearchDebounce.HEAVY },
         ) { tables, query ->
             if (query.isBlank()) {
                 tables.toImmutableList()
@@ -372,7 +373,6 @@ class DatabaseViewModel(
     }
 
     companion object {
-        private const val SEARCH_DEBOUNCE_MS = 300L
         private const val QUERY_HISTORY_LIMIT = 20
         private const val DEFAULT_PAGE_SIZE = 100
     }

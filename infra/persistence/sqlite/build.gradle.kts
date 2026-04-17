@@ -8,6 +8,11 @@ android {
     namespace = "com.azikar24.wormaceptor.infra.persistence.sqlite"
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
+}
+
 dependencies {
     implementation(project(":domain:contracts"))
     implementation(project(":domain:entities"))

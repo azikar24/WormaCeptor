@@ -49,6 +49,7 @@ fun PreferenceItemCard(
 
     WormaCeptorContainer(
         backgroundColor = typeColor.copy(alpha = TokenAlpha.SUBTLE),
+        borderColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         modifier = modifier
             .fillMaxWidth()
             .combinedClickable(
@@ -69,7 +70,7 @@ private fun PreferenceItemRow(
     typeColor: Color,
 ) {
     Row(
-        modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
+        modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {

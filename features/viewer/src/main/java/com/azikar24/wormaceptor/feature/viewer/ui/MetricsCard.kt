@@ -33,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
@@ -279,13 +278,13 @@ fun MetricsCard(
                             ) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                                 ) {
                                     WormaCeptorStatusDot(
                                         color = MaterialTheme.colorScheme.primary.copy(
                                             alpha = WormaCeptorTokens.Alpha.HEAVY,
                                         ),
-                                        size = 6.dp,
+                                        size = WormaCeptorTokens.ComponentSize.dot,
                                     )
                                     Text(
                                         text = method,

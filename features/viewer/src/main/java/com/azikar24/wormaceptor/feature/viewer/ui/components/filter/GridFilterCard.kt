@@ -38,7 +38,6 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 
@@ -135,7 +134,7 @@ internal fun GridFilterCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
+                        .size(WormaCeptorTokens.Spacing.sm)
                         .clip(CircleShape)
                         .background(
                             if (count > 0) color else color.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
@@ -192,7 +191,7 @@ internal fun GridFilterCard(
                             imageVector = Icons.Default.Check,
                             contentDescription = stringResource(R.string.viewer_filter_selected_indicator),
                             tint = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(10.dp),
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.xxs),
                         )
                     }
                 }

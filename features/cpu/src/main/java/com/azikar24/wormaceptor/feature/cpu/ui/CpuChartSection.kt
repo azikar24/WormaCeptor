@@ -27,6 +27,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.metric.WormaCeptorChartLegendItem
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -50,8 +51,8 @@ internal fun CpuChartCard(
 ) {
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
+        style = CardStyle.Outlined,
         shape = WormaCeptorTokens.Shapes.cardExtraLarge,
-        backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
@@ -141,7 +142,7 @@ private fun DrawScope.drawGridLines(
             color = gridColor,
             start = Offset(padding, y),
             end = Offset(width - padding, y),
-            strokeWidth = 1.dp.toPx(),
+            strokeWidth = WormaCeptorTokens.BorderWidth.regular.toPx(),
         )
     }
 }
@@ -156,7 +157,7 @@ private fun DrawScope.drawThresholdLines(
         color = WormaCeptorTokens.Colors.Status.amber.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         start = Offset(padding, warningY),
         end = Offset(width - padding, warningY),
-        strokeWidth = 1.dp.toPx(),
+        strokeWidth = WormaCeptorTokens.BorderWidth.regular.toPx(),
     )
 
     val criticalY = padding + chartHeight * CriticalThresholdY
@@ -164,7 +165,7 @@ private fun DrawScope.drawThresholdLines(
         color = WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         start = Offset(padding, criticalY),
         end = Offset(width - padding, criticalY),
-        strokeWidth = 1.dp.toPx(),
+        strokeWidth = WormaCeptorTokens.BorderWidth.regular.toPx(),
     )
 }
 
@@ -189,7 +190,7 @@ private fun DrawScope.drawCpuUsageLine(points: List<Offset>) {
         path = cpuPath,
         color = WormaCeptorTokens.Colors.Cpu.usage,
         style = Stroke(
-            width = 2.dp.toPx(),
+            width = WormaCeptorTokens.BorderWidth.thick.toPx(),
             cap = StrokeCap.Round,
         ),
     )

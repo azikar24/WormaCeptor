@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.logs.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,12 +15,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,8 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.domain.entities.LogEntry
 import com.azikar24.wormaceptor.domain.entities.LogLevel
 import kotlinx.collections.immutable.ImmutableList
@@ -48,7 +50,7 @@ internal fun LogList(
         state = listState,
         modifier = modifier,
         contentPadding = PaddingValues(
-            top = WormaCeptorTokens.Spacing.sm,
+            top = WormaCeptorTokens.Spacing.xs,
             bottom = WormaCeptorTokens.Spacing.sm +
                 WindowInsets.navigationBars.asPaddingValues()
                     .calculateBottomPadding(),
@@ -72,88 +74,93 @@ internal fun LogEntryItem(
     modifier: Modifier = Modifier,
 ) {
     val levelColor = logLevelColor(entry.level)
-    val backgroundColor = logLevelBackground(entry.level, levelColor)
+    val containerColor = logLevelBackground(entry.level, levelColor)
+        .copy(alpha = TokenAlpha.SUBTLE)
 
     val timeFormat = remember { SimpleDateFormat("HH:mm:ss.SSS", Locale.US) }
     val formattedTime = remember(entry.timestamp) {
         timeFormat.format(Date(entry.timestamp))
     }
 
-    Surface(
-        modifier = modifier,
-        color = backgroundColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+    WormaCeptorCard(
+        modifier = modifier.padding(
+            horizontal = WormaCeptorTokens.Spacing.sm,
+            vertical = WormaCeptorTokens.Spacing.xxs,
+        ),
+        style = CardStyle.Outlined,
+        backgroundColor = containerColor,
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = WormaCeptorTokens.Spacing.md,
-                    vertical = WormaCeptorTokens.Radius.sm,
+                    start = WormaCeptorTokens.Spacing.md,
+                    end = WormaCeptorTokens.Spacing.md,
+                    top = WormaCeptorTokens.Spacing.sm,
+                    bottom = WormaCeptorTokens.Spacing.sm,
                 ),
-            verticalAlignment = Alignment.Top,
         ) {
-            WormaCeptorStatusBadge(
-                text = entry.level.tag,
-                containerColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
-                contentColor = levelColor,
-                modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xxs),
+            LogEntryHeader(
+                level = entry.level,
+                levelColor = levelColor,
+                tag = entry.tag,
+                formattedTime = formattedTime,
             )
 
-            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
-            LogEntryBody(
-                tag = entry.tag,
-                message = entry.message,
-                formattedTime = formattedTime,
-                modifier = Modifier.weight(1f),
+            Text(
+                text = entry.message,
+                style = MaterialTheme.typography.bodySmall,
+                fontFamily = FontFamily.Monospace,
+                color = MaterialTheme.colorScheme.onSurface.copy(
+                    alpha = WormaCeptorTokens.Alpha.PROMINENT,
+                ),
+                lineHeight = WormaCeptorTokens.Typography.codeMedium.lineHeight,
             )
         }
     }
 }
 
 @Composable
-private fun LogEntryBody(
+private fun LogEntryHeader(
+    level: LogLevel,
+    levelColor: Color,
     tag: String,
-    message: String,
     formattedTime: String,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = tag,
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f, fill = false),
-            )
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        WormaCeptorStatusBadge(
+            text = level.tag,
+            containerColor = levelColor.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
+            contentColor = levelColor,
+        )
 
-            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
-
-            Text(
-                text = formattedTime,
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorTokens.Alpha.HEAVY,
-                ),
-            )
-        }
-
-        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
         Text(
-            text = message,
-            style = MaterialTheme.typography.bodySmall,
+            text = tag,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f),
+        )
+
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+
+        Text(
+            text = formattedTime,
+            style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
-            lineHeight = WormaCeptorTokens.Typography.codeMedium.lineHeight,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                alpha = WormaCeptorTokens.Alpha.HEAVY,
+            ),
         )
     }
 }

@@ -48,7 +48,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
@@ -263,7 +262,7 @@ fun ImagePreviewCard(
                             contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator(
-                                modifier = Modifier.size(32.dp),
+                                modifier = Modifier.size(WormaCeptorTokens.IconSize.xl),
                                 strokeWidth = WormaCeptorTokens.BorderWidth.bold,
                             )
                         }
@@ -293,7 +292,7 @@ fun ImagePreviewCard(
                                     imageVector = Icons.Default.BrokenImage,
                                     contentDescription = stringResource(R.string.viewer_image_error),
                                     tint = MaterialTheme.colorScheme.error,
-                                    modifier = Modifier.size(32.dp),
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.xl),
                                 )
                                 Text(
                                     text = stringResource(R.string.viewer_image_failed_to_load),
@@ -315,7 +314,7 @@ fun ImagePreviewCard(
                             color = MaterialTheme.colorScheme.surface.copy(
                                 alpha = WormaCeptorTokens.Alpha.PROMINENT,
                             ),
-                            shadowElevation = 2.dp,
+                            shadowElevation = WormaCeptorTokens.Elevation.sm,
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Fullscreen,

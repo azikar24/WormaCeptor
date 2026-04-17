@@ -6,7 +6,6 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.MemoryInfo
 import kotlinx.collections.immutable.ImmutableList
@@ -22,7 +21,7 @@ internal fun DrawScope.drawMemoryGridLines(
             color = gridColor,
             start = Offset(dimensions.padding, y),
             end = Offset(endX, y),
-            strokeWidth = 1.dp.toPx(),
+            strokeWidth = WormaCeptorTokens.BorderWidth.regular.toPx(),
         )
     }
 }
@@ -42,7 +41,7 @@ internal inline fun DrawScope.drawLinePath(
     drawPath(
         path = path,
         color = color,
-        style = Stroke(width = 2.dp.toPx(), cap = StrokeCap.Round),
+        style = Stroke(width = WormaCeptorTokens.BorderWidth.thick.toPx(), cap = StrokeCap.Round),
     )
 }
 

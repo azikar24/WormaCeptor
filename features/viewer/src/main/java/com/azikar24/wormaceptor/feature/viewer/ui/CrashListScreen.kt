@@ -1,9 +1,5 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,12 +29,9 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -46,6 +39,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
@@ -170,22 +165,13 @@ fun CrashItem(
     val relativeTime = remember(crash.timestamp) { formatRelativeTime(context, crash.timestamp) }
     val isSevere = remember(crash.exceptionType) { isSevereException(crash.exceptionType) }
 
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val alpha by animateFloatAsState(
-        targetValue = if (isPressed) 0.7f else 1f,
-        label = "crash_item_alpha",
-    )
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(WormaCeptorTokens.Shapes.card)
-            .clickable(onClick = onClick)
-            .alpha(alpha),
+    WormaCeptorCard(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        style = CardStyle.Outlined,
         shape = WormaCeptorTokens.Shapes.card,
-        color = WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
-        tonalElevation = WormaCeptorTokens.Elevation.xs,
+        backgroundColor = WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
+        borderColor = WormaCeptorTokens.Colors.Status.red.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
     ) {
         Row(
             modifier = Modifier

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -39,8 +40,8 @@ internal fun NativeHeapCard(
 
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
+        style = CardStyle.Outlined,
         shape = WormaCeptorTokens.Shapes.cardLarge,
-        backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),

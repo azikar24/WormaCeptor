@@ -28,7 +28,7 @@ import androidx.room.TypeConverters
         MockRuleEntity::class,
     ],
     version = 7,
-    exportSchema = false,
+    exportSchema = true,
 )
 @TypeConverters(Converters::class)
 abstract class WormaCeptorDatabase : RoomDatabase() {

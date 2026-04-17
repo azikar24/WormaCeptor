@@ -149,7 +149,7 @@ private fun LegendItem(
     ) {
         Box(
             modifier = Modifier
-                .size(10.dp)
+                .size(WormaCeptorTokens.IconSize.xxs)
                 .clip(CircleShape)
                 .background(color),
         )

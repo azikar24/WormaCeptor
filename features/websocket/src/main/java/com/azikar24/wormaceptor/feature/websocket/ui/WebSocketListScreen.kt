@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.websocket.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +41,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -50,6 +51,7 @@ import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableCont
 import com.azikar24.wormaceptor.core.ui.components.status.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketState
@@ -209,7 +211,7 @@ private fun ConnectionList(
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(
-            top = WormaCeptorTokens.Spacing.sm,
+            top = WormaCeptorTokens.Spacing.xs,
             bottom = WormaCeptorTokens.Spacing.sm +
                 WindowInsets.navigationBars.asPaddingValues()
                     .calculateBottomPadding(),
@@ -243,12 +245,6 @@ private fun ConnectionItem(
         WebSocketState.CLOSING -> ws.closing
         WebSocketState.CLOSED -> ws.closed
     }
-    val backgroundColor = when (connection.state) {
-        WebSocketState.CONNECTING -> ws.connecting.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-        WebSocketState.OPEN -> ws.open.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-        WebSocketState.CLOSING -> ws.closing.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-        WebSocketState.CLOSED -> ws.closed.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-    }
 
     val timeFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.US) }
     val formattedTime = remember(connection.openedAt) {
@@ -259,29 +255,31 @@ private fun ConnectionItem(
         connection.duration?.let { formatDuration(it) } ?: "--"
     }
 
-    Surface(
-        modifier = modifier.clickable(onClick = onClick),
-        color = backgroundColor.copy(
-            alpha = WormaCeptorTokens.Alpha.MODERATE,
+    WormaCeptorCard(
+        modifier = modifier.padding(
+            horizontal = WormaCeptorTokens.Spacing.sm,
+            vertical = WormaCeptorTokens.Spacing.xxs,
         ),
+        onClick = onClick,
+        style = CardStyle.Outlined,
+        backgroundColor = stateColor.copy(alpha = TokenAlpha.SUBTLE),
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = WormaCeptorTokens.Spacing.lg,
-                    vertical = WormaCeptorTokens.Spacing.md,
+                    horizontal = WormaCeptorTokens.Spacing.md,
+                    vertical = WormaCeptorTokens.Spacing.sm,
                 ),
-            verticalAlignment = Alignment.CenterVertically,
         ) {
-            WormaCeptorStatusDot(
-                color = stateColor,
-                size = WormaCeptorTokens.Spacing.md,
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                WormaCeptorStatusDot(
+                    color = stateColor,
+                    size = WormaCeptorTokens.Spacing.sm,
+                )
 
-            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
-            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = connection.url,
                     style = MaterialTheme.typography.bodyMedium,
@@ -289,55 +287,56 @@ private fun ConnectionItem(
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
                 )
 
-                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Surface(
-                        shape = WormaCeptorTokens.Shapes.chip,
-                        color = stateColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
-                    ) {
-                        Text(
-                            text = connection.state.name,
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            color = stateColor,
-                            modifier = Modifier.padding(
-                                horizontal = WormaCeptorTokens.Spacing.xs,
-                                vertical = WormaCeptorTokens.Spacing.xxs,
-                            ),
-                        )
-                    }
-
-                    Text(
-                        text = stringResource(R.string.websocket_message_count, messageCount),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-
-                    Text(
-                        text = duration,
-                        style = MaterialTheme.typography.labelSmall,
-                        fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                Text(
+                    text = formattedTime,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = FontFamily.Monospace,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                        alpha = WormaCeptorTokens.Alpha.HEAVY,
+                    ),
+                )
             }
 
-            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
-            Text(
-                text = formattedTime,
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorTokens.Alpha.HEAVY,
-                ),
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Surface(
+                    shape = WormaCeptorTokens.Shapes.chip,
+                    color = stateColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                ) {
+                    Text(
+                        text = connection.state.name,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = stateColor,
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorTokens.Spacing.xs,
+                            vertical = WormaCeptorTokens.Spacing.xxs,
+                        ),
+                    )
+                }
+
+                Text(
+                    text = stringResource(R.string.websocket_message_count, messageCount),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                Text(
+                    text = duration,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = FontFamily.Monospace,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
     }
 }

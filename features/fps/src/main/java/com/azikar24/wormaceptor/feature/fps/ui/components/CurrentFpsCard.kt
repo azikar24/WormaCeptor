@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -50,8 +51,14 @@ internal fun CurrentFpsCard(
 
     WormaCeptorCard(
         modifier = modifier,
+        style = CardStyle.Outlined,
         shape = WormaCeptorTokens.Shapes.cardExtraLarge,
         backgroundColor = backgroundColor,
+        borderColor = if (status != FpsStatus.Idle) {
+            fpsColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+        } else {
+            null
+        },
     ) {
         FpsCardContent(
             fpsInfo = fpsInfo,

@@ -95,7 +95,7 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
         modifier = modifier,
         shape = WormaCeptorTokens.Shapes.cardLarge,
         color = backgroundColor,
-        border = BorderStroke(1.dp, borderColor),
+        border = BorderStroke(WormaCeptorTokens.BorderWidth.regular, borderColor),
     ) {
         Row(
             modifier = Modifier

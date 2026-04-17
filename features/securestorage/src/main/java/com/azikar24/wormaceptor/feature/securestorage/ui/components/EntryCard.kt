@@ -50,13 +50,12 @@ internal fun EntryCard(
     WormaCeptorCard(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = WormaCeptorTokens.Shapes.cardLarge,
         backgroundColor = MaterialTheme.colorScheme.surface,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorTokens.Spacing.md),
+                .padding(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Type indicator

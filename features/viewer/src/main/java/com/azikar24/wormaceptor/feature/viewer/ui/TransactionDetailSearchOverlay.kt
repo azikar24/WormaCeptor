@@ -50,7 +50,7 @@ internal fun TransactionDetailSearchOverlay(
     ) {
         Surface(
             shape = WormaCeptorTokens.Shapes.pill,
-            color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+            color = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorTokens.Elevation.md),
             shadowElevation = WormaCeptorTokens.Elevation.lg,
         ) {
             Row(

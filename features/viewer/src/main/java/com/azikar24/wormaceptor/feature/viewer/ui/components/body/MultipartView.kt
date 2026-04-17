@@ -39,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
@@ -281,7 +280,7 @@ private fun MultipartPartCard(
 
                             part.headers.forEach { (key, value) ->
                                 Row(
-                                    modifier = Modifier.padding(vertical = 2.dp),
+                                    modifier = Modifier.padding(vertical = WormaCeptorTokens.Spacing.xxs),
                                 ) {
                                     SelectionContainer {
                                         Text(

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.Build
 import android.os.ParcelFileDescriptor
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -80,6 +81,10 @@ fun FileViewerScreen(
     val filePath = state.selectedFile ?: return
     val content = state.fileContent ?: return
     val fileName = File(filePath).name
+
+    BackHandler {
+        onEvent(FileBrowserViewEvent.CloseFileViewer)
+    }
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
@@ -457,8 +462,7 @@ private fun PdfPageCard(
 
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        style = CardStyle.Elevated,
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.sm),

@@ -53,7 +53,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
@@ -469,7 +468,10 @@ private fun MatchTypeChip(
             text = label,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = WormaCeptorTokens.Spacing.xxs),
+            modifier = Modifier.padding(
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xxs,
+            ),
         )
     }
 }

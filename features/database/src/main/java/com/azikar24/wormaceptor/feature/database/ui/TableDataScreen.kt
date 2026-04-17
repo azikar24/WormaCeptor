@@ -105,11 +105,17 @@ private fun TableDataTopBar(
     TopAppBar(
         title = {
             Column {
-                Text(tableName)
+                Text(
+                    text = tableName,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
                 Text(
                     text = stringResource(R.string.database_table_data_page, currentPage + 1),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },

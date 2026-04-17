@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.feature.pushsimulator.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -35,9 +34,7 @@ internal fun ActionButtonsRow(
         WormaCeptorButton(
             text = saveLabel,
             onClick = onSaveClick,
-            modifier = Modifier
-                .weight(1f)
-                .height(WormaCeptorTokens.Spacing.xxxl),
+            modifier = Modifier.weight(1f),
             variant = ButtonVariant.Outlined,
             leadingIcon = {
                 Icon(
@@ -51,9 +48,7 @@ internal fun ActionButtonsRow(
         WormaCeptorButton(
             text = sendLabel,
             onClick = onSendClick,
-            modifier = Modifier
-                .weight(1f)
-                .height(WormaCeptorTokens.Spacing.xxxl),
+            modifier = Modifier.weight(1f),
             variant = ButtonVariant.Primary,
             enabled = !isTitleEmpty,
             leadingIcon = {

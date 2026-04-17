@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -52,8 +53,7 @@ internal fun HeapUsageCard(
 
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        shape = WormaCeptorTokens.Shapes.cardLarge,
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),

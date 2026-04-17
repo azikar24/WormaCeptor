@@ -66,6 +66,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -277,8 +278,12 @@ private fun ExceptionInfoCard(
 ) {
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
+        style = CardStyle.Outlined,
         backgroundColor = MaterialTheme.colorScheme.errorContainer.copy(
             alpha = WormaCeptorTokens.Alpha.SUBTLE,
+        ),
+        borderColor = MaterialTheme.colorScheme.error.copy(
+            alpha = WormaCeptorTokens.Alpha.MODERATE,
         ),
     ) {
         Column(
@@ -357,7 +362,7 @@ private fun MessageCard(
 ) {
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
@@ -406,7 +411,7 @@ private fun StackTraceSection(
 
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),

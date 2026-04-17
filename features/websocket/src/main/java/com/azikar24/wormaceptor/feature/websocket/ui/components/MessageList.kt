@@ -1,7 +1,6 @@
 package com.azikar24.wormaceptor.feature.websocket.ui.components
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -23,19 +22,24 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
@@ -47,6 +51,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+private const val PayloadPreviewChars = 150
+private const val PayloadCollapsedLines = 3
+
 @Composable
 internal fun MessageList(
     messages: ImmutableList<WebSocketMessage>,
@@ -57,7 +64,7 @@ internal fun MessageList(
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(
-            top = WormaCeptorTokens.Spacing.sm,
+            top = WormaCeptorTokens.Spacing.xs,
             bottom = WormaCeptorTokens.Spacing.sm +
                 WindowInsets.navigationBars.asPaddingValues()
                     .calculateBottomPadding(),
@@ -84,39 +91,22 @@ private fun MessageItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val ws = WormaCeptorTokens.Colors.WebSocket
-    val directionColor = when (message.direction) {
-        WebSocketMessageDirection.SENT -> ws.sent
-        WebSocketMessageDirection.RECEIVED -> ws.received
-    }
-    val backgroundColor = when (message.direction) {
-        WebSocketMessageDirection.SENT -> ws.sent.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-        WebSocketMessageDirection.RECEIVED -> ws.received.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-    }
-    val typeColor = when (message.type) {
-        WebSocketMessageType.TEXT -> ws.textMessage
-        WebSocketMessageType.BINARY -> ws.binaryMessage
-        WebSocketMessageType.PING -> ws.pingPong
-        WebSocketMessageType.PONG -> ws.pingPong
-    }
-
+    val palette = messagePalette(message)
     val timeFormat = remember { SimpleDateFormat("HH:mm:ss.SSS", Locale.US) }
     val formattedTime = remember(message.timestamp) {
         timeFormat.format(Date(message.timestamp))
     }
 
-    val directionIcon = when (message.direction) {
-        WebSocketMessageDirection.SENT -> Icons.AutoMirrored.Filled.CallMade
-        WebSocketMessageDirection.RECEIVED -> Icons.AutoMirrored.Filled.CallReceived
-    }
-
-    Surface(
+    WormaCeptorCard(
         modifier = modifier
-            .clickable(onClick = onClick)
+            .padding(
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xxs,
+            )
             .animateContentSize(),
-        color = backgroundColor.copy(
-            alpha = WormaCeptorTokens.Alpha.MODERATE,
-        ),
+        onClick = onClick,
+        style = CardStyle.Outlined,
+        backgroundColor = palette.direction.copy(alpha = TokenAlpha.SUBTLE),
     ) {
         Column(
             modifier = Modifier
@@ -126,81 +116,142 @@ private fun MessageItem(
                     vertical = WormaCeptorTokens.Spacing.sm,
                 ),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                // Direction icon
-                Icon(
-                    imageVector = directionIcon,
-                    contentDescription = message.direction.name,
-                    tint = directionColor,
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                )
-
-                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
-
-                // Type badge
-                WormaCeptorStatusBadge(
-                    text = message.type.name,
-                    containerColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
-                    contentColor = typeColor,
-                )
-
-                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
-
-                // Size
-                Text(
-                    text = formatBytes(message.size),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                // Timestamp
-                Text(
-                    text = formattedTime,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorTokens.Alpha.HEAVY,
-                    ),
-                )
-
-                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xs))
-
-                // Expand indicator
-                Icon(
-                    imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                    contentDescription = stringResource(
-                        if (isExpanded) R.string.websocket_collapse else R.string.websocket_expand,
-                    ),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorTokens.Alpha.BOLD,
-                    ),
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                )
-            }
-
-            Spacer(
-                modifier = Modifier.height(
-                    WormaCeptorTokens.Spacing.xs,
-                ),
+            MessageHeader(
+                message = message,
+                palette = palette,
+                formattedTime = formattedTime,
+                isExpanded = isExpanded,
             )
 
-            // Payload preview or full content
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
+
             Text(
-                text = if (isExpanded) message.payload else message.payloadPreview(150),
+                text = if (isExpanded) message.payload else message.payloadPreview(PayloadPreviewChars),
                 style = MaterialTheme.typography.bodySmall,
                 fontFamily = FontFamily.Monospace,
                 color = MaterialTheme.colorScheme.onSurface,
                 lineHeight = WormaCeptorTokens.Typography.codeMedium.lineHeight,
-                maxLines = if (isExpanded) Int.MAX_VALUE else 3,
+                maxLines = if (isExpanded) Int.MAX_VALUE else PayloadCollapsedLines,
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
             )
         }
     }
+}
+
+@Composable
+private fun MessageHeader(
+    message: WebSocketMessage,
+    palette: MessagePalette,
+    formattedTime: String,
+    isExpanded: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        DirectionIndicator(
+            direction = message.direction,
+            color = palette.direction,
+        )
+
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+
+        WormaCeptorStatusBadge(
+            text = message.type.name,
+            containerColor = palette.type.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
+            contentColor = palette.type,
+        )
+
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+
+        Text(
+            text = formatBytes(message.size),
+            style = MaterialTheme.typography.labelSmall,
+            fontFamily = FontFamily.Monospace,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                alpha = WormaCeptorTokens.Alpha.HEAVY,
+            ),
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Text(
+            text = formattedTime,
+            style = MaterialTheme.typography.labelSmall,
+            fontFamily = FontFamily.Monospace,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                alpha = WormaCeptorTokens.Alpha.HEAVY,
+            ),
+        )
+
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xs))
+
+        Icon(
+            imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+            contentDescription = stringResource(
+                if (isExpanded) R.string.websocket_collapse else R.string.websocket_expand,
+            ),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                alpha = WormaCeptorTokens.Alpha.BOLD,
+            ),
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+        )
+    }
+}
+
+@Composable
+private fun DirectionIndicator(
+    direction: WebSocketMessageDirection,
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    val icon: ImageVector = when (direction) {
+        WebSocketMessageDirection.SENT -> Icons.AutoMirrored.Filled.CallMade
+        WebSocketMessageDirection.RECEIVED -> Icons.AutoMirrored.Filled.CallReceived
+    }
+    val label = stringResource(
+        when (direction) {
+            WebSocketMessageDirection.SENT -> R.string.websocket_direction_sent
+            WebSocketMessageDirection.RECEIVED -> R.string.websocket_direction_received
+        },
+    )
+    Row(
+        modifier = modifier.padding(end = WormaCeptorTokens.Spacing.xxs),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = direction.name,
+            tint = color,
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+        )
+        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xxs))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = color,
+        )
+    }
+}
+
+private data class MessagePalette(val direction: Color, val type: Color)
+
+@Composable
+private fun messagePalette(message: WebSocketMessage): MessagePalette {
+    val ws = WormaCeptorTokens.Colors.WebSocket
+    val direction = when (message.direction) {
+        WebSocketMessageDirection.SENT -> ws.sent
+        WebSocketMessageDirection.RECEIVED -> ws.received
+    }
+    val type = when (message.type) {
+        WebSocketMessageType.TEXT -> ws.textMessage
+        WebSocketMessageType.BINARY -> ws.binaryMessage
+        WebSocketMessageType.PING -> ws.pingPong
+        WebSocketMessageType.PONG -> ws.pingPong
+    }
+    return MessagePalette(direction = direction, type = type)
 }
 
 @Preview(showBackground = true)

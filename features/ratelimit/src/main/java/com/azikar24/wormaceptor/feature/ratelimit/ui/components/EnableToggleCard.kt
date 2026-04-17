@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
@@ -50,7 +51,7 @@ internal fun EnableToggleCard(
         targetValue = if (enabled) {
             colors.enabled.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
         } else {
-            colors.cardBackground
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
         },
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "ratelimit_toggle_bg",
@@ -58,8 +59,14 @@ internal fun EnableToggleCard(
 
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
+        style = CardStyle.Outlined,
         shape = WormaCeptorTokens.Shapes.cardLarge,
         backgroundColor = backgroundColor,
+        borderColor = if (enabled) {
+            colors.enabled.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+        } else {
+            null
+        },
     ) {
         Row(
             modifier = Modifier

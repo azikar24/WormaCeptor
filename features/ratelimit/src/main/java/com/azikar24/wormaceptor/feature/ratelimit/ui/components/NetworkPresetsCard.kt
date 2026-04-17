@@ -30,6 +30,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
@@ -50,7 +51,7 @@ internal fun NetworkPresetsCard(
 ) {
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = colors.cardBackground,
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),

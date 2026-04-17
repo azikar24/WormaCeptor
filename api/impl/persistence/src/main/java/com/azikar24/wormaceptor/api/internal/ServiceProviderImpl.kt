@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.util.Log
 import androidx.room.Room
+import com.azikar24.wormaceptor.infra.persistence.sqlite.AllMigrations
 import com.azikar24.wormaceptor.infra.persistence.sqlite.FileSystemBlobStorage
 import com.azikar24.wormaceptor.infra.persistence.sqlite.KeystoreKeyManager
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomCrashRepository
@@ -20,6 +21,7 @@ import java.io.File
 
 internal class ServiceProviderImpl : BaseServiceProviderImpl() {
 
+    @Suppress("SpreadOperator")
     override fun createDependencies(context: Context): StorageDependencies {
         val dbName = "wormaceptor-v2.db"
         val passphrase = KeystoreKeyManager.getOrCreatePassphrase(context)
@@ -33,7 +35,9 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
             dbName,
         )
             .openHelperFactory(SupportFactory(passphrase))
-            .fallbackToDestructiveMigration()
+            .addMigrations(*AllMigrations)
+            .fallbackToDestructiveMigrationFrom(*LegacyDestructiveVersions)
+            .fallbackToDestructiveMigrationOnDowngrade()
             .build()
 
         return StorageDependencies(
@@ -139,11 +143,41 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
 
             Log.i(TAG, "Database encrypted successfully — all data preserved")
         } catch (e: Exception) {
-            Log.w(TAG, "Failed to encrypt database, deleting to start fresh", e)
+            val backupSuffix = ".bak-${System.currentTimeMillis()}"
+            Log.w(TAG, "Failed to encrypt database; preserving original at ${dbFile.name}$backupSuffix", e)
             tempFile.delete()
-            dbFile.delete()
-            File(dbFile.path + "-wal").delete()
-            File(dbFile.path + "-shm").delete()
+            runCatching { dbFile.renameTo(File(dbFile.path + backupSuffix)) }
+            runCatching {
+                val wal = File(dbFile.path + "-wal")
+                if (wal.exists()) wal.renameTo(File(wal.path + backupSuffix))
+            }
+            runCatching {
+                val shm = File(dbFile.path + "-shm")
+                if (shm.exists()) shm.renameTo(File(shm.path + backupSuffix))
+            }
+            pruneOldBackups(dbFile, keep = MAX_BACKUPS_TO_KEEP)
+        }
+    }
+
+    private fun pruneOldBackups(
+        dbFile: File,
+        keep: Int,
+    ) {
+        val dir = dbFile.parentFile ?: return
+        val baseName = dbFile.name
+        val backupRegex = Regex("^${Regex.escape(baseName)}\\.bak-(\\d+)$")
+        val backups = dir.listFiles()
+            ?.mapNotNull { f ->
+                val ts = backupRegex.matchEntire(f.name)?.groupValues?.get(1)?.toLongOrNull()
+                if (ts != null) f to ts else null
+            }
+            ?.sortedByDescending { it.second }
+            ?: return
+        backups.drop(keep).forEach { (file, _) ->
+            val suffix = file.name.removePrefix(baseName)
+            runCatching { file.delete() }
+            runCatching { File(dbFile.path + "-wal" + suffix).delete() }
+            runCatching { File(dbFile.path + "-shm" + suffix).delete() }
         }
     }
 
@@ -182,5 +216,9 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
 
     private companion object {
         private const val TAG = "ServiceProviderImpl"
+        private const val MAX_BACKUPS_TO_KEEP = 1
+
+        @Suppress("MagicNumber")
+        private val LegacyDestructiveVersions = intArrayOf(1, 2, 3, 4, 5)
     }
 }

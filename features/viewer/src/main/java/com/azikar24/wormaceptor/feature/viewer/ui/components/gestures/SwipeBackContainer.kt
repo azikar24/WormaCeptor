@@ -165,7 +165,7 @@ fun SwipeBackContainer(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(darkColors.background.copy(alpha = 0.3f * (1f - progress))),
+                    .background(darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.MODERATE * (1f - progress))),
             )
         }
 

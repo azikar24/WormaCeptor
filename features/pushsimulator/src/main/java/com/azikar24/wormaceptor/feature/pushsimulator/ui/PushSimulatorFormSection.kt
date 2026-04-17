@@ -2,13 +2,11 @@ package com.azikar24.wormaceptor.feature.pushsimulator.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,22 +19,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.TouchApp
-import androidx.compose.material.icons.outlined.Circle
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,17 +50,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
@@ -88,14 +87,9 @@ internal fun NotificationFormCard(
 ) {
     val selectedChannel = channels.find { it.id == state.selectedChannelId }
 
-    OutlinedCard(
+    WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = WormaCeptorTokens.Shapes.card,
-        border = BorderStroke(
-            width = WormaCeptorTokens.BorderWidth.regular,
-            color = MaterialTheme.colorScheme.outlineVariant
-                .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
-        ),
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier
@@ -192,22 +186,19 @@ internal fun OutlinedTextFieldWithCounter(
             maxLines = if (singleLine) 1 else maxLines,
             modifier = Modifier.fillMaxWidth(),
             isError = isOverLimit,
-            supportingText = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    Text(
-                        text = "$charCount / $maxChars",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = charCountColor,
-                    )
-                }
-            },
+        )
+        Text(
+            text = "$charCount / $maxChars",
+            style = MaterialTheme.typography.labelSmall,
+            color = charCountColor,
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(top = WormaCeptorTokens.Spacing.xxs),
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ChannelSelector(
     selectedChannelId: String,
@@ -216,146 +207,100 @@ private fun ChannelSelector(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val selectedChannel = channels.find { it.id == selectedChannelId }
-    val dropdownRotation by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f,
-        animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.MEDIUM),
-        label = "dropdownRotation",
-    )
 
-    val channelContentDescription = stringResource(R.string.pushsimulator_channel_select)
-
-    Column {
-        Text(
-            text = stringResource(R.string.pushsimulator_channel_label),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        OutlinedTextField(
+            value = selectedChannel?.name.orEmpty(),
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(stringResource(R.string.pushsimulator_channel_label)) },
+            placeholder = { Text(stringResource(R.string.pushsimulator_channel_placeholder)) },
+            textStyle = MaterialTheme.typography.bodyMedium,
+            trailingIcon = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                    modifier = Modifier.padding(end = WormaCeptorTokens.Spacing.sm),
+                ) {
+                    selectedChannel?.let { ImportanceBadge(importance = it.importance) }
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                }
+            },
+            shape = WormaCeptorTokens.Shapes.textField,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
+                    alpha = WormaCeptorTokens.Alpha.BOLD,
+                ),
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = true),
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
-
-        Box {
-            OutlinedCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { expanded = true }
-                    .semantics {
-                        role = Role.DropdownList
-                        contentDescription = channelContentDescription
-                    },
-                shape = WormaCeptorTokens.Shapes.button,
-                border = BorderStroke(
-                    width = WormaCeptorTokens.BorderWidth.regular,
-                    color = if (expanded) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.outline
-                    },
-                ),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(WormaCeptorTokens.Spacing.md),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Text(
-                            text = selectedChannel?.name ?: stringResource(R.string.pushsimulator_channel_placeholder),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = if (selectedChannel != null) {
-                                MaterialTheme.colorScheme.onSurface
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            channels.forEach { channel ->
+                val isSelected = channel.id == selectedChannelId
+                DropdownMenuItem(
+                    text = {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = stringResource(
+                                        R.string.pushsimulator_channel_selected,
+                                    ),
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                                )
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                        )
-                        selectedChannel?.let { channel ->
-                            ImportanceBadge(importance = channel.importance)
-                        }
-                    }
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = if (expanded) {
-                            stringResource(R.string.pushsimulator_channel_collapse)
-                        } else {
-                            stringResource(R.string.pushsimulator_channel_expand)
-                        },
-                        modifier = Modifier.rotate(dropdownRotation),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                channels.forEach { channel ->
-                    val isSelected = channel.id == selectedChannelId
-                    DropdownMenuItem(
-                        text = {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(
-                                            WormaCeptorTokens.Spacing.sm,
-                                        ),
-                                    ) {
-                                        Text(
-                                            text = channel.name,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            fontWeight = if (isSelected) {
-                                                FontWeight.SemiBold
-                                            } else {
-                                                FontWeight.Normal
-                                            },
-                                        )
-                                        ImportanceBadge(importance = channel.importance)
-                                    }
-                                    channel.description?.let { desc ->
-                                        Text(
-                                            text = desc,
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis,
-                                        )
-                                    }
-                                }
-                                if (isSelected) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.Circle,
-                                        contentDescription = stringResource(R.string.pushsimulator_channel_selected),
-                                        modifier = Modifier.size(WormaCeptorTokens.Spacing.sm),
-                                        tint = MaterialTheme.colorScheme.primary,
+                                Spacer(modifier = Modifier.size(WormaCeptorTokens.IconSize.sm))
+                            }
+                            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = channel.name,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = if (isSelected) {
+                                        FontWeight.SemiBold
+                                    } else {
+                                        FontWeight.Normal
+                                    },
+                                    color = if (isSelected) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurface
+                                    },
+                                )
+                                channel.description?.let { desc ->
+                                    Text(
+                                        text = desc,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                     )
                                 }
                             }
-                        },
-                        onClick = {
-                            onChannelSelected(channel.id)
-                            expanded = false
-                        },
-                        modifier = Modifier.background(
-                            if (isSelected) {
-                                MaterialTheme.colorScheme.primaryContainer.copy(
-                                    alpha = WormaCeptorTokens.Alpha.MODERATE,
-                                )
-                            } else {
-                                Color.Transparent
-                            },
-                        ),
-                    )
-                }
+                            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+                            ImportanceBadge(importance = channel.importance)
+                        }
+                    },
+                    onClick = {
+                        onChannelSelected(channel.id)
+                        expanded = false
+                    },
+                )
             }
         }
     }
@@ -561,13 +506,6 @@ private fun ActionButtonsSection(
                     },
                     singleLine = true,
                     modifier = Modifier.weight(1f),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.TouchApp,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    },
                 )
 
                 val canAdd by remember(newActionTitle) {

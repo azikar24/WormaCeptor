@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -173,6 +172,15 @@ internal fun PushSimulatorScreenContent(
             verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
         ) {
             item {
+                TemplatesRow(
+                    templates = state.templates,
+                    onLoad = { onEvent(PushSimulatorViewEvent.LoadTemplate(it)) },
+                    onSend = { onEvent(PushSimulatorViewEvent.SendFromTemplate(it)) },
+                    onDelete = { onEvent(PushSimulatorViewEvent.DeleteTemplate(it.id)) },
+                )
+            }
+
+            item {
                 NotificationFormCard(
                     state = state,
                     channels = state.channels,
@@ -194,26 +202,6 @@ internal fun PushSimulatorScreenContent(
                     onSaveClick = { onEvent(PushSimulatorViewEvent.ShowSaveDialog) },
                     isTitleEmpty = state.title.isBlank(),
                 )
-            }
-
-            item {
-                SectionHeader(
-                    text = stringResource(R.string.pushsimulator_templates_header),
-                    count = state.templates.size,
-                )
-            }
-
-            if (state.templates.isEmpty()) {
-                item { EmptyTemplatesCard() }
-            } else {
-                items(state.templates, key = { it.id }) { template ->
-                    TemplateCard(
-                        template = template,
-                        onLoad = { onEvent(PushSimulatorViewEvent.LoadTemplate(template)) },
-                        onSend = { onEvent(PushSimulatorViewEvent.SendFromTemplate(template)) },
-                        onDelete = { onEvent(PushSimulatorViewEvent.DeleteTemplate(template.id)) },
-                    )
-                }
             }
         }
     }

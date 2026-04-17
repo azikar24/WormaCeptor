@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.pushsimulator.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,8 +8,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -20,7 +21,6 @@ import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,8 +32,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
-import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -45,6 +45,9 @@ import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.domain.entities.NotificationTemplate
 import com.azikar24.wormaceptor.domain.entities.SimulatedNotification
 import com.azikar24.wormaceptor.feature.pushsimulator.R
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun SectionHeader(
@@ -102,30 +105,61 @@ internal fun EmptyTemplatesCard() {
 }
 
 @Composable
+internal fun TemplatesRow(
+    templates: ImmutableList<NotificationTemplate>,
+    onLoad: (NotificationTemplate) -> Unit,
+    onSend: (NotificationTemplate) -> Unit,
+    onDelete: (NotificationTemplate) -> Unit,
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        SectionHeader(
+            text = stringResource(R.string.pushsimulator_templates_header),
+            count = templates.size,
+        )
+
+        if (templates.isEmpty()) {
+            EmptyTemplatesCard()
+        } else {
+            WormaCeptorScrollableRow(
+                contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+            ) {
+                templates.forEach { template ->
+                    TemplateCard(
+                        template = template,
+                        onLoad = { onLoad(template) },
+                        onSend = { onSend(template) },
+                        onDelete = { onDelete(template) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 internal fun TemplateCard(
     template: NotificationTemplate,
     onLoad: () -> Unit,
     onSend: () -> Unit,
     onDelete: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val isPreset = template.id.startsWith("preset_")
     val priorityColor = ToolColors.PushSimulator.Priority
         .forPriority(template.notification.priority.name)
     val actionCount = template.notification.actions.size
 
-    OutlinedCard(
-        modifier = Modifier.fillMaxWidth(),
-        shape = WormaCeptorTokens.Shapes.card,
-        border = BorderStroke(
-            width = WormaCeptorTokens.BorderWidth.regular,
-            color = if (isPreset) {
-                ToolColors.PushSimulator.Template.preset
-                    .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
-            } else {
-                MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
-            },
-        ),
+    WormaCeptorCard(
+        modifier = modifier.width(WormaCeptorTokens.ComponentSize.templateCardWidth),
+        onClick = onLoad,
+        style = CardStyle.Outlined,
+        borderColor = if (isPreset) {
+            ToolColors.PushSimulator.Template.preset
+                .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+        } else {
+            null
+        },
     ) {
         Column(
             modifier = Modifier
@@ -133,9 +167,9 @@ internal fun TemplateCard(
                 .padding(WormaCeptorTokens.Spacing.md),
             verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
         ) {
-            WormaCeptorScrollableRow(
-                contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.md),
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Surface(
                     shape = WormaCeptorTokens.Shapes.chip,
@@ -213,11 +247,14 @@ internal fun TemplateCard(
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
             Text(
                 text = template.name,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
 
             Text(
@@ -241,10 +278,7 @@ internal fun TemplateCard(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(
-                    WormaCeptorTokens.Spacing.sm,
-                    Alignment.End,
-                ),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (!isPreset) {
@@ -258,7 +292,8 @@ internal fun TemplateCard(
                                 R.string.pushsimulator_template_delete,
                                 template.name,
                             ),
-                            tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+                            tint = MaterialTheme.colorScheme.error
+                                .copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
                             modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                         )
                     }
@@ -266,27 +301,21 @@ internal fun TemplateCard(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                val loadLabel = stringResource(R.string.pushsimulator_template_load)
-                val sendLabel = stringResource(R.string.pushsimulator_send)
-
-                WormaCeptorButton(
-                    text = loadLabel,
-                    onClick = onLoad,
-                    variant = ButtonVariant.Outlined,
-                )
-
-                WormaCeptorButton(
-                    text = sendLabel,
+                Surface(
                     onClick = onSend,
-                    variant = ButtonVariant.Primary,
-                    leadingIcon = {
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(WormaCeptorTokens.TouchTarget.minimum),
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.pushsimulator_send),
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                         )
-                    },
-                )
+                    }
+                }
             }
         }
     }
@@ -349,6 +378,64 @@ private fun TemplateCardPresetPreview() {
             onSend = {},
             onDelete = {},
         )
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true, widthDp = 420)
+@Composable
+private fun TemplatesRowPreview() {
+    WormaCeptorTheme {
+        Surface {
+            TemplatesRow(
+                templates = listOf(
+                    NotificationTemplate(
+                        id = "preset_1",
+                        name = "High Priority Alert",
+                        notification = SimulatedNotification(
+                            id = "1",
+                            title = "Alert",
+                            body = "System alert with high priority",
+                            channelId = "alerts",
+                            priority = NotificationPriority.HIGH,
+                        ),
+                    ),
+                    NotificationTemplate(
+                        id = "user_1",
+                        name = "Welcome Message",
+                        notification = SimulatedNotification(
+                            id = "2",
+                            title = "Welcome",
+                            body = "Thanks for installing the app!",
+                            channelId = "general",
+                            priority = NotificationPriority.DEFAULT,
+                            actions = listOf(
+                                NotificationAction(title = "Open", actionId = "open"),
+                            ),
+                        ),
+                    ),
+                ).toImmutableList(),
+                onLoad = {},
+                onSend = {},
+                onDelete = {},
+            )
+        }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true, widthDp = 420)
+@Composable
+private fun TemplatesRowEmptyPreview() {
+    WormaCeptorTheme {
+        Surface {
+            TemplatesRow(
+                templates = persistentListOf(),
+                onLoad = {},
+                onSend = {},
+                onDelete = {},
+            )
+        }
     }
 }
 

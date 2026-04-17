@@ -110,6 +110,7 @@ object TokenComponentSize {
     val toolTileHeight = 116.dp
     val dot = 6.dp
     val dotInset = 1.dp
+    val templateCardWidth = 260.dp
 }
 
 /**

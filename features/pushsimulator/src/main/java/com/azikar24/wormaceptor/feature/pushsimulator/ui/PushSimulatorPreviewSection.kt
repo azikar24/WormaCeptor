@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
@@ -95,16 +96,9 @@ internal fun NotificationPreview(
             PriorityIndicator(priority = priority, color = priorityColor)
         }
 
-        Surface(
+        WormaCeptorCard(
             modifier = Modifier.fillMaxWidth(),
-            shape = WormaCeptorTokens.Shapes.card,
-            color = MaterialTheme.colorScheme.surfaceVariant
-                .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
-            border = BorderStroke(
-                width = WormaCeptorTokens.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
-            ),
+            style = CardStyle.Outlined,
         ) {
             Column(
                 modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),

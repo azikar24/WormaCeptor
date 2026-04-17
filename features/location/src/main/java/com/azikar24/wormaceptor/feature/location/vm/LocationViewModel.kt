@@ -121,6 +121,8 @@ class LocationViewModel(
             LocationViewEvent.StartRealLocationUpdates -> startRealLocationUpdates()
             LocationViewEvent.StopRealLocationUpdates -> stopRealLocationUpdates()
             LocationViewEvent.ToggleMapExpanded -> updateState { copy(isMapExpanded = !isMapExpanded) }
+            LocationViewEvent.ShowSavePresetDialog -> updateState { copy(showSavePresetDialog = true) }
+            LocationViewEvent.DismissSavePresetDialog -> updateState { copy(showSavePresetDialog = false) }
         }
     }
 
@@ -284,7 +286,7 @@ class LocationViewModel(
                     isBuiltIn = false,
                 )
                 repository.savePreset(preset)
-                updateState { copy(isLoading = false) }
+                updateState { copy(isLoading = false, showSavePresetDialog = false) }
                 emitEffect(LocationViewEffect.ShowSuccess("Preset saved: ${preset.name}"))
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 Log.w(TAG, "Failed to save preset", e)

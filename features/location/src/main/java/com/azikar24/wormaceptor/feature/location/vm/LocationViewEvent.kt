@@ -87,4 +87,10 @@ sealed class LocationViewEvent {
 
     /** User toggled the map expanded/collapsed state. */
     data object ToggleMapExpanded : LocationViewEvent()
+
+    /** User requested to open the save-preset dialog. */
+    data object ShowSavePresetDialog : LocationViewEvent()
+
+    /** User dismissed the save-preset dialog. */
+    data object DismissSavePresetDialog : LocationViewEvent()
 }

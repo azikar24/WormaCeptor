@@ -32,4 +32,6 @@ data class LocationViewState(
     val isInputValid: Boolean = false,
     /** Real device location from GPS, converted to GeoPoint for the map. */
     val realDeviceLocation: GeoPoint? = null,
+    /** Whether the save-preset dialog is visible. */
+    val showSavePresetDialog: Boolean = false,
 )

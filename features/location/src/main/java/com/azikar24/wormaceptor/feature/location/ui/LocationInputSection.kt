@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.location.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,10 +58,8 @@ internal fun CoordinateInputCard(
 
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        shape = WormaCeptorTokens.Shapes.cardLarge,
         style = CardStyle.Outlined,
-        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+        shape = WormaCeptorTokens.Shapes.cardLarge,
     ) {
         Column(
             modifier = Modifier
@@ -115,9 +115,7 @@ internal fun CoordinateInputCard(
             // Action buttons
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(
-                    WormaCeptorTokens.Spacing.sm,
-                ),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
                 // Get current location button
                 WormaCeptorButton(
@@ -186,26 +184,31 @@ internal fun SavePresetDialog(
     onSave: (String) -> Unit,
 ) {
     var presetName by remember { mutableStateOf("") }
+    val isValid by remember(presetName) { derivedStateOf { presetName.isNotBlank() } }
 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.location_preset_dialog_title)) },
         text = {
-            WormaCeptorTextField(
-                value = presetName,
-                onValueChange = { presetName = it },
-                label = { Text(stringResource(R.string.location_preset_name)) },
-                placeholder = { Text(stringResource(R.string.location_preset_name_placeholder)) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+            ) {
+                WormaCeptorTextField(
+                    value = presetName,
+                    onValueChange = { presetName = it },
+                    label = { Text(stringResource(R.string.location_preset_name)) },
+                    placeholder = { Text(stringResource(R.string.location_preset_name_placeholder)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         },
         confirmButton = {
             WormaCeptorButton(
                 text = stringResource(R.string.location_save),
                 onClick = { onSave(presetName) },
                 variant = ButtonVariant.Primary,
-                enabled = presetName.isNotBlank(),
+                enabled = isValid,
             )
         },
         dismissButton = {

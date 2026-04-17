@@ -1,18 +1,11 @@
 package com.azikar24.wormaceptor.feature.location.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,18 +30,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -68,126 +56,98 @@ internal fun PresetItem(
     modifier: Modifier = Modifier,
 ) {
     val haptic = LocalHapticFeedback.current
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.98f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessHigh,
-        ),
-        label = "presetItemScale",
-    )
+    val selectedAccent = WormaCeptorTokens.Colors.Location.enabled
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .scale(scale)
-            .clip(WormaCeptorTokens.Shapes.card)
-            .border(
-                width = if (isSelected) {
-                    WormaCeptorTokens.BorderWidth.thick
-                } else {
-                    WormaCeptorTokens.BorderWidth.regular
-                },
-                color = if (isSelected) {
-                    WormaCeptorTokens.Colors.Location.enabled
-                } else {
-                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
-                },
-                shape = WormaCeptorTokens.Shapes.card,
-            )
-            .background(
-                color = if (isSelected) {
-                    WormaCeptorTokens.Colors.Location.enabled.copy(alpha = TokenAlpha.SUBTLE)
-                } else {
-                    MaterialTheme.colorScheme.surface
-                },
-                shape = WormaCeptorTokens.Shapes.card,
-            )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick,
-            )
-            .padding(WormaCeptorTokens.Spacing.lg),
-        verticalAlignment = Alignment.CenterVertically,
+    WormaCeptorCard(
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick,
+        style = CardStyle.Outlined,
+        backgroundColor = if (isSelected) selectedAccent.copy(alpha = TokenAlpha.SUBTLE) else null,
+        borderColor = if (isSelected) selectedAccent else null,
     ) {
-        // Location icon
-        Surface(
-            shape = WormaCeptorTokens.Shapes.button,
-            color = if (preset.isBuiltIn) {
-                WormaCeptorTokens.Colors.Location.builtInPreset.copy(alpha = TokenAlpha.SUBTLE)
-            } else {
-                WormaCeptorTokens.Colors.Location.userPreset.copy(alpha = TokenAlpha.SUBTLE)
-            },
-            modifier = Modifier.size(WormaCeptorTokens.TouchTarget.minimum),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(WormaCeptorTokens.Spacing.lg),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Place,
-                    contentDescription = preset.name,
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                    tint = if (preset.isBuiltIn) {
-                        WormaCeptorTokens.Colors.Location.builtInPreset
-                    } else {
-                        WormaCeptorTokens.Colors.Location.userPreset
-                    },
+            PresetIcon(isBuiltIn = preset.isBuiltIn, name = preset.name)
+
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = preset.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
+                    if (isSelected) {
+                        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xs))
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(R.string.location_selected),
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                            tint = selectedAccent,
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
+                Text(
+                    text = preset.location.formatCoordinates(),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = WormaCeptorTokens.Colors.Location.coordinate,
                 )
             }
-        }
 
-        Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = preset.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, fill = false),
-                )
-                if (isSelected) {
-                    Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xs))
+            if (onDelete != null) {
+                IconButton(
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        onDelete()
+                    },
+                ) {
                     Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(R.string.location_selected),
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.location_delete_preset),
                         modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-                        tint = WormaCeptorTokens.Colors.Location.enabled,
+                        tint = MaterialTheme.colorScheme.error,
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
-            Text(
-                text = preset.location.formatCoordinates(),
-                style = MaterialTheme.typography.bodySmall,
-                color = WormaCeptorTokens.Colors.Location.coordinate,
-            )
         }
+    }
+}
 
-        // Delete button for user presets
-        if (onDelete != null) {
-            IconButton(
-                onClick = {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    onDelete()
-                },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.location_delete_preset),
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-                    tint = MaterialTheme.colorScheme.error,
-                )
-            }
+@Composable
+private fun PresetIcon(
+    isBuiltIn: Boolean,
+    name: String,
+) {
+    val accent = if (isBuiltIn) {
+        WormaCeptorTokens.Colors.Location.builtInPreset
+    } else {
+        WormaCeptorTokens.Colors.Location.userPreset
+    }
+    Surface(
+        shape = WormaCeptorTokens.Shapes.button,
+        color = accent.copy(alpha = TokenAlpha.SUBTLE),
+        modifier = Modifier.size(WormaCeptorTokens.TouchTarget.minimum),
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Place,
+                contentDescription = name,
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+                tint = accent,
+            )
         }
     }
 }
@@ -204,10 +164,8 @@ internal fun CollapsibleMapSection(
 ) {
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        shape = WormaCeptorTokens.Shapes.cardLarge,
         style = CardStyle.Outlined,
-        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+        shape = WormaCeptorTokens.Shapes.cardLarge,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             // Toggle header
@@ -245,7 +203,7 @@ internal fun CollapsibleMapSection(
                             Text(
                                 text = stringResource(R.string.location_map_live),
                                 modifier = Modifier.padding(
-                                    horizontal = 6.dp,
+                                    horizontal = WormaCeptorTokens.Spacing.sm,
                                     vertical = WormaCeptorTokens.Spacing.xxs,
                                 ),
                                 style = MaterialTheme.typography.labelSmall,

@@ -31,10 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -42,7 +39,6 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -66,8 +62,6 @@ fun LocationScreen(
     onBack: (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    var showSavePresetDialog by remember { mutableStateOf(false) }
-
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
@@ -92,7 +86,7 @@ fun LocationScreen(
                                 Text(
                                     text = stringResource(R.string.location_status_active),
                                     modifier = Modifier.padding(
-                                        horizontal = 6.dp,
+                                        horizontal = WormaCeptorTokens.Spacing.sm,
                                         vertical = WormaCeptorTokens.Spacing.xxs,
                                     ),
                                     style = MaterialTheme.typography.labelSmall,
@@ -188,7 +182,7 @@ fun LocationScreen(
                         onLongitudeChanged = { onEvent(LocationViewEvent.LongitudeChanged(it)) },
                         onSetMockLocation = { onEvent(LocationViewEvent.SetMockLocationFromInput) },
                         onSetToCurrentLocation = { onEvent(LocationViewEvent.SetToCurrentRealLocation) },
-                        onSaveAsPreset = { showSavePresetDialog = true },
+                        onSaveAsPreset = { onEvent(LocationViewEvent.ShowSavePresetDialog) },
                     )
                 }
 
@@ -261,14 +255,10 @@ fun LocationScreen(
         }
     }
 
-    // Save preset dialog
-    if (showSavePresetDialog) {
+    if (state.showSavePresetDialog) {
         SavePresetDialog(
-            onDismiss = { showSavePresetDialog = false },
-            onSave = { name ->
-                onEvent(LocationViewEvent.SaveCurrentAsPreset(name))
-                showSavePresetDialog = false
-            },
+            onDismiss = { onEvent(LocationViewEvent.DismissSavePresetDialog) },
+            onSave = { name -> onEvent(LocationViewEvent.SaveCurrentAsPreset(name)) },
         )
     }
 }

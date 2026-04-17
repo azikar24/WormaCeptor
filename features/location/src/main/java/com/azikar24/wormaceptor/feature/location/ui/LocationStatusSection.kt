@@ -39,6 +39,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
@@ -51,7 +52,9 @@ internal fun MockLocationWarningBanner() {
 
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
+        style = CardStyle.Outlined,
         backgroundColor = WormaCeptorTokens.Colors.Location.warning.copy(alpha = TokenAlpha.SUBTLE),
+        borderColor = WormaCeptorTokens.Colors.Location.warning.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         shape = WormaCeptorTokens.Shapes.card,
     ) {
         Column(
@@ -148,7 +151,13 @@ internal fun MockLocationStatusCard(
 
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
+        style = CardStyle.Outlined,
         backgroundColor = containerColor,
+        borderColor = if (isMockEnabled) {
+            WormaCeptorTokens.Colors.Location.enabled.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+        } else {
+            null
+        },
         shape = WormaCeptorTokens.Shapes.cardLarge,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {

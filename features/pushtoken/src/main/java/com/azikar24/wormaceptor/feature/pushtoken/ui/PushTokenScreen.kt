@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -207,8 +208,7 @@ private fun PushTokenErrorCard(
     onDismiss: () -> Unit,
 ) {
     WormaCeptorCard(
-        backgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-        shape = WormaCeptorTokens.Shapes.cardLarge,
+        style = CardStyle.Outlined,
     ) {
         Row(
             Modifier

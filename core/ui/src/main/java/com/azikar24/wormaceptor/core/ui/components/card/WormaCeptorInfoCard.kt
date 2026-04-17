@@ -1,7 +1,6 @@
 package com.azikar24.wormaceptor.core.ui.components.card
 
 import android.content.res.Configuration
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -14,14 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,16 +55,9 @@ fun WormaCeptorInfoCard(
     actionContentDescription: String? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Card(
+    WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorTokens.Elevation.sm),
-        ),
-        border = BorderStroke(
-            WormaCeptorTokens.BorderWidth.thin,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
-        ),
-        shape = WormaCeptorTokens.Shapes.card,
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg.scaled()),

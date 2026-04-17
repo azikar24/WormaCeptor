@@ -51,6 +51,8 @@
     <ID>UndocumentedPublicFunction:DatabaseNavigator.kt$DatabaseNavigator$fun navigateToQuery()</ID>
     <ID>UndocumentedPublicFunction:DatabaseNavigator.kt$DatabaseNavigator$fun navigateToTableData()</ID>
     <ID>UndocumentedPublicFunction:DatabaseNavigator.kt$DatabaseNavigator$fun navigateToTables()</ID>
+    <ID>UndocumentedPublicFunction:QueryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun QueryScreen( state: DatabaseViewState, onEvent: (DatabaseViewEvent) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:TableDataScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TableDataScreen( state: DatabaseViewState, onEvent: (DatabaseViewEvent) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicFunction:TableListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun TableListScreen( state: DatabaseViewState, onEvent: (DatabaseViewEvent) -&gt; Unit, onTableClick: (TableInfo) -&gt; Unit, onQueryClick: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewEffect.kt$DatabaseViewEffect.ShowError$val message: String</ID>
     <ID>UndocumentedPublicProperty:DatabaseViewEvent.kt$DatabaseViewEvent.List.SearchQueryChanged$val query: String</ID>

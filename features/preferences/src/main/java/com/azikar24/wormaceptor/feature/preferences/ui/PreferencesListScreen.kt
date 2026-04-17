@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Folder
@@ -28,14 +27,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.list.WormaCeptorListItem
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -80,23 +78,16 @@ fun PreferencesListScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PreferencesListTopBar(
     searchActive: Boolean,
     onToggleSearch: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
-    TopAppBar(
-        title = { Text(stringResource(R.string.preferences_list_title)) },
-        navigationIcon = {
-            IconButton(onClick = onNavigateBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.preferences_back),
-                )
-            }
-        },
+    WormaCeptorTopBar(
+        title = stringResource(R.string.preferences_list_title),
+        onBack = onNavigateBack,
+        backContentDescription = stringResource(R.string.preferences_back),
         actions = {
             IconButton(onClick = onToggleSearch) {
                 Icon(

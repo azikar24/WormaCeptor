@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.feature.ratelimit.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,25 +11,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
@@ -43,15 +36,6 @@ import com.azikar24.wormaceptor.feature.ratelimit.ui.components.StatisticsCard
 import com.azikar24.wormaceptor.feature.ratelimit.vm.RateLimitViewEvent
 import com.azikar24.wormaceptor.feature.ratelimit.vm.RateLimitViewState
 
-/**
- * Main screen for Network Rate Limiting.
- *
- * Features:
- * - Enable/disable toggle
- * - Network preset selection (WiFi, 3G, 2G, EDGE, Offline)
- * - Custom speed/latency/packet loss sliders
- * - Statistics display
- */
 @Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,28 +53,10 @@ fun RateLimitScreen(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.ratelimit_title),
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    onBack?.let { back ->
-                        IconButton(onClick = back) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.ratelimit_back),
-                            )
-                        }
-                    }
-                },
+            WormaCeptorTopBar(
+                title = stringResource(R.string.ratelimit_title),
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.ratelimit_back),
                 actions = {
                     IconButton(onClick = { onEvent(RateLimitViewEvent.ResetToDefaults) }) {
                         Icon(
@@ -108,9 +74,6 @@ fun RateLimitScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
             )
         },
     ) { paddingValues ->

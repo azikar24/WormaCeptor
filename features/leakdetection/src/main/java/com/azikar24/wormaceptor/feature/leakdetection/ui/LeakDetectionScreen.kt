@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.feature.leakdetection.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,27 +12,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringIndicator
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -53,16 +46,6 @@ import com.azikar24.wormaceptor.feature.leakdetection.vm.LeakDetectionViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-/**
- * Main screen for Memory Leak Detection.
- *
- * Features:
- * - Summary cards showing leak counts by severity
- * - Severity filter chips
- * - Leak list with detail sheet
- * - Manual trigger check button
- * - Monitoring status indicator
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeakDetectionScreen(
@@ -110,32 +93,16 @@ private fun LeakDetectionTopBar(
 ) {
     val haptic = LocalHapticFeedback.current
 
-    TopAppBar(
-        title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            ) {
-                Text(
-                    text = stringResource(R.string.leakdetection_title),
-                    fontWeight = FontWeight.SemiBold,
-                )
-                WormaCeptorMonitoringIndicator(
-                    isActive = isRunning,
-                    activeColor = WormaCeptorTokens.Colors.LeakDetection.monitoring,
-                    inactiveColor = WormaCeptorTokens.Colors.LeakDetection.idle,
-                )
-            }
-        },
-        navigationIcon = {
-            onBack?.let { back ->
-                IconButton(onClick = back) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.leakdetection_back),
-                    )
-                }
-            }
+    WormaCeptorTopBar(
+        title = stringResource(R.string.leakdetection_title),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.leakdetection_back),
+        titleTrailing = {
+            WormaCeptorMonitoringIndicator(
+                isActive = isRunning,
+                activeColor = WormaCeptorTokens.Colors.LeakDetection.monitoring,
+                inactiveColor = WormaCeptorTokens.Colors.LeakDetection.idle,
+            )
         },
         actions = {
             IconButton(onClick = { onEvent(LeakDetectionViewEvent.TriggerCheck) }) {
@@ -154,9 +121,6 @@ private fun LeakDetectionTopBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
     )
 }
 

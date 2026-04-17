@@ -7,31 +7,17 @@ import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Deselect
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.feature.viewer.R
 
-/**
- * Action bar that appears when items are selected in multi-select mode.
- * Provides bulk operations like share, export, and delete.
- *
- * Uses Material3 TopAppBar to guarantee identical height, padding,
- * and status bar inset handling as the normal app bar.
- *
- * Note: This composable renders its content unconditionally.
- * The parent is responsible for controlling visibility (e.g., via Crossfade).
- */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BulkActionBar(
     selectedCount: Int,
@@ -47,14 +33,9 @@ fun BulkActionBar(
 ) {
     val haptic = LocalHapticFeedback.current
 
-    TopAppBar(
-        title = {
-            Text(
-                text = stringResource(R.string.viewer_bulk_selected_count, selectedCount),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Medium,
-            )
-        },
+    WormaCeptorTopBar(
+        title = stringResource(R.string.viewer_bulk_selected_count, selectedCount),
+        modifier = modifier,
         navigationIcon = {
             IconButton(onClick = onCancel) {
                 Icon(
@@ -114,6 +95,5 @@ fun BulkActionBar(
                 )
             }
         },
-        modifier = modifier,
     )
 }

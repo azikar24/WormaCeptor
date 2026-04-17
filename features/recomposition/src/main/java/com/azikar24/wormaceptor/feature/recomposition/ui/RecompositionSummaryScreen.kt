@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,14 +18,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.recomposition.R
@@ -36,9 +34,6 @@ import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewModel
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewState
 import kotlinx.collections.immutable.persistentListOf
 
-/**
- * Recomposition summary screen connected to the [RecompositionViewModel].
- */
 @Composable
 fun RecompositionSummaryScreen(
     viewModel: RecompositionViewModel,
@@ -67,23 +62,10 @@ internal fun RecompositionSummaryContent(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.recomposition_title),
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                },
-                navigationIcon = {
-                    onBack?.let { back ->
-                        IconButton(onClick = back) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.recomposition_back),
-                            )
-                        }
-                    }
-                },
+            WormaCeptorTopBar(
+                title = stringResource(R.string.recomposition_title),
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.recomposition_back),
                 actions = {
                     IconButton(onClick = { onEvent(RecompositionViewEvent.Reset) }) {
                         Icon(
@@ -92,9 +74,6 @@ internal fun RecompositionSummaryContent(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
             )
         },
     ) { paddingValues ->

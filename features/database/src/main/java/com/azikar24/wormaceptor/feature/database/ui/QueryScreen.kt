@@ -21,7 +21,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.PlayArrow
@@ -33,7 +32,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -48,6 +46,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -62,9 +61,6 @@ import kotlinx.collections.immutable.persistentListOf
 private val QueryInputMinHeight = 100.dp
 private val QueryInputMaxHeight = 200.dp
 
-/**
- * Screen for executing SQL queries.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QueryScreen(
@@ -98,7 +94,6 @@ fun QueryScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun QueryTopBar(
     sqlQuery: String,
@@ -107,16 +102,10 @@ private fun QueryTopBar(
     onExecute: () -> Unit,
     onBack: () -> Unit,
 ) {
-    TopAppBar(
-        title = { Text(stringResource(R.string.database_query_title)) },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.database_query_back),
-                )
-            }
-        },
+    WormaCeptorTopBar(
+        title = stringResource(R.string.database_query_title),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.database_query_back),
         actions = {
             if (sqlQuery.isNotEmpty()) {
                 IconButton(onClick = onClear) {

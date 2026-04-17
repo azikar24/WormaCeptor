@@ -7,7 +7,6 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,24 +15,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorWarningBadge
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringStatusBar
@@ -53,35 +46,19 @@ private fun CpuTopAppBar(
     onBack: (() -> Unit)?,
     onClearHistory: () -> Unit,
 ) {
-    TopAppBar(
-        title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    WormaCeptorTopBar(
+        title = stringResource(R.string.cpu_title),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.cpu_back),
+        titleTrailing = {
+            AnimatedVisibility(
+                visible = state.isCpuWarning,
+                enter = fadeIn(),
+                exit = fadeOut(),
             ) {
-                Text(
-                    text = stringResource(R.string.cpu_title),
-                    fontWeight = FontWeight.SemiBold,
+                WormaCeptorWarningBadge(
+                    contentDescription = stringResource(R.string.cpu_warning),
                 )
-                AnimatedVisibility(
-                    visible = state.isCpuWarning,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    WormaCeptorWarningBadge(
-                        contentDescription = stringResource(R.string.cpu_warning),
-                    )
-                }
-            }
-        },
-        navigationIcon = {
-            onBack?.let { back ->
-                IconButton(onClick = back) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.cpu_back),
-                    )
-                }
             }
         },
         actions = {
@@ -102,9 +79,6 @@ private fun CpuTopAppBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
     )
 }
 
@@ -150,17 +124,6 @@ private fun CpuScreenContent(
     }
 }
 
-/**
- * Main screen for CPU Monitoring.
- *
- * Features:
- * - Overall CPU usage as animated percentage arc/gauge
- * - Per-core usage bars (horizontal bars for each core)
- * - CPU frequency display
- * - Line chart showing CPU usage over time
- * - Color coding: green < 50%, yellow 50-80%, red > 80%
- * - Temperature display (if available)
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CpuScreen(

@@ -52,6 +52,7 @@
     <ID>UndocumentedPublicClass:CpuViewEvent.kt$CpuViewEvent$StartMonitoring : CpuViewEvent</ID>
     <ID>UndocumentedPublicClass:CpuViewEvent.kt$CpuViewEvent$StopMonitoring : CpuViewEvent</ID>
     <ID>UndocumentedPublicClass:CpuViewState.kt$CpuViewState</ID>
+    <ID>UndocumentedPublicFunction:CpuScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CpuScreen( state: CpuViewState, onEvent: (CpuViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val cpuHistory: ImmutableList&lt;CpuInfo&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val currentCpu: CpuInfo = CpuInfo.empty()</ID>
     <ID>UndocumentedPublicProperty:CpuViewState.kt$CpuViewState$val formattedUptime: String = ""</ID>

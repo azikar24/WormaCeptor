@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -15,19 +14,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.TextWithStartEllipsis
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent
 
-/**
- * Combined header for the transaction detail screen: top app bar + tab row.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TransactionDetailHeader(
@@ -53,21 +49,9 @@ internal fun TransactionDetailHeader(
             canSwipeLeft = canNavigateNext,
             canSwipeRight = canNavigatePrev,
         ) {
-            TopAppBar(
-                title = {
-                    TextWithStartEllipsis(
-                        text = title,
-                        modifier = Modifier.weight(1f, fill = false),
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.viewer_transaction_detail_back),
-                        )
-                    }
-                },
+            WormaCeptorTopBar(
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.viewer_transaction_detail_back),
                 actions = {
                     SearchAction(
                         showSearch = showSearch,
@@ -79,6 +63,12 @@ internal fun TransactionDetailHeader(
                     MenuAction(
                         showMenu = showMenu,
                         onEvent = onEvent,
+                    )
+                },
+                title = {
+                    TextWithStartEllipsis(
+                        text = title,
+                        modifier = Modifier.weight(1f, fill = false),
                     )
                 },
             )

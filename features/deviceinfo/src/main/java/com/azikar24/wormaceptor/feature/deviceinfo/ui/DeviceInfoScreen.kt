@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,7 +24,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
@@ -36,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -60,7 +59,6 @@ import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoSection
 import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoViewEvent
 import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoViewState
 
-/** Screen content that displays all device information sections. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceInfoScreenContent(
@@ -120,16 +118,10 @@ private fun DeviceInfoTopBar(
     onBack: () -> Unit,
     onEvent: (DeviceInfoViewEvent) -> Unit,
 ) {
-    TopAppBar(
-        title = { Text(stringResource(R.string.deviceinfo_title)) },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.deviceinfo_back),
-                )
-            }
-        },
+    WormaCeptorTopBar(
+        title = stringResource(R.string.deviceinfo_title),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.deviceinfo_back),
         actions = {
             if (hasDeviceInfo) {
                 IconButton(onClick = { onEvent(DeviceInfoViewEvent.CopyAll) }) {

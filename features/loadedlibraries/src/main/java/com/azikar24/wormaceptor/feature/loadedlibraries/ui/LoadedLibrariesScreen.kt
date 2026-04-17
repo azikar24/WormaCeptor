@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Refresh
@@ -35,14 +34,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -62,7 +59,6 @@ import com.azikar24.wormaceptor.feature.loadedlibraries.vm.LoadedLibrariesViewEv
 import com.azikar24.wormaceptor.feature.loadedlibraries.vm.LoadedLibrariesViewState
 import kotlinx.collections.immutable.persistentListOf
 
-/** Displays the loaded libraries list with filtering, search, and detail views. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoadedLibrariesScreen(
@@ -140,7 +136,6 @@ private fun LibrariesBody(
 }
 
 @Suppress("LongParameterList")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LibrariesTopBar(
     searchActive: Boolean,
@@ -152,20 +147,10 @@ private fun LibrariesTopBar(
     onRefresh: () -> Unit,
 ) {
     Column {
-        TopAppBar(
-            title = {
-                Text(stringResource(R.string.loadedlibraries_title), fontWeight = FontWeight.SemiBold)
-            },
-            navigationIcon = {
-                onBack?.let {
-                    IconButton(onClick = it) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(R.string.loadedlibraries_back),
-                        )
-                    }
-                }
-            },
+        WormaCeptorTopBar(
+            title = stringResource(R.string.loadedlibraries_title),
+            onBack = onBack,
+            backContentDescription = stringResource(R.string.loadedlibraries_back),
             actions = {
                 IconButton(onClick = onToggleSearch) {
                     Icon(
@@ -184,7 +169,6 @@ private fun LibrariesTopBar(
                     }
                 }
             },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
         )
         AnimatedVisibility(
             visible = searchActive,

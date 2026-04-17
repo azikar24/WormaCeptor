@@ -4,6 +4,7 @@
   <CurrentIssues>
     <ID>UndocumentedPublicClass:PushTokenNavigationContributor.kt$PushTokenNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:PushTokenViewModelFactory.kt$PushTokenViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicFunction:PushTokenScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PushTokenScreen( state: PushTokenViewState, onEvent: (PushTokenViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, showCopiedSnackbar: Boolean = false, )</ID>
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val currentToken: PushTokenInfo? = null</ID>
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val error: String? = null</ID>
     <ID>UndocumentedPublicProperty:PushTokenViewState.kt$PushTokenViewState$val isLoading: Boolean = false</ID>

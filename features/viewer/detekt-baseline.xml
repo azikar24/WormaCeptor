@@ -13,7 +13,7 @@
     <ID>LambdaParameterInRestartableEffect:HomeTopBar.kt$onHomeEvent</ID>
     <ID>LambdaParameterInRestartableEffect:PdfViewerScreen.kt$onEvent</ID>
     <ID>LambdaParameterInRestartableEffect:TransactionDetailScreen.kt$onEvent</ID>
-    <ID>LongMethod:BulkActionBar.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun BulkActionBar( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onExportAsHar: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:BulkActionBar.kt$@Composable fun BulkActionBar( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onExportAsHar: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:ContentTypeChip.kt$@Composable fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo</ID>
     <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun ExceptionInfoCard( crash: Crash, dateFormat: SimpleDateFormat, )</ID>
     <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackFrameItem( frame: CrashUtils.StackFrame, isHighlighted: Boolean, )</ID>
@@ -220,7 +220,11 @@
     <ID>UndocumentedPublicClass:TransactionListViewModel.kt$TransactionListViewModel$Companion</ID>
     <ID>UndocumentedPublicClass:TransactionListViewState.kt$TransactionListViewState</ID>
     <ID>UndocumentedPublicClass:TransactionPagerViewState.kt$TransactionPagerViewState</ID>
+    <ID>UndocumentedPublicFunction:BulkActionBar.kt$@Composable fun BulkActionBar( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onExportAsHar: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:CrashDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashDetailPagerScreen( crashes: List&lt;Crash&gt;, initialCrashIndex: Int, onBack: () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:CrashDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashDetailScreen( crash: Crash, onBack: () -&gt; Unit, )</ID>
     <ID>UndocumentedPublicFunction:FullscreenImageViewer.kt$@Composable fun FullscreenImageViewer( imageData: ByteArray, metadata: ImageMetadata?, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:HomeTopBar.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun HomeTopBar( homeState: HomeViewState, transactionState: TransactionListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, pagerState: PagerState, titles: List&lt;String&gt;, )</ID>
     <ID>UndocumentedPublicFunction:ImageShareUtils.kt$fun saveImageToGallery( context: Context, imageData: ByteArray, format: String, ): ImageOperationResult</ID>
     <ID>UndocumentedPublicFunction:ImageShareUtils.kt$fun shareImage( context: Context, imageData: ByteArray, format: String, ): ImageOperationResult</ID>
     <ID>UndocumentedPublicFunction:PdfPreviewCard.kt$@Composable fun PdfPreviewCard( pdfData: ByteArray, contentType: String?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, modifier: Modifier = Modifier, onShowMessage: (String) -&gt; Unit = {}, )</ID>

@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.Info
@@ -28,7 +27,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -52,9 +51,6 @@ import kotlinx.collections.immutable.persistentListOf
 
 private const val PageSize = 100
 
-/**
- * Screen displaying table data with pagination.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TableDataScreen(
@@ -102,31 +98,11 @@ private fun TableDataTopBar(
     onNext: () -> Unit,
     onBack: () -> Unit,
 ) {
-    TopAppBar(
-        title = {
-            Column {
-                Text(
-                    text = tableName,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = stringResource(R.string.database_table_data_page, currentPage + 1),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.database_table_data_back),
-                )
-            }
-        },
+    WormaCeptorTopBar(
+        title = tableName,
+        subtitle = stringResource(R.string.database_table_data_page, currentPage + 1),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.database_table_data_back),
         actions = {
             IconButton(onClick = onToggleSchema) {
                 Icon(

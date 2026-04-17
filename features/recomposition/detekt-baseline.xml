@@ -11,6 +11,7 @@
     <ID>UndocumentedPublicClass:RecompositionNavigationContributor.kt$RecompositionNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:RecompositionViewEvent.kt$RecompositionViewEvent$Reset : RecompositionViewEvent</ID>
     <ID>UndocumentedPublicClass:RecompositionViewModel.kt$RecompositionViewModel$Companion</ID>
+    <ID>UndocumentedPublicFunction:RecompositionSummaryScreen.kt$@Composable fun RecompositionSummaryScreen( viewModel: RecompositionViewModel, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val count: Long</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val name: String</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val ratePerSecond: Float</ID>

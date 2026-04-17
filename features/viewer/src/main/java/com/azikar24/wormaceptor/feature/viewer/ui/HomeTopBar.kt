@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.MoreVert
@@ -19,7 +18,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -27,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
@@ -48,10 +47,6 @@ private object HomeTabs {
     const val TOOLS = 2
 }
 
-/**
- * Top bar for [HomeScreen] containing the app bar (or bulk-action bar in selection mode)
- * and the tab row.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTopBar(
@@ -96,16 +91,10 @@ fun HomeTopBar(
                     onCancel = { onTransactionEvent(TransactionListViewEvent.SelectionCleared) },
                 )
             } else {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.viewer_home_title)) },
-                    navigationIcon = {
-                        IconButton(onClick = { onHomeEvent(HomeViewEvent.BackPressed) }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.viewer_home_back),
-                            )
-                        }
-                    },
+                WormaCeptorTopBar(
+                    title = stringResource(R.string.viewer_home_title),
+                    onBack = { onHomeEvent(HomeViewEvent.BackPressed) },
+                    backContentDescription = stringResource(R.string.viewer_home_back),
                     actions = {
                         // Overflow Menu - only show on Transactions and Crashes tabs
                         if (pagerState.currentPage < HomeTabs.TOOLS) {

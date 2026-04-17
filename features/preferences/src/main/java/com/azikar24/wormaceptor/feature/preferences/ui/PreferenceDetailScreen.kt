@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Key
@@ -24,11 +23,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,10 +35,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
@@ -135,37 +130,17 @@ private fun PreferenceDetailTopBar(
     onBack: () -> Unit,
 ) {
     var showMenu by remember { mutableStateOf(false) }
+    val itemCountLabel = if (totalItemCount == 1) {
+        stringResource(R.string.preferences_item_count_singular)
+    } else {
+        stringResource(R.string.preferences_item_count_plural)
+    }
 
-    TopAppBar(
-        title = {
-            Column {
-                Text(
-                    text = fileName,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                val itemCountLabel = if (totalItemCount == 1) {
-                    stringResource(R.string.preferences_item_count_singular)
-                } else {
-                    stringResource(R.string.preferences_item_count_plural)
-                }
-                Text(
-                    text = "$totalItemCount $itemCountLabel",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        },
-        navigationIcon = {
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.preferences_back),
-                )
-            }
-        },
+    WormaCeptorTopBar(
+        title = fileName,
+        subtitle = "$totalItemCount $itemCountLabel",
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.preferences_back),
         actions = {
             IconButton(onClick = onToggleSearch) {
                 Icon(
@@ -197,9 +172,6 @@ private fun PreferenceDetailTopBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
     )
 }
 

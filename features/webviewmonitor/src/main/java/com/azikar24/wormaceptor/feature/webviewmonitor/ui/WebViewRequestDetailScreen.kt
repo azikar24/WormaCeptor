@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.webviewmonitor.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +11,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Description
@@ -20,14 +18,10 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -35,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorInfoCard
@@ -62,48 +57,37 @@ internal fun WebViewRequestDetailScreen(
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
+            WormaCeptorTopBar(
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.webviewmonitor_action_back),
                 title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-                    ) {
-                        WormaCeptorMethodBadge(request.method)
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = request.path,
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.SemiBold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                            Text(
-                                text = request.host,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                        WormaCeptorStatusBadge(
-                            text = when {
-                                request.isPending -> "..."
-                                request.statusCode != null -> request.statusCode.toString()
-                                request.isFailed -> "ERR"
-                                else -> "?"
-                            },
-                            containerColor = statusColor.copy(alpha = TokenAlpha.SUBTLE),
-                            contentColor = statusColor,
+                    WormaCeptorMethodBadge(request.method)
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = request.path,
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(
+                            text = request.host,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.webviewmonitor_action_back),
-                        )
-                    }
+                    WormaCeptorStatusBadge(
+                        text = when {
+                            request.isPending -> "..."
+                            request.statusCode != null -> request.statusCode.toString()
+                            request.isFailed -> "ERR"
+                            else -> "?"
+                        },
+                        containerColor = statusColor.copy(alpha = TokenAlpha.SUBTLE),
+                        contentColor = statusColor,
+                    )
                 },
             )
         },

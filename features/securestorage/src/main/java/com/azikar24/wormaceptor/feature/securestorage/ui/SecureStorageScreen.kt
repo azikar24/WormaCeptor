@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -35,8 +34,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,8 +42,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -113,7 +110,6 @@ fun SecureStorageScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SecureStorageTopAppBar(
     state: SecureStorageViewState,
@@ -123,23 +119,10 @@ private fun SecureStorageTopAppBar(
     onBack: (() -> Unit)?,
 ) {
     Column {
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(R.string.securestorage_title),
-                    fontWeight = FontWeight.SemiBold,
-                )
-            },
-            navigationIcon = {
-                onBack?.let { back ->
-                    IconButton(onClick = back) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.securestorage_back),
-                        )
-                    }
-                }
-            },
+        WormaCeptorTopBar(
+            title = stringResource(R.string.securestorage_title),
+            onBack = onBack,
+            backContentDescription = stringResource(R.string.securestorage_back),
             actions = {
                 IconButton(onClick = onSearchToggle) {
                     Icon(
@@ -164,9 +147,6 @@ private fun SecureStorageTopAppBar(
                     }
                 }
             },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
         )
         AnimatedVisibility(
             visible = searchActive,

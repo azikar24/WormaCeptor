@@ -6,5 +6,6 @@
     <ID>LongMethod:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$@SuppressLint("MissingPermission") private fun getNetworkDetails(): NetworkDetails</ID>
     <ID>MagicNumber:GetDeviceInfoUseCase.kt$GetDeviceInfoUseCase$100f</ID>
     <ID>UndocumentedPublicClass:DeviceInfoViewModelFactory.kt$DeviceInfoViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicFunction:DeviceInfoScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun DeviceInfoScreenContent( state: DeviceInfoViewState, snackBarHostState: SnackbarHostState, pullToRefreshState: PullToRefreshState, onBack: () -&gt; Unit, onEvent: (DeviceInfoViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
   </CurrentIssues>
 </SmellBaseline>

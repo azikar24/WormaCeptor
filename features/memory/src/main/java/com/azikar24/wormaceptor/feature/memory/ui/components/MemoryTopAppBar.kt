@@ -3,25 +3,16 @@ package com.azikar24.wormaceptor.feature.memory.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorWarningBadge
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.memory.R
 import com.azikar24.wormaceptor.feature.memory.vm.MemoryViewEvent
 import com.azikar24.wormaceptor.feature.memory.vm.MemoryViewState
@@ -34,35 +25,19 @@ internal fun MemoryTopAppBar(
     onBack: (() -> Unit)?,
     onClearHistory: () -> Unit,
 ) {
-    TopAppBar(
-        title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    WormaCeptorTopBar(
+        title = stringResource(R.string.memory_title),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.memory_back),
+        titleTrailing = {
+            AnimatedVisibility(
+                visible = state.isHeapWarning,
+                enter = fadeIn(),
+                exit = fadeOut(),
             ) {
-                Text(
-                    text = stringResource(R.string.memory_title),
-                    fontWeight = FontWeight.SemiBold,
+                WormaCeptorWarningBadge(
+                    contentDescription = stringResource(R.string.memory_warning),
                 )
-                AnimatedVisibility(
-                    visible = state.isHeapWarning,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    WormaCeptorWarningBadge(
-                        contentDescription = stringResource(R.string.memory_warning),
-                    )
-                }
-            }
-        },
-        navigationIcon = {
-            onBack?.let { back ->
-                IconButton(onClick = back) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.memory_back),
-                    )
-                }
             }
         },
         actions = {
@@ -83,8 +58,5 @@ internal fun MemoryTopAppBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
     )
 }

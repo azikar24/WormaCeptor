@@ -13,6 +13,7 @@
     <ID>UndocumentedPublicClass:LoadedLibrariesViewModel.kt$LoadedLibrariesViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewModelFactory.kt$LoadedLibrariesViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:LoadedLibrariesViewState.kt$LoadedLibrariesViewState</ID>
+    <ID>UndocumentedPublicFunction:LoadedLibrariesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LoadedLibrariesScreen( state: LoadedLibrariesViewState, onEvent: (LoadedLibrariesViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SelectLibrary$val library: LoadedLibrary</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSearchQuery$val query: String</ID>
     <ID>UndocumentedPublicProperty:LoadedLibrariesViewEvent.kt$LoadedLibrariesViewEvent.SetSelectedType$val type: LoadedLibrary.LibraryType?</ID>

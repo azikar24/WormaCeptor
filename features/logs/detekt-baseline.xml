@@ -8,6 +8,7 @@
     <ID>UndocumentedPublicClass:LogsViewModel.kt$LogsViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:LogsViewModelFactory.kt$LogsViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:LogsViewState.kt$LogsViewState</ID>
+    <ID>UndocumentedPublicFunction:LogsScreen.kt$@Composable fun LogsScreen( viewModel: LogsViewModel, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
     <ID>UndocumentedPublicProperty:LogsViewState.kt$LogsViewState$val autoScroll: Boolean = true</ID>
     <ID>UndocumentedPublicProperty:LogsViewState.kt$LogsViewState$val currentPid: Int = 0</ID>
     <ID>UndocumentedPublicProperty:LogsViewState.kt$LogsViewState$val isCapturing: Boolean = false</ID>

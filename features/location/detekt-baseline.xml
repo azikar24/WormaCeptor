@@ -26,6 +26,7 @@
     <ID>SwallowedException:LocationViewModel.kt$LocationViewModel$e: SecurityException</ID>
     <ID>UndocumentedPublicClass:LocationNavigationContributor.kt$LocationNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:LocationViewModelFactory.kt$LocationViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicFunction:LocationScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationScreen( state: LocationViewState, onEvent: (LocationViewEvent) -&gt; Unit, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
     <ID>ViewModelInjection:LocationNavigationContributor.kt$viewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

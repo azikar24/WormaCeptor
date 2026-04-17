@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
@@ -31,7 +30,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
@@ -53,7 +52,6 @@ import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewModel
 import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewState
 import kotlinx.collections.immutable.persistentListOf
 
-/** Push Token management screen with token info, copy, history, and error display. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PushTokenScreen(
@@ -77,24 +75,16 @@ fun PushTokenScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PushTokenTopAppBar(
     state: PushTokenViewState,
     onEvent: (PushTokenViewEvent) -> Unit,
     onBack: (() -> Unit)?,
 ) {
-    TopAppBar(
-        title = {
-            Text(stringResource(R.string.pushtoken_title), fontWeight = FontWeight.SemiBold)
-        },
-        navigationIcon = {
-            onBack?.let {
-                IconButton(onClick = it) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.pushtoken_back))
-                }
-            }
-        },
+    WormaCeptorTopBar(
+        title = stringResource(R.string.pushtoken_title),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.pushtoken_back),
         actions = {
             IconButton(
                 onClick = { onEvent(PushTokenViewEvent.FetchToken) },

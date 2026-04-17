@@ -34,7 +34,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -45,7 +44,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -66,6 +64,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -78,14 +77,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/**
- * Pager screen for crash details with swipe navigation between crashes.
- * Swipe on the top bar to navigate between crashes.
- *
- * @param crashes List of all crashes
- * @param initialCrashIndex Initial index to display
- * @param onBack Callback to navigate back
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CrashDetailPagerScreen(
@@ -171,9 +162,6 @@ fun CrashDetailPagerScreen(
     }
 }
 
-/**
- * Original CrashDetailScreen - kept for backward compatibility.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CrashDetailScreen(
@@ -186,9 +174,6 @@ fun CrashDetailScreen(
     )
 }
 
-/**
- * Crash detail content - the actual content.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongMethod")
 @Composable
@@ -217,16 +202,10 @@ private fun CrashDetailContent(
                 canSwipeLeft = canNavigateNext,
                 canSwipeRight = canNavigatePrev,
             ) {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.viewer_crash_detail_title)) },
-                    navigationIcon = {
-                        IconButton(onClick = onBack) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.viewer_crash_detail_back),
-                            )
-                        }
-                    },
+                WormaCeptorTopBar(
+                    title = stringResource(R.string.viewer_crash_detail_title),
+                    onBack = onBack,
+                    backContentDescription = stringResource(R.string.viewer_crash_detail_back),
                     actions = {
                         IconButton(onClick = { shareCrash(context, crash) }) {
                             Icon(

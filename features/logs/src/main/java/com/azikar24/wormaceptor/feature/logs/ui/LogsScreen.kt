@@ -16,18 +16,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.VerticalAlignBottom
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -36,11 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
@@ -60,7 +55,6 @@ import com.azikar24.wormaceptor.feature.logs.vm.LogsViewModel
 import com.azikar24.wormaceptor.feature.logs.vm.LogsViewState
 import kotlinx.collections.immutable.ImmutableList
 
-/** Main screen for viewing console logs with filtering, search, and auto-scroll. */
 @Composable
 fun LogsScreen(
     viewModel: LogsViewModel,
@@ -188,23 +182,10 @@ private fun LogsAppBar(
     onClearLogs: () -> Unit,
     onBack: (() -> Unit)?,
 ) {
-    TopAppBar(
-        title = {
-            Text(
-                text = stringResource(R.string.logs_console_title),
-                fontWeight = FontWeight.SemiBold,
-            )
-        },
-        navigationIcon = {
-            onBack?.let { back ->
-                IconButton(onClick = back) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.logs_back),
-                    )
-                }
-            }
-        },
+    WormaCeptorTopBar(
+        title = stringResource(R.string.logs_console_title),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.logs_back),
         actions = {
             WormaCeptorPlayPauseButton(
                 isActive = isCapturing,
@@ -220,9 +201,6 @@ private fun LogsAppBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
     )
 }
 

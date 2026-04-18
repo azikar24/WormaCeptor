@@ -10,6 +10,8 @@ data class MockRulesViewState(
     val mockingEnabled: Boolean = true,
     val isLoading: Boolean = true,
     val editor: EditorState = EditorState(),
+    val showDeleteAllDialog: Boolean = false,
+    val pendingDeleteRule: MockRule? = null,
 )
 
 data class EditorState(

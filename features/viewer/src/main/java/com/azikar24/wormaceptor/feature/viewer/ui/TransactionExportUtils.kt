@@ -2,7 +2,7 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import android.content.Context
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatHeaders
+import com.azikar24.wormaceptor.feature.viewer.FormatHeadersUseCase
 
 /**
  * Saves PDF data to the device's Downloads directory.
@@ -59,6 +59,7 @@ internal fun savePdfToDownloads(
 
 internal fun generateTextSummary(
     transaction: NetworkTransaction,
+    formatHeaders: FormatHeadersUseCase,
     requestBody: String? = null,
     responseBody: String? = null,
 ): String = buildString {

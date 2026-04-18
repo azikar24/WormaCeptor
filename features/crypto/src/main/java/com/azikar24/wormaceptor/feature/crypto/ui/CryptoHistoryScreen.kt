@@ -9,8 +9,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -26,8 +24,6 @@ import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewState
 @Composable
 internal fun CryptoHistoryContent(
     state: CryptoViewState,
-    snackbarHostState: SnackbarHostState,
-    onNavigateBack: () -> Unit,
     onEvent: (CryptoViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -48,11 +44,10 @@ internal fun CryptoHistoryContent(
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
-        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             WormaCeptorTopBar(
                 title = stringResource(R.string.crypto_history_title),
-                onBack = onNavigateBack,
+                onBack = { onEvent(CryptoViewEvent.Navigation.HideHistory) },
                 backContentDescription = stringResource(R.string.crypto_back),
                 actions = {
                     if (state.history.isNotEmpty()) {

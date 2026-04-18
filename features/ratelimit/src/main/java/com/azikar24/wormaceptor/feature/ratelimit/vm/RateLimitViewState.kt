@@ -8,4 +8,8 @@ data class RateLimitViewState(
     val config: RateLimitConfig = RateLimitConfig.default(),
     val stats: ThrottleStats = ThrottleStats.empty(),
     val selectedPreset: NetworkPreset? = null,
+    val formattedDownloadSpeed: String = "",
+    val formattedUploadSpeed: String = "",
+    val formattedPresetDownload: String = "",
+    val formattedPresetUpload: String = "",
 )

@@ -8,6 +8,7 @@ import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -45,6 +46,7 @@ class PreferencesViewModel(
         when (event) {
             is PreferencesViewEvent.List -> handleListEvent(event)
             is PreferencesViewEvent.Detail -> handleDetailEvent(event)
+            is PreferencesViewEvent.Editor -> handleEditorEvent(event)
         }
     }
 
@@ -74,10 +76,18 @@ class PreferencesViewModel(
             is PreferencesViewEvent.Detail.FileCleared -> handleClearCurrentFile()
             is PreferencesViewEvent.Detail.PreferenceCreated -> handleSetPreference(event.key, event.value)
             is PreferencesViewEvent.Detail.EditSheetOpened -> updateState {
-                copy(editingItem = event.item, showEditSheet = true)
+                copy(
+                    editingItem = event.item,
+                    showEditSheet = true,
+                    editor = PreferenceEditorState.fromItem(event.item),
+                )
             }
             is PreferencesViewEvent.Detail.EditSheetDismissed -> updateState {
-                copy(editingItem = null, showEditSheet = false)
+                copy(
+                    editingItem = null,
+                    showEditSheet = false,
+                    editor = PreferenceEditorState(),
+                )
             }
             is PreferencesViewEvent.Detail.DeleteConfirmShown -> updateState {
                 copy(showDeleteConfirmKey = event.key)
@@ -92,6 +102,65 @@ class PreferencesViewModel(
                 copy(showClearConfirmDialog = false)
             }
         }
+    }
+
+    private fun handleEditorEvent(event: PreferencesViewEvent.Editor) {
+        when (event) {
+            is PreferencesViewEvent.Editor.KeyChanged -> updateEditor { copy(key = event.value) }
+            is PreferencesViewEvent.Editor.TypeSelected -> updateEditor {
+                copy(selectedType = event.type, typeDropdownExpanded = false)
+            }
+            is PreferencesViewEvent.Editor.TypeDropdownExpandedChanged -> updateEditor {
+                copy(typeDropdownExpanded = event.expanded)
+            }
+            is PreferencesViewEvent.Editor.StringValueChanged -> updateEditor { copy(stringValue = event.value) }
+            is PreferencesViewEvent.Editor.IntValueChanged -> updateEditor { copy(intValue = event.value) }
+            is PreferencesViewEvent.Editor.LongValueChanged -> updateEditor { copy(longValue = event.value) }
+            is PreferencesViewEvent.Editor.FloatValueChanged -> updateEditor { copy(floatValue = event.value) }
+            is PreferencesViewEvent.Editor.BooleanValueChanged -> updateEditor { copy(booleanValue = event.value) }
+            is PreferencesViewEvent.Editor.NewStringSetItemChanged -> updateEditor {
+                copy(newStringSetItem = event.value)
+            }
+            is PreferencesViewEvent.Editor.AddStringSetItem -> updateEditor {
+                if (newStringSetItem.isBlank()) {
+                    this
+                } else {
+                    copy(
+                        stringSetValues = (stringSetValues + newStringSetItem).toPersistentList(),
+                        newStringSetItem = "",
+                    )
+                }
+            }
+            is PreferencesViewEvent.Editor.RemoveStringSetItem -> updateEditor {
+                copy(
+                    stringSetValues = stringSetValues
+                        .toMutableList()
+                        .apply { removeAt(event.index) }
+                        .toPersistentList(),
+                )
+            }
+            is PreferencesViewEvent.Editor.SaveRequested -> handleEditorSave()
+            is PreferencesViewEvent.Editor.DeleteRequested -> handleEditorDelete()
+        }
+    }
+
+    private fun updateEditor(reducer: PreferenceEditorState.() -> PreferenceEditorState) {
+        updateState { copy(editor = editor.reducer()) }
+    }
+
+    private fun handleEditorSave() {
+        val snapshot = uiState.value
+        val editor = snapshot.editor
+        if (!editor.canSave) return
+        handleSetPreference(editor.key, editor.toPreferenceValue())
+        sendEvent(PreferencesViewEvent.Detail.EditSheetDismissed)
+    }
+
+    private fun handleEditorDelete() {
+        val editor = uiState.value.editor
+        if (!editor.isEditing) return
+        handleDeletePreference(editor.key)
+        sendEvent(PreferencesViewEvent.Detail.EditSheetDismissed)
     }
 
     private fun handleToggleFileSearch() {

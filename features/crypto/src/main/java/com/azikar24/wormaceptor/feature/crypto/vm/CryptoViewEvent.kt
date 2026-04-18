@@ -90,13 +90,9 @@ sealed class CryptoViewEvent {
         data class Load(val result: CryptoResult) : History()
     }
 
-    /** Events related to screen navigation within the crypto feature. */
     sealed class Navigation : CryptoViewEvent() {
-
-        /** Navigate to the history screen. */
         data object ShowHistory : Navigation()
-
-        /** Navigate back from the history screen. */
         data object HideHistory : Navigation()
+        data object BackPressed : Navigation()
     }
 }

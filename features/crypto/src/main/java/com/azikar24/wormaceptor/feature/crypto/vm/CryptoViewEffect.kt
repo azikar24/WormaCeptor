@@ -23,4 +23,6 @@ sealed class CryptoViewEffect {
 
     /** A history entry was loaded into the tool. */
     data object HistoryLoaded : CryptoViewEffect()
+
+    data object NavigateBack : CryptoViewEffect()
 }

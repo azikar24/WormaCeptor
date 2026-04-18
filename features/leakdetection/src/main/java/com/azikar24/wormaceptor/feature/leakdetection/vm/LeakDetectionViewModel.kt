@@ -19,20 +19,7 @@ class LeakDetectionViewModel(
 ) {
 
     init {
-        combine(
-            engine.detectedLeaks,
-            engine.leakSummary,
-            engine.isRunning,
-        ) { leaks, summary, isRunning ->
-            updateState {
-                copy(
-                    filteredLeaks = filterLeaks(leaks, selectedSeverity),
-                    summary = summary,
-                    isRunning = isRunning,
-                    isLeaksLoading = false,
-                )
-            }
-        }.launchIn(viewModelScope)
+        observeEngineState()
     }
 
     override fun handleEvent(event: LeakDetectionViewEvent) {
@@ -52,6 +39,23 @@ class LeakDetectionViewModel(
             is LeakDetectionViewEvent.TriggerCheck -> engine.triggerCheck()
             is LeakDetectionViewEvent.ClearLeaks -> engine.clearLeaks()
         }
+    }
+
+    private fun observeEngineState() {
+        combine(
+            engine.detectedLeaks,
+            engine.leakSummary,
+            engine.isRunning,
+        ) { leaks, summary, isRunning ->
+            updateState {
+                copy(
+                    filteredLeaks = filterLeaks(leaks, selectedSeverity),
+                    summary = summary,
+                    isRunning = isRunning,
+                    isLeaksLoading = false,
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun filterLeaks(

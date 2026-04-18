@@ -22,8 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,21 +40,16 @@ import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewState
 @Composable
 internal fun CryptoToolContent(
     state: CryptoViewState,
-    snackbarHostState: SnackbarHostState,
     onEvent: (CryptoViewEvent) -> Unit,
-    onNavigateBack: (() -> Unit)?,
-    onNavigateToHistory: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
-        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             CryptoTopBar(
                 hasHistory = state.history.isNotEmpty(),
-                onNavigateBack = onNavigateBack,
-                onNavigateToHistory = onNavigateToHistory,
+                onEvent = onEvent,
             )
         },
     ) { padding ->
@@ -71,16 +64,15 @@ internal fun CryptoToolContent(
 @Composable
 private fun CryptoTopBar(
     hasHistory: Boolean,
-    onNavigateBack: (() -> Unit)?,
-    onNavigateToHistory: (() -> Unit)?,
+    onEvent: (CryptoViewEvent) -> Unit,
 ) {
     WormaCeptorTopBar(
         title = stringResource(R.string.crypto_title),
-        onBack = onNavigateBack,
+        onBack = { onEvent(CryptoViewEvent.Navigation.BackPressed) },
         backContentDescription = stringResource(R.string.crypto_back),
         actions = {
-            if (hasHistory && onNavigateToHistory != null) {
-                IconButton(onClick = onNavigateToHistory) {
+            if (hasHistory) {
+                IconButton(onClick = { onEvent(CryptoViewEvent.Navigation.ShowHistory) }) {
                     Icon(
                         Icons.Default.History,
                         stringResource(R.string.crypto_history),
@@ -188,10 +180,7 @@ private fun CryptoToolContentPreview() {
     WormaCeptorTheme {
         CryptoToolContent(
             state = CryptoViewState(inputText = "Hello World"),
-            snackbarHostState = remember { SnackbarHostState() },
             onEvent = {},
-            onNavigateBack = {},
-            onNavigateToHistory = null,
         )
     }
 }

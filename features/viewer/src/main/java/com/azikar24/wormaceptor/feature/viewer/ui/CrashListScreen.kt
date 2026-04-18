@@ -48,9 +48,9 @@ import com.azikar24.wormaceptor.core.ui.components.state.rememberHapticOnce
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash
+import com.azikar24.wormaceptor.feature.viewer.FormatCrashRelativeTimeUseCase
+import com.azikar24.wormaceptor.feature.viewer.IsSevereExceptionUseCase
 import com.azikar24.wormaceptor.feature.viewer.R
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatRelativeTime
-import com.azikar24.wormaceptor.feature.viewer.ui.util.isSevereException
 import kotlinx.collections.immutable.ImmutableList
 
 /**
@@ -161,8 +161,10 @@ fun CrashItem(
     onClick: () -> Unit,
 ) {
     val context = LocalContext.current
+    val formatRelativeTime = remember(context) { FormatCrashRelativeTimeUseCase(context) }
+    val isSevereException = remember { IsSevereExceptionUseCase() }
     val location = remember(crash.stackTrace) { CrashUtils.extractCrashLocation(crash.stackTrace) }
-    val relativeTime = remember(crash.timestamp) { formatRelativeTime(context, crash.timestamp) }
+    val relativeTime = remember(crash.timestamp) { formatRelativeTime(crash.timestamp) }
     val isSevere = remember(crash.exceptionType) { isSevereException(crash.exceptionType) }
 
     WormaCeptorCard(

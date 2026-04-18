@@ -20,6 +20,34 @@ class SecureStorageViewModel(
 ) {
 
     init {
+        observeEngineState()
+    }
+
+    override fun handleEvent(event: SecureStorageViewEvent) {
+        when (event) {
+            is SecureStorageViewEvent.SelectType -> updateState {
+                copy(
+                    selectedType = event.type,
+                    filteredEntries = filterEntries(engine.entries.value, event.type, searchQuery),
+                )
+            }
+            is SecureStorageViewEvent.UpdateSearchQuery -> updateState {
+                copy(
+                    searchQuery = event.query,
+                    filteredEntries = filterEntries(engine.entries.value, selectedType, event.query),
+                )
+            }
+            is SecureStorageViewEvent.SelectEntry -> updateState {
+                copy(selectedEntry = event.entry)
+            }
+            is SecureStorageViewEvent.DismissDetail -> updateState {
+                copy(selectedEntry = null)
+            }
+            is SecureStorageViewEvent.Refresh -> engine.refresh()
+        }
+    }
+
+    private fun observeEngineState() {
         combine(
             combine(
                 engine.entries,
@@ -50,30 +78,6 @@ class SecureStorageViewModel(
                 )
             }
         }.launchIn(viewModelScope)
-    }
-
-    override fun handleEvent(event: SecureStorageViewEvent) {
-        when (event) {
-            is SecureStorageViewEvent.SelectType -> updateState {
-                copy(
-                    selectedType = event.type,
-                    filteredEntries = filterEntries(engine.entries.value, event.type, searchQuery),
-                )
-            }
-            is SecureStorageViewEvent.UpdateSearchQuery -> updateState {
-                copy(
-                    searchQuery = event.query,
-                    filteredEntries = filterEntries(engine.entries.value, selectedType, event.query),
-                )
-            }
-            is SecureStorageViewEvent.SelectEntry -> updateState {
-                copy(selectedEntry = event.entry)
-            }
-            is SecureStorageViewEvent.DismissDetail -> updateState {
-                copy(selectedEntry = null)
-            }
-            is SecureStorageViewEvent.Refresh -> engine.refresh()
-        }
     }
 
     private fun filterEntries(

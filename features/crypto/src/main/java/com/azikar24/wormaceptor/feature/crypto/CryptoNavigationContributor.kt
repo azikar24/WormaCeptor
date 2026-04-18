@@ -1,10 +1,15 @@
 package com.azikar24.wormaceptor.feature.crypto
 
 import android.content.Context
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -19,7 +24,6 @@ import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.crypto.ui.CryptoHistoryContent
 import com.azikar24.wormaceptor.feature.crypto.ui.CryptoToolContent
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEffect
-import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEvent
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewModel
 import com.google.auto.service.AutoService
 import kotlinx.coroutines.launch
@@ -72,23 +76,19 @@ private fun CryptoDestination(onBack: () -> Unit) {
                     scope.launch { snackbarHostState.showSnackbar(outputLoadedMessage) }
                 is CryptoViewEffect.HistoryLoaded ->
                     scope.launch { snackbarHostState.showSnackbar(loadedMessage) }
+                is CryptoViewEffect.NavigateBack -> onBack()
             }
         },
     ) { state, onEvent ->
-        if (state.showHistory) {
-            CryptoHistoryContent(
-                state = state,
-                snackbarHostState = snackbarHostState,
-                onNavigateBack = { onEvent(CryptoViewEvent.Navigation.HideHistory) },
-                onEvent = onEvent,
-            )
-        } else {
-            CryptoToolContent(
-                state = state,
-                snackbarHostState = snackbarHostState,
-                onEvent = onEvent,
-                onNavigateBack = { onBack() },
-                onNavigateToHistory = { onEvent(CryptoViewEvent.Navigation.ShowHistory) },
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (state.showHistory) {
+                CryptoHistoryContent(state = state, onEvent = onEvent)
+            } else {
+                CryptoToolContent(state = state, onEvent = onEvent)
+            }
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.align(Alignment.BottomCenter),
             )
         }
     }

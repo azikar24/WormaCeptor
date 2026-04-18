@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.feature.mockrules.vm
 
+import com.azikar24.wormaceptor.domain.entities.mock.MockRule
 import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 
 sealed class MockRulesViewEvent {
@@ -9,6 +10,10 @@ sealed class MockRulesViewEvent {
         data class ToggleRule(val ruleId: String) : List()
         data class DeleteRule(val ruleId: String) : List()
         data object DeleteAllRules : List()
+        data object ShowDeleteAllDialog : List()
+        data object DismissDeleteAllDialog : List()
+        data class RequestDeleteRule(val rule: MockRule) : List()
+        data object DismissDeleteRuleDialog : List()
     }
 
     sealed class Editor : MockRulesViewEvent() {

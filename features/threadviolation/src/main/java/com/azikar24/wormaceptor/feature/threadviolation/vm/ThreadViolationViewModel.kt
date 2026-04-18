@@ -19,20 +19,7 @@ class ThreadViolationViewModel(
 ) {
 
     init {
-        combine(
-            engine.violations,
-            engine.stats,
-            engine.isMonitoring,
-        ) { violations, stats, isMonitoring ->
-            updateState {
-                copy(
-                    filteredViolations = filterViolations(violations, selectedType),
-                    stats = stats,
-                    isMonitoring = isMonitoring,
-                    isViolationsLoading = false,
-                )
-            }
-        }.launchIn(viewModelScope)
+        observeEngineState()
     }
 
     override fun handleEvent(event: ThreadViolationViewEvent) {
@@ -58,6 +45,23 @@ class ThreadViolationViewModel(
             }
             is ThreadViolationViewEvent.ClearViolations -> engine.clearViolations()
         }
+    }
+
+    private fun observeEngineState() {
+        combine(
+            engine.violations,
+            engine.stats,
+            engine.isMonitoring,
+        ) { violations, stats, isMonitoring ->
+            updateState {
+                copy(
+                    filteredViolations = filterViolations(violations, selectedType),
+                    stats = stats,
+                    isMonitoring = isMonitoring,
+                    isViolationsLoading = false,
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun filterViolations(

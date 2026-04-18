@@ -49,15 +49,9 @@ import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.domain.entities.PreferenceItem
-import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.R
-import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_BOOLEAN
-import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_FLOAT
-import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_INT
-import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_LONG
-import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_STRING
-import com.azikar24.wormaceptor.feature.preferences.ui.components.PreferenceEditFormState.Companion.TYPE_STRING_SET
+import com.azikar24.wormaceptor.feature.preferences.vm.PreferenceEditorState
+import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewEvent
 import kotlinx.collections.immutable.ImmutableList
 
 /** Bottom sheet for creating or editing a preference item. */
@@ -65,41 +59,37 @@ import kotlinx.collections.immutable.ImmutableList
 @Suppress("ModifierMissing")
 @Composable
 fun PreferenceEditSheet(
-    item: PreferenceItem?,
-    onDismiss: () -> Unit,
-    onSave: (String, PreferenceValue) -> Unit,
-    onDelete: ((String) -> Unit)? = null,
+    editor: PreferenceEditorState,
+    onEvent: (PreferencesViewEvent) -> Unit,
+    showDelete: Boolean,
 ) {
-    val formState = rememberPreferenceEditFormState(item)
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
-        if (formState.isCreating) focusRequester.requestFocus()
+        if (editor.isCreating) focusRequester.requestFocus()
     }
 
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = { onEvent(PreferencesViewEvent.Detail.EditSheetDismissed) },
         sheetState = sheetState,
         shape = WormaCeptorTokens.Shapes.sheet,
     ) {
         PreferenceEditSheetContent(
-            formState = formState,
+            editor = editor,
+            onEvent = onEvent,
+            showDelete = showDelete,
             focusRequester = focusRequester,
-            onDismiss = onDismiss,
-            onSave = onSave,
-            onDelete = onDelete,
         )
     }
 }
 
 @Composable
 private fun PreferenceEditSheetContent(
-    formState: PreferenceEditFormState,
+    editor: PreferenceEditorState,
+    onEvent: (PreferencesViewEvent) -> Unit,
+    showDelete: Boolean,
     focusRequester: FocusRequester,
-    onDismiss: () -> Unit,
-    onSave: (String, PreferenceValue) -> Unit,
-    onDelete: ((String) -> Unit)?,
 ) {
     Column(
         modifier = Modifier
@@ -110,7 +100,7 @@ private fun PreferenceEditSheetContent(
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
     ) {
         Text(
-            text = if (formState.isCreating) {
+            text = if (editor.isCreating) {
                 stringResource(R.string.preferences_dialog_create_title)
             } else {
                 stringResource(R.string.preferences_dialog_edit_title)
@@ -119,14 +109,13 @@ private fun PreferenceEditSheetContent(
             fontWeight = FontWeight.SemiBold,
         )
 
-        EditSheetKeyInput(formState = formState, focusRequester = focusRequester)
-        EditSheetTypeSelector(formState = formState)
-        EditSheetValueInput(formState = formState)
+        EditSheetKeyInput(editor = editor, onEvent = onEvent, focusRequester = focusRequester)
+        EditSheetTypeSelector(editor = editor, onEvent = onEvent)
+        EditSheetValueInput(editor = editor, onEvent = onEvent)
         EditSheetActions(
-            formState = formState,
-            onDismiss = onDismiss,
-            onSave = onSave,
-            onDelete = onDelete,
+            editor = editor,
+            onEvent = onEvent,
+            showDelete = showDelete,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxxl))
@@ -135,55 +124,65 @@ private fun PreferenceEditSheetContent(
 
 @Composable
 private fun EditSheetKeyInput(
-    formState: PreferenceEditFormState,
+    editor: PreferenceEditorState,
+    onEvent: (PreferencesViewEvent) -> Unit,
     focusRequester: FocusRequester,
 ) {
     WormaCeptorTextField(
-        value = formState.key,
-        onValueChange = { formState.key = it },
+        value = editor.key,
+        onValueChange = { onEvent(PreferencesViewEvent.Editor.KeyChanged(it)) },
         label = { Text(stringResource(R.string.preferences_label_key)) },
         modifier = Modifier
             .fillMaxWidth()
             .then(
-                if (formState.isCreating) Modifier.focusRequester(focusRequester) else Modifier,
+                if (editor.isCreating) Modifier.focusRequester(focusRequester) else Modifier,
             ),
         singleLine = true,
-        enabled = formState.isCreating,
+        enabled = editor.isCreating,
         monospace = true,
-        isError = formState.isKeyError,
+        isError = editor.isKeyError,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EditSheetTypeSelector(formState: PreferenceEditFormState) {
+private fun EditSheetTypeSelector(
+    editor: PreferenceEditorState,
+    onEvent: (PreferencesViewEvent) -> Unit,
+) {
     ExposedDropdownMenuBox(
-        expanded = formState.typeDropdownExpanded,
-        onExpandedChange = { if (formState.isCreating) formState.typeDropdownExpanded = it },
+        expanded = editor.typeDropdownExpanded,
+        onExpandedChange = {
+            if (editor.isCreating) {
+                onEvent(PreferencesViewEvent.Editor.TypeDropdownExpandedChanged(it))
+            }
+        },
     ) {
         OutlinedTextField(
-            value = formState.selectedType,
+            value = editor.selectedType,
             onValueChange = {},
             readOnly = true,
             label = { Text(stringResource(R.string.preferences_label_type)) },
             trailingIcon = {
-                if (formState.isCreating) {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = formState.typeDropdownExpanded)
+                if (editor.isCreating) {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = editor.typeDropdownExpanded)
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-            enabled = formState.isCreating,
+            enabled = editor.isCreating,
             shape = WormaCeptorTokens.Shapes.button,
         )
-        if (formState.isCreating) {
+        if (editor.isCreating) {
             ExposedDropdownMenu(
-                expanded = formState.typeDropdownExpanded,
-                onDismissRequest = { formState.typeDropdownExpanded = false },
+                expanded = editor.typeDropdownExpanded,
+                onDismissRequest = {
+                    onEvent(PreferencesViewEvent.Editor.TypeDropdownExpandedChanged(false))
+                },
             ) {
                 val typeColors = WormaCeptorTokens.Colors.Preferences.typeScheme()
-                PreferenceEditFormState.AVAILABLE_TYPES.forEach { type ->
+                PreferenceEditorState.AVAILABLE_TYPES.forEach { type ->
                     val typeColor = typeColors.forTypeName(type)
                     DropdownMenuItem(
                         text = {
@@ -206,7 +205,7 @@ private fun EditSheetTypeSelector(formState: PreferenceEditFormState) {
                                 }
                             }
                         },
-                        onClick = { formState.selectType(type) },
+                        onClick = { onEvent(PreferencesViewEvent.Editor.TypeSelected(type)) },
                     )
                 }
             }
@@ -215,56 +214,58 @@ private fun EditSheetTypeSelector(formState: PreferenceEditFormState) {
 }
 
 @Composable
-private fun EditSheetValueInput(formState: PreferenceEditFormState) {
-    when (formState.selectedType) {
-        TYPE_STRING -> StringValueInput(
-            value = formState.stringValue,
-            onValueChange = { formState.stringValue = it },
+private fun EditSheetValueInput(
+    editor: PreferenceEditorState,
+    onEvent: (PreferencesViewEvent) -> Unit,
+) {
+    when (editor.selectedType) {
+        PreferenceEditorState.TYPE_STRING -> StringValueInput(
+            value = editor.stringValue,
+            onValueChange = { onEvent(PreferencesViewEvent.Editor.StringValueChanged(it)) },
         )
-        TYPE_INT -> NumericValueInput(
-            value = formState.intValue,
-            onValueChange = { formState.intValue = it },
-            isError = formState.isIntError,
+        PreferenceEditorState.TYPE_INT -> NumericValueInput(
+            value = editor.intValue,
+            onValueChange = { onEvent(PreferencesViewEvent.Editor.IntValueChanged(it)) },
+            isError = editor.isIntError,
             errorText = stringResource(R.string.preferences_validation_invalid_integer),
             keyboardType = KeyboardType.Number,
         )
-        TYPE_LONG -> NumericValueInput(
-            value = formState.longValue,
-            onValueChange = { formState.longValue = it },
-            isError = formState.isLongError,
+        PreferenceEditorState.TYPE_LONG -> NumericValueInput(
+            value = editor.longValue,
+            onValueChange = { onEvent(PreferencesViewEvent.Editor.LongValueChanged(it)) },
+            isError = editor.isLongError,
             errorText = stringResource(R.string.preferences_validation_invalid_long),
             keyboardType = KeyboardType.Number,
         )
-        TYPE_FLOAT -> NumericValueInput(
-            value = formState.floatValue,
-            onValueChange = { formState.floatValue = it },
-            isError = formState.isFloatError,
+        PreferenceEditorState.TYPE_FLOAT -> NumericValueInput(
+            value = editor.floatValue,
+            onValueChange = { onEvent(PreferencesViewEvent.Editor.FloatValueChanged(it)) },
+            isError = editor.isFloatError,
             errorText = stringResource(R.string.preferences_validation_invalid_float),
             keyboardType = KeyboardType.Decimal,
         )
-        TYPE_BOOLEAN -> BooleanValueInput(
-            value = formState.booleanValue,
-            onValueChange = { formState.booleanValue = it },
+        PreferenceEditorState.TYPE_BOOLEAN -> BooleanValueInput(
+            value = editor.booleanValue,
+            onValueChange = { onEvent(PreferencesViewEvent.Editor.BooleanValueChanged(it)) },
         )
-        TYPE_STRING_SET -> StringSetValueInput(formState = formState)
+        PreferenceEditorState.TYPE_STRING_SET -> StringSetValueInput(editor = editor, onEvent = onEvent)
     }
 }
 
 @Composable
 private fun EditSheetActions(
-    formState: PreferenceEditFormState,
-    onDismiss: () -> Unit,
-    onSave: (String, PreferenceValue) -> Unit,
-    onDelete: ((String) -> Unit)?,
+    editor: PreferenceEditorState,
+    onEvent: (PreferencesViewEvent) -> Unit,
+    showDelete: Boolean,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (!formState.isCreating && onDelete != null) {
+        if (!editor.isCreating && showDelete) {
             WormaCeptorButton(
                 text = stringResource(R.string.preferences_dialog_delete_confirm),
-                onClick = { onDelete(formState.key) },
+                onClick = { onEvent(PreferencesViewEvent.Editor.DeleteRequested) },
                 variant = ButtonVariant.Text,
                 contentColor = MaterialTheme.colorScheme.error,
             )
@@ -272,19 +273,19 @@ private fun EditSheetActions(
         Spacer(modifier = Modifier.weight(1f))
         WormaCeptorButton(
             text = stringResource(R.string.preferences_dialog_cancel),
-            onClick = onDismiss,
+            onClick = { onEvent(PreferencesViewEvent.Detail.EditSheetDismissed) },
             variant = ButtonVariant.Text,
         )
         Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
         WormaCeptorButton(
-            text = if (formState.isCreating) {
+            text = if (editor.isCreating) {
                 stringResource(R.string.preferences_button_create)
             } else {
                 stringResource(R.string.preferences_button_save)
             },
-            onClick = { onSave(formState.key, formState.toPreferenceValue()) },
+            onClick = { onEvent(PreferencesViewEvent.Editor.SaveRequested) },
             variant = ButtonVariant.Primary,
-            enabled = formState.canSave,
+            enabled = editor.canSave,
         )
     }
 }
@@ -368,7 +369,10 @@ private fun BooleanValueInput(
 }
 
 @Composable
-private fun StringSetValueInput(formState: PreferenceEditFormState) {
+private fun StringSetValueInput(
+    editor: PreferenceEditorState,
+    onEvent: (PreferencesViewEvent) -> Unit,
+) {
     Column {
         Text(
             text = stringResource(R.string.preferences_label_values),
@@ -378,18 +382,20 @@ private fun StringSetValueInput(formState: PreferenceEditFormState) {
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
-        if (formState.stringSetValues.isNotEmpty()) {
+        if (editor.stringSetValues.isNotEmpty()) {
             StringSetChips(
-                values = formState.stringSetValues,
-                onRemoveItem = formState::removeStringSetItem,
+                values = editor.stringSetValues,
+                onRemoveItem = { index ->
+                    onEvent(PreferencesViewEvent.Editor.RemoveStringSetItem(index))
+                },
             )
             Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
         }
 
         StringSetAddRow(
-            newItem = formState.newStringSetItem,
-            onNewItemChange = { formState.newStringSetItem = it },
-            onAddItem = formState::addStringSetItem,
+            newItem = editor.newStringSetItem,
+            onNewItemChange = { onEvent(PreferencesViewEvent.Editor.NewStringSetItemChanged(it)) },
+            onAddItem = { onEvent(PreferencesViewEvent.Editor.AddStringSetItem) },
         )
     }
 }
@@ -451,11 +457,10 @@ private fun PreferenceEditSheetCreatePreview() {
     WormaCeptorTheme {
         Surface {
             PreferenceEditSheetContent(
-                formState = PreferenceEditFormState(item = null),
+                editor = PreferenceEditorState(),
+                onEvent = {},
+                showDelete = false,
                 focusRequester = remember { FocusRequester() },
-                onDismiss = {},
-                onSave = { _, _ -> },
-                onDelete = null,
             )
         }
     }
@@ -467,16 +472,15 @@ private fun PreferenceEditSheetEditPreview() {
     WormaCeptorTheme {
         Surface {
             PreferenceEditSheetContent(
-                formState = PreferenceEditFormState(
-                    item = PreferenceItem(
-                        key = "dark_mode",
-                        value = PreferenceValue.BooleanValue(true),
-                    ),
+                editor = PreferenceEditorState(
+                    isEditing = true,
+                    key = "dark_mode",
+                    selectedType = PreferenceEditorState.TYPE_BOOLEAN,
+                    booleanValue = true,
                 ),
+                onEvent = {},
+                showDelete = true,
                 focusRequester = remember { FocusRequester() },
-                onDismiss = {},
-                onSave = { _, _ -> },
-                onDelete = {},
             )
         }
     }

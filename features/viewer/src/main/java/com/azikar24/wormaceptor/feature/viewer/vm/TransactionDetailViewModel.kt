@@ -10,6 +10,7 @@ import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
 import com.azikar24.wormaceptor.domain.entities.ExportFormat
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.feature.viewer.FormatHeadersUseCase
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.MatchInfo
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
@@ -19,7 +20,6 @@ import com.azikar24.wormaceptor.feature.viewer.ui.generateTextSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.isProtobufContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.parseBodyViaRegistry
 import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
-import com.azikar24.wormaceptor.feature.viewer.ui.util.formatHeaders
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -41,6 +41,7 @@ internal class TransactionDetailViewModel(
     NoOpNavigator,
 ) {
 
+    private val formatHeaders = FormatHeadersUseCase()
     private var searchDebounceJob: Job? = null
 
     override fun handleEvent(event: TransactionDetailViewEvent) {
@@ -465,7 +466,7 @@ internal class TransactionDetailViewModel(
         } else {
             transaction.response?.headers ?: return
         }
-        val formatted = formatHeaders(headers)
+        val formatted = formatHeaders.invoke(headers)
         val labelResId = if (isRequest) {
             R.string.viewer_clipboard_request_headers
         } else {
@@ -482,7 +483,7 @@ internal class TransactionDetailViewModel(
         val content = buildString {
             if (isRequest) {
                 appendLine("=== REQUEST HEADERS ===")
-                appendLine(formatHeaders(transaction.request.headers))
+                appendLine(formatHeaders.invoke(transaction.request.headers))
                 val section = state.requestState
                 val body = if (section.isPrettyMode) {
                     section.parsedBody ?: section.rawBody
@@ -496,7 +497,7 @@ internal class TransactionDetailViewModel(
             } else {
                 transaction.response?.headers?.let { headers ->
                     appendLine("=== RESPONSE HEADERS ===")
-                    appendLine(formatHeaders(headers))
+                    appendLine(formatHeaders.invoke(headers))
                 }
                 val section = state.responseState
                 val body = if (section.isPrettyMode) {
@@ -530,7 +531,7 @@ internal class TransactionDetailViewModel(
                 val resBody = transaction.response?.bodyRef?.let { queryEngine.getBody(it) }
                 reqBody to resBody
             }
-            val summary = generateTextSummary(transaction, requestBody, responseBody)
+            val summary = generateTextSummary(transaction, formatHeaders, requestBody, responseBody)
             emitEffect(
                 TransactionDetailViewEffect.Clipboard.CopyText(
                     labelResId = R.string.viewer_clipboard_transaction,

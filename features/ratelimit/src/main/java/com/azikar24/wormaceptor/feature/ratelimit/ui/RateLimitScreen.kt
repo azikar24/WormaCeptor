@@ -112,6 +112,8 @@ fun RateLimitScreen(
                     // Network presets
                     NetworkPresetsCard(
                         selectedPreset = state.selectedPreset,
+                        formattedPresetDownload = state.formattedPresetDownload,
+                        formattedPresetUpload = state.formattedPresetUpload,
                         enabled = state.config.enabled,
                         onSelectPreset = { onEvent(RateLimitViewEvent.SelectPreset(it)) },
                         colors = colors,
@@ -120,6 +122,8 @@ fun RateLimitScreen(
                     // Custom configuration
                     ConfigurationCard(
                         config = state.config,
+                        formattedDownloadSpeed = state.formattedDownloadSpeed,
+                        formattedUploadSpeed = state.formattedUploadSpeed,
                         enabled = state.config.enabled,
                         onChangeDownloadSpeed = { onEvent(RateLimitViewEvent.SetDownloadSpeed(it)) },
                         onChangeUploadSpeed = { onEvent(RateLimitViewEvent.SetUploadSpeed(it)) },

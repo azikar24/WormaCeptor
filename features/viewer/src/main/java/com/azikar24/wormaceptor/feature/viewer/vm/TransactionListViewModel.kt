@@ -360,11 +360,5 @@ class TransactionListViewModel(
         private const val SUBSCRIPTION_TIMEOUT = 5000L
         private const val PAGE_SIZE = 30
         private const val REFRESH_DELAY = 500L
-
-        fun formatHeaders(headers: Map<String, List<String>>): String {
-            return headers.entries.joinToString("\n") { (key, values) ->
-                "$key: ${values.joinToString(", ")}"
-            }
-        }
     }
 }

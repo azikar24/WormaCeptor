@@ -23,39 +23,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.recomposition.R
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionItem
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewEvent
-import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewModel
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewState
 import kotlinx.collections.immutable.persistentListOf
 
-@Composable
-fun RecompositionSummaryScreen(
-    viewModel: RecompositionViewModel,
-    modifier: Modifier = Modifier,
-    onBack: (() -> Unit)? = null,
-) {
-    BaseScreen(viewModel) { state, onEvent ->
-        RecompositionSummaryContent(
-            state = state,
-            onEvent = onEvent,
-            onBack = onBack,
-            modifier = modifier,
-        )
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RecompositionSummaryContent(
+fun RecompositionSummaryScreen(
     state: RecompositionViewState,
     onEvent: (RecompositionViewEvent) -> Unit,
-    onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -64,7 +45,7 @@ internal fun RecompositionSummaryContent(
         topBar = {
             WormaCeptorTopBar(
                 title = stringResource(R.string.recomposition_title),
-                onBack = onBack,
+                onBack = { onEvent(RecompositionViewEvent.BackPressed) },
                 backContentDescription = stringResource(R.string.recomposition_back),
                 actions = {
                     IconButton(onClick = { onEvent(RecompositionViewEvent.Reset) }) {
@@ -133,9 +114,9 @@ internal fun RecompositionSummaryContent(
 @Suppress("MagicNumber")
 @Preview(showBackground = true)
 @Composable
-private fun RecompositionSummaryContentPreview() {
+private fun RecompositionSummaryScreenPreview() {
     WormaCeptorTheme {
-        RecompositionSummaryContent(
+        RecompositionSummaryScreen(
             state = RecompositionViewState(
                 sessionDurationMs = 135_000L,
                 totalRecompositions = 1247L,
@@ -149,7 +130,6 @@ private fun RecompositionSummaryContentPreview() {
                 ),
             ),
             onEvent = {},
-            onBack = {},
         )
     }
 }

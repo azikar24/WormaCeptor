@@ -36,9 +36,6 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -75,8 +72,6 @@ fun MockRulesScreen(
     modifier: Modifier = Modifier,
 ) {
     val haptic = LocalHapticFeedback.current
-    var showDeleteAllDialog by remember { mutableStateOf(false) }
-    var ruleToDelete by remember { mutableStateOf<MockRule?>(null) }
 
     Scaffold(
         modifier = modifier,
@@ -84,7 +79,7 @@ fun MockRulesScreen(
         topBar = {
             MockRulesTopBar(
                 hasRules = state.rules.isNotEmpty(),
-                onDeleteAll = { showDeleteAllDialog = true },
+                onDeleteAll = { onEvent(MockRulesViewEvent.List.ShowDeleteAllDialog) },
                 onBack = onBack,
             )
         },
@@ -100,14 +95,14 @@ fun MockRulesScreen(
             state = state,
             onEvent = onEvent,
             onNavigateToEditor = onNavigateToEditor,
-            onDeleteRule = { rule -> ruleToDelete = rule },
+            onDeleteRule = { rule -> onEvent(MockRulesViewEvent.List.RequestDeleteRule(rule)) },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
         )
     }
 
-    if (showDeleteAllDialog) {
+    if (state.showDeleteAllDialog) {
         WormaCeptorAlertDialog(
             title = stringResource(R.string.mock_rules_dialog_delete_all_title),
             message = stringResource(R.string.mock_rules_dialog_delete_all_message, state.rules.size),
@@ -115,15 +110,14 @@ fun MockRulesScreen(
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 onEvent(MockRulesViewEvent.List.DeleteAllRules)
-                showDeleteAllDialog = false
             },
             dismissLabel = stringResource(R.string.mock_rules_dialog_delete_all_cancel),
-            onDismiss = { showDeleteAllDialog = false },
+            onDismiss = { onEvent(MockRulesViewEvent.List.DismissDeleteAllDialog) },
             destructive = true,
         )
     }
 
-    ruleToDelete?.let { rule ->
+    state.pendingDeleteRule?.let { rule ->
         WormaCeptorAlertDialog(
             title = stringResource(R.string.mock_rules_dialog_delete_title),
             message = stringResource(R.string.mock_rules_dialog_delete_message, rule.name),
@@ -131,10 +125,9 @@ fun MockRulesScreen(
             onConfirm = {
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 onEvent(MockRulesViewEvent.List.DeleteRule(rule.id))
-                ruleToDelete = null
             },
             dismissLabel = stringResource(R.string.mock_rules_dialog_delete_all_cancel),
-            onDismiss = { ruleToDelete = null },
+            onDismiss = { onEvent(MockRulesViewEvent.List.DismissDeleteRuleDialog) },
             destructive = true,
         )
     }

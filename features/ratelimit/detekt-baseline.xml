@@ -21,6 +21,10 @@
     <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetPacketLoss$val percent: Float</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetUploadSpeed$val speedKbps: Long</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val config: RateLimitConfig = RateLimitConfig.default()</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val formattedDownloadSpeed: String = ""</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val formattedPresetDownload: String = ""</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val formattedPresetUpload: String = ""</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val formattedUploadSpeed: String = ""</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val selectedPreset: NetworkPreset? = null</ID>
     <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val stats: ThrottleStats = ThrottleStats.empty()</ID>
   </CurrentIssues>

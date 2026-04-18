@@ -61,12 +61,26 @@ internal class MockRulesViewModel(
 
             is MockRulesViewEvent.List.DeleteRule -> viewModelScope.launch {
                 repository.delete(event.ruleId)
+                updateState { copy(pendingDeleteRule = null) }
             }
 
             is MockRulesViewEvent.List.DeleteAllRules -> viewModelScope.launch {
                 repository.deleteAll()
                 engine.resetCounters()
+                updateState { copy(showDeleteAllDialog = false) }
             }
+
+            is MockRulesViewEvent.List.ShowDeleteAllDialog ->
+                updateState { copy(showDeleteAllDialog = true) }
+
+            is MockRulesViewEvent.List.DismissDeleteAllDialog ->
+                updateState { copy(showDeleteAllDialog = false) }
+
+            is MockRulesViewEvent.List.RequestDeleteRule ->
+                updateState { copy(pendingDeleteRule = event.rule) }
+
+            is MockRulesViewEvent.List.DismissDeleteRuleDialog ->
+                updateState { copy(pendingDeleteRule = null) }
         }
     }
 

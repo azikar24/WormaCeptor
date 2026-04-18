@@ -38,12 +38,13 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.feature.ratelimit.R
-import com.azikar24.wormaceptor.feature.ratelimit.ui.util.formatSpeed
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "LongParameterList")
 @Composable
 internal fun NetworkPresetsCard(
     selectedPreset: RateLimitConfig.NetworkPreset?,
+    formattedPresetDownload: String,
+    formattedPresetUpload: String,
     enabled: Boolean,
     onSelectPreset: (RateLimitConfig.NetworkPreset?) -> Unit,
     colors: ToolColors.RateLimit.Scheme,
@@ -94,13 +95,13 @@ internal fun NetworkPresetsCard(
                         PresetInfoItem(
                             icon = Icons.Default.CloudDownload,
                             label = stringResource(R.string.ratelimit_preset_info_down),
-                            value = formatSpeed(preset.downloadKbps),
+                            value = formattedPresetDownload,
                             color = colors.download,
                         )
                         PresetInfoItem(
                             icon = Icons.Default.CloudUpload,
                             label = stringResource(R.string.ratelimit_preset_info_up),
-                            value = formatSpeed(preset.uploadKbps),
+                            value = formattedPresetUpload,
                             color = colors.upload,
                         )
                         PresetInfoItem(

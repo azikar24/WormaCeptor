@@ -65,6 +65,7 @@ class CryptoViewModel(
                     updateState { copy(showHistory = true) }
                 is CryptoViewEvent.Navigation.HideHistory ->
                     updateState { copy(showHistory = false) }
+                is CryptoViewEvent.Navigation.BackPressed -> emitEffect(CryptoViewEffect.NavigateBack)
             }
         }
     }

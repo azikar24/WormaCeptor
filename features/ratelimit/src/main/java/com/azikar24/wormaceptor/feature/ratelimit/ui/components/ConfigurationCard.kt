@@ -32,12 +32,13 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.feature.ratelimit.R
-import com.azikar24.wormaceptor.feature.ratelimit.ui.util.formatSpeed
 
 @Suppress("LongParameterList", "LongMethod")
 @Composable
 internal fun ConfigurationCard(
     config: RateLimitConfig,
+    formattedDownloadSpeed: String,
+    formattedUploadSpeed: String,
     enabled: Boolean,
     onChangeDownloadSpeed: (Long) -> Unit,
     onChangeUploadSpeed: (Long) -> Unit,
@@ -67,7 +68,7 @@ internal fun ConfigurationCard(
                 icon = Icons.Default.CloudDownload,
                 label = stringResource(R.string.ratelimit_config_download_speed),
                 value = config.downloadSpeedKbps.toFloat(),
-                valueText = formatSpeed(config.downloadSpeedKbps),
+                valueText = formattedDownloadSpeed,
                 minValue = 1f,
                 maxValue = 100_000f,
                 enabled = enabled,
@@ -81,7 +82,7 @@ internal fun ConfigurationCard(
                 icon = Icons.Default.CloudUpload,
                 label = stringResource(R.string.ratelimit_config_upload_speed),
                 value = config.uploadSpeedKbps.toFloat(),
-                valueText = formatSpeed(config.uploadSpeedKbps),
+                valueText = formattedUploadSpeed,
                 minValue = 1f,
                 maxValue = 100_000f,
                 enabled = enabled,

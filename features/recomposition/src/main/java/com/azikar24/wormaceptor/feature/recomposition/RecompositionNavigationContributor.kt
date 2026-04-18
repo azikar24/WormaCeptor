@@ -5,9 +5,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.navigation.FeatureNavigationContributor
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.feature.recomposition.ui.RecompositionSummaryScreen
+import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionEffect
 import com.azikar24.wormaceptor.feature.recomposition.vm.RecompositionViewModel
 import com.google.auto.service.AutoService
 
@@ -21,10 +23,19 @@ class RecompositionNavigationContributor : FeatureNavigationContributor {
     ) {
         builder.composable(WormaCeptorNavKeys.Recomposition.route) {
             val viewModel: RecompositionViewModel = viewModel()
-            RecompositionSummaryScreen(
+            BaseScreen(
                 viewModel = viewModel,
-                onBack = onBack,
-            )
+                onEffect = { effect ->
+                    when (effect) {
+                        RecompositionEffect.NavigateBack -> onBack()
+                    }
+                },
+            ) { state, onEvent ->
+                RecompositionSummaryScreen(
+                    state = state,
+                    onEvent = onEvent,
+                )
+            }
         }
     }
 }

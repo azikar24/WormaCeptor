@@ -3,15 +3,16 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:RecomposerRow.kt$@Composable internal fun RecomposerRow( index: Int, item: RecompositionItem, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun RecompositionSummaryContent( state: RecompositionViewState, onEvent: (RecompositionViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:RecompositionViewModel.kt$RecompositionViewModel.Companion$1_000</ID>
-    <ID>MagicNumber:RecompositionViewModel.kt$RecompositionViewModel.Companion$1_000.0</ID>
-    <ID>MagicNumber:RecompositionViewModel.kt$RecompositionViewModel.Companion$1_000_000</ID>
-    <ID>MagicNumber:RecompositionViewModel.kt$RecompositionViewModel.Companion$1_000_000.0</ID>
+    <ID>LongMethod:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun RecompositionSummaryScreen( state: RecompositionViewState, onEvent: (RecompositionViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicClass:RecompositionEffect.kt$RecompositionEffect</ID>
+    <ID>UndocumentedPublicClass:RecompositionEffect.kt$RecompositionEffect$NavigateBack : RecompositionEffect</ID>
     <ID>UndocumentedPublicClass:RecompositionNavigationContributor.kt$RecompositionNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:RecompositionViewEvent.kt$RecompositionViewEvent</ID>
+    <ID>UndocumentedPublicClass:RecompositionViewEvent.kt$RecompositionViewEvent$BackPressed : RecompositionViewEvent</ID>
     <ID>UndocumentedPublicClass:RecompositionViewEvent.kt$RecompositionViewEvent$Reset : RecompositionViewEvent</ID>
+    <ID>UndocumentedPublicClass:RecompositionViewModel.kt$RecompositionViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:RecompositionViewModel.kt$RecompositionViewModel$Companion</ID>
-    <ID>UndocumentedPublicFunction:RecompositionSummaryScreen.kt$@Composable fun RecompositionSummaryScreen( viewModel: RecompositionViewModel, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
+    <ID>UndocumentedPublicFunction:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun RecompositionSummaryScreen( state: RecompositionViewState, onEvent: (RecompositionViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val count: Long</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val name: String</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val ratePerSecond: Float</ID>
@@ -20,6 +21,5 @@
     <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val sessionDurationMs: Long = 0L</ID>
     <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val topRecomposers: ImmutableList&lt;RecompositionItem&gt; = persistentListOf()</ID>
     <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val totalRecompositions: Long = 0L</ID>
-    <ID>ViewModelForwarding:RecompositionSummaryScreen.kt$BaseScreen(viewModel) { state, onEvent -&gt; RecompositionSummaryContent( state = state, onEvent = onEvent, onBack = onBack, modifier = modifier, ) }</ID>
   </CurrentIssues>
 </SmellBaseline>

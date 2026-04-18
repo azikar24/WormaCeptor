@@ -20,6 +20,7 @@ data class PreferencesViewState(
     val totalItemCount: Int = 0,
     val editingItem: PreferenceItem? = null,
     val showEditSheet: Boolean = false,
+    val editor: PreferenceEditorState = PreferenceEditorState(),
     val showDeleteConfirmKey: String? = null,
     val showClearConfirmDialog: Boolean = false,
 )

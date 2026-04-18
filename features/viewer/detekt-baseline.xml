@@ -79,7 +79,6 @@
     <ID>MagicNumber:CommonUtils.kt$500</ID>
     <ID>MagicNumber:CommonUtils.kt$599</ID>
     <ID>MagicNumber:CrashDetailScreen.kt$100</ID>
-    <ID>MagicNumber:CrashListUtils.kt$7</ID>
     <ID>MagicNumber:CrashUtils.kt$CrashUtils$3</ID>
     <ID>MagicNumber:FilterBottomSheetContent.kt$10</ID>
     <ID>MagicNumber:FilterBottomSheetContent.kt$15</ID>
@@ -228,7 +227,6 @@
     <ID>UndocumentedPublicFunction:ImageShareUtils.kt$fun saveImageToGallery( context: Context, imageData: ByteArray, format: String, ): ImageOperationResult</ID>
     <ID>UndocumentedPublicFunction:ImageShareUtils.kt$fun shareImage( context: Context, imageData: ByteArray, format: String, ): ImageOperationResult</ID>
     <ID>UndocumentedPublicFunction:PdfPreviewCard.kt$@Composable fun PdfPreviewCard( pdfData: ByteArray, contentType: String?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, modifier: Modifier = Modifier, onShowMessage: (String) -&gt; Unit = {}, )</ID>
-    <ID>UndocumentedPublicFunction:TransactionListViewModel.kt$TransactionListViewModel.Companion$fun formatHeaders(headers: Map&lt;String, List&lt;String&gt;&gt;): String</ID>
     <ID>UndocumentedPublicProperty:BinaryPayload.kt$BinaryPayload$val bytes: ByteArray</ID>
     <ID>UndocumentedPublicProperty:BinaryPayload.kt$BinaryPayload$val format: String</ID>
     <ID>UndocumentedPublicProperty:CrashListViewEffect.kt$CrashListViewEffect.ExportCrashes$val crashes: List&lt;Crash&gt;</ID>

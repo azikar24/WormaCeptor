@@ -28,4 +28,20 @@ sealed class PreferencesViewEvent {
         data object ClearConfirmShown : Detail()
         data object ClearConfirmDismissed : Detail()
     }
+
+    sealed class Editor : PreferencesViewEvent() {
+        data class KeyChanged(val value: String) : Editor()
+        data class TypeSelected(val type: String) : Editor()
+        data class TypeDropdownExpandedChanged(val expanded: Boolean) : Editor()
+        data class StringValueChanged(val value: String) : Editor()
+        data class IntValueChanged(val value: String) : Editor()
+        data class LongValueChanged(val value: String) : Editor()
+        data class FloatValueChanged(val value: String) : Editor()
+        data class BooleanValueChanged(val value: Boolean) : Editor()
+        data class NewStringSetItemChanged(val value: String) : Editor()
+        data object AddStringSetItem : Editor()
+        data class RemoveStringSetItem(val index: Int) : Editor()
+        data object SaveRequested : Editor()
+        data object DeleteRequested : Editor()
+    }
 }

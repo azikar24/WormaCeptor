@@ -341,24 +341,9 @@ private fun PreferenceDetailDialogs(
 
     if (state.showEditSheet) {
         PreferenceEditSheet(
-            item = state.editingItem,
-            onDismiss = { onEvent(PreferencesViewEvent.Detail.EditSheetDismissed) },
-            onSave = { key, value ->
-                if (state.editingItem != null) {
-                    onEvent(PreferencesViewEvent.Detail.PreferenceSet(key, value))
-                } else {
-                    onEvent(PreferencesViewEvent.Detail.PreferenceCreated(key, value))
-                }
-                onEvent(PreferencesViewEvent.Detail.EditSheetDismissed)
-            },
-            onDelete = if (state.editingItem != null) {
-                { key: String ->
-                    onEvent(PreferencesViewEvent.Detail.PreferenceDeleted(key))
-                    onEvent(PreferencesViewEvent.Detail.EditSheetDismissed)
-                }
-            } else {
-                null
-            },
+            editor = state.editor,
+            onEvent = onEvent,
+            showDelete = state.editingItem != null,
         )
     }
 }

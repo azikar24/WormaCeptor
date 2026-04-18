@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.RateLimitEngine
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
+import com.azikar24.wormaceptor.feature.ratelimit.FormatRateLimitSpeedUseCase
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 
@@ -21,6 +22,8 @@ class RateLimitViewModel(
     navigator = NoOpNavigator,
 ) {
 
+    private val formatSpeed = FormatRateLimitSpeedUseCase()
+
     init {
         combine(
             engine.config,
@@ -31,6 +34,10 @@ class RateLimitViewModel(
                     config = config,
                     stats = stats,
                     selectedPreset = config.preset,
+                    formattedDownloadSpeed = formatSpeed(config.downloadSpeedKbps),
+                    formattedUploadSpeed = formatSpeed(config.uploadSpeedKbps),
+                    formattedPresetDownload = config.preset?.let { formatSpeed(it.downloadKbps) } ?: "",
+                    formattedPresetUpload = config.preset?.let { formatSpeed(it.uploadKbps) } ?: "",
                 )
             }
         }.launchIn(viewModelScope)

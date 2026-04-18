@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -106,7 +105,7 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
         ) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(WormaCeptorTokens.ComponentSize.iconButtonSmall)
                     .background(
                         color = if (isOverlayEnabled && canDrawOverlays) {
                             WormaCeptorTokens.Colors.Category.performance.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)

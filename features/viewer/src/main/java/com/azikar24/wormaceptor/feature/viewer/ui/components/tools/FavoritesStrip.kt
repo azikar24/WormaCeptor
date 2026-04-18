@@ -28,6 +28,8 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.ToolItem
 
+private val FavoriteTileWidth = 116.dp
+
 @Composable
 internal fun FavoritesStrip(
     favorites: List<ToolItem>,
@@ -76,7 +78,7 @@ internal fun FavoritesStrip(
                     accentColor = MaterialTheme.colorScheme.primary,
                     onClick = { onToolClick(tool.route) },
                     onLongClick = { onToolLongClick(tool) },
-                    modifier = Modifier.width(116.dp),
+                    modifier = Modifier.width(FavoriteTileWidth),
                 )
             }
         }

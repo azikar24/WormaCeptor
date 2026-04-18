@@ -26,7 +26,6 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.metric.WormaCeptorChartLegendItem
@@ -42,7 +41,6 @@ private const val GridLineCount = 4
 private const val WarningThresholdY = 0.5f
 private const val CriticalThresholdY = 0.2f
 private const val PercentDivisor = 100f
-private val ChartHeight = 200.dp
 
 @Composable
 internal fun CpuChartCard(
@@ -70,7 +68,7 @@ internal fun CpuChartCard(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(ChartHeight)
+                        .height(WormaCeptorTokens.ComponentSize.chartHeight)
                         .clip(WormaCeptorTokens.Shapes.card)
                         .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center,
@@ -88,7 +86,7 @@ internal fun CpuChartCard(
                     history = history,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(ChartHeight)
+                        .height(WormaCeptorTokens.ComponentSize.chartHeight)
                         .semantics {
                             contentDescription = chartDescription
                         },

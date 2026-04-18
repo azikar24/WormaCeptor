@@ -52,6 +52,8 @@ import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewModel
 import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewState
 import kotlinx.collections.immutable.persistentListOf
 
+private val EmptyHistoryHeight = 96.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PushTokenScreen(
@@ -171,7 +173,7 @@ private fun LazyListScope.historySection(
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .height(96.dp),
+                    .height(EmptyHistoryHeight),
                 Alignment.Center,
             ) {
                 Text(

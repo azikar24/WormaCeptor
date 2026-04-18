@@ -150,7 +150,7 @@ private fun JsonObjectNode(
                     tint = colors.punctuation,
                 )
             } else {
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.ComponentSize.treeIndent))
             }
 
             if (keyName != null) {
@@ -282,7 +282,7 @@ private fun JsonArrayNode(
                     tint = colors.punctuation,
                 )
             } else {
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.ComponentSize.treeIndent))
             }
 
             if (keyName != null) {

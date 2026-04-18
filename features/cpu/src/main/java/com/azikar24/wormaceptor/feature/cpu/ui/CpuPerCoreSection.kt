@@ -22,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -34,8 +33,6 @@ import com.azikar24.wormaceptor.feature.cpu.R
 private const val CpuCriticalThreshold = 80f
 private const val CpuWarningThreshold = 50f
 private const val CpuPercentDivisor = 100f
-private val CoreLabelWidth = 56.dp
-private val PercentageLabelWidth = 36.dp
 
 @Composable
 internal fun PerCoreUsageCard(
@@ -103,7 +100,7 @@ private fun CoreUsageBar(
             text = stringResource(R.string.cpu_core_label, coreIndex),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.width(CoreLabelWidth),
+            modifier = Modifier.width(WormaCeptorTokens.ComponentSize.perCoreLabelWidth),
         )
 
         LinearProgressIndicator(
@@ -125,7 +122,7 @@ private fun CoreUsageBar(
                 usage >= CpuWarningThreshold -> WormaCeptorTokens.Colors.Status.amber
                 else -> WormaCeptorTokens.Colors.Status.green
             },
-            modifier = Modifier.width(PercentageLabelWidth),
+            modifier = Modifier.width(WormaCeptorTokens.ComponentSize.perCorePercentageWidth),
         )
     }
 }

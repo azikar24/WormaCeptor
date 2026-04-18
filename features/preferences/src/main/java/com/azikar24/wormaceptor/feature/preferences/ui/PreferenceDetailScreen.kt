@@ -58,6 +58,8 @@ import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewEvent
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewState
 import kotlinx.collections.immutable.persistentListOf
 
+private val PreferenceRowHeight = 76.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreferenceDetailScreen(
@@ -213,7 +215,7 @@ private fun PreferenceDetailBody(
             loading = {
                 WormaCeptorListSkeleton(
                     modifier = Modifier.fillMaxSize(),
-                    rowHeight = 76.dp,
+                    rowHeight = PreferenceRowHeight,
                 )
             },
             empty = {

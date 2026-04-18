@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.location.R
 import org.osmdroid.util.GeoPoint
@@ -78,7 +77,7 @@ fun LocationMapCard(
             onMapTap = onMapTap,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp),
+                .height(WormaCeptorTokens.ComponentSize.chartHeight),
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))

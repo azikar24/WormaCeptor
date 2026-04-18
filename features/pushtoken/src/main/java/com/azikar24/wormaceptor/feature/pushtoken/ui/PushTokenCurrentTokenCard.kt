@@ -37,6 +37,8 @@ import com.azikar24.wormaceptor.domain.entities.PushTokenInfo
 import com.azikar24.wormaceptor.feature.pushtoken.R
 import com.azikar24.wormaceptor.feature.pushtoken.vm.PushTokenViewEvent
 
+private val TokenEmptyStateHeight = 80.dp
+
 /** Displays the current push token with copy/delete actions, or an empty state. */
 @Composable
 fun PushTokenCurrentTokenCard(
@@ -154,7 +156,7 @@ private fun TokenEmptyState(isLoading: Boolean) {
     Box(
         Modifier
             .fillMaxWidth()
-            .height(80.dp),
+            .height(TokenEmptyStateHeight),
         Alignment.Center,
     ) {
         if (isLoading) {

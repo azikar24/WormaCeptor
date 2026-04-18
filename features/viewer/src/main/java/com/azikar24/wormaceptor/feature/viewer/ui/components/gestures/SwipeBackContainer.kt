@@ -39,6 +39,9 @@ import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
+private val EdgeIndicatorWidth = 48.dp
+private val PeakShadowElevation = 16.dp
+
 /**
  * SwipeBackContainer - A container that allows swipe-from-left-edge gesture to navigate back.
  *
@@ -174,7 +177,7 @@ fun SwipeBackContainer(
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(48.dp)
+                    .width(EdgeIndicatorWidth)
                     .offset { IntOffset(0, 0) }
                     .background(
                         MaterialTheme.colorScheme.primaryContainer.copy(
@@ -202,7 +205,7 @@ fun SwipeBackContainer(
                 .fillMaxSize()
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .shadow(
-                    elevation = 16.dp * progress,
+                    elevation = PeakShadowElevation * progress,
                     ambientColor = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                     spotColor = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                 )

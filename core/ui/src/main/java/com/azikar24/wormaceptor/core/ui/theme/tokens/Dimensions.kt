@@ -111,6 +111,16 @@ object TokenComponentSize {
     val dot = 6.dp
     val dotInset = 1.dp
     val templateCardWidth = 260.dp
+    val chartHeight = 200.dp
+    val gaugeContainerHeight = 200.dp
+    val gaugeSize = 160.dp
+    val gaugeStrokeWidth = 16.dp
+    val perCoreLabelWidth = 56.dp
+    val perCorePercentageWidth = 36.dp
+    val tableCellMinWidth = 100.dp
+    val tableCellMaxWidth = 200.dp
+    val treeIndent = 14.dp
+    val iconButtonSmall = 36.dp
 }
 
 /**

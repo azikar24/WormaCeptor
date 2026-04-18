@@ -261,7 +261,10 @@ private fun DataTable(
                 result.columns.forEach { column ->
                     Box(
                         modifier = Modifier
-                            .widthIn(min = 100.dp, max = 200.dp)
+                            .widthIn(
+                                min = WormaCeptorTokens.ComponentSize.tableCellMinWidth,
+                                max = WormaCeptorTokens.ComponentSize.tableCellMaxWidth,
+                            )
                             .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                     ) {
                         Text(
@@ -289,7 +292,10 @@ private fun DataTable(
                 row.forEach { cell ->
                     Box(
                         modifier = Modifier
-                            .widthIn(min = 100.dp, max = 200.dp)
+                            .widthIn(
+                                min = WormaCeptorTokens.ComponentSize.tableCellMinWidth,
+                                max = WormaCeptorTokens.ComponentSize.tableCellMaxWidth,
+                            )
                             .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                     ) {
                         Text(

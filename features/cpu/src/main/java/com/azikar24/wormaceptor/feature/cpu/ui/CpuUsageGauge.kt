@@ -32,7 +32,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -47,9 +46,6 @@ private const val CpuWarningThreshold = 50f
 private const val CpuPercentDivisor = 100f
 private const val GaugeStartAngle = 135f
 private const val GaugeSweepAngle = 270f
-private val GaugeContainerHeight = 200.dp
-private val GaugeSize = 160.dp
-private val GaugeStrokeWidth = 16.dp
 private val CpuPercentFormatter = java.text.DecimalFormat("#,##0.0")
 
 @Composable
@@ -180,7 +176,7 @@ private fun GaugeCircle(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(GaugeContainerHeight),
+            .height(WormaCeptorTokens.ComponentSize.gaugeContainerHeight),
         contentAlignment = Alignment.Center,
     ) {
         val cpuPercentage = (animatedProgress * CpuPercentDivisor).roundToInt()
@@ -193,7 +189,7 @@ private fun GaugeCircle(
             progress = animatedProgress,
             statusColor = statusColor,
             modifier = Modifier
-                .size(GaugeSize)
+                .size(WormaCeptorTokens.ComponentSize.gaugeSize)
                 .semantics {
                     contentDescription = cpuUsageDescription
                 },
@@ -226,7 +222,7 @@ private fun CpuGauge(
     val arcBackground = MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
 
     Canvas(modifier = modifier) {
-        val strokeWidth = GaugeStrokeWidth.toPx()
+        val strokeWidth = WormaCeptorTokens.ComponentSize.gaugeStrokeWidth.toPx()
         val radius = (size.minDimension - strokeWidth) / 2
         val center = Offset(size.width / 2, size.height / 2)
 

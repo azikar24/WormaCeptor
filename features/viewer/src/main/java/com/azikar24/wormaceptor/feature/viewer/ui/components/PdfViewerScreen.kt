@@ -48,6 +48,8 @@ import com.azikar24.wormaceptor.feature.viewer.vm.PdfViewerViewModel
 import com.azikar24.wormaceptor.feature.viewer.vm.PdfViewerViewState
 import kotlinx.coroutines.launch
 
+private val ThumbnailStripBottomInset = 100.dp
+
 /**
  * Full-screen PDF viewer with page navigation, pinch-to-zoom, and thumbnail strip.
  *
@@ -215,7 +217,7 @@ private fun PdfViewerContent(
                         exit = fadeOut() + slideOutVertically(targetOffsetY = { it }),
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .padding(bottom = 100.dp),
+                            .padding(bottom = ThumbnailStripBottomInset),
                     ) {
                         PdfThumbnailStrip(
                             pages = state.pages,

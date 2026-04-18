@@ -29,6 +29,8 @@ import com.azikar24.wormaceptor.feature.mockrules.vm.DelayType
 import com.azikar24.wormaceptor.feature.mockrules.vm.EditorState
 import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewEvent
 
+private val FabSafeAreaHeight = 80.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MockRuleEditorContent(
@@ -124,7 +126,7 @@ private fun EditorFormBody(
             onDelayMaxMsChange = { onEvent(MockRulesViewEvent.Editor.DelayMaxMsChanged(it)) },
         )
 
-        Spacer(modifier = Modifier.height(80.dp))
+        Spacer(modifier = Modifier.height(FabSafeAreaHeight))
     }
 }
 

@@ -62,6 +62,8 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.math.abs
 
+private val ZoomIndicatorTopOffset = 80.dp
+
 @Composable
 fun FullscreenImageViewer(
     imageData: ByteArray,
@@ -237,7 +239,7 @@ private fun FullscreenImageContent(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(
-                    top = 80.dp,
+                    top = ZoomIndicatorTopOffset,
                     end = WormaCeptorTokens.Spacing.lg,
                 ),
         ) {

@@ -24,7 +24,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringStatusBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -136,7 +135,7 @@ private fun FpsScreenContent(
             history = state.fpsHistory,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp),
+                .height(WormaCeptorTokens.ComponentSize.chartHeight),
         )
     }
 }

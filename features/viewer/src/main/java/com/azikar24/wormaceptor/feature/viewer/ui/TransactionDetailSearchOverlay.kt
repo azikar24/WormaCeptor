@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent
@@ -68,7 +67,7 @@ internal fun TransactionDetailSearchOverlay(
                     )
                     IconButton(
                         onClick = { onEvent(TransactionDetailViewEvent.Search.NavigateToPrevious) },
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier.size(WormaCeptorTokens.ComponentSize.iconButtonSmall),
                     ) {
                         Icon(
                             Icons.Default.KeyboardArrowUp,
@@ -77,7 +76,7 @@ internal fun TransactionDetailSearchOverlay(
                     }
                     IconButton(
                         onClick = { onEvent(TransactionDetailViewEvent.Search.NavigateToNext) },
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier.size(WormaCeptorTokens.ComponentSize.iconButtonSmall),
                     ) {
                         Icon(
                             Icons.Default.KeyboardArrowDown,

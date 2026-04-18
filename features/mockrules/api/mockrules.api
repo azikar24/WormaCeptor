@@ -49,26 +49,20 @@ public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingl
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MockRuleEditorScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MockRulesScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MockRulesScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function3;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-3$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$mockrules_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-5$mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$RequestMatchingSectionKt {
@@ -380,6 +374,42 @@ public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEv
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DismissDeleteAllDialog : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DismissDeleteAllDialog;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DismissDeleteRuleDialog : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$DismissDeleteRuleDialog;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$RequestDeleteRule : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$RequestDeleteRule;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$RequestDeleteRule;Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$RequestDeleteRule;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRule ()Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ShowDeleteAllDialog : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ShowDeleteAllDialog;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ToggleMocking : com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEvent$List$ToggleMocking;
@@ -403,18 +433,22 @@ public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewEv
 public final class com/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;ZZLcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;)V
-	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;ZZLcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;ZZLcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;ZLcom/azikar24/wormaceptor/domain/entities/mock/MockRule;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;ZZLcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;ZLcom/azikar24/wormaceptor/domain/entities/mock/MockRule;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component2 ()Z
 	public final fun component3 ()Z
 	public final fun component4 ()Lcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;
-	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;ZZLcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewState;Lkotlinx/collections/immutable/ImmutableList;ZZLcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewState;
+	public final fun component5 ()Z
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;ZZLcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;ZLcom/azikar24/wormaceptor/domain/entities/mock/MockRule;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewState;Lkotlinx/collections/immutable/ImmutableList;ZZLcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;ZLcom/azikar24/wormaceptor/domain/entities/mock/MockRule;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/mockrules/vm/MockRulesViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getEditor ()Lcom/azikar24/wormaceptor/feature/mockrules/vm/EditorState;
 	public final fun getMockingEnabled ()Z
+	public final fun getPendingDeleteRule ()Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;
 	public final fun getRules ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getShowDeleteAllDialog ()Z
 	public fun hashCode ()I
 	public final fun isLoading ()Z
 	public fun toString ()Ljava/lang/String;

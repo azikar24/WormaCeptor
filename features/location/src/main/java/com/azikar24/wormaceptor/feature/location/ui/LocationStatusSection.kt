@@ -22,8 +22,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,6 +39,8 @@ import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.toggle.SwitchVariant
+import com.azikar24.wormaceptor.core.ui.components.toggle.WormaCeptorSwitch
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.domain.entities.MockLocation
@@ -220,13 +220,12 @@ private fun MockLocationToggleRow(
             MockLocationIcon(isMockEnabled = isMockEnabled, statusColor = statusColor)
             MockLocationLabel(currentMockLocation, isMockEnabled, Modifier)
         }
-        Switch(
+        WormaCeptorSwitch(
             checked = isMockEnabled,
             onCheckedChange = null,
             enabled = isEnabled,
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                checkedTrackColor = WormaCeptorTokens.Colors.Location.enabled,
+            variant = SwitchVariant.Accent(
+                color = WormaCeptorTokens.Colors.Location.enabled,
             ),
         )
     }

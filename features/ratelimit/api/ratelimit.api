@@ -15,14 +15,10 @@ public final class com/azikar24/wormaceptor/feature/ratelimit/ui/ComposableSingl
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$ratelimit_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$ratelimit_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$ratelimit_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ratelimit_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ratelimit_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/ratelimit/ui/RateLimitScreenKt {
@@ -130,15 +126,23 @@ public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewMo
 public final class com/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)V
-	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;
 	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;
 	public final fun component3 ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
-	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/ratelimit/vm/RateLimitViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getConfig ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;
+	public final fun getFormattedDownloadSpeed ()Ljava/lang/String;
+	public final fun getFormattedPresetDownload ()Ljava/lang/String;
+	public final fun getFormattedPresetUpload ()Ljava/lang/String;
+	public final fun getFormattedUploadSpeed ()Ljava/lang/String;
 	public final fun getSelectedPreset ()Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig$NetworkPreset;
 	public final fun getStats ()Lcom/azikar24/wormaceptor/domain/entities/ThrottleStats;
 	public fun hashCode ()I

@@ -10,11 +10,13 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/WebViewMonito
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
 }
 
-public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewRequestDetailScreenKt {
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/ComposableSingletons$WebViewRequestDetailScreenKt;
+public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$FilterSectionKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$FilterSectionKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$ListContentKt {
@@ -29,12 +31,8 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/components
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$ListTopBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/webviewmonitor/ui/components/ComposableSingletons$ListTopBarKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$webviewmonitor_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewEffect {
@@ -124,8 +122,6 @@ public final class com/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMon
 public final class com/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebViewMonitorEngine;)V
-	public final fun createMonitoringClient (Ljava/lang/String;Landroid/webkit/WebViewClient;)Landroid/webkit/WebViewClient;
-	public static synthetic fun createMonitoringClient$default (Lcom/azikar24/wormaceptor/feature/webviewmonitor/vm/WebViewMonitorViewModel;Ljava/lang/String;Landroid/webkit/WebViewClient;ILjava/lang/Object;)Landroid/webkit/WebViewClient;
 	public synthetic fun handleEvent (Ljava/lang/Object;)V
 }
 

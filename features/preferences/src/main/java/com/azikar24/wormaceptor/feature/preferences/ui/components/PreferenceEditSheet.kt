@@ -27,7 +27,6 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -47,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.toggle.WormaCeptorSwitch
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.preferences.R
@@ -357,7 +357,7 @@ private fun BooleanValueInput(
                 },
             )
             Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
-            Switch(
+            WormaCeptorSwitch(
                 checked = value,
                 onCheckedChange = { newValue ->
                     haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)

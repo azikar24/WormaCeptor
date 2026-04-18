@@ -729,11 +729,9 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/Com
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfPageJumpDialogKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfTopControlBarKt {

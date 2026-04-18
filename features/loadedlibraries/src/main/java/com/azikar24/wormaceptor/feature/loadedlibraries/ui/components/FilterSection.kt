@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +19,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
+import com.azikar24.wormaceptor.core.ui.components.toggle.WormaCeptorSwitch
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
@@ -106,7 +106,7 @@ private fun SystemLibsToggle(
             style = MaterialTheme.typography.bodyMedium,
             color = colors.labelPrimary,
         )
-        Switch(
+        WormaCeptorSwitch(
             checked = showSystemLibs,
             onCheckedChange = { newValue ->
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)

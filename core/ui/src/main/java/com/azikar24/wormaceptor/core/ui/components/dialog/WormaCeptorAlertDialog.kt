@@ -1,5 +1,8 @@
 package com.azikar24.wormaceptor.core.ui.components.dialog
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
@@ -12,7 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
 /**
  * Unified alert dialog for WormaCeptor.
@@ -93,6 +99,76 @@ fun WormaCeptorAlertDialog(
             TextButton(onClick = onDismiss) {
                 Text(text = dismissLabel)
             }
+        },
+    )
+}
+
+/**
+ * Alert dialog overload that renders custom content (forms, inputs, multi-line text) in the body.
+ *
+ * @param title Dialog title text
+ * @param confirmLabel Confirm button label
+ * @param onConfirm Confirm callback
+ * @param dismissLabel Dismiss button label
+ * @param onDismiss Dismiss callback (also triggered on outside tap)
+ * @param modifier Modifier for the dialog
+ * @param icon Optional icon displayed above the title
+ * @param confirmEnabled Whether the confirm button is enabled
+ * @param confirmVariant Variant for the confirm button; defaults to [ButtonVariant.Text]
+ * @param content Custom content rendered in the body (e.g. a form)
+ */
+@Suppress("LongParameterList")
+@Composable
+fun WormaCeptorAlertDialog(
+    title: String,
+    confirmLabel: String,
+    onConfirm: () -> Unit,
+    dismissLabel: String,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    confirmEnabled: Boolean = true,
+    confirmVariant: ButtonVariant = ButtonVariant.Text,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        modifier = modifier,
+        icon = icon?.let {
+            {
+                androidx.compose.material3.Icon(
+                    imageVector = it,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+        },
+        title = {
+            Text(
+                text = title,
+                fontWeight = FontWeight.SemiBold,
+            )
+        },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+                content = content,
+            )
+        },
+        confirmButton = {
+            WormaCeptorButton(
+                text = confirmLabel,
+                onClick = onConfirm,
+                variant = confirmVariant,
+                enabled = confirmEnabled,
+            )
+        },
+        dismissButton = {
+            WormaCeptorButton(
+                text = dismissLabel,
+                onClick = onDismiss,
+                variant = ButtonVariant.Text,
+            )
         },
     )
 }

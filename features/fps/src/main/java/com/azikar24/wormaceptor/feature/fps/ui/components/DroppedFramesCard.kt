@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.divider.DividerOrientation
+import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.fps.R
@@ -53,12 +55,10 @@ internal fun DroppedFramesCard(
         ) {
             DroppedFramesColumn(droppedFrames = droppedFrames)
 
-            VerticalDivider(
+            WormaCeptorDivider(
                 modifier = Modifier.height(WormaCeptorTokens.Spacing.xxxl),
-                thickness = WormaCeptorTokens.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outline.copy(
-                    alpha = WormaCeptorTokens.Alpha.MODERATE,
-                ),
+                style = DividerStyle.Subtle,
+                orientation = DividerOrientation.Vertical,
             )
 
             JankFramesColumn(jankFrames = jankFrames)

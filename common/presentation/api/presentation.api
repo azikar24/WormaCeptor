@@ -22,3 +22,10 @@ public final class com/azikar24/wormaceptor/common/presentation/NoOpNavigator : 
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/common/presentation/NoOpNavigator;
 }
 
+public final class com/azikar24/wormaceptor/common/presentation/SearchDebounce {
+	public static final field $stable I
+	public static final field DEFAULT J
+	public static final field HEAVY J
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/common/presentation/SearchDebounce;
+}
+

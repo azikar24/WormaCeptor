@@ -7,9 +7,12 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -17,30 +20,39 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 /**
  * Unified divider component for WormaCeptor.
  *
- * Replaces raw [HorizontalDivider] calls with consistent, semantic variants.
+ * Replaces raw [HorizontalDivider]/[VerticalDivider] calls with consistent, semantic variants.
  *
  * @param modifier Modifier for the divider
  * @param style Divider style variant
+ * @param orientation Layout orientation; use [DividerOrientation.Vertical] for in-row separators
  */
 @Composable
 fun WormaCeptorDivider(
     modifier: Modifier = Modifier,
     style: DividerStyle = DividerStyle.Standard,
+    orientation: DividerOrientation = DividerOrientation.Horizontal,
 ) {
     val outlineVariant = MaterialTheme.colorScheme.outlineVariant
-    when (style) {
-        DividerStyle.Standard -> HorizontalDivider(modifier = modifier)
-        DividerStyle.Subtle -> HorizontalDivider(
+    val color: Color = when (style) {
+        DividerStyle.Standard, DividerStyle.Thick -> outlineVariant
+        DividerStyle.Subtle -> outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+        DividerStyle.Section -> outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
+    }
+    val thickness: Dp = if (style == DividerStyle.Thick) {
+        WormaCeptorTokens.BorderWidth.thick
+    } else {
+        1.dp
+    }
+    when (orientation) {
+        DividerOrientation.Horizontal -> HorizontalDivider(
             modifier = modifier,
-            color = outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
+            thickness = thickness,
+            color = color,
         )
-        DividerStyle.Section -> HorizontalDivider(
+        DividerOrientation.Vertical -> VerticalDivider(
             modifier = modifier,
-            color = outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
-        )
-        DividerStyle.Thick -> HorizontalDivider(
-            modifier = modifier,
-            thickness = WormaCeptorTokens.BorderWidth.thick,
+            thickness = thickness,
+            color = color,
         )
     }
 }

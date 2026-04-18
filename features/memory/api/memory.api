@@ -45,11 +45,9 @@ public final class com/azikar24/wormaceptor/feature/memory/ui/components/Composa
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$MemoryTopAppBarKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$memory_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-2$memory_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$memory_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$NativeHeapCardKt {

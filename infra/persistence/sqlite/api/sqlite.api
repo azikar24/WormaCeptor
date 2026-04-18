@@ -229,6 +229,11 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPre
 	public final fun fromDomain (Lcom/azikar24/wormaceptor/domain/entities/LocationPreset;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;
 }
 
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MigrationsKt {
+	public static final fun getAllMigrations ()[Landroidx/room/migration/Migration;
+	public static final fun getMigration6To7 ()Landroidx/room/migration/Migration;
+}
+
 public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao {
 	public abstract fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun observe ()Lkotlinx/coroutines/flow/Flow;

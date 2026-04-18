@@ -18,8 +18,6 @@ public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/Com
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
@@ -27,8 +25,6 @@ public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/Com
 	public final fun getLambda-4$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-5$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-6$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/DependenciesInspectorScreenKt {

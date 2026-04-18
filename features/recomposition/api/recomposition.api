@@ -1,3 +1,10 @@
+public final class com/azikar24/wormaceptor/feature/recomposition/ComposableSingletons$RecompositionNavigationContributorKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ComposableSingletons$RecompositionNavigationContributorKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function4;
+	public fun <init> ()V
+	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function4;
+}
+
 public final class com/azikar24/wormaceptor/feature/recomposition/RecompositionNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
 	public static final field $stable I
 	public fun <init> ()V
@@ -25,16 +32,12 @@ public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableS
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$RecompositionSummaryScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$RecompositionSummaryScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function3;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$recomposition_release ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda-3$recomposition_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$recomposition_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-5$recomposition_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$SummaryRowKt {
@@ -45,11 +48,19 @@ public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableS
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/RecompositionSummaryScreenKt {
-	public static final fun RecompositionSummaryScreen (Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewModel;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public static final fun RecompositionSummaryScreen (Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewState;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public abstract class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEffect {
 	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEffect$NavigateBack : com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEffect {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionEffect$NavigateBack;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionItem {
@@ -70,6 +81,14 @@ public final class com/azikar24/wormaceptor/feature/recomposition/vm/Recompositi
 
 public abstract class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent {
 	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent$BackPressed : com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent$BackPressed;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent$Reset : com/azikar24/wormaceptor/feature/recomposition/vm/RecompositionViewEvent {

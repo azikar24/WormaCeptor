@@ -85,7 +85,7 @@ internal fun SummarySection(
             Text(
                 text = stringResource(R.string.securestorage_last_scanned, formatDateShort(time)),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.padding(start = WormaCeptorTokens.Spacing.xs),
             )
         }
@@ -136,7 +136,7 @@ private fun SummaryCard(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }

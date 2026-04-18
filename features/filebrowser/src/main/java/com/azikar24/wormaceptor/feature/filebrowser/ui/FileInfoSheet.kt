@@ -65,7 +65,7 @@ private fun FileInfoSheetContent(
             text = stringResource(R.string.filebrowser_file_information),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
@@ -134,12 +134,12 @@ private fun FilePathRow(
             Text(
                 text = stringResource(R.string.filebrowser_label_path),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Text(
                 text = path,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
         }
         IconButton(onClick = onCopyPath) {
@@ -199,12 +199,12 @@ private fun InfoRow(
         Text(
             text = label,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
     }
 }

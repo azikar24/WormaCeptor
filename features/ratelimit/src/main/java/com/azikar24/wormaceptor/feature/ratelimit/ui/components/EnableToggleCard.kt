@@ -51,7 +51,7 @@ internal fun EnableToggleCard(
         targetValue = if (enabled) {
             colors.enabled.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
+            WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
         },
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "ratelimit_toggle_bg",

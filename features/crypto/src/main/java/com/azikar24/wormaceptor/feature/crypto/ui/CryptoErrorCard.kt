@@ -53,7 +53,7 @@ internal fun ErrorCard(
                 Icon(
                     Icons.Default.Delete,
                     stringResource(R.string.crypto_dismiss),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }

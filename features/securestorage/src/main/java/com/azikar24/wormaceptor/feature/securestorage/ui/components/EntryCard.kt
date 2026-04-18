@@ -50,7 +50,7 @@ internal fun EntryCard(
     WormaCeptorCard(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        backgroundColor = WormaCeptorTokens.semantic().surface,
     ) {
         Row(
             modifier = Modifier
@@ -96,14 +96,14 @@ internal fun EntryCard(
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     text = entry.value.take(100),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -111,7 +111,7 @@ internal fun EntryCard(
                     Text(
                         text = formatDateShort(timestamp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }

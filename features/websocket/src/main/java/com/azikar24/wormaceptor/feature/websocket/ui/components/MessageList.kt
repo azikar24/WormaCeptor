@@ -129,7 +129,7 @@ private fun MessageItem(
                 text = if (isExpanded) message.payload else message.payloadPreview(PayloadPreviewChars),
                 style = MaterialTheme.typography.bodySmall,
                 fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 lineHeight = WormaCeptorTokens.Typography.codeMedium.lineHeight,
                 maxLines = if (isExpanded) Int.MAX_VALUE else PayloadCollapsedLines,
                 overflow = if (isExpanded) TextOverflow.Visible else TextOverflow.Ellipsis,
@@ -169,7 +169,7 @@ private fun MessageHeader(
             text = formatBytes(message.size),
             style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            color = WormaCeptorTokens.semantic().textSecondary.copy(
                 alpha = WormaCeptorTokens.Alpha.HEAVY,
             ),
         )
@@ -180,7 +180,7 @@ private fun MessageHeader(
             text = formattedTime,
             style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            color = WormaCeptorTokens.semantic().textSecondary.copy(
                 alpha = WormaCeptorTokens.Alpha.HEAVY,
             ),
         )
@@ -192,7 +192,7 @@ private fun MessageHeader(
             contentDescription = stringResource(
                 if (isExpanded) R.string.websocket_collapse else R.string.websocket_expand,
             ),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            tint = WormaCeptorTokens.semantic().textSecondary.copy(
                 alpha = WormaCeptorTokens.Alpha.BOLD,
             ),
             modifier = Modifier.size(WormaCeptorTokens.IconSize.md),

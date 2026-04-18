@@ -53,7 +53,7 @@ internal fun SystemInfoCard(
                 text = stringResource(R.string.cpu_system_info),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 modifier = Modifier.semantics { heading() },
             )
 
@@ -115,7 +115,7 @@ private fun UptimeRow(formattedUptime: String) {
             Text(
                 text = stringResource(R.string.cpu_uptime, formattedUptime),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 fontFamily = FontFamily.Monospace,
             )
         }
@@ -144,14 +144,14 @@ private fun SystemInfoItem(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
     }
 }

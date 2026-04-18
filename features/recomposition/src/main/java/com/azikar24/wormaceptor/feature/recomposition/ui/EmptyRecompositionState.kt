@@ -32,7 +32,7 @@ internal fun EmptyRecompositionState(modifier: Modifier = Modifier) {
     ) {
         Surface(
             shape = WormaCeptorTokens.Shapes.cardExtraLarge,
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(
+            color = WormaCeptorTokens.semantic().surfaceVariant.copy(
                 alpha = WormaCeptorTokens.Alpha.MODERATE,
             ),
             modifier = Modifier.size(
@@ -49,7 +49,7 @@ internal fun EmptyRecompositionState(modifier: Modifier = Modifier) {
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.Monospace,
                     ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(
                         alpha = WormaCeptorTokens.Alpha.INTENSE,
                     ),
                 )
@@ -62,7 +62,7 @@ internal fun EmptyRecompositionState(modifier: Modifier = Modifier) {
             text = stringResource(R.string.recomposition_empty_title),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
@@ -70,7 +70,7 @@ internal fun EmptyRecompositionState(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.recomposition_empty_subtitle),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            color = WormaCeptorTokens.semantic().textSecondary.copy(
                 alpha = WormaCeptorTokens.Alpha.HEAVY,
             ),
             textAlign = TextAlign.Center,

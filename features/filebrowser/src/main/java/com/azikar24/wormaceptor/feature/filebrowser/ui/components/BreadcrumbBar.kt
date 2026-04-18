@@ -60,9 +60,9 @@ fun BreadcrumbBar(
                 imageVector = Icons.Default.Home,
                 contentDescription = stringResource(R.string.filebrowser_root),
                 tint = if (isAtRoot) {
-                    MaterialTheme.colorScheme.primary
+                    WormaCeptorTokens.semantic().accent
                 } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    WormaCeptorTokens.semantic().textSecondary
                 },
             )
         }
@@ -71,7 +71,7 @@ fun BreadcrumbBar(
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.padding(horizontal = WormaCeptorTokens.Spacing.xxs),
             )
 
@@ -83,9 +83,9 @@ fun BreadcrumbBar(
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (isLast) FontWeight.SemiBold else FontWeight.Normal,
                 color = if (isLast) {
-                    MaterialTheme.colorScheme.primary
+                    WormaCeptorTokens.semantic().accent
                 } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    WormaCeptorTokens.semantic().textSecondary
                 },
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

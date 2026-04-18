@@ -149,7 +149,7 @@ private fun TextFileContent(content: FileContent.Text) {
             text = content.content,
             style = MaterialTheme.typography.bodySmall,
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
     }
 }
@@ -174,7 +174,7 @@ private fun JsonFileContent(content: FileContent.Json) {
             Text(
                 text = stringResource(R.string.filebrowser_json_lines, content.lineCount),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
@@ -228,7 +228,7 @@ private fun XmlFileContent(content: FileContent.Xml) {
             Text(
                 text = stringResource(R.string.filebrowser_xml_lines, content.lineCount),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
@@ -272,7 +272,7 @@ private fun BinaryFileContent(content: FileContent.Binary) {
         Text(
             text = stringResource(R.string.filebrowser_binary_file, formatBytes(content.displaySize.toLong())),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
         )
 
@@ -309,7 +309,7 @@ private fun HexDumpLine(
             lineHeight = androidx.compose.ui.unit.TextUnit(14f, androidx.compose.ui.unit.TextUnitType.Sp),
         ),
         fontFamily = FontFamily.Monospace,
-        color = MaterialTheme.colorScheme.onSurface,
+        color = WormaCeptorTokens.semantic().textPrimary,
     )
 }
 
@@ -348,7 +348,7 @@ private fun ImageFileContent(content: FileContent.Image) {
         Text(
             text = dimensionsText,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.md),
         )
 
@@ -402,7 +402,7 @@ private fun PdfFileContent(content: FileContent.Pdf) {
                         formatBytes(content.sizeBytes),
                     ),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
                 )
 
@@ -462,7 +462,7 @@ private fun PdfPageCard(
             Text(
                 text = stringResource(R.string.filebrowser_page_number, pageNumber),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.xs),
             )
             val currentBitmap = bitmap
@@ -497,7 +497,7 @@ private fun ErrorContent(message: String) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.error,
+            color = WormaCeptorTokens.semantic().error,
         )
     }
 }

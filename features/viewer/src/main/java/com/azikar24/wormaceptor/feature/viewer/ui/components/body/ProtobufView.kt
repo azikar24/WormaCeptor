@@ -89,7 +89,7 @@ fun ProtobufView(
                             decodeResult.fields.size,
                         ),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
 
@@ -104,7 +104,9 @@ fun ProtobufView(
             is ProtobufDecodeResult.Failure -> {
                 WormaCeptorCard(
                     modifier = Modifier.fillMaxWidth(),
-                    backgroundColor = MaterialTheme.colorScheme.errorContainer.copy(
+                    backgroundColor = WormaCeptorTokens.semantic().error.copy(
+                        alpha = WormaCeptorTokens.Alpha.SUBTLE,
+                    ).copy(
                         alpha = WormaCeptorTokens.Alpha.LIGHT,
                     ),
                 ) {
@@ -120,7 +122,7 @@ fun ProtobufView(
                             Icon(
                                 imageVector = Icons.Default.Warning,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.error,
+                                tint = WormaCeptorTokens.semantic().error,
                                 modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                             )
                             Text(
@@ -128,7 +130,7 @@ fun ProtobufView(
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Medium,
                                 ),
-                                color = MaterialTheme.colorScheme.error,
+                                color = WormaCeptorTokens.semantic().error,
                             )
                         }
 
@@ -139,7 +141,7 @@ fun ProtobufView(
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.xs),
                         )
 
@@ -149,7 +151,7 @@ fun ProtobufView(
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     fontFamily = FontFamily.Monospace,
                                 ),
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = WormaCeptorTokens.semantic().textPrimary,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .horizontalScroll(rememberScrollState()),
@@ -182,7 +184,7 @@ private fun ProtobufFieldCard(
         borderColor = if (expanded) {
             protobufAccentColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
         } else {
-            MaterialTheme.colorScheme.outlineVariant.copy(
+            WormaCeptorTokens.semantic().surfaceVariant.copy(
                 alpha = WormaCeptorTokens.Alpha.MEDIUM,
             )
         },
@@ -205,7 +207,7 @@ private fun ProtobufFieldCard(
                     modifier = Modifier
                         .size(WormaCeptorTokens.IconSize.md)
                         .rotate(rotation),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
 
                 Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
@@ -232,12 +234,12 @@ private fun ProtobufFieldCard(
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Medium,
                         ),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                     Text(
                         text = field.wireTypeName,
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }
@@ -255,7 +257,7 @@ private fun ProtobufFieldCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            MaterialTheme.colorScheme.surfaceVariant.copy(
+                            WormaCeptorTokens.semantic().surfaceVariant.copy(
                                 alpha = WormaCeptorTokens.Alpha.MODERATE,
                             ),
                         )
@@ -267,7 +269,7 @@ private fun ProtobufFieldCard(
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontFamily = FontFamily.Monospace,
                             ),
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = WormaCeptorTokens.semantic().textPrimary,
                             modifier = Modifier.horizontalScroll(rememberScrollState()),
                         )
                     }

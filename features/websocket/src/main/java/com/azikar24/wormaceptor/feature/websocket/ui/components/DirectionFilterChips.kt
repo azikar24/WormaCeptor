@@ -74,13 +74,13 @@ internal fun DirectionFilterChips(
                                 color = if (isSelected) {
                                     val alpha = WormaCeptorTokens.Alpha.INTENSE +
                                         WormaCeptorTokens.Alpha.SUBTLE
-                                    MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                                    WormaCeptorTokens.semantic().accent.copy(
                                         alpha = alpha,
                                     )
                                 } else {
                                     val alpha = WormaCeptorTokens.Alpha.INTENSE +
                                         WormaCeptorTokens.Alpha.SUBTLE
-                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                    WormaCeptorTokens.semantic().textSecondary.copy(
                                         alpha = alpha,
                                     )
                                 },

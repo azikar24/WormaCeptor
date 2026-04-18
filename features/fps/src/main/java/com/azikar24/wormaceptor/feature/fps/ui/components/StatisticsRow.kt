@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.feature.fps.ui.components
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,7 +30,7 @@ internal fun StatisticsRow(
             color = if (fpsInfo.minFps > 0) {
                 fpsColorForValue(fpsInfo.minFps)
             } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
+                WormaCeptorTokens.semantic().textSecondary
             },
             modifier = Modifier.weight(1f),
         )
@@ -42,7 +41,7 @@ internal fun StatisticsRow(
             color = if (fpsInfo.averageFps > 0) {
                 fpsColorForValue(fpsInfo.averageFps)
             } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
+                WormaCeptorTokens.semantic().textSecondary
             },
             modifier = Modifier.weight(1f),
         )
@@ -53,7 +52,7 @@ internal fun StatisticsRow(
             color = if (fpsInfo.maxFps > 0) {
                 fpsColorForValue(fpsInfo.maxFps)
             } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
+                WormaCeptorTokens.semantic().textSecondary
             },
             modifier = Modifier.weight(1f),
         )

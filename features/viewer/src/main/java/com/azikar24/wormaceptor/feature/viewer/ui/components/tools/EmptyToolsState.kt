@@ -33,7 +33,7 @@ internal fun EmptyToolsState(
             modifier = Modifier
                 .size(WormaCeptorTokens.IconSize.xxxl)
                 .alpha(WormaCeptorTokens.Alpha.STRONG),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = WormaCeptorTokens.semantic().textSecondary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
@@ -45,7 +45,7 @@ internal fun EmptyToolsState(
                 stringResource(R.string.viewer_tools_no_tools_available)
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             textAlign = TextAlign.Center,
         )
 
@@ -54,7 +54,7 @@ internal fun EmptyToolsState(
             Text(
                 text = stringResource(R.string.viewer_tools_try_different_search),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+                color = WormaCeptorTokens.semantic().textSecondary.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
                 textAlign = TextAlign.Center,
             )
         }

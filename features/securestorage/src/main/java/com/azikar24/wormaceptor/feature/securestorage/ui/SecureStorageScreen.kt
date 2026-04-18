@@ -206,12 +206,12 @@ private fun SecureStorageContent(
                     .fillMaxWidth()
                     .padding(horizontal = WormaCeptorTokens.Spacing.lg),
                 shape = WormaCeptorTokens.Shapes.card,
-                color = MaterialTheme.colorScheme.errorContainer,
+                color = WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
             ) {
                 Text(
                     text = errorMessage,
                     modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
-                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    color = WormaCeptorTokens.semantic().error,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

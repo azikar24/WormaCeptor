@@ -60,7 +60,7 @@ private fun InternalStorageContent(storage: StorageDetails) {
             text = stringResource(R.string.deviceinfo_storage_internal),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary,
+            color = WormaCeptorTokens.semantic().accent,
         )
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
         WormaCeptorDetailRow(stringResource(R.string.deviceinfo_label_total), formatBytes(storage.internalTotal))
@@ -91,7 +91,7 @@ private fun ExternalStorageContent(storage: StorageDetails) {
             text = stringResource(R.string.deviceinfo_storage_external),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary,
+            color = WormaCeptorTokens.semantic().accent,
         )
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
         WormaCeptorDetailRow(stringResource(R.string.deviceinfo_label_total), formatBytes(extTotal))
@@ -124,7 +124,7 @@ private fun StorageProgressBar(usagePercent: Float) {
             .fillMaxWidth()
             .height(WormaCeptorTokens.ComponentSize.progressBarHeight),
         color = usageColor(usagePercent),
-        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+        trackColor = WormaCeptorTokens.semantic().surfaceVariant,
         strokeCap = StrokeCap.Round,
     )
 }

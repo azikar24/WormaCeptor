@@ -72,7 +72,7 @@ internal fun PdfErrorOverlay(
                 imageVector = Icons.Default.Error,
                 contentDescription = stringResource(R.string.viewer_pdf_error),
                 modifier = Modifier.size(WormaCeptorTokens.TouchTarget.large),
-                tint = MaterialTheme.colorScheme.error,
+                tint = WormaCeptorTokens.semantic().error,
             )
 
             Text(

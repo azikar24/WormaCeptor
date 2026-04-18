@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.recomposition.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,14 +24,14 @@ internal fun SummaryRow(
         WormaCeptorSummaryCard(
             count = formattedDuration,
             label = stringResource(R.string.recomposition_session_duration),
-            color = MaterialTheme.colorScheme.primary,
+            color = WormaCeptorTokens.semantic().accent,
             modifier = Modifier.weight(1f),
         )
 
         WormaCeptorSummaryCard(
             count = formattedTotalRecompositions,
             label = stringResource(R.string.recomposition_total_recompositions),
-            color = MaterialTheme.colorScheme.tertiary,
+            color = WormaCeptorTokens.semantic().accent,
             modifier = Modifier.weight(1f),
         )
     }

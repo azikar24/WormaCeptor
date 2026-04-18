@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 
 @Composable
@@ -49,7 +50,7 @@ internal fun PdfPageJumpDialog(
         Text(
             stringResource(R.string.viewer_pdf_page_prompt, totalPages),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
 
         WormaCeptorTextField(
@@ -73,7 +74,7 @@ internal fun PdfPageJumpDialog(
             Text(
                 text = stringResource(R.string.viewer_pdf_invalid_page),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
+                color = WormaCeptorTokens.semantic().error,
             )
         }
     }

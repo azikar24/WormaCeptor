@@ -73,7 +73,7 @@ internal fun WebViewRequestDetailScreen(
                         Text(
                             text = request.host,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
@@ -178,13 +178,13 @@ private fun UrlCard(request: WebViewRequest) {
     WormaCeptorInfoCard(
         title = stringResource(R.string.webviewmonitor_detail_url),
         icon = Icons.Default.Link,
-        iconTint = MaterialTheme.colorScheme.primary,
+        iconTint = WormaCeptorTokens.semantic().accent,
     ) {
         SelectionContainer {
             Text(
                 text = request.url,
                 style = WormaCeptorTokens.Typography.codeMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
         }
     }
@@ -257,7 +257,7 @@ private fun HeadersCard(
                     Text(
                         text = value,
                         style = WormaCeptorTokens.Typography.codeSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                 }
             }

@@ -51,7 +51,7 @@ internal fun AlgorithmModeSection(
                     text = stringResource(R.string.crypto_advanced),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
             },
         ) {

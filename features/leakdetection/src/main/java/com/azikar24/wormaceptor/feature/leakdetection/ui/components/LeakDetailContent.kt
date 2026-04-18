@@ -120,13 +120,13 @@ private fun ReferencePathSection(referencePath: List<String>) {
             text = stringResource(R.string.leakdetection_section_reference_path),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.semantics { heading() },
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = WormaCeptorTokens.Shapes.card,
-            color = MaterialTheme.colorScheme.surfaceVariant,
+            color = WormaCeptorTokens.semantic().surfaceVariant,
         ) {
             Column(
                 modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
@@ -137,7 +137,7 @@ private fun ReferencePathSection(referencePath: List<String>) {
                         text = step,
                         style = MaterialTheme.typography.bodySmall,
                         fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurface.copy(
+                        color = WormaCeptorTokens.semantic().textPrimary.copy(
                             alpha = WormaCeptorTokens.Alpha.PROMINENT,
                         ),
                     )

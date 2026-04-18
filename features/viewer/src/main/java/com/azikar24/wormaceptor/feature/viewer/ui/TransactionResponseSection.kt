@@ -342,7 +342,7 @@ internal fun ResponseTab(
                         Text(
                             "No response data",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                         )
                     }
                 }
@@ -354,7 +354,7 @@ internal fun ResponseTab(
                     Text(
                         "No response received",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.error,
+                        color = WormaCeptorTokens.semantic().error,
                     )
                 }
             }

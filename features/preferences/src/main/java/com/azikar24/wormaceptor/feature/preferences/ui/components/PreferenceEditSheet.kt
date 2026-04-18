@@ -267,7 +267,7 @@ private fun EditSheetActions(
                 text = stringResource(R.string.preferences_dialog_delete_confirm),
                 onClick = { onEvent(PreferencesViewEvent.Editor.DeleteRequested) },
                 variant = ButtonVariant.Text,
-                contentColor = MaterialTheme.colorScheme.error,
+                contentColor = WormaCeptorTokens.semantic().error,
             )
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -353,7 +353,7 @@ private fun BooleanValueInput(
                 color = if (value) {
                     WormaCeptorTokens.Colors.Preferences.typeScheme().boolean
                 } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    WormaCeptorTokens.semantic().textSecondary
                 },
             )
             Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
@@ -377,7 +377,7 @@ private fun StringSetValueInput(
         Text(
             text = stringResource(R.string.preferences_label_values),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))

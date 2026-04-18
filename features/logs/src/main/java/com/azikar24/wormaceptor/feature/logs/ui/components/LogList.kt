@@ -113,7 +113,7 @@ internal fun LogEntryItem(
                 text = entry.message,
                 style = MaterialTheme.typography.bodySmall,
                 fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurface.copy(
+                color = WormaCeptorTokens.semantic().textPrimary.copy(
                     alpha = WormaCeptorTokens.Alpha.PROMINENT,
                 ),
                 lineHeight = WormaCeptorTokens.Typography.codeMedium.lineHeight,
@@ -146,7 +146,7 @@ private fun LogEntryHeader(
             text = tag,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
@@ -158,7 +158,7 @@ private fun LogEntryHeader(
             text = formattedTime,
             style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            color = WormaCeptorTokens.semantic().textSecondary.copy(
                 alpha = WormaCeptorTokens.Alpha.HEAVY,
             ),
         )

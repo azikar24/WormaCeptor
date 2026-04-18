@@ -2,7 +2,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui
 
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -62,7 +61,7 @@ fun HomeDialogs(
             },
             sheetState = sheetState,
             shape = WormaCeptorTokens.Shapes.sheet,
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = WormaCeptorTokens.semantic().surface,
         ) {
             FilterBottomSheetContent(
                 state = transactionState,

@@ -175,7 +175,7 @@ private fun DatabaseErrorState(
         Text(
             text = error,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.error,
+            color = WormaCeptorTokens.semantic().error,
         )
     }
 }
@@ -193,13 +193,13 @@ private fun DatabaseEmptyState(modifier: Modifier = Modifier) {
             Icon(
                 imageVector = Icons.Default.Storage,
                 contentDescription = stringResource(R.string.database_list_title),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.size(WormaCeptorTokens.Spacing.xxxl),
             )
             Text(
                 text = stringResource(R.string.database_list_empty),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }
@@ -246,7 +246,7 @@ private fun DatabaseListItem(
             Icon(
                 imageVector = Icons.Default.Storage,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
+                tint = WormaCeptorTokens.semantic().accent,
             )
         },
         onClick = onClick,

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -180,7 +179,7 @@ fun SwipeBackContainer(
                     .width(EdgeIndicatorWidth)
                     .offset { IntOffset(0, 0) }
                     .background(
-                        MaterialTheme.colorScheme.primaryContainer.copy(
+                        WormaCeptorTokens.semantic().accentSubtle.copy(
                             alpha = progress * WormaCeptorTokens.Alpha.STRONG,
                         ),
                     ),
@@ -189,7 +188,7 @@ fun SwipeBackContainer(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.viewer_gesture_back),
-                    tint = MaterialTheme.colorScheme.primary.copy(
+                    tint = WormaCeptorTokens.semantic().accent.copy(
                         alpha = (progress * 2f).coerceIn(0f, 1f),
                     ),
                     modifier = Modifier
@@ -209,7 +208,7 @@ fun SwipeBackContainer(
                     ambientColor = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                     spotColor = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                 )
-                .background(MaterialTheme.colorScheme.surface),
+                .background(WormaCeptorTokens.semantic().surface),
             content = content,
         )
     }

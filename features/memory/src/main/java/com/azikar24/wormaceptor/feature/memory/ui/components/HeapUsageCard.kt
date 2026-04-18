@@ -100,7 +100,7 @@ private fun HeapHeader(
                 text = stringResource(R.string.memory_java_heap),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
         }
 
@@ -162,7 +162,7 @@ private fun HeapProgressSection(
             Text(
                 text = "${formatBytes(currentMemory.usedMemory)} / ${formatBytes(currentMemory.maxMemory)}",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 fontFamily = FontFamily.Monospace,
             )
         }
@@ -176,7 +176,7 @@ private fun HeapProgressSection(
                 .height(WormaCeptorTokens.Spacing.sm)
                 .clip(WormaCeptorTokens.Shapes.chip),
             color = statusColor,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            trackColor = WormaCeptorTokens.semantic().surfaceVariant,
         )
     }
 }
@@ -206,7 +206,7 @@ private fun HeapDetailsRow(currentMemory: MemoryInfo) {
         MemoryStatItem(
             label = stringResource(R.string.memory_max),
             value = formatBytes(currentMemory.maxMemory),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }
@@ -225,7 +225,7 @@ private fun MemoryStatItem(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         Text(
             text = value,

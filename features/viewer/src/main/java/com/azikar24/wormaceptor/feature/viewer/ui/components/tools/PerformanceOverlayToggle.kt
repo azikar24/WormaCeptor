@@ -67,16 +67,16 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
     }
 
     val backgroundColor = when {
-        !canDrawOverlays -> MaterialTheme.colorScheme.surfaceVariant.copy(
+        !canDrawOverlays -> WormaCeptorTokens.semantic().surfaceVariant.copy(
             alpha = WormaCeptorTokens.Alpha.MODERATE,
         )
         isOverlayEnabled -> WormaCeptorTokens.Colors.Category.performance.copy(alpha = WormaCeptorTokens.Alpha.SOFT)
-        else -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
+        else -> WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
     }
     val borderColor = when {
-        !canDrawOverlays -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+        !canDrawOverlays -> WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
         isOverlayEnabled -> WormaCeptorTokens.Colors.Category.performance.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
-        else -> MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+        else -> WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
     }
 
     Surface(
@@ -133,7 +133,7 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                     text = stringResource(R.string.viewer_tools_performance_overlay),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
                 Text(
                     text = if (isOverlayEnabled && canDrawOverlays) {
@@ -142,19 +142,19 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                         stringResource(R.string.viewer_tools_overlay_tap_enable)
                     },
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 
             if (!canDrawOverlays) {
                 Surface(
                     shape = WormaCeptorTokens.Shapes.button,
-                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                    color = WormaCeptorTokens.semantic().surfaceVariant,
                 ) {
                     Text(
                         text = stringResource(R.string.viewer_tools_overlay_grant),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        color = WormaCeptorTokens.semantic().error,
                         modifier = Modifier.padding(
                             horizontal = WormaCeptorTokens.Spacing.sm,
                             vertical = WormaCeptorTokens.Spacing.xs,
@@ -168,7 +168,7 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                     color = if (isOverlayEnabled) {
                         WormaCeptorTokens.Colors.Category.performance.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
                     } else {
-                        MaterialTheme.colorScheme.surfaceVariant
+                        WormaCeptorTokens.semantic().surfaceVariant
                     },
                 ) {
                     Text(
@@ -184,7 +184,7 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
                         color = if (isOverlayEnabled) {
                             WormaCeptorTokens.Colors.Category.performance
                         } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            WormaCeptorTokens.semantic().textSecondary
                         },
                         modifier = Modifier.padding(
                             horizontal = WormaCeptorTokens.Spacing.sm,

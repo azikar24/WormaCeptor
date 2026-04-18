@@ -167,9 +167,9 @@ internal fun OutlinedTextFieldWithCounter(
     val isOverLimit = charCount > maxChars
     val charCountColor by animateColorAsState(
         targetValue = when {
-            isOverLimit -> MaterialTheme.colorScheme.error
-            charCount > maxChars * 0.8f -> MaterialTheme.colorScheme.tertiary
-            else -> MaterialTheme.colorScheme.onSurfaceVariant
+            isOverLimit -> WormaCeptorTokens.semantic().error
+            charCount > maxChars * 0.8f -> WormaCeptorTokens.semantic().accent
+            else -> WormaCeptorTokens.semantic().textSecondary
         },
         animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.FAST),
         label = "charCountColor",
@@ -232,10 +232,10 @@ private fun ChannelSelector(
             },
             shape = WormaCeptorTokens.Shapes.textField,
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant.copy(
+                unfocusedBorderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(
                     alpha = WormaCeptorTokens.Alpha.BOLD,
                 ),
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = WormaCeptorTokens.semantic().accent,
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -260,7 +260,7 @@ private fun ChannelSelector(
                                     contentDescription = stringResource(
                                         R.string.pushsimulator_channel_selected,
                                     ),
-                                    tint = MaterialTheme.colorScheme.primary,
+                                    tint = WormaCeptorTokens.semantic().accent,
                                     modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                                 )
                             } else {
@@ -277,16 +277,16 @@ private fun ChannelSelector(
                                         FontWeight.Normal
                                     },
                                     color = if (isSelected) {
-                                        MaterialTheme.colorScheme.primary
+                                        WormaCeptorTokens.semantic().accent
                                     } else {
-                                        MaterialTheme.colorScheme.onSurface
+                                        WormaCeptorTokens.semantic().textPrimary
                                     },
                                 )
                                 channel.description?.let { desc ->
                                     Text(
                                         text = desc,
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        color = WormaCeptorTokens.semantic().textSecondary,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis,
                                     )
@@ -319,7 +319,7 @@ private fun ImportanceBadge(importance: Int) {
         PushSimulatorConstants.IMPORTANCE_HIGH -> highLabel to ToolColors.PushSimulator.Priority.high
         PushSimulatorConstants.IMPORTANCE_DEFAULT -> defaultLabel to ToolColors.PushSimulator.Priority.default
         PushSimulatorConstants.IMPORTANCE_LOW -> lowLabel to ToolColors.PushSimulator.Priority.low
-        else -> minLabel to MaterialTheme.colorScheme.outline
+        else -> minLabel to WormaCeptorTokens.semantic().textTertiary
     }
 
     WormaCeptorStatusBadge(
@@ -338,7 +338,7 @@ private fun PrioritySelector(
         Text(
             text = stringResource(R.string.pushsimulator_priority_label),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
@@ -378,7 +378,7 @@ private fun PrioritySelector(
                     border = FilterChipDefaults.filterChipBorder(
                         enabled = true,
                         selected = isSelected,
-                        borderColor = MaterialTheme.colorScheme.outline
+                        borderColor = WormaCeptorTokens.semantic().textTertiary
                             .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                         selectedBorderColor = priorityColor
                             .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
@@ -408,15 +408,15 @@ private fun ActionButtonsSection(
             Text(
                 text = stringResource(R.string.pushsimulator_actions_label),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Text(
                 text = "${actions.size}/3",
                 style = MaterialTheme.typography.labelSmall,
                 color = if (remainingSlots == 0) {
-                    MaterialTheme.colorScheme.tertiary
+                    WormaCeptorTokens.semantic().accent
                 } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    WormaCeptorTokens.semantic().textSecondary
                 },
             )
         }
@@ -521,9 +521,9 @@ private fun ActionButtonsSection(
                     enabled = canAdd,
                     shape = CircleShape,
                     color = if (canAdd) {
-                        MaterialTheme.colorScheme.primary
+                        WormaCeptorTokens.semantic().accent
                     } else {
-                        MaterialTheme.colorScheme.surfaceVariant
+                        WormaCeptorTokens.semantic().surfaceVariant
                     },
                     modifier = Modifier.size(WormaCeptorTokens.Spacing.xxxl),
                 ) {
@@ -532,9 +532,9 @@ private fun ActionButtonsSection(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.pushsimulator_actions_add),
                             tint = if (canAdd) {
-                                MaterialTheme.colorScheme.onPrimary
+                                WormaCeptorTokens.semantic().background
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                                WormaCeptorTokens.semantic().textSecondary.copy(
                                     alpha = WormaCeptorTokens.Alpha.BOLD,
                                 )
                             },

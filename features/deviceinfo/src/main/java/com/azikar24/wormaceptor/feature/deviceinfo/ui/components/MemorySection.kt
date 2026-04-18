@@ -52,7 +52,7 @@ internal fun MemorySection(
                 Text(
                     text = stringResource(R.string.deviceinfo_label_usage),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
                 Text(
                     text = "${String.format(Locale.US, "%.1f", memory.usagePercentage)}%",
@@ -68,7 +68,7 @@ internal fun MemorySection(
                     .fillMaxWidth()
                     .height(WormaCeptorTokens.ComponentSize.progressBarHeight),
                 color = usageColor(memory.usagePercentage),
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                trackColor = WormaCeptorTokens.semantic().surfaceVariant,
                 strokeCap = StrokeCap.Round,
             )
         }

@@ -9,13 +9,13 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 
 @Composable
@@ -91,7 +91,7 @@ fun BulkActionBar(
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.viewer_bulk_delete_selected),
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = WormaCeptorTokens.semantic().error,
                 )
             }
         },

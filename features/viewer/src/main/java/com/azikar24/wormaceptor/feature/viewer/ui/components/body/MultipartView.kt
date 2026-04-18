@@ -79,7 +79,7 @@ fun MultipartView(
             Text(
                 text = stringResource(R.string.viewer_multipart_no_data),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
         return
@@ -103,7 +103,7 @@ fun MultipartView(
                     parts.size,
                 ),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
 
             if (boundary != null) {
@@ -111,7 +111,7 @@ fun MultipartView(
                 Text(
                     text = stringResource(R.string.viewer_multipart_boundary, truncated),
                     style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(
                         alpha = WormaCeptorTokens.Alpha.HEAVY,
                     ),
                 )
@@ -160,7 +160,7 @@ private fun MultipartPartCard(
         borderColor = if (expanded) {
             accentColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
         } else {
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+            WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
         },
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -181,7 +181,7 @@ private fun MultipartPartCard(
                     modifier = Modifier
                         .size(WormaCeptorTokens.IconSize.md)
                         .rotate(rotation),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
 
                 Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
@@ -210,7 +210,7 @@ private fun MultipartPartCard(
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Medium,
                         ),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -223,7 +223,7 @@ private fun MultipartPartCard(
                                 part.contentType?.let { append(it) }
                             },
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
@@ -232,12 +232,12 @@ private fun MultipartPartCard(
 
                 Surface(
                     shape = WormaCeptorTokens.Shapes.chip,
-                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    color = WormaCeptorTokens.semantic().surfaceVariant,
                 ) {
                     Text(
                         text = formatBytes(part.size),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                         modifier = Modifier.padding(
                             horizontal = WormaCeptorTokens.Spacing.sm,
                             vertical = WormaCeptorTokens.Spacing.xxs,
@@ -263,7 +263,7 @@ private fun MultipartPartCard(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
-                                    MaterialTheme.colorScheme.surfaceVariant.copy(
+                                    WormaCeptorTokens.semantic().surfaceVariant.copy(
                                         alpha = WormaCeptorTokens.Alpha.MODERATE,
                                     ),
                                 )
@@ -274,7 +274,7 @@ private fun MultipartPartCard(
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.SemiBold,
                                 ),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = WormaCeptorTokens.semantic().textSecondary,
                                 modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.xs),
                             )
 
@@ -288,7 +288,7 @@ private fun MultipartPartCard(
                                             style = MaterialTheme.typography.labelSmall.copy(
                                                 fontFamily = FontFamily.Monospace,
                                             ),
-                                            color = MaterialTheme.colorScheme.primary,
+                                            color = WormaCeptorTokens.semantic().accent,
                                         )
                                     }
                                     SelectionContainer {
@@ -297,7 +297,7 @@ private fun MultipartPartCard(
                                             style = MaterialTheme.typography.labelSmall.copy(
                                                 fontFamily = FontFamily.Monospace,
                                             ),
-                                            color = MaterialTheme.colorScheme.onSurface,
+                                            color = WormaCeptorTokens.semantic().textPrimary,
                                         )
                                     }
                                 }
@@ -320,13 +320,13 @@ private fun MultipartPartCard(
                                         style = MaterialTheme.typography.bodySmall.copy(
                                             fontFamily = FontFamily.Monospace,
                                         ),
-                                        color = MaterialTheme.colorScheme.onSurface,
+                                        color = WormaCeptorTokens.semantic().textPrimary,
                                     )
                                 }
                                 Text(
                                     text = "... (${part.body.length - 1000} more characters)",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = WormaCeptorTokens.semantic().textSecondary,
                                     modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xs),
                                 )
                             }
@@ -338,9 +338,9 @@ private fun MultipartPartCard(
                                         fontFamily = FontFamily.Monospace,
                                     ),
                                     color = if (part.body.isEmpty()) {
-                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                        WormaCeptorTokens.semantic().textSecondary
                                     } else {
-                                        MaterialTheme.colorScheme.onSurface
+                                        WormaCeptorTokens.semantic().textPrimary
                                     },
                                 )
                             }

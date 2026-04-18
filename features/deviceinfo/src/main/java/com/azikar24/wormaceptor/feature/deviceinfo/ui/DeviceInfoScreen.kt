@@ -159,8 +159,8 @@ private fun DeviceInfoPullToRefresh(
                 modifier = Modifier.align(Alignment.TopCenter),
                 isRefreshing = state.isRefreshing,
                 state = pullToRefreshState,
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                color = MaterialTheme.colorScheme.primary,
+                containerColor = WormaCeptorTokens.semantic().surfaceVariant,
+                color = WormaCeptorTokens.semantic().accent,
             )
         },
     ) {
@@ -222,7 +222,7 @@ private fun DeviceInfoSectionList(
         Text(
             text = stringResource(R.string.deviceinfo_collected, formatDateFull(info.timestamp)),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.padding(
                 top = WormaCeptorTokens.Spacing.sm,
             ).align(Alignment.CenterHorizontally),
@@ -246,7 +246,7 @@ private fun DeviceInfoErrorContent(
             Text(
                 text = error,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
             WormaCeptorButton(

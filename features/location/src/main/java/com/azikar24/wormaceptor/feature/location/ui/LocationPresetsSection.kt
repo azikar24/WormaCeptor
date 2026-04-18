@@ -81,7 +81,7 @@ internal fun PresetItem(
                         text = preset.name,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f, fill = false),
@@ -115,7 +115,7 @@ internal fun PresetItem(
                         imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(R.string.location_delete_preset),
                         modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-                        tint = MaterialTheme.colorScheme.error,
+                        tint = WormaCeptorTokens.semantic().error,
                     )
                 }
             }
@@ -184,14 +184,14 @@ internal fun CollapsibleMapSection(
                     Icon(
                         imageVector = Icons.Default.Map,
                         contentDescription = stringResource(R.string.location_map_preview),
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = WormaCeptorTokens.semantic().accent,
                         modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                     )
                     Text(
                         text = stringResource(R.string.location_map_preview),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                     if (isMockActive) {
                         Surface(
@@ -219,7 +219,7 @@ internal fun CollapsibleMapSection(
                     contentDescription = stringResource(
                         if (isExpanded) R.string.location_collapse else R.string.location_expand,
                     ),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 

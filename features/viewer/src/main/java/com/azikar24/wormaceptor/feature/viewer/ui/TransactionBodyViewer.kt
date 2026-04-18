@@ -52,7 +52,7 @@ internal fun PrettyRawToggle(
     isPretty: Boolean,
     onToggle: () -> Unit,
 ) {
-    val activeColor = MaterialTheme.colorScheme.primary
+    val activeColor = WormaCeptorTokens.semantic().accent
 
     val borderColor by animateColorAsState(
         targetValue = activeColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
@@ -103,7 +103,7 @@ private fun SegmentOption(
         label = "segment_bg",
     )
     val textColor by animateColorAsState(
-        targetValue = if (isSelected) activeColor else MaterialTheme.colorScheme.onSurfaceVariant,
+        targetValue = if (isSelected) activeColor else WormaCeptorTokens.semantic().textSecondary,
         animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
         label = "segment_text",
     )

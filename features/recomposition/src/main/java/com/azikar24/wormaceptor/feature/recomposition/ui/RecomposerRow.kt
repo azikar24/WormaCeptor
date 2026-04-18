@@ -38,7 +38,7 @@ internal fun RecomposerRow(
     Surface(
         modifier = modifier,
         shape = WormaCeptorTokens.Shapes.cardLarge,
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(
+        color = WormaCeptorTokens.semantic().surfaceVariant.copy(
             alpha = WormaCeptorTokens.Alpha.BOLD,
         ),
     ) {
@@ -52,7 +52,7 @@ internal fun RecomposerRow(
                 text = "#$index",
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.width(WormaCeptorTokens.IconSize.xl),
             )
 
@@ -70,12 +70,12 @@ internal fun RecomposerRow(
                     text = item.name,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
                 Text(
                     text = stringResource(R.string.recomposition_count_label, item.count),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 

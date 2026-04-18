@@ -48,7 +48,7 @@ internal fun WebViewRequestItem(
             .clip(WormaCeptorTokens.Shapes.card)
             .border(
                 width = WormaCeptorTokens.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(
+                color = WormaCeptorTokens.semantic().surfaceVariant.copy(
                     alpha = WormaCeptorTokens.Alpha.MEDIUM,
                 ),
                 shape = WormaCeptorTokens.Shapes.card,
@@ -82,7 +82,7 @@ private fun RequestItemContent(
                 text = request.path,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.primary,
+                color = WormaCeptorTokens.semantic().accent,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f, fill = false),
@@ -97,7 +97,7 @@ private fun RequestItemContent(
             Text(
                 text = request.resourceType.displayName,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
@@ -110,12 +110,12 @@ private fun RequestHostChip(host: String) {
     Text(
         text = host,
         style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = WormaCeptorTokens.semantic().textSecondary,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier
             .background(
-                MaterialTheme.colorScheme.surfaceVariant.copy(
+                WormaCeptorTokens.semantic().surfaceVariant.copy(
                     alpha = WormaCeptorTokens.Alpha.PROMINENT,
                 ),
                 WormaCeptorTokens.Shapes.pill,
@@ -149,7 +149,7 @@ private fun RequestStatusBadge(
             Text(
                 text = formatDuration(duration),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                color = WormaCeptorTokens.semantic().textSecondary.copy(
                     alpha = WormaCeptorTokens.Alpha.HEAVY,
                 ),
             )
@@ -167,7 +167,7 @@ private fun RequestMetaRow(request: WebViewRequest) {
             text = formatTimestamp(request.timestamp),
             style = MaterialTheme.typography.labelSmall,
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            color = WormaCeptorTokens.semantic().textSecondary.copy(
                 alpha = WormaCeptorTokens.Alpha.HEAVY,
             ),
         )
@@ -176,7 +176,7 @@ private fun RequestMetaRow(request: WebViewRequest) {
                 text = formatBytes(length),
                 style = MaterialTheme.typography.labelSmall,
                 fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                color = WormaCeptorTokens.semantic().textSecondary.copy(
                     alpha = WormaCeptorTokens.Alpha.HEAVY,
                 ),
             )

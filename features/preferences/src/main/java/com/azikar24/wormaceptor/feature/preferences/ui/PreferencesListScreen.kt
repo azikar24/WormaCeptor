@@ -24,7 +24,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -208,7 +207,7 @@ private fun PreferenceFileItem(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                tint = WormaCeptorTokens.semantic().textSecondary.copy(
                     alpha = WormaCeptorTokens.Alpha.BOLD,
                 ),
             )
@@ -216,7 +215,7 @@ private fun PreferenceFileItem(
         onClick = onClick,
         modifier = modifier
             .clip(WormaCeptorTokens.Shapes.card)
-            .background(MaterialTheme.colorScheme.surface),
+            .background(WormaCeptorTokens.semantic().surface),
     )
 }
 
@@ -224,7 +223,7 @@ private fun PreferenceFileItem(
 private fun PreferenceFileIcon() {
     Surface(
         shape = WormaCeptorTokens.Shapes.button,
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+        color = WormaCeptorTokens.semantic().accentSubtle.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         modifier = Modifier
             .padding(top = WormaCeptorTokens.Spacing.xxs)
             .size(WormaCeptorTokens.TouchTarget.minimum),
@@ -237,7 +236,7 @@ private fun PreferenceFileIcon() {
                 imageVector = Icons.Default.Folder,
                 contentDescription = stringResource(R.string.preferences_list_title),
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                tint = MaterialTheme.colorScheme.primary,
+                tint = WormaCeptorTokens.semantic().accent,
             )
         }
     }

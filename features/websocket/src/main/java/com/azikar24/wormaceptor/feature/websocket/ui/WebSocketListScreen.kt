@@ -266,7 +266,7 @@ private fun ConnectionItem(
                     text = connection.url,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f),
@@ -278,7 +278,7 @@ private fun ConnectionItem(
                     text = formattedTime,
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(
                         alpha = WormaCeptorTokens.Alpha.HEAVY,
                     ),
                 )
@@ -309,14 +309,14 @@ private fun ConnectionItem(
                 Text(
                     text = stringResource(R.string.websocket_message_count, messageCount),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
 
                 Text(
                     text = duration,
                     style = MaterialTheme.typography.labelSmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }

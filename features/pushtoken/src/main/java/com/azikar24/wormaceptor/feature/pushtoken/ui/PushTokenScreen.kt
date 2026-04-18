@@ -178,7 +178,7 @@ private fun LazyListScope.historySection(
             ) {
                 Text(
                     stringResource(R.string.pushtoken_no_history),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(
                         alpha = WormaCeptorTokens.Alpha.HEAVY,
                     ),
                 )
@@ -211,7 +211,7 @@ private fun PushTokenErrorCard(
         ) {
             Text(
                 message,
-                color = MaterialTheme.colorScheme.onErrorContainer,
+                color = WormaCeptorTokens.semantic().error,
                 modifier = Modifier.weight(1f),
             )
             IconButton(onClick = onDismiss) {

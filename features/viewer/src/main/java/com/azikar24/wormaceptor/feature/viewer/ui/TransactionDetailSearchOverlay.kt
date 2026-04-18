@@ -17,7 +17,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +48,7 @@ internal fun TransactionDetailSearchOverlay(
     ) {
         Surface(
             shape = WormaCeptorTokens.Shapes.pill,
-            color = MaterialTheme.colorScheme.surfaceColorAtElevation(WormaCeptorTokens.Elevation.md),
+            color = WormaCeptorTokens.semantic().surface,
             shadowElevation = WormaCeptorTokens.Elevation.lg,
         ) {
             Row(
@@ -87,7 +86,7 @@ internal fun TransactionDetailSearchOverlay(
                     Text(
                         text = stringResource(R.string.viewer_search_no_matches),
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }

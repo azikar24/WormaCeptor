@@ -65,7 +65,7 @@ internal fun SectionHeader(
             imageVector = Icons.Default.Save,
             contentDescription = null,
             modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-            tint = MaterialTheme.colorScheme.primary,
+            tint = WormaCeptorTokens.semantic().accent,
         )
         Text(
             text = text,
@@ -78,13 +78,13 @@ internal fun SectionHeader(
         if (count > 0) {
             Surface(
                 shape = WormaCeptorTokens.Shapes.chip,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = TokenAlpha.SUBTLE),
+                color = WormaCeptorTokens.semantic().accent.copy(alpha = TokenAlpha.SUBTLE),
             ) {
                 Text(
                     text = count.toString(),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WormaCeptorTokens.semantic().accent,
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorTokens.Spacing.sm,
                         vertical = WormaCeptorTokens.Spacing.xxs,
@@ -261,7 +261,7 @@ internal fun TemplateCard(
                 text = template.notification.title,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -270,7 +270,7 @@ internal fun TemplateCard(
                 Text(
                     text = template.notification.body,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -292,7 +292,7 @@ internal fun TemplateCard(
                                 R.string.pushsimulator_template_delete,
                                 template.name,
                             ),
-                            tint = MaterialTheme.colorScheme.error
+                            tint = WormaCeptorTokens.semantic().error
                                 .copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
                             modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                         )
@@ -304,14 +304,14 @@ internal fun TemplateCard(
                 Surface(
                     onClick = onSend,
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WormaCeptorTokens.semantic().accent,
                     modifier = Modifier.size(WormaCeptorTokens.TouchTarget.minimum),
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
                             contentDescription = stringResource(R.string.pushsimulator_send),
-                            tint = MaterialTheme.colorScheme.onPrimary,
+                            tint = WormaCeptorTokens.semantic().background,
                             modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                         )
                     }

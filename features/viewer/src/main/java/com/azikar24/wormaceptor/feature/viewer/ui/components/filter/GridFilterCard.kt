@@ -71,7 +71,7 @@ internal fun GridFilterCard(
     )
 
     val borderColor by animateColorAsState(
-        targetValue = if (isSelected) color else MaterialTheme.colorScheme.outlineVariant,
+        targetValue = if (isSelected) color else WormaCeptorTokens.semantic().surfaceVariant,
         animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.MEDIUM),
         label = "border_animation",
     )
@@ -147,16 +147,16 @@ internal fun GridFilterCard(
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                         color = if (count > 0) {
-                            MaterialTheme.colorScheme.onSurface
+                            WormaCeptorTokens.semantic().textPrimary
                         } else {
-                            MaterialTheme.colorScheme.onSurface.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
+                            WormaCeptorTokens.semantic().textPrimary.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
                         },
                     )
                     if (sublabel != null) {
                         Text(
                             text = sublabel,
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                            color = WormaCeptorTokens.semantic().textSecondary.copy(
                                 alpha = if (count > 0) {
                                     WormaCeptorTokens.Alpha.INTENSE
                                 } else {
@@ -190,7 +190,7 @@ internal fun GridFilterCard(
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = stringResource(R.string.viewer_filter_selected_indicator),
-                            tint = MaterialTheme.colorScheme.onSurface,
+                            tint = WormaCeptorTokens.semantic().textPrimary,
                             modifier = Modifier.size(WormaCeptorTokens.IconSize.xxs),
                         )
                     }

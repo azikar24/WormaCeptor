@@ -78,7 +78,7 @@ private fun TokenValueSurface(tokenValue: String) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorTokens.Shapes.card,
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = WormaCeptorTokens.semantic().surface,
     ) {
         Text(
             tokenValue,
@@ -115,7 +115,7 @@ private fun TokenProviderRow(token: PushTokenInfo) {
         Text(
             stringResource(R.string.pushtoken_refreshed, formatDateShort(token.lastRefreshed)),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }
@@ -166,12 +166,12 @@ private fun TokenEmptyState(isLoading: Boolean) {
                 Icon(
                     Icons.Default.NotificationsOff,
                     null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.xl),
                 )
                 Text(
                     stringResource(R.string.pushtoken_no_token),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }

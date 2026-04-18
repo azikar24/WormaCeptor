@@ -90,7 +90,7 @@ fun MetricsCard(
             .fillMaxWidth()
             .padding(horizontal = WormaCeptorTokens.Spacing.sm, vertical = WormaCeptorTokens.Spacing.md),
         style = CardStyle.Outlined,
-        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
+        borderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
     ) {
         Column(
             modifier = Modifier
@@ -120,7 +120,7 @@ fun MetricsCard(
                         stringResource(R.string.viewer_body_expand)
                     },
                     modifier = Modifier.rotate(rotationAngle),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 
@@ -146,14 +146,14 @@ fun MetricsCard(
                 WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_total),
                     value = totalRequests.toString(),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WormaCeptorTokens.semantic().accent,
                     modifier = Modifier.weight(1f),
                 )
 
                 WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_avg_time),
                     value = formatDurationAvg(avgDuration),
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = WormaCeptorTokens.semantic().accent,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -264,7 +264,7 @@ fun MetricsCard(
                             text = stringResource(R.string.viewer_metrics_requests_by_method),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = WormaCeptorTokens.semantic().textPrimary,
                         )
                         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
@@ -281,7 +281,7 @@ fun MetricsCard(
                                     horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                                 ) {
                                     WormaCeptorStatusDot(
-                                        color = MaterialTheme.colorScheme.primary.copy(
+                                        color = WormaCeptorTokens.semantic().accent.copy(
                                             alpha = WormaCeptorTokens.Alpha.HEAVY,
                                         ),
                                         size = WormaCeptorTokens.ComponentSize.dot,
@@ -295,7 +295,7 @@ fun MetricsCard(
                                 Text(
                                     text = count.toString(),
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = WormaCeptorTokens.semantic().textSecondary,
                                     fontWeight = FontWeight.SemiBold,
                                 )
                             }

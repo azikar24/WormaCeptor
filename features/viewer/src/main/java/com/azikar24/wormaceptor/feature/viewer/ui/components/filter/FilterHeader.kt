@@ -45,14 +45,14 @@ internal fun FilterHeader(
                 text = stringResource(R.string.viewer_filter_title),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
             if (filtersActive) {
                 Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
                 Text(
                     text = stringResource(R.string.viewer_filter_results_count, filteredCount, totalCount),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WormaCeptorTokens.semantic().accent,
                     fontWeight = FontWeight.Medium,
                 )
             }
@@ -61,9 +61,9 @@ internal fun FilterHeader(
         Surface(
             shape = WormaCeptorTokens.Shapes.pill,
             color = if (filtersActive) {
-                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
+                WormaCeptorTokens.semantic().accent.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
             } else {
-                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
+                WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
             },
             modifier = Modifier.semantics {
                 liveRegion = LiveRegionMode.Polite
@@ -79,9 +79,9 @@ internal fun FilterHeader(
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = if (filtersActive) {
-                    MaterialTheme.colorScheme.primary
+                    WormaCeptorTokens.semantic().accent
                 } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    WormaCeptorTokens.semantic().textSecondary
                 },
                 modifier = Modifier.padding(
                     horizontal = WormaCeptorTokens.Spacing.lg,

@@ -60,7 +60,7 @@ internal fun CpuChartCard(
                 text = stringResource(R.string.cpu_usage_over_time),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 modifier = Modifier.semantics { heading() },
             )
 
@@ -70,13 +70,13 @@ internal fun CpuChartCard(
                         .fillMaxWidth()
                         .height(WormaCeptorTokens.ComponentSize.chartHeight)
                         .clip(WormaCeptorTokens.Shapes.card)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                        .background(WormaCeptorTokens.semantic().surfaceVariant),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = stringResource(R.string.cpu_no_data),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             } else {
@@ -106,12 +106,12 @@ private fun CpuLineChart(
     history: ImmutableList<CpuInfo>,
     modifier: Modifier = Modifier,
 ) {
-    val gridColor = MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+    val gridColor = WormaCeptorTokens.semantic().textTertiary.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
 
     Canvas(
         modifier = modifier
             .clip(WormaCeptorTokens.Shapes.card)
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(WormaCeptorTokens.semantic().surfaceVariant),
     ) {
         val padding = WormaCeptorTokens.Spacing.lg.toPx()
         val chartWidth = size.width - padding * 2

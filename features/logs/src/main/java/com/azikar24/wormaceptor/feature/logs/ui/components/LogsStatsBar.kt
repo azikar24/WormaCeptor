@@ -41,9 +41,9 @@ internal fun StatsBar(
             ) {
                 WormaCeptorStatusDot(
                     color = if (isCapturing) {
-                        MaterialTheme.colorScheme.primary
+                        WormaCeptorTokens.semantic().accent
                     } else {
-                        MaterialTheme.colorScheme.outline
+                        WormaCeptorTokens.semantic().textTertiary
                     },
                 )
                 Text(
@@ -55,7 +55,7 @@ internal fun StatsBar(
                         stringResource(R.string.logs_status_paused)
                     },
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 
@@ -63,7 +63,7 @@ internal fun StatsBar(
             Text(
                 text = stringResource(R.string.logs_pid, pid),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 fontFamily = FontFamily.Monospace,
             )
         }
@@ -76,7 +76,7 @@ internal fun StatsBar(
                 stringResource(R.string.logs_entries_total, totalCount)
             },
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }

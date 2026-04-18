@@ -145,7 +145,7 @@ fun HomeScreen(
                         if (transactionState.hasActiveFilters) {
                             WormaCeptorBadge(
                                 text = filterCount.toString(),
-                                variant = BadgeVariant.Filled(MaterialTheme.colorScheme.primary),
+                                variant = BadgeVariant.Filled(WormaCeptorTokens.semantic().accent),
                             )
                         }
                     },
@@ -313,7 +313,7 @@ private fun ActiveFiltersBanner(
                     Text(
                         text = stringResource(R.string.viewer_home_active_filters),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                         fontWeight = FontWeight.Medium,
                     )
                     IconButton(

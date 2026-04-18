@@ -56,7 +56,7 @@ internal fun FavoritesStrip(
                 text = stringResource(R.string.viewer_tools_quick_access),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 letterSpacing = WormaCeptorTokens.Typography.overlineWide.letterSpacing,
             )
         }
@@ -75,7 +75,7 @@ internal fun FavoritesStrip(
                 WormaCeptorToolTile(
                     label = tool.name,
                     icon = tool.icon,
-                    accentColor = MaterialTheme.colorScheme.primary,
+                    accentColor = WormaCeptorTokens.semantic().accent,
                     onClick = { onToolClick(tool.route) },
                     onLongClick = { onToolLongClick(tool) },
                     modifier = Modifier.width(FavoriteTileWidth),

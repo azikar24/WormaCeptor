@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -179,8 +178,8 @@ fun SelectableTransactionListScreen(
                     modifier = Modifier.align(Alignment.TopCenter),
                     isRefreshing = isRefreshing,
                     state = pullToRefreshState,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    color = MaterialTheme.colorScheme.primary,
+                    containerColor = WormaCeptorTokens.semantic().surfaceVariant,
+                    color = WormaCeptorTokens.semantic().accent,
                 )
             },
         ) {

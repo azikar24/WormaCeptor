@@ -122,7 +122,7 @@ internal fun PdfBottomNavigationBar(
                     } else {
                         stringResource(R.string.viewer_pdf_show_thumbnails)
                     },
-                    tint = if (showThumbnails) MaterialTheme.colorScheme.primary else darkColors.textPrimary,
+                    tint = if (showThumbnails) WormaCeptorTokens.semantic().accent else darkColors.textPrimary,
                 )
             }
         }

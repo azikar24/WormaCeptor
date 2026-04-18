@@ -92,7 +92,7 @@ fun RecompositionSummaryScreen(
                         text = stringResource(R.string.recomposition_top_recomposers),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                 }
 

@@ -77,7 +77,7 @@ fun FileListItem(
                 text = file.name,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -89,18 +89,18 @@ fun FileListItem(
                     Text(
                         text = formatBytes(file.sizeBytes),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                     Text(
                         text = "·",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
                 Text(
                     text = formatDateOnly(file.lastModified),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }
@@ -109,7 +109,7 @@ fun FileListItem(
             Text(
                 text = stringResource(R.string.filebrowser_locked),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error,
+                color = WormaCeptorTokens.semantic().error,
             )
         }
     }

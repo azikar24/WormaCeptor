@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.feature.threadviolation.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,32 +25,32 @@ internal fun ViolationSummarySection(
             label = stringResource(R.string.threadviolation_summary_disk_read),
             color = WormaCeptorTokens.Colors.ThreadViolation.diskRead,
             modifier = Modifier.weight(1f),
-            backgroundColor = MaterialTheme.colorScheme.surface,
-            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            backgroundColor = WormaCeptorTokens.semantic().surface,
+            labelColor = WormaCeptorTokens.semantic().textSecondary,
         )
         WormaCeptorSummaryCard(
             count = stats.diskWriteCount.toString(),
             label = stringResource(R.string.threadviolation_summary_disk_write),
             color = WormaCeptorTokens.Colors.ThreadViolation.diskWrite,
             modifier = Modifier.weight(1f),
-            backgroundColor = MaterialTheme.colorScheme.surface,
-            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            backgroundColor = WormaCeptorTokens.semantic().surface,
+            labelColor = WormaCeptorTokens.semantic().textSecondary,
         )
         WormaCeptorSummaryCard(
             count = stats.networkCount.toString(),
             label = stringResource(R.string.threadviolation_summary_network),
             color = WormaCeptorTokens.Colors.ThreadViolation.network,
             modifier = Modifier.weight(1f),
-            backgroundColor = MaterialTheme.colorScheme.surface,
-            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            backgroundColor = WormaCeptorTokens.semantic().surface,
+            labelColor = WormaCeptorTokens.semantic().textSecondary,
         )
         WormaCeptorSummaryCard(
             count = (stats.slowCallCount + stats.customSlowCodeCount).toString(),
             label = stringResource(R.string.threadviolation_summary_slow),
             color = WormaCeptorTokens.Colors.ThreadViolation.slowCall,
             modifier = Modifier.weight(1f),
-            backgroundColor = MaterialTheme.colorScheme.surface,
-            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            backgroundColor = WormaCeptorTokens.semantic().surface,
+            labelColor = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }

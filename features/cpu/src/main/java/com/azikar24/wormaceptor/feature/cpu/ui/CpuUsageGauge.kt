@@ -118,7 +118,7 @@ private fun GaugeHeader(
                     text = stringResource(R.string.cpu_overall_usage),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
                 Text(
                     text = when (currentCpu.measurementSource) {
@@ -126,7 +126,7 @@ private fun GaugeHeader(
                         CpuMeasurementSource.PROCESS -> stringResource(R.string.cpu_measurement_process)
                     },
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }
@@ -208,7 +208,7 @@ private fun GaugeCircle(
             Text(
                 text = stringResource(R.string.cpu_core_count, coreCount),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }
@@ -220,7 +220,7 @@ private fun CpuGauge(
     statusColor: Color,
     modifier: Modifier = Modifier,
 ) {
-    val arcBackground = MaterialTheme.colorScheme.outline.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+    val arcBackground = WormaCeptorTokens.semantic().textTertiary.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
 
     Canvas(modifier = modifier) {
         val strokeWidth = WormaCeptorTokens.ComponentSize.gaugeStrokeWidth.toPx()

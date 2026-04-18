@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.webviewmonitor.R
 
 @Composable
@@ -20,7 +21,7 @@ internal fun CountText(
             stringResource(R.string.webviewmonitor_request_count_filtered, filteredCount, totalCount)
         },
         style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = WormaCeptorTokens.semantic().textSecondary,
         modifier = modifier,
     )
 }

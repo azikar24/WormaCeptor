@@ -64,14 +64,14 @@ internal fun CollapsibleSection(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = WormaCeptorTokens.semantic().accent,
                 )
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WormaCeptorTokens.semantic().accent,
                 )
             }
 
@@ -90,14 +90,14 @@ internal fun CollapsibleSection(
                             CircularProgressIndicator(
                                 modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                                 strokeWidth = WormaCeptorTokens.BorderWidth.thick,
-                                color = MaterialTheme.colorScheme.primary,
+                                color = WormaCeptorTokens.semantic().accent,
                             )
                         } else {
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.viewer_body_copy),
                                 modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                tint = WormaCeptorTokens.semantic().textSecondary,
                             )
                         }
                     }
@@ -146,7 +146,7 @@ internal fun DetailRow(
         Text(
             text = "$label: ",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.secondary,
+            color = WormaCeptorTokens.semantic().accent,
         )
         SelectionContainer {
             Text(text = value, style = MaterialTheme.typography.bodyMedium)

@@ -95,7 +95,7 @@ internal fun ResultCard(
                     Icon(
                         Icons.Default.Delete,
                         stringResource(R.string.crypto_clear_result),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }
@@ -105,13 +105,13 @@ internal fun ResultCard(
                 Text(
                     stringResource(R.string.crypto_output_label),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(WormaCeptorTokens.Shapes.button)
-                        .background(MaterialTheme.colorScheme.surface)
+                        .background(WormaCeptorTokens.semantic().surface)
                         .padding(WormaCeptorTokens.Spacing.md),
                 ) {
                     Text(
@@ -164,7 +164,7 @@ internal fun ResultCard(
             Text(
                 "${result.algorithm.displayName}/${result.mode.displayName} | ${result.durationMs}ms",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+                color = WormaCeptorTokens.semantic().textSecondary.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
             )
         }
     }

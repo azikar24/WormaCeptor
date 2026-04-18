@@ -85,7 +85,7 @@ private fun FpsCardContent(
         Text(
             text = stringResource(R.string.fps_current),
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
@@ -110,7 +110,7 @@ private fun FpsCardContent(
                 FpsStatus.Idle -> stringResource(R.string.fps_status_not_monitoring)
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = if (status != FpsStatus.Idle) fpsColor else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (status != FpsStatus.Idle) fpsColor else WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }

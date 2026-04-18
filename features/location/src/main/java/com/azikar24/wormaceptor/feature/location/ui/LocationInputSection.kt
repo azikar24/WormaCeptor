@@ -70,7 +70,7 @@ internal fun CoordinateInputCard(
                 text = stringResource(R.string.location_set_custom_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 modifier = Modifier.semantics { heading() },
             )
 

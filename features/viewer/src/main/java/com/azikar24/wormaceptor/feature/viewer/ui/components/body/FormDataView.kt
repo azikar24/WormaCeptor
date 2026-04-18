@@ -55,7 +55,7 @@ fun FormDataView(
                 Text(
                     text = stringResource(R.string.viewer_form_no_data),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         } else {
@@ -67,7 +67,7 @@ fun FormDataView(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(
-                                MaterialTheme.colorScheme.surfaceVariant.copy(
+                                WormaCeptorTokens.semantic().surfaceVariant.copy(
                                     alpha = WormaCeptorTokens.Alpha.BOLD,
                                 ),
                             )
@@ -82,7 +82,7 @@ fun FormDataView(
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             modifier = Modifier.weight(0.4f),
                         )
                         Text(
@@ -90,7 +90,7 @@ fun FormDataView(
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             modifier = Modifier.weight(0.6f),
                         )
                     }
@@ -128,9 +128,9 @@ private fun FormDataRow(
             .fillMaxWidth()
             .background(
                 if (isEven) {
-                    MaterialTheme.colorScheme.surface
+                    WormaCeptorTokens.semantic().surface
                 } else {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+                    WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
                 },
             )
             .padding(
@@ -147,7 +147,7 @@ private fun FormDataRow(
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Medium,
                 ),
-                color = MaterialTheme.colorScheme.primary,
+                color = WormaCeptorTokens.semantic().accent,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -159,7 +159,7 @@ private fun FormDataRow(
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontFamily = FontFamily.Monospace,
                 ),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
         }
     }

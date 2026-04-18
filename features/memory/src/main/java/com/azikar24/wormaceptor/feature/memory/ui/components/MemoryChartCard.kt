@@ -49,7 +49,7 @@ internal fun MemoryChartCard(
                 text = stringResource(R.string.memory_over_time),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 modifier = Modifier.semantics { heading() },
             )
 
@@ -88,13 +88,13 @@ private fun MemoryChartEmptyState() {
             .fillMaxWidth()
             .height(WormaCeptorTokens.ComponentSize.chartHeight)
             .clip(WormaCeptorTokens.Shapes.button)
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(WormaCeptorTokens.semantic().surfaceVariant),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = stringResource(R.string.memory_no_data),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }
@@ -128,14 +128,14 @@ private fun MemoryLineChart(
     val maxMemory = history.maxOf { maxOf(it.usedMemory, it.nativeHeapAllocated) }
         .coerceAtLeast(1L)
 
-    val gridColor = MaterialTheme.colorScheme.outline.copy(
+    val gridColor = WormaCeptorTokens.semantic().textTertiary.copy(
         alpha = WormaCeptorTokens.Alpha.MODERATE,
     )
 
     Canvas(
         modifier = modifier
             .clip(WormaCeptorTokens.Shapes.button)
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(WormaCeptorTokens.semantic().surfaceVariant),
     ) {
         val padding = WormaCeptorTokens.Spacing.lg.toPx()
         val dimensions = ChartDimensions(

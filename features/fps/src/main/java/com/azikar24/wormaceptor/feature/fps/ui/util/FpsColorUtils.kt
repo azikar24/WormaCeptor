@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.fps.ui.util
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.fps.ui.components.FpsChartConstants
@@ -23,7 +22,7 @@ internal fun fpsStatusColor(status: FpsStatus) = when (status) {
     FpsStatus.Excellent -> WormaCeptorTokens.Colors.Status.green
     FpsStatus.Moderate -> WormaCeptorTokens.Colors.Status.amber
     FpsStatus.Poor -> WormaCeptorTokens.Colors.Status.red
-    FpsStatus.Idle -> MaterialTheme.colorScheme.onSurfaceVariant
+    FpsStatus.Idle -> WormaCeptorTokens.semantic().textSecondary
 }
 
 @Composable
@@ -37,7 +36,7 @@ internal fun fpsBackgroundColor(status: FpsStatus) = when (status) {
     FpsStatus.Poor -> WormaCeptorTokens.Colors.Status.red.copy(
         alpha = WormaCeptorTokens.Alpha.LIGHT,
     )
-    FpsStatus.Idle -> MaterialTheme.colorScheme.surfaceVariant.copy(
+    FpsStatus.Idle -> WormaCeptorTokens.semantic().surfaceVariant.copy(
         alpha = WormaCeptorTokens.Alpha.MODERATE,
     )
 }

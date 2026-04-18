@@ -2,11 +2,11 @@ package com.azikar24.wormaceptor.feature.deviceinfo.ui.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhoneAndroid
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorInfoCard
 import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailRow
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.DeviceDetails
 import com.azikar24.wormaceptor.feature.deviceinfo.R
 
@@ -21,7 +21,7 @@ internal fun DeviceSection(
     WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.PhoneAndroid,
-        iconTint = MaterialTheme.colorScheme.primary,
+        iconTint = WormaCeptorTokens.semantic().accent,
         onAction = onCopy,
         actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {

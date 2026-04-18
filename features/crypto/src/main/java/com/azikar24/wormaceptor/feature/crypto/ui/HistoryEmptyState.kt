@@ -31,19 +31,19 @@ internal fun HistoryEmptyState(modifier: Modifier = Modifier) {
                 imageVector = Icons.Default.History,
                 contentDescription = null,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.xxxl),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                tint = WormaCeptorTokens.semantic().textSecondary.copy(
                     alpha = WormaCeptorTokens.Alpha.BOLD,
                 ),
             )
             Text(
                 text = stringResource(R.string.crypto_no_history),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Text(
                 text = stringResource(R.string.crypto_empty_history_description),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                color = WormaCeptorTokens.semantic().textSecondary.copy(
                     alpha = WormaCeptorTokens.Alpha.HEAVY,
                 ),
             )

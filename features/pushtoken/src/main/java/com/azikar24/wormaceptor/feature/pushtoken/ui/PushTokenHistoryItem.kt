@@ -87,13 +87,13 @@ fun PushTokenHistoryItem(
                     entry.token.take(TokenPreviewLength) + "...",
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
             Text(
                 formatDateShort(entry.timestamp),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                color = WormaCeptorTokens.semantic().textSecondary.copy(
                     alpha = WormaCeptorTokens.Alpha.HEAVY,
                 ),
             )

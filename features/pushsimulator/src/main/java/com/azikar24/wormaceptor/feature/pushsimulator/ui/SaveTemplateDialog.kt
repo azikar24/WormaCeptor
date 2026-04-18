@@ -16,6 +16,7 @@ import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.pushsimulator.R
 
 @Composable
@@ -38,7 +39,7 @@ internal fun SaveTemplateDialog(
         Text(
             text = stringResource(R.string.pushsimulator_dialog_save_description),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         WormaCeptorTextField(
             value = templateName,

@@ -172,13 +172,13 @@ fun LocationScreen(
                             text = stringResource(R.string.location_presets_title),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = WormaCeptorTokens.semantic().textPrimary,
                             modifier = Modifier.semantics { heading() },
                         )
                         Text(
                             text = stringResource(R.string.location_presets_count, state.presets.size),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                         )
                     }
                 }

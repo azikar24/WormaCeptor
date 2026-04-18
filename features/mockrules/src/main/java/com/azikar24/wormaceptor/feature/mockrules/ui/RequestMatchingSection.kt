@@ -62,7 +62,7 @@ internal fun RequestMatchingSection(
         Text(
             text = stringResource(R.string.mock_editor_match_type),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
             UrlMatchType.entries.forEachIndexed { index, type ->

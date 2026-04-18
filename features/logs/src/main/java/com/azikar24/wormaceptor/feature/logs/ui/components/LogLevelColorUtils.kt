@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.logs.ui.components
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -24,7 +23,7 @@ internal fun logLevelBackground(
     level: LogLevel,
     levelColor: Color,
 ): Color = if (level == LogLevel.VERBOSE) {
-    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
+    WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
 } else {
     levelColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
 }

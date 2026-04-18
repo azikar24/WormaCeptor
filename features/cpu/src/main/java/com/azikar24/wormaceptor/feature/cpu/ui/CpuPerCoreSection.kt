@@ -52,7 +52,7 @@ internal fun PerCoreUsageCard(
                 text = stringResource(R.string.cpu_per_core_usage),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
 
             if (currentCpu.perCoreUsage.isEmpty()) {
@@ -63,7 +63,7 @@ internal fun PerCoreUsageCard(
                         stringResource(R.string.cpu_no_core_data)
                     },
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             } else {
                 currentCpu.perCoreUsage.forEachIndexed { index, usage ->
@@ -99,7 +99,7 @@ private fun CoreUsageBar(
         Text(
             text = stringResource(R.string.cpu_core_label, coreIndex),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.width(WormaCeptorTokens.ComponentSize.perCoreLabelWidth),
         )
 
@@ -110,7 +110,7 @@ private fun CoreUsageBar(
                 .height(WormaCeptorTokens.Spacing.sm)
                 .clip(WormaCeptorTokens.Shapes.chip),
             color = color,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            trackColor = WormaCeptorTokens.semantic().surfaceVariant,
         )
 
         Text(

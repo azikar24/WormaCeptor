@@ -82,7 +82,7 @@ private fun PreferenceItemRow(
                     imageVector = Icons.Default.Key,
                     contentDescription = null,
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
                 Text(
                     text = item.key,
@@ -90,7 +90,7 @@ private fun PreferenceItemRow(
                         fontWeight = FontWeight.Medium,
                         fontFamily = FontFamily.Monospace,
                     ),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -103,7 +103,7 @@ private fun PreferenceItemRow(
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontFamily = FontFamily.Monospace,
                 ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )

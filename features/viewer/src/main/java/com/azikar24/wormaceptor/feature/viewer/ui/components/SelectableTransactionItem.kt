@@ -94,15 +94,15 @@ fun SelectableTransactionItem(
                         WormaCeptorTokens.BorderWidth.regular
                     },
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.primary
+                        WormaCeptorTokens.semantic().accent
                     } else {
-                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+                        WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
                     },
                     shape = WormaCeptorTokens.Shapes.card,
                 )
                 .background(
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+                        WormaCeptorTokens.semantic().accentSubtle.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
                     } else {
                         statusColor.copy(alpha = TokenAlpha.SUBTLE)
                     },
@@ -141,7 +141,7 @@ fun SelectableTransactionItem(
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.weight(1f, fill = false),
-                        color = MaterialTheme.colorScheme.primary,
+                        color = WormaCeptorTokens.semantic().accent,
                     )
                 }
 
@@ -163,7 +163,7 @@ fun SelectableTransactionItem(
                 Text(
                     text = formatDuration(transaction.tookMs),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(
                         alpha = WormaCeptorTokens.Alpha.HEAVY,
                     ),
                 )
@@ -190,13 +190,13 @@ fun SelectableTransactionItem(
 @Composable
 private fun HostChip(host: String) {
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
+        color = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
         shape = WormaCeptorTokens.Shapes.pill,
     ) {
         Text(
             text = host,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorTokens.Spacing.sm,
                 vertical = WormaCeptorTokens.Spacing.xxs,

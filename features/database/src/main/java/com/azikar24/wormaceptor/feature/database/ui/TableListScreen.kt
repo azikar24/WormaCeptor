@@ -160,7 +160,7 @@ private fun TableErrorState(
         Text(
             text = error,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.error,
+            color = WormaCeptorTokens.semantic().error,
         )
     }
 }
@@ -178,13 +178,13 @@ private fun TableEmptyState(modifier: Modifier = Modifier) {
             Icon(
                 imageVector = Icons.Default.TableChart,
                 contentDescription = stringResource(R.string.database_table_list_empty),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.size(WormaCeptorTokens.Spacing.xxxl),
             )
             Text(
                 text = stringResource(R.string.database_table_list_empty),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }
@@ -231,7 +231,7 @@ private fun TableListItem(
             Icon(
                 imageVector = Icons.Default.TableChart,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary,
+                tint = WormaCeptorTokens.semantic().accent,
             )
         },
         onClick = onClick,

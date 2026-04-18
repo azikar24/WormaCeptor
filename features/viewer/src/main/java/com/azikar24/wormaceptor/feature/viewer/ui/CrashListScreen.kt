@@ -139,8 +139,8 @@ fun CrashListScreen(
                     modifier = Modifier.align(Alignment.TopCenter),
                     isRefreshing = isRefreshing,
                     state = pullToRefreshState,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    color = MaterialTheme.colorScheme.error,
+                    containerColor = WormaCeptorTokens.semantic().surfaceVariant,
+                    color = WormaCeptorTokens.semantic().error,
                 )
             },
         ) {
@@ -213,7 +213,7 @@ fun CrashItem(
                     text = crash.exceptionType,
                     fontWeight = FontWeight.SemiBold,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -226,7 +226,7 @@ fun CrashItem(
                     Text(
                         text = message,
                         style = WormaCeptorTokens.Typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(
+                        color = WormaCeptorTokens.semantic().textPrimary.copy(
                             alpha = WormaCeptorTokens.Alpha.PROMINENT,
                         ),
                         maxLines = 2,
@@ -240,7 +240,7 @@ fun CrashItem(
                 if (location != null) {
                     Surface(
                         shape = WormaCeptorTokens.Shapes.chip,
-                        color = MaterialTheme.colorScheme.surfaceVariant.copy(
+                        color = WormaCeptorTokens.semantic().surfaceVariant.copy(
                             alpha = WormaCeptorTokens.Alpha.STRONG,
                         ),
                     ) {
@@ -248,7 +248,7 @@ fun CrashItem(
                             text = location,
                             style = WormaCeptorTokens.Typography.labelSmall,
                             fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.padding(
@@ -265,7 +265,7 @@ fun CrashItem(
                 Text(
                     text = relativeTime,
                     style = WormaCeptorTokens.Typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(
                         alpha = WormaCeptorTokens.Alpha.HEAVY,
                     ),
                 )

@@ -108,11 +108,11 @@ private fun LevelChipLabel(
                 },
                 style = MaterialTheme.typography.labelSmall,
                 color = if (isSelected) {
-                    MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                    WormaCeptorTokens.semantic().accent.copy(
                         alpha = WormaCeptorTokens.Alpha.HEAVY,
                     )
                 } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                    WormaCeptorTokens.semantic().textSecondary.copy(
                         alpha = WormaCeptorTokens.Alpha.HEAVY,
                     )
                 },

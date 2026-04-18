@@ -38,7 +38,7 @@ internal fun ViolationCard(
     WormaCeptorCard(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        backgroundColor = WormaCeptorTokens.semantic().surface,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(WormaCeptorTokens.Spacing.md),
@@ -64,7 +64,7 @@ internal fun ViolationCard(
                     text = violation.description,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -72,7 +72,7 @@ internal fun ViolationCard(
                     Text(
                         formatTimestamp(violation.timestamp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                     violation.durationMs?.let {
                         Text(

@@ -198,12 +198,12 @@ private fun ErrorBanner(error: String?) {
         Surface(
             Modifier.fillMaxWidth().padding(horizontal = WormaCeptorTokens.Spacing.lg),
             WormaCeptorTokens.Shapes.card,
-            MaterialTheme.colorScheme.errorContainer,
+            WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
         ) {
             Text(
                 it,
                 Modifier.padding(WormaCeptorTokens.Spacing.md),
-                MaterialTheme.colorScheme.onErrorContainer,
+                WormaCeptorTokens.semantic().error,
                 style = MaterialTheme.typography.bodySmall,
             )
         }

@@ -109,9 +109,9 @@ private fun TableDataTopBar(
                     imageVector = Icons.Default.Info,
                     contentDescription = stringResource(R.string.database_table_data_schema),
                     tint = if (showSchema) {
-                        MaterialTheme.colorScheme.primary
+                        WormaCeptorTokens.semantic().accent
                     } else {
-                        MaterialTheme.colorScheme.onSurface
+                        WormaCeptorTokens.semantic().textPrimary
                     },
                 )
             }
@@ -154,7 +154,7 @@ private fun TableDataBody(
                 Text(
                     text = state.queryResult.error ?: "",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                     modifier = Modifier.align(Alignment.Center),
                 )
             }
@@ -230,7 +230,7 @@ private fun SchemaView(
                             Text(
                                 text = stringResource(R.string.database_table_data_nullable),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = WormaCeptorTokens.semantic().textSecondary,
                             )
                         }
                     }
@@ -255,7 +255,7 @@ private fun DataTable(
         item {
             Row(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .background(WormaCeptorTokens.semantic().surfaceVariant)
                     .padding(vertical = WormaCeptorTokens.Spacing.xs),
             ) {
                 result.columns.forEach { column ->
@@ -305,7 +305,7 @@ private fun DataTable(
                             color = if (cell == null) {
                                 WormaCeptorTokens.Colors.Database.nullValue
                             } else {
-                                MaterialTheme.colorScheme.onSurface
+                                WormaCeptorTokens.semantic().textPrimary
                             },
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
@@ -328,7 +328,7 @@ private fun DataTable(
                     Text(
                         text = stringResource(R.string.database_table_data_no_data),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }

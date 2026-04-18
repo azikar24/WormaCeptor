@@ -60,7 +60,7 @@ internal fun ViolationDetailContent(
                     Text(
                         violation.threadName,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 },
             )
@@ -103,7 +103,7 @@ internal fun ViolationDetailContent(
                             stringResource(R.string.threadviolation_detail_section_stack_trace),
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                         )
                         IconButton(
                             onClick = {
@@ -122,7 +122,7 @@ internal fun ViolationDetailContent(
                             Icon(
                                 imageVector = Icons.Default.ContentCopy,
                                 contentDescription = stringResource(R.string.threadviolation_copy_stack),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                tint = WormaCeptorTokens.semantic().textSecondary,
                                 modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                             )
                         }
@@ -130,7 +130,7 @@ internal fun ViolationDetailContent(
                     Surface(
                         Modifier.fillMaxWidth(),
                         WormaCeptorTokens.Shapes.card,
-                        MaterialTheme.colorScheme.surfaceVariant,
+                        WormaCeptorTokens.semantic().surfaceVariant,
                     ) {
                         Column(
                             Modifier.padding(WormaCeptorTokens.Spacing.md),
@@ -141,7 +141,7 @@ internal fun ViolationDetailContent(
                                     it,
                                     style = MaterialTheme.typography.bodySmall,
                                     fontFamily = FontFamily.Monospace,
-                                    color = MaterialTheme.colorScheme.onSurface.copy(
+                                    color = WormaCeptorTokens.semantic().textPrimary.copy(
                                         alpha = WormaCeptorTokens.Alpha.PROMINENT,
                                     ),
                                 )

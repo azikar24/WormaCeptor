@@ -86,7 +86,7 @@ private fun ThumbnailItem(
 ) {
     val darkColors = WormaCeptorTokens.semantic(darkTheme = true)
     val borderColor by animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+        targetValue = if (isSelected) WormaCeptorTokens.semantic().accent else Color.Transparent,
         animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "border",
     )
@@ -120,7 +120,7 @@ private fun ThumbnailItem(
             text = "$pageNumber",
             style = MaterialTheme.typography.labelSmall,
             color = if (isSelected) {
-                MaterialTheme.colorScheme.primary
+                WormaCeptorTokens.semantic().accent
             } else {
                 darkColors.textPrimary.copy(alpha = WormaCeptorTokens.Alpha.HEAVY)
             },

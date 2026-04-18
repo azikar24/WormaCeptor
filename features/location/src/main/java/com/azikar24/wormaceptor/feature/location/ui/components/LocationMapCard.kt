@@ -97,12 +97,12 @@ fun LocationMapCard(
                     imageVector = Icons.Default.TouchApp,
                     contentDescription = null,
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
                 Text(
                     text = stringResource(R.string.location_tap_to_set),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 
@@ -116,13 +116,13 @@ fun LocationMapCard(
                     val distance = calculateDistance(realLocation, mockLocation)
                     Surface(
                         shape = WormaCeptorTokens.Shapes.chip,
-                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        color = WormaCeptorTokens.semantic().surfaceVariant,
                     ) {
                         Text(
                             text = stringResource(R.string.location_distance, formatDistance(distance)),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            color = WormaCeptorTokens.semantic().accent,
                             modifier = Modifier.padding(
                                 horizontal = WormaCeptorTokens.Spacing.sm,
                                 vertical = WormaCeptorTokens.Spacing.xxs,
@@ -155,7 +155,7 @@ private fun LegendItem(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }

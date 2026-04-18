@@ -204,12 +204,12 @@ private fun ErrorBanner(error: String?) {
         Surface(
             modifier = Modifier.fillMaxWidth().padding(horizontal = WormaCeptorTokens.Spacing.lg),
             shape = WormaCeptorTokens.Shapes.card,
-            color = MaterialTheme.colorScheme.surfaceContainerHighest,
+            color = WormaCeptorTokens.semantic().surfaceVariant,
         ) {
             Text(
                 it,
                 Modifier.padding(WormaCeptorTokens.Spacing.md),
-                MaterialTheme.colorScheme.onErrorContainer,
+                WormaCeptorTokens.semantic().error,
                 style = MaterialTheme.typography.bodySmall,
             )
         }

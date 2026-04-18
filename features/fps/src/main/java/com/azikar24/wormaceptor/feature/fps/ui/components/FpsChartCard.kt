@@ -56,7 +56,7 @@ internal fun FpsChartCard(
             Text(
                 text = stringResource(R.string.fps_over_time),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.semantics { heading() },
             )
 
@@ -97,7 +97,7 @@ private fun FpsChartContent(
             Text(
                 text = stringResource(R.string.fps_no_data),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                color = WormaCeptorTokens.semantic().textSecondary.copy(
                     alpha = WormaCeptorTokens.Alpha.BOLD,
                 ),
             )
@@ -123,7 +123,7 @@ private fun FpsChart(
     val fillColor = WormaCeptorTokens.Colors.Fps.chartLine().copy(
         alpha = WormaCeptorTokens.Alpha.MEDIUM,
     )
-    val gridColor = MaterialTheme.colorScheme.outline.copy(
+    val gridColor = WormaCeptorTokens.semantic().textTertiary.copy(
         alpha = WormaCeptorTokens.Alpha.MODERATE,
     )
     val goodThresholdColor = WormaCeptorTokens.Colors.Fps.good.copy(

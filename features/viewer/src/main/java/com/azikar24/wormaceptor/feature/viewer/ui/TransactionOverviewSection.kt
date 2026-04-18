@@ -75,7 +75,7 @@ internal fun OverviewTab(
         EnhancedOverviewCard(
             title = stringResource(R.string.viewer_overview_timing),
             icon = Icons.Default.Schedule,
-            iconTint = MaterialTheme.colorScheme.tertiary,
+            iconTint = WormaCeptorTokens.semantic().accent,
         ) {
             DetailRow("URL", transaction.request.url)
             DetailRow("Method", transaction.request.method)
@@ -103,7 +103,7 @@ internal fun OverviewTab(
         EnhancedOverviewCard(
             title = stringResource(R.string.viewer_overview_security),
             icon = Icons.Default.Security,
-            iconTint = MaterialTheme.colorScheme.secondary,
+            iconTint = WormaCeptorTokens.semantic().accent,
         ) {
             DetailRow("Protocol", transaction.response?.protocol ?: "Unknown")
 
@@ -121,7 +121,7 @@ internal fun OverviewTab(
         EnhancedOverviewCard(
             title = stringResource(R.string.viewer_overview_data_transfer),
             icon = Icons.Default.Storage,
-            iconTint = MaterialTheme.colorScheme.primary,
+            iconTint = WormaCeptorTokens.semantic().accent,
         ) {
             val reqSize = transaction.request.bodySize
             val resSize = transaction.response?.bodySize ?: 0
@@ -137,7 +137,7 @@ internal fun OverviewTab(
             EnhancedOverviewCard(
                 title = stringResource(R.string.viewer_overview_extensions),
                 icon = Icons.Default.Extension,
-                iconTint = MaterialTheme.colorScheme.tertiary,
+                iconTint = WormaCeptorTokens.semantic().accent,
             ) {
                 transaction.extensions.forEach { (key, value) ->
                     DetailRow(key, value)
@@ -156,12 +156,12 @@ private fun TransactionTimeline(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
+                color = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
                 shape = WormaCeptorTokens.Shapes.card,
             )
             .border(
                 width = WormaCeptorTokens.BorderWidth.regular,
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
+                color = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                 shape = WormaCeptorTokens.Shapes.card,
             )
             .padding(WormaCeptorTokens.Spacing.md),
@@ -169,7 +169,7 @@ private fun TransactionTimeline(
         Text(
             text = stringResource(R.string.viewer_overview_timeline_title),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.xs),
         )
 
@@ -183,7 +183,7 @@ private fun TransactionTimeline(
                     .weight(0.3f)
                     .height(WormaCeptorTokens.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+                        WormaCeptorTokens.semantic().accent.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
                         shape = RoundedCornerShape(
                             topStart = WormaCeptorTokens.Radius.xs,
                             bottomStart = WormaCeptorTokens.Radius.xs,
@@ -197,7 +197,7 @@ private fun TransactionTimeline(
                     .weight(0.4f)
                     .height(WormaCeptorTokens.Spacing.sm)
                     .background(
-                        MaterialTheme.colorScheme.secondary.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
+                        WormaCeptorTokens.semantic().accent.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
                     ),
             )
 
@@ -208,9 +208,9 @@ private fun TransactionTimeline(
                     .height(WormaCeptorTokens.Spacing.sm)
                     .background(
                         if (hasResponse) {
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = WormaCeptorTokens.Alpha.HEAVY)
+                            WormaCeptorTokens.semantic().accent.copy(alpha = WormaCeptorTokens.Alpha.HEAVY)
                         } else {
-                            MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
+                            WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
                         },
                         shape = RoundedCornerShape(
                             topEnd = WormaCeptorTokens.Radius.xs,
@@ -229,14 +229,14 @@ private fun TransactionTimeline(
             Text(
                 text = stringResource(R.string.viewer_overview_timeline_request),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Text(
                 text = formatDuration(durationMs),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.SemiBold,
                 ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Text(
                 text = if (hasResponse) {
@@ -245,7 +245,7 @@ private fun TransactionTimeline(
                     stringResource(R.string.viewer_overview_timeline_failed)
                 },
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }
@@ -259,16 +259,16 @@ private fun SslBadge(
     Surface(
         shape = WormaCeptorTokens.Shapes.chip,
         color = if (isSsl) {
-            MaterialTheme.colorScheme.primary.copy(alpha = TokenAlpha.SUBTLE)
+            WormaCeptorTokens.semantic().accent.copy(alpha = TokenAlpha.SUBTLE)
         } else {
-            MaterialTheme.colorScheme.error.copy(alpha = TokenAlpha.SUBTLE)
+            WormaCeptorTokens.semantic().error.copy(alpha = TokenAlpha.SUBTLE)
         },
         border = BorderStroke(
             WormaCeptorTokens.BorderWidth.regular,
             if (isSsl) {
-                MaterialTheme.colorScheme.primary.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+                WormaCeptorTokens.semantic().accent.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
             } else {
-                MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+                WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
             },
         ),
         modifier = Modifier.wrapContentSize(),
@@ -288,7 +288,7 @@ private fun SslBadge(
                 } else {
                     stringResource(R.string.viewer_overview_insecure)
                 },
-                tint = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                tint = if (isSsl) WormaCeptorTokens.semantic().accent else WormaCeptorTokens.semantic().error,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
             )
             Text(
@@ -300,7 +300,7 @@ private fun SslBadge(
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = FontWeight.SemiBold,
                 ),
-                color = if (isSsl) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                color = if (isSsl) WormaCeptorTokens.semantic().accent else WormaCeptorTokens.semantic().error,
             )
         }
     }
@@ -316,7 +316,7 @@ internal fun EnhancedOverviewCard(
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
         style = CardStyle.Outlined,
-        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
+        borderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
     ) {
         Column(modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg)) {
             // Header with icon
@@ -336,7 +336,7 @@ internal fun EnhancedOverviewCard(
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.SemiBold,
                     ),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
             }
             content()

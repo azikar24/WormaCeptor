@@ -53,12 +53,12 @@ internal fun PdfPreviewLoadingContent() {
             CircularProgressIndicator(
                 modifier = Modifier.size(PdfPreviewDefaults.StateIconSize),
                 strokeWidth = WormaCeptorTokens.BorderWidth.bold,
-                color = MaterialTheme.colorScheme.primary,
+                color = WormaCeptorTokens.semantic().accent,
             )
             Text(
                 text = stringResource(R.string.viewer_pdf_rendering),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }
@@ -70,7 +70,11 @@ internal fun PdfPreviewErrorContent(message: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(PdfPreviewDefaults.ErrorHeight)
-            .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)),
+            .background(
+                WormaCeptorTokens.semantic().error.copy(
+                    alpha = WormaCeptorTokens.Alpha.SUBTLE,
+                ).copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+            ),
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -81,18 +85,18 @@ internal fun PdfPreviewErrorContent(message: String) {
                 imageVector = Icons.Default.Error,
                 contentDescription = stringResource(R.string.viewer_pdf_error_loading),
                 modifier = Modifier.size(PdfPreviewDefaults.StateIconSize),
-                tint = MaterialTheme.colorScheme.error,
+                tint = WormaCeptorTokens.semantic().error,
             )
             Text(
                 text = stringResource(R.string.viewer_pdf_load_failed),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.error,
+                color = WormaCeptorTokens.semantic().error,
             )
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onErrorContainer,
+                color = WormaCeptorTokens.semantic().error,
             )
         }
     }
@@ -117,7 +121,7 @@ internal fun PdfPreviewPasswordContent(
     ) {
         Surface(
             shape = CircleShape,
-            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+            color = WormaCeptorTokens.semantic().accentSubtle.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
             modifier = Modifier.size(PdfPreviewDefaults.LockContainerSize),
         ) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
@@ -125,7 +129,7 @@ internal fun PdfPreviewPasswordContent(
                     imageVector = Icons.Default.Lock,
                     contentDescription = stringResource(R.string.viewer_pdf_password_protected),
                     modifier = Modifier.size(PdfPreviewDefaults.LockIconSize),
-                    tint = MaterialTheme.colorScheme.secondary,
+                    tint = WormaCeptorTokens.semantic().accent,
                 )
             }
         }
@@ -138,19 +142,19 @@ internal fun PdfPreviewPasswordContent(
                 text = stringResource(R.string.viewer_pdf_password_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
             Text(
                 text = stringResource(R.string.viewer_pdf_password_message),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
 
         PdfMetadataChip(
             icon = Icons.Default.Description,
             text = formatBytes(metadata.fileSize),
-            tint = MaterialTheme.colorScheme.tertiary,
+            tint = WormaCeptorTokens.semantic().accent,
         )
 
         Row(

@@ -173,15 +173,15 @@ private fun QueryInputField(
             .fillMaxWidth()
             .heightIn(min = QueryInputMinHeight, max = QueryInputMaxHeight)
             .background(
-                MaterialTheme.colorScheme.surfaceVariant
+                WormaCeptorTokens.semantic().surfaceVariant
                     .copy(alpha = WormaCeptorTokens.Alpha.BOLD),
             )
             .padding(WormaCeptorTokens.Spacing.md),
         textStyle = TextStyle(
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         ),
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        cursorBrush = SolidColor(WormaCeptorTokens.semantic().accent),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Ascii,
             imeAction = ImeAction.None,
@@ -193,7 +193,7 @@ private fun QueryInputField(
                         text = stringResource(R.string.database_query_placeholder),
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
                 innerTextField()
@@ -251,12 +251,12 @@ private fun QueryEmptyState(
             Text(
                 text = stringResource(R.string.database_query_instruction),
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Text(
                 text = stringResource(R.string.database_query_database_label, databaseName),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }
@@ -278,7 +278,7 @@ private fun QueryResultView(
             Text(
                 text = stringResource(R.string.database_query_error, error),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.error,
+                color = WormaCeptorTokens.semantic().error,
             )
         }
     } else {
@@ -286,7 +286,7 @@ private fun QueryResultView(
             Text(
                 text = stringResource(R.string.database_query_rows_returned, result.rowCount),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
             )
 
@@ -299,7 +299,7 @@ private fun QueryResultView(
                 item {
                     Row(
                         modifier = Modifier
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .background(WormaCeptorTokens.semantic().surfaceVariant)
                             .padding(vertical = WormaCeptorTokens.Spacing.xs),
                     ) {
                         result.columns.forEach { column ->
@@ -349,7 +349,7 @@ private fun QueryResultView(
                                     color = if (cell == null) {
                                         WormaCeptorTokens.Colors.Database.nullValue
                                     } else {
-                                        MaterialTheme.colorScheme.onSurface
+                                        WormaCeptorTokens.semantic().textPrimary
                                     },
                                     maxLines = 2,
                                     overflow = TextOverflow.Ellipsis,
@@ -377,7 +377,7 @@ private fun QueryHistoryView(
             text = stringResource(R.string.database_query_history_title),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
+            color = WormaCeptorTokens.semantic().accent,
             modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
         )
 
@@ -401,7 +401,7 @@ private fun QueryHistoryView(
                         Icon(
                             imageVector = Icons.Default.History,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = WormaCeptorTokens.semantic().textSecondary,
                         )
                     },
                 )

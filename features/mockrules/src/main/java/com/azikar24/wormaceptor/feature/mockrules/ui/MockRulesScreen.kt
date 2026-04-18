@@ -215,18 +215,18 @@ private fun MasterToggleCard(
     val haptic = LocalHapticFeedback.current
     val statusColor by animateColorAsState(
         targetValue = if (enabled) {
-            MaterialTheme.colorScheme.primary
+            WormaCeptorTokens.semantic().accent
         } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
+            WormaCeptorTokens.semantic().textSecondary
         },
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "master_toggle_status",
     )
     val backgroundColor by animateColorAsState(
         targetValue = if (enabled) {
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+            WormaCeptorTokens.semantic().accentSubtle.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
+            WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
         },
         animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "master_toggle_bg",
@@ -291,7 +291,7 @@ private fun MasterToggleCard(
                     Text(
                         text = stringResource(R.string.mock_rules_count, ruleCount, pluralSuffix),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }
@@ -299,7 +299,7 @@ private fun MasterToggleCard(
             WormaCeptorSwitch(
                 checked = enabled,
                 onCheckedChange = null,
-                variant = SwitchVariant.Accent(color = MaterialTheme.colorScheme.primary),
+                variant = SwitchVariant.Accent(color = WormaCeptorTokens.semantic().accent),
             )
         }
     }
@@ -325,7 +325,7 @@ private fun MockRuleItem(
                 color = if (rule.enabled) {
                     ruleStatusColor.copy(alpha = TokenAlpha.SUBTLE)
                 } else {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SOFT)
+                    WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SOFT)
                 },
                 shape = WormaCeptorTokens.Shapes.card,
             )
@@ -354,7 +354,7 @@ private fun MockRuleItem(
                     fontWeight = FontWeight.Medium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WormaCeptorTokens.semantic().accent,
                     modifier = Modifier.weight(1f, fill = false),
                 )
             }
@@ -370,7 +370,7 @@ private fun MockRuleItem(
                 Text(
                     text = rule.matcher.urlPattern,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -402,7 +402,7 @@ private fun MockRuleItem(
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(R.string.mock_rules_delete_rule),
-                        tint = MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+                        tint = WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
                         modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                     )
                 }
@@ -420,11 +420,11 @@ private fun MockRuleItem(
 
 @Composable
 private fun statusColor(code: Int): Color = when (code) {
-    in 200..299 -> MaterialTheme.colorScheme.primary
-    in 300..399 -> MaterialTheme.colorScheme.secondary
-    in 400..499 -> MaterialTheme.colorScheme.error
-    in 500..599 -> MaterialTheme.colorScheme.error
-    else -> MaterialTheme.colorScheme.onSurfaceVariant
+    in 200..299 -> WormaCeptorTokens.semantic().accent
+    in 300..399 -> WormaCeptorTokens.semantic().accent
+    in 400..499 -> WormaCeptorTokens.semantic().error
+    in 500..599 -> WormaCeptorTokens.semantic().error
+    else -> WormaCeptorTokens.semantic().textSecondary
 }
 
 @Composable
@@ -443,12 +443,12 @@ private fun MatchTypeChip(
     Surface(
         modifier = modifier,
         shape = WormaCeptorTokens.Shapes.chip,
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        color = WormaCeptorTokens.semantic().surfaceVariant,
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorTokens.Spacing.sm,
                 vertical = WormaCeptorTokens.Spacing.xxs,
@@ -467,7 +467,7 @@ private fun EmptyRulesState(modifier: Modifier = Modifier) {
             imageVector = Icons.Default.Science,
             contentDescription = null,
             modifier = Modifier.size(WormaCeptorTokens.IconSize.xxxl),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
+            tint = WormaCeptorTokens.semantic().textSecondary.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
@@ -476,7 +476,7 @@ private fun EmptyRulesState(modifier: Modifier = Modifier) {
             text = stringResource(R.string.mock_rules_empty_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
@@ -484,7 +484,7 @@ private fun EmptyRulesState(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.mock_rules_empty_description),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+            color = WormaCeptorTokens.semantic().textSecondary.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
             textAlign = TextAlign.Center,
         )
     }

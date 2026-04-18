@@ -155,7 +155,7 @@ fun CrashDetailPagerScreen(
             ) {
                 Text(
                     stringResource(R.string.viewer_crash_detail_not_found),
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                 )
             }
         }
@@ -258,10 +258,10 @@ private fun ExceptionInfoCard(
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
         style = CardStyle.Outlined,
-        backgroundColor = MaterialTheme.colorScheme.errorContainer.copy(
+        backgroundColor = WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE).copy(
             alpha = WormaCeptorTokens.Alpha.SUBTLE,
         ),
-        borderColor = MaterialTheme.colorScheme.error.copy(
+        borderColor = WormaCeptorTokens.semantic().error.copy(
             alpha = WormaCeptorTokens.Alpha.MODERATE,
         ),
     ) {
@@ -276,13 +276,13 @@ private fun ExceptionInfoCard(
                     modifier = Modifier
                         .size(WormaCeptorTokens.Spacing.sm)
                         .clip(WormaCeptorTokens.Shapes.pill)
-                        .background(MaterialTheme.colorScheme.error),
+                        .background(WormaCeptorTokens.semantic().error),
                 )
                 Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
                 Text(
                     text = stringResource(R.string.viewer_crash_detail_crash_label),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -294,7 +294,7 @@ private fun ExceptionInfoCard(
                 Text(
                     text = crash.exceptionType,
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -305,7 +305,7 @@ private fun ExceptionInfoCard(
             Text(
                 text = dateFormat.format(Date(crash.timestamp)),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
 
             // Crash Location
@@ -316,7 +316,7 @@ private fun ExceptionInfoCard(
                     Text(
                         text = stringResource(R.string.viewer_crash_detail_at),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                     Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xs))
                     SelectionContainer {
@@ -324,7 +324,7 @@ private fun ExceptionInfoCard(
                             text = location,
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.secondary,
+                            color = WormaCeptorTokens.semantic().accent,
                             fontWeight = FontWeight.Medium,
                         )
                     }
@@ -373,7 +373,7 @@ private fun MessageCard(
                 Text(
                     text = message,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
             }
         }
@@ -426,7 +426,7 @@ private fun StackTraceSection(
                 Text(
                     text = stringResource(R.string.viewer_crash_detail_app_code, appFrames.size),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WormaCeptorTokens.semantic().accent,
                     modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.sm),
                 )
                 appFrames.forEachIndexed { index, frame ->
@@ -452,7 +452,7 @@ private fun StackTraceSection(
                     Text(
                         text = stringResource(R.string.viewer_crash_detail_framework_system, frameworkFrames.size),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                     Icon(
                         imageVector = if (showAllFrames) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
@@ -463,7 +463,7 @@ private fun StackTraceSection(
                         } else {
                             stringResource(R.string.viewer_body_expand)
                         },
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
 
@@ -502,15 +502,15 @@ private fun StackFrameItem(
     isHighlighted: Boolean,
 ) {
     val backgroundColor = if (isHighlighted) {
-        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
+        WormaCeptorTokens.semantic().accentSubtle.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
     } else {
         Color.Transparent
     }
 
     val textColor = if (isHighlighted) {
-        MaterialTheme.colorScheme.onSurface
+        WormaCeptorTokens.semantic().textPrimary
     } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
+        WormaCeptorTokens.semantic().textSecondary
     }
 
     Box(
@@ -547,7 +547,7 @@ private fun StackFrameItem(
                             ) {
                                 append("(")
                             }
-                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
+                            withStyle(SpanStyle(color = WormaCeptorTokens.semantic().accent)) {
                                 append("${frame.fileName}:${frame.lineNumber}")
                             }
                             withStyle(

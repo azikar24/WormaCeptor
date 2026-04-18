@@ -52,13 +52,13 @@ internal fun CollapsibleInfoRow(
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Icon(
                 imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                 contentDescription = if (isExpanded) collapse else expand,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = WormaCeptorTokens.semantic().textSecondary,
             )
         }
 
@@ -72,12 +72,12 @@ internal fun CollapsibleInfoRow(
                     text = value,
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = WormaCeptorTokens.Spacing.xs)
                         .background(
-                            MaterialTheme.colorScheme.surfaceVariant.copy(
+                            WormaCeptorTokens.semantic().surfaceVariant.copy(
                                 alpha = WormaCeptorTokens.Alpha.MODERATE,
                             ),
                             WormaCeptorTokens.Shapes.chip,

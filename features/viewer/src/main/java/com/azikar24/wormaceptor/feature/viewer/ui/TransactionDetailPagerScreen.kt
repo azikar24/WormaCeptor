@@ -9,7 +9,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -137,7 +136,7 @@ private fun TransactionPagerContent(
                     ) {
                         Text(
                             stringResource(R.string.viewer_transaction_detail_not_found),
-                            color = MaterialTheme.colorScheme.error,
+                            color = WormaCeptorTokens.semantic().error,
                         )
                     }
                 }

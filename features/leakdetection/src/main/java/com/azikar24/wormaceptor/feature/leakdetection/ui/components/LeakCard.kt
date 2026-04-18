@@ -46,7 +46,7 @@ internal fun LeakCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = WormaCeptorTokens.Shapes.cardLarge,
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        backgroundColor = WormaCeptorTokens.semantic().surface,
     ) {
         Row(
             modifier = Modifier
@@ -110,14 +110,14 @@ private fun LeakCardDetails(
             text = leak.objectClass.substringAfterLast('.'),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = leak.leakDescription,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -128,7 +128,7 @@ private fun LeakCardDetails(
             Text(
                 text = formatTimestamp(leak.timestamp),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Text(
                 text = formatBytes(leak.retainedSize),

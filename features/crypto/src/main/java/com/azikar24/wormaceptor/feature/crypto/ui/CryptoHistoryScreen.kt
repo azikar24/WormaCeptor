@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,6 +15,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.crypto.R
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEvent
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewState
@@ -60,7 +60,7 @@ internal fun CryptoHistoryContent(
                             Icon(
                                 Icons.Default.Delete,
                                 stringResource(R.string.crypto_clear_all),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                tint = WormaCeptorTokens.semantic().textSecondary,
                             )
                         }
                     }

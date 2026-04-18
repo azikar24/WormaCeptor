@@ -72,7 +72,7 @@ private fun DroppedFramesColumn(droppedFrames: Int) {
     val droppedColor = if (hasDroppedFrames) {
         WormaCeptorTokens.Colors.Fps.warning
     } else {
-        MaterialTheme.colorScheme.onSurface
+        WormaCeptorTokens.semantic().textPrimary
     }
     val label = stringResource(R.string.fps_dropped_frames)
 
@@ -85,7 +85,7 @@ private fun DroppedFramesColumn(droppedFrames: Int) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
@@ -102,7 +102,7 @@ private fun DroppedFramesColumn(droppedFrames: Int) {
         Text(
             text = stringResource(R.string.fps_threshold_dropped),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            color = WormaCeptorTokens.semantic().textSecondary.copy(
                 alpha = WormaCeptorTokens.Alpha.HEAVY,
             ),
         )
@@ -115,7 +115,7 @@ private fun JankFramesColumn(jankFrames: Int) {
     val jankColor = if (hasJankFrames) {
         WormaCeptorTokens.Colors.Fps.critical
     } else {
-        MaterialTheme.colorScheme.onSurface
+        WormaCeptorTokens.semantic().textPrimary
     }
     val label = stringResource(R.string.fps_jank_frames)
 
@@ -134,7 +134,7 @@ private fun JankFramesColumn(jankFrames: Int) {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
 
             AnimatedVisibility(
@@ -167,7 +167,7 @@ private fun JankFramesColumn(jankFrames: Int) {
         Text(
             text = stringResource(R.string.fps_threshold_jank),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+            color = WormaCeptorTokens.semantic().textSecondary.copy(
                 alpha = WormaCeptorTokens.Alpha.HEAVY,
             ),
         )

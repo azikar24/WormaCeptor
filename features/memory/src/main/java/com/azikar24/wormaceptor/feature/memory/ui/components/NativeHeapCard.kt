@@ -51,7 +51,7 @@ internal fun NativeHeapCard(
                 text = stringResource(R.string.memory_native_heap),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
 
             Row(
@@ -82,7 +82,7 @@ internal fun NativeHeapCard(
                     .height(WormaCeptorTokens.Elevation.lg)
                     .clip(WormaCeptorTokens.Shapes.chip),
                 color = mem.nativeHeap,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                trackColor = WormaCeptorTokens.semantic().surfaceVariant,
             )
         }
     }

@@ -48,7 +48,7 @@ internal fun DelaySection(
         Text(
             text = stringResource(R.string.mock_editor_delay_type),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
             DelayType.entries.forEachIndexed { index, type ->

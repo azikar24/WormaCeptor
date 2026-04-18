@@ -97,7 +97,7 @@ internal fun PdfPreviewSuccessContent(
                     .align(Alignment.TopEnd)
                     .padding(WormaCeptorTokens.Spacing.md),
                 shape = WormaCeptorTokens.Shapes.chip,
-                color = MaterialTheme.colorScheme.surface.copy(alpha = WormaCeptorTokens.Alpha.OPAQUE),
+                color = WormaCeptorTokens.semantic().surface.copy(alpha = WormaCeptorTokens.Alpha.OPAQUE),
                 shadowElevation = WormaCeptorTokens.Elevation.sm,
             ) {
                 Row(
@@ -112,7 +112,7 @@ internal fun PdfPreviewSuccessContent(
                         imageVector = Icons.Default.Description,
                         contentDescription = stringResource(R.string.viewer_pdf_page_count),
                         modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = WormaCeptorTokens.semantic().accent,
                     )
                     Text(
                         text = pluralStringResource(
@@ -122,7 +122,7 @@ internal fun PdfPreviewSuccessContent(
                         ),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                 }
             }
@@ -157,7 +157,7 @@ internal fun PdfPreviewSuccessContent(
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
 
             Row(
@@ -167,20 +167,20 @@ internal fun PdfPreviewSuccessContent(
                 PdfMetadataChip(
                     icon = Icons.Default.Description,
                     text = formatBytes(metadata.fileSize),
-                    tint = MaterialTheme.colorScheme.tertiary,
+                    tint = WormaCeptorTokens.semantic().accent,
                 )
                 metadata.version.takeIf { it.isNotEmpty() }?.let { version ->
                     PdfMetadataChip(
                         icon = null,
                         text = stringResource(R.string.viewer_pdf_version, version),
-                        tint = MaterialTheme.colorScheme.secondary,
+                        tint = WormaCeptorTokens.semantic().accent,
                     )
                 }
                 metadata.author?.let { author ->
                     PdfMetadataChip(
                         icon = Icons.Default.Person,
                         text = author,
-                        tint = MaterialTheme.colorScheme.secondary,
+                        tint = WormaCeptorTokens.semantic().accent,
                     )
                 }
             }
@@ -256,7 +256,7 @@ internal fun PdfMetadataChip(
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
             fontWeight = FontWeight.Medium,
         )
     }
@@ -269,7 +269,7 @@ private fun PdfMetadataChipPreview() {
         PdfMetadataChip(
             icon = Icons.Default.Description,
             text = "2.1 MB",
-            tint = MaterialTheme.colorScheme.tertiary,
+            tint = WormaCeptorTokens.semantic().accent,
         )
     }
 }

@@ -77,13 +77,13 @@ internal fun MockLocationWarningBanner() {
                         text = stringResource(R.string.location_warning_title),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
                     Text(
                         text = stringResource(R.string.location_warning_description),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }
@@ -134,7 +134,7 @@ internal fun MockLocationStatusCard(
         targetValue = if (isMockEnabled) {
             WormaCeptorTokens.Colors.Location.enabled
         } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
+            WormaCeptorTokens.semantic().textSecondary
         },
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "location_toggle_status",
@@ -143,7 +143,7 @@ internal fun MockLocationStatusCard(
         targetValue = if (isMockEnabled) {
             WormaCeptorTokens.Colors.Location.enabled.copy(alpha = TokenAlpha.SUBTLE)
         } else {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
+            WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
         },
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "location_toggle_bg",
@@ -174,7 +174,7 @@ internal fun MockLocationStatusCard(
                 Text(
                     text = stringResource(R.string.location_enable_hint),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                     modifier = Modifier.padding(
                         start = WormaCeptorTokens.Spacing.lg,
                         end = WormaCeptorTokens.Spacing.lg,
@@ -267,7 +267,7 @@ private fun MockLocationLabel(
             ),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
         if (currentMockLocation != null && isMockEnabled) {
             Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
@@ -281,7 +281,7 @@ private fun MockLocationLabel(
                 Text(
                     text = name,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }

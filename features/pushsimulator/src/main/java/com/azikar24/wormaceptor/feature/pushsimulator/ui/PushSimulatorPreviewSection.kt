@@ -74,17 +74,17 @@ internal fun NotificationPreview(
                 Text(
                     text = stringResource(R.string.pushsimulator_preview),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
                 channelName?.let { name ->
                     Surface(
                         shape = WormaCeptorTokens.Shapes.chip,
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = TokenAlpha.SUBTLE),
+                        color = WormaCeptorTokens.semantic().accent.copy(alpha = TokenAlpha.SUBTLE),
                     ) {
                         Text(
                             text = name,
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = WormaCeptorTokens.semantic().accent,
                             modifier = Modifier.padding(
                                 horizontal = WormaCeptorTokens.Spacing.sm,
                                 vertical = WormaCeptorTokens.Spacing.xxs,
@@ -112,7 +112,7 @@ internal fun NotificationPreview(
                             modifier = Modifier
                                 .size(WormaCeptorTokens.TouchTarget.minimum)
                                 .background(
-                                    color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                                    color = WormaCeptorTokens.semantic().surfaceVariant,
                                     shape = WormaCeptorTokens.Shapes.card,
                                 ),
                             contentAlignment = Alignment.Center,
@@ -124,7 +124,7 @@ internal fun NotificationPreview(
                                     Icons.Default.Notifications
                                 },
                                 contentDescription = stringResource(R.string.pushsimulator_preview),
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                tint = WormaCeptorTokens.semantic().accent,
                                 modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
                             )
                         }
@@ -159,7 +159,7 @@ internal fun NotificationPreview(
                             Text(
                                 text = stringResource(R.string.pushsimulator_preview_time_now),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = WormaCeptorTokens.semantic().textSecondary,
                             )
                         }
 
@@ -168,7 +168,7 @@ internal fun NotificationPreview(
                         Text(
                             text = body,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             maxLines = 3,
                             overflow = TextOverflow.Ellipsis,
                         )

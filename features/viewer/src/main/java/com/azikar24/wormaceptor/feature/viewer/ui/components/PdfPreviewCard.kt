@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.feature.viewer.ui.components
 import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -113,7 +112,7 @@ fun PdfPreviewCard(
         onClick = onFullscreen,
         modifier = modifier.fillMaxWidth(),
         style = CardStyle.Outlined,
-        borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
+        borderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
         enabled = loadState is PdfLoadState.Success,
     ) {
         when (val state = loadState) {

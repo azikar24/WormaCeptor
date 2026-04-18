@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -111,14 +110,14 @@ fun TransactionContextMenu(
             text = {
                 Text(
                     text = stringResource(R.string.viewer_context_menu_delete),
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                 )
             },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.viewer_context_menu_delete_transaction),
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = WormaCeptorTokens.semantic().error,
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 )
             },

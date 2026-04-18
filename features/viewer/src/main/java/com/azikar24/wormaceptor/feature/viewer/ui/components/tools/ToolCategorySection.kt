@@ -60,7 +60,7 @@ internal fun ToolCategorySection(
 
     val headerBackground by animateColorAsState(
         targetValue = if (isCollapsed) {
-            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+            WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
         } else {
             categoryColor.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
         },
@@ -105,19 +105,19 @@ internal fun ToolCategorySection(
                         text = categoryName,
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
 
                     Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
                     Surface(
                         shape = WormaCeptorTokens.Shapes.badge,
-                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        color = WormaCeptorTokens.semantic().surfaceVariant,
                     ) {
                         Text(
                             text = "${tools.size}",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             modifier = Modifier.padding(
                                 horizontal = WormaCeptorTokens.Spacing.xs,
                                 vertical = WormaCeptorTokens.Spacing.xxs,
@@ -138,7 +138,7 @@ internal fun ToolCategorySection(
                     modifier = Modifier
                         .size(WormaCeptorTokens.IconSize.md)
                         .rotate(rotationAngle),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }

@@ -275,7 +275,7 @@ internal fun RequestTab(
                     Text(
                         "No request data",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }

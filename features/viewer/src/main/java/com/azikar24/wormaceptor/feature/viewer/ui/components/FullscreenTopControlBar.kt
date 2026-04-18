@@ -18,7 +18,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -48,8 +47,10 @@ internal fun FullscreenTopControlBar(
             FilledTonalIconButton(
                 onClick = onClose,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = Color.White.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
-                    contentColor = Color.White,
+                    containerColor = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(
+                        alpha = WormaCeptorTokens.Alpha.SOFT,
+                    ),
+                    contentColor = WormaCeptorTokens.Colors.Viewer.onOverlay,
                 ),
             ) {
                 Icon(
@@ -66,12 +67,14 @@ internal fun FullscreenTopControlBar(
                     onClick = onZoomOut,
                     enabled = currentZoom > 1f,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = Color.White.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
-                        contentColor = Color.White,
-                        disabledContainerColor = Color.White.copy(
+                        containerColor = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(
+                            alpha = WormaCeptorTokens.Alpha.SOFT,
+                        ),
+                        contentColor = WormaCeptorTokens.Colors.Viewer.onOverlay,
+                        disabledContainerColor = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(
                             alpha = WormaCeptorTokens.Alpha.HINT,
                         ),
-                        disabledContentColor = Color.White.copy(
+                        disabledContentColor = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(
                             alpha = WormaCeptorTokens.Alpha.MODERATE,
                         ),
                     ),
@@ -86,12 +89,14 @@ internal fun FullscreenTopControlBar(
                     onClick = onZoomIn,
                     enabled = currentZoom < FullscreenImageDefaults.MAX_ZOOM,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = Color.White.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
-                        contentColor = Color.White,
-                        disabledContainerColor = Color.White.copy(
+                        containerColor = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(
+                            alpha = WormaCeptorTokens.Alpha.SOFT,
+                        ),
+                        contentColor = WormaCeptorTokens.Colors.Viewer.onOverlay,
+                        disabledContainerColor = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(
                             alpha = WormaCeptorTokens.Alpha.HINT,
                         ),
-                        disabledContentColor = Color.White.copy(
+                        disabledContentColor = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(
                             alpha = WormaCeptorTokens.Alpha.MODERATE,
                         ),
                     ),

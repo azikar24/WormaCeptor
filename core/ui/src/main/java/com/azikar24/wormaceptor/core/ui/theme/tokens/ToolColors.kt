@@ -666,5 +666,6 @@ object ToolColors {
 
     object Viewer {
         val protobufAccent = Palette.Purple600
+        val onOverlay = Palette.White
     }
 }

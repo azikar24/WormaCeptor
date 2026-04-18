@@ -36,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -339,7 +338,7 @@ private fun ZoomableImageBox(
             exit = fadeOut(),
         ) {
             CircularProgressIndicator(
-                color = Color.White,
+                color = WormaCeptorTokens.Colors.Viewer.onOverlay,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.xxxl),
             )
         }
@@ -358,7 +357,7 @@ internal fun ZoomIndicator(
         Text(
             text = "${String.format(Locale.US, "%.1f", scale)}x",
             style = MaterialTheme.typography.labelMedium,
-            color = Color.White,
+            color = WormaCeptorTokens.Colors.Viewer.onOverlay,
             modifier = Modifier.padding(
                 horizontal = WormaCeptorTokens.Spacing.sm,
                 vertical = WormaCeptorTokens.Spacing.xs,

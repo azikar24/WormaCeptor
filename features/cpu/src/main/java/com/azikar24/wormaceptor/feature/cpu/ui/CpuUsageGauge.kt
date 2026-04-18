@@ -39,6 +39,7 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
 import com.azikar24.wormaceptor.domain.entities.CpuMeasurementSource
 import com.azikar24.wormaceptor.feature.cpu.R
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 private const val CpuCriticalThreshold = 80f
@@ -46,7 +47,7 @@ private const val CpuWarningThreshold = 50f
 private const val CpuPercentDivisor = 100f
 private const val GaugeStartAngle = 135f
 private const val GaugeSweepAngle = 270f
-private val CpuPercentFormatter = java.text.DecimalFormat("#,##0.0")
+private val CpuPercentFormatter = DecimalFormat("#,##0.0")
 
 @Composable
 internal fun CpuUsageGaugeCard(

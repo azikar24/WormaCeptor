@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -67,12 +66,12 @@ internal fun FullscreenBottomControlBar(
                     Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
                     Surface(
                         shape = WormaCeptorTokens.Shapes.chip,
-                        color = Color.White.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
+                        color = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
                     ) {
                         Text(
                             text = meta.format,
                             style = MaterialTheme.typography.labelMedium,
-                            color = Color.White,
+                            color = WormaCeptorTokens.Colors.Viewer.onOverlay,
                             modifier = Modifier.padding(
                                 horizontal = WormaCeptorTokens.Spacing.sm,
                                 vertical = WormaCeptorTokens.Spacing.xs,
@@ -118,13 +117,13 @@ private fun MetadataChip(
         Icon(
             imageVector = icon,
             contentDescription = text,
-            tint = Color.White.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+            tint = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
             modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
         )
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = Color.White.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
+            color = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
         )
     }
 }
@@ -138,7 +137,7 @@ private fun ActionChip(
     Surface(
         onClick = onClick,
         shape = WormaCeptorTokens.Shapes.pill,
-        color = Color.White.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
+        color = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
     ) {
         Row(
             modifier = Modifier.padding(
@@ -151,13 +150,13 @@ private fun ActionChip(
             Icon(
                 imageVector = icon,
                 contentDescription = label,
-                tint = Color.White,
+                tint = WormaCeptorTokens.Colors.Viewer.onOverlay,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
             )
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
-                color = Color.White,
+                color = WormaCeptorTokens.Colors.Viewer.onOverlay,
             )
         }
     }

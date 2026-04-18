@@ -5,7 +5,6 @@
     <ID>LongMethod:DelaySection.kt$@Composable internal fun DelaySection( delayType: DelayType, delayMs: String, delayMinMs: String, delayMaxMs: String, onDelayTypeChange: (DelayType) -&gt; Unit, onDelayMsChange: (String) -&gt; Unit, onDelayMinMsChange: (String) -&gt; Unit, onDelayMaxMsChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:MockRulesScreen.kt$@Composable private fun MasterToggleCard( enabled: Boolean, ruleCount: Int, onToggle: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:MockRulesScreen.kt$@Composable private fun MockRuleItem( rule: MockRule, onToggle: () -&gt; Unit, onDelete: () -&gt; Unit, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:MockRulesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MockRulesScreen( state: MockRulesViewState, onEvent: (MockRulesViewEvent) -&gt; Unit, onNavigateToEditor: (String?) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:DelaySection.kt$( delayType: DelayType, delayMs: String, delayMinMs: String, delayMaxMs: String, onDelayTypeChange: (DelayType) -&gt; Unit, onDelayMsChange: (String) -&gt; Unit, onDelayMinMsChange: (String) -&gt; Unit, onDelayMaxMsChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:RequestMatchingSection.kt$( urlPattern: String, matchType: UrlMatchType, method: String, methodDropdownExpanded: Boolean, onUrlPatternChange: (String) -&gt; Unit, onMatchTypeChange: (UrlMatchType) -&gt; Unit, onMethodChange: (String) -&gt; Unit, onMethodDropdownExpandedChange: (Boolean) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:ResponseSection.kt$( statusCode: Int, statusMessage: String, contentType: String, responseBody: String, onStatusCodeChange: (String) -&gt; Unit, onStatusMessageChange: (String) -&gt; Unit, onContentTypeChange: (String) -&gt; Unit, onResponseBodyChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
@@ -21,6 +20,7 @@
     <ID>UndocumentedPublicClass:DelayType.kt$DelayType</ID>
     <ID>UndocumentedPublicClass:MockRulesEffect.kt$MockRulesEffect</ID>
     <ID>UndocumentedPublicClass:MockRulesEffect.kt$MockRulesEffect$NavigateBack : MockRulesEffect</ID>
+    <ID>UndocumentedPublicClass:MockRulesNavigationContributor.kt$MockRulesNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent</ID>
     <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent$Editor : MockRulesViewEvent</ID>
     <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent$List : MockRulesViewEvent</ID>
@@ -41,9 +41,12 @@
     <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.Editor$UrlPatternChanged : Editor</ID>
     <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$DeleteAllRules : List</ID>
     <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$DeleteRule : List</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$DismissDeleteAllDialog : List</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$DismissDeleteRuleDialog : List</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$RequestDeleteRule : List</ID>
+    <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$ShowDeleteAllDialog : List</ID>
     <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$ToggleMocking : List</ID>
     <ID>UndocumentedPublicClass:MockRulesViewEvent.kt$MockRulesViewEvent.List$ToggleRule : List</ID>
-    <ID>UndocumentedPublicClass:MockRulesNavigationContributor.kt$MockRulesNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:MockRulesViewState.kt$EditorState</ID>
     <ID>UndocumentedPublicClass:MockRulesViewState.kt$MockRulesViewState</ID>
     <ID>UndocumentedPublicFunction:MockRulesScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun MockRulesScreen( state: MockRulesViewState, onEvent: (MockRulesViewEvent) -&gt; Unit, onNavigateToEditor: (String?) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
@@ -66,6 +69,7 @@
     <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.StatusMessageChanged$val value: String</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.Editor.UrlPatternChanged$val value: String</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.List.DeleteRule$val ruleId: String</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.List.RequestDeleteRule$val rule: MockRule</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewEvent.kt$MockRulesViewEvent.List.ToggleRule$val ruleId: String</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$EditorState$val contentType: String = "application/json"</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$EditorState$val delayMaxMs: String = "1000"</ID>
@@ -86,6 +90,8 @@
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val editor: EditorState = EditorState()</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val isLoading: Boolean = true</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val mockingEnabled: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val pendingDeleteRule: MockRule? = null</ID>
     <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val rules: ImmutableList&lt;MockRule&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:MockRulesViewState.kt$MockRulesViewState$val showDeleteAllDialog: Boolean = false</ID>
   </CurrentIssues>
 </SmellBaseline>

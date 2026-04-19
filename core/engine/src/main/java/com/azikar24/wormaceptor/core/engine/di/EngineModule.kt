@@ -22,7 +22,6 @@ import com.azikar24.wormaceptor.core.engine.SecureStorageEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.core.engine.WebViewMonitorEngine
-import com.azikar24.wormaceptor.core.ui.RecompositionTracker
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -69,9 +68,6 @@ val engineModule = module {
     single { PushTokenEngine(androidContext()) }
     single { LocationSimulatorEngine(androidContext()) }
     single { PushSimulatorEngine(androidContext()) }
-
-    // Compose recomposition tracking (singleton object, exposed for DI consumers)
-    single { RecompositionTracker }
 
     // Syntax highlighting
     single<HighlighterRegistry> { DefaultHighlighterRegistry() }

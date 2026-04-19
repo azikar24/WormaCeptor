@@ -4,7 +4,10 @@
   <CurrentIssues>
     <ID>LongMethod:RecomposerRow.kt$@Composable internal fun RecomposerRow( index: Int, item: RecompositionItem, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun RecompositionSummaryScreen( state: RecompositionViewState, onEvent: (RecompositionViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$0.001f</ID>
+    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$1000f</ID>
     <ID>UndocumentedPublicClass:RecompositionEffect.kt$RecompositionEffect</ID>
+    <ID>UndocumentedPublicClass:RecompositionTracker.kt$RecompositionTracker$RecompositionData</ID>
     <ID>UndocumentedPublicClass:RecompositionEffect.kt$RecompositionEffect$NavigateBack : RecompositionEffect</ID>
     <ID>UndocumentedPublicClass:RecompositionNavigationContributor.kt$RecompositionNavigationContributor : FeatureNavigationContributor</ID>
     <ID>UndocumentedPublicClass:RecompositionViewEvent.kt$RecompositionViewEvent</ID>
@@ -13,9 +16,19 @@
     <ID>UndocumentedPublicClass:RecompositionViewModel.kt$RecompositionViewModel : BaseViewModel</ID>
     <ID>UndocumentedPublicClass:RecompositionViewModel.kt$RecompositionViewModel$Companion</ID>
     <ID>UndocumentedPublicFunction:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun RecompositionSummaryScreen( state: RecompositionViewState, onEvent: (RecompositionViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:RecompositionTracker.kt$RecompositionTracker$fun getAll(): Map&lt;String, RecompositionData&gt;</ID>
+    <ID>UndocumentedPublicFunction:RecompositionTracker.kt$RecompositionTracker$fun getRate(name: String): Float</ID>
+    <ID>UndocumentedPublicFunction:RecompositionTracker.kt$RecompositionTracker$fun getSessionDuration(): Long</ID>
+    <ID>UndocumentedPublicFunction:RecompositionTracker.kt$RecompositionTracker$fun getTopRecomposers(limit: Int = 10): List&lt;RecompositionData&gt;</ID>
+    <ID>UndocumentedPublicFunction:RecompositionTracker.kt$RecompositionTracker$fun getTotalRecompositions(): Long</ID>
+    <ID>UndocumentedPublicFunction:RecompositionTracker.kt$RecompositionTracker$fun reset()</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val count: Long</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val name: String</ID>
     <ID>UndocumentedPublicProperty:RecompositionItem.kt$RecompositionItem$val ratePerSecond: Float</ID>
+    <ID>UndocumentedPublicProperty:RecompositionTracker.kt$RecompositionTracker.RecompositionData$val count: Long</ID>
+    <ID>UndocumentedPublicProperty:RecompositionTracker.kt$RecompositionTracker.RecompositionData$val lastTimestamp: Long</ID>
+    <ID>UndocumentedPublicProperty:RecompositionTracker.kt$RecompositionTracker.RecompositionData$val name: String</ID>
+    <ID>UndocumentedPublicProperty:RecompositionTracker.kt$RecompositionTracker.RecompositionData$val ratePerSecond: Float = 0f</ID>
     <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val formattedDuration: String = ""</ID>
     <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val formattedTotalRecompositions: String = ""</ID>
     <ID>UndocumentedPublicProperty:RecompositionViewState.kt$RecompositionViewState$val sessionDurationMs: Long = 0L</ID>

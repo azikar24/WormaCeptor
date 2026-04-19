@@ -34,6 +34,7 @@ public final class com/azikar24/wormaceptor/api/Feature$Companion {
 }
 
 public final class com/azikar24/wormaceptor/api/RedactionConfig {
+	public static final field $stable I
 	public fun <init> ()V
 	public final fun redactBody (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/RedactionConfig;
 	public final fun redactHeader (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/RedactionConfig;
@@ -60,6 +61,7 @@ public final class com/azikar24/wormaceptor/api/ServiceProvider$DefaultImpls {
 }
 
 public final class com/azikar24/wormaceptor/api/TransactionDetailDto {
+	public static final field $stable I
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)V
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/util/Map;Ljava/lang/String;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
@@ -112,6 +114,7 @@ public final class com/azikar24/wormaceptor/api/TransactionDetailDto {
 }
 
 public final class com/azikar24/wormaceptor/api/WormaCeptorApi {
+	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/api/WormaCeptorApi;
 	public final fun canShowFloatingButton (Landroid/content/Context;)Z
 	public final fun getEnabledFeatures ()Ljava/util/Set;
@@ -133,6 +136,7 @@ public final class com/azikar24/wormaceptor/api/WormaCeptorApi {
 }
 
 public final class com/azikar24/wormaceptor/api/WormaCeptorInterceptor : okhttp3/Interceptor {
+	public static final field $stable I
 	public fun <init> ()V
 	public fun intercept (Lokhttp3/Interceptor$Chain;)Lokhttp3/Response;
 	public final fun maxContentLength (J)Lcom/azikar24/wormaceptor/api/WormaCeptorInterceptor;
@@ -156,6 +160,7 @@ public final class com/azikar24/wormaceptor/api/WormaCeptorInterceptor$Period : 
 }
 
 public final class com/azikar24/wormaceptor/api/WormaCeptorWebSocket {
+	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/api/WormaCeptorWebSocket$Companion;
 	public synthetic fun <init> (Lokhttp3/WebSocketListener;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getConnectionId ()J
@@ -172,12 +177,18 @@ public final class com/azikar24/wormaceptor/api/WormaCeptorWebSocket$Companion {
 }
 
 public final class com/azikar24/wormaceptor/api/WormaCeptorWebView {
+	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/api/WormaCeptorWebView;
 	public final fun createMonitoringClient (Ljava/lang/String;Landroid/webkit/WebViewClient;)Landroid/webkit/WebViewClient;
 	public static synthetic fun createMonitoringClient$default (Lcom/azikar24/wormaceptor/api/WormaCeptorWebView;Ljava/lang/String;Landroid/webkit/WebViewClient;ILjava/lang/Object;)Landroid/webkit/WebViewClient;
 }
 
+public final class com/azikar24/wormaceptor/api/compose/TrackRecompositionModifierKt {
+	public static final fun trackRecomposition (Landroidx/compose/ui/Modifier;Ljava/lang/String;)Landroidx/compose/ui/Modifier;
+}
+
 public final class com/azikar24/wormaceptor/api/contentprovider/WormaCeptorContentProvider : android/content/ContentProvider {
+	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/api/contentprovider/WormaCeptorContentProvider$Companion;
 	public fun <init> ()V
 	public fun delete (Landroid/net/Uri;Ljava/lang/String;[Ljava/lang/String;)I
@@ -193,6 +204,7 @@ public final class com/azikar24/wormaceptor/api/contentprovider/WormaCeptorConte
 }
 
 public final class com/azikar24/wormaceptor/api/ktor/WormaCeptorKtorConfig {
+	public static final field $stable I
 	public static final field DEFAULT_MAX_CONTENT_LENGTH J
 	public fun <init> ()V
 	public final fun getMaxContentLength ()J

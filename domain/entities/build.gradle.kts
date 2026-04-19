@@ -1,5 +1,6 @@
 plugins {
     id("wormaceptor.jvm.library")
+    id("wormaceptor.publishing")
 }
 
 dependencies {

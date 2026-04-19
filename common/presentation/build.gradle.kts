@@ -1,5 +1,6 @@
 plugins {
     id("wormaceptor.android.compose")
+    id("wormaceptor.publishing")
 }
 
 android {

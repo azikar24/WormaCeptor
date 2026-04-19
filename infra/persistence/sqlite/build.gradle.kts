@@ -2,6 +2,7 @@ plugins {
     id("wormaceptor.android.library")
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp) // Needed for Room
+    id("wormaceptor.publishing")
 }
 
 android {

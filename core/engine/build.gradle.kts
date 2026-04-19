@@ -2,6 +2,7 @@ plugins {
     id("wormaceptor.android.library")
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.compose.compiler)
+    id("wormaceptor.publishing")
 }
 
 android {

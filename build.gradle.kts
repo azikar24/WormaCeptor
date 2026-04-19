@@ -251,63 +251,6 @@ spotless {
     }
 }
 
-subprojects {
-    // Apply maven-publish to all library modules (exclude app and test modules)
-    if (project.path != ":app" && !project.path.startsWith(":test")) {
-        plugins.withId("com.android.library") {
-            // Configure Android library to expose release component for publishing
-            extensions.configure<com.android.build.gradle.LibraryExtension> {
-                publishing {
-                    singleVariant("release") {
-                        withSourcesJar()
-                    }
-                }
-            }
-
-            apply(plugin = "maven-publish")
-
-            afterEvaluate {
-                extensions.configure<PublishingExtension> {
-                    publications {
-                        create<MavenPublication>("release") {
-                            from(components.findByName("release"))
-
-                            groupId = "com.github.azikar24.WormaCeptor"
-                            artifactId =
-                                project.path
-                                    .removePrefix(":")
-                                    .replace(":", "-")
-                            version = findProperty("VERSION_NAME")?.toString() ?: "2.3.0"
-                        }
-                    }
-                }
-            }
-        }
-
-        // Also publish pure Kotlin/JVM modules (e.g. domain:entities)
-        plugins.withId("org.jetbrains.kotlin.jvm") {
-            apply(plugin = "maven-publish")
-
-            extensions.configure<JavaPluginExtension> {
-                withSourcesJar()
-            }
-
-            afterEvaluate {
-                extensions.configure<PublishingExtension> {
-                    publications {
-                        create<MavenPublication>("release") {
-                            from(components.findByName("java"))
-
-                            groupId = "com.github.azikar24.WormaCeptor"
-                            artifactId =
-                                project.path
-                                    .removePrefix(":")
-                                    .replace(":", "-")
-                            version = findProperty("VERSION_NAME")?.toString() ?: "2.3.0"
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+// Publishing is configured per-module via the `wormaceptor.publishing` convention
+// plugin (build-logic/src/main/kotlin/wormaceptor.publishing.gradle.kts), which
+// wraps com.vanniktech.maven.publish and targets Maven Central (Sonatype Portal).

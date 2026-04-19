@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.FirstPage
 import androidx.compose.material.icons.filled.GridOff
 import androidx.compose.material.icons.filled.GridOn
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -58,7 +58,7 @@ internal fun PdfBottomNavigationBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            IconButton(onClick = onFirstPage, enabled = hasPrevious) {
+            WormaCeptorIconButton(onClick = onFirstPage, enabled = hasPrevious) {
                 Icon(
                     imageVector = Icons.Default.FirstPage,
                     contentDescription = stringResource(R.string.viewer_pdf_first_page),
@@ -68,7 +68,7 @@ internal fun PdfBottomNavigationBar(
                 )
             }
 
-            IconButton(onClick = onPreviousPage, enabled = hasPrevious) {
+            WormaCeptorIconButton(onClick = onPreviousPage, enabled = hasPrevious) {
                 Icon(
                     imageVector = Icons.Default.ChevronLeft,
                     contentDescription = stringResource(R.string.viewer_pdf_previous_page),
@@ -94,7 +94,7 @@ internal fun PdfBottomNavigationBar(
                 )
             }
 
-            IconButton(onClick = onNextPage, enabled = hasNext) {
+            WormaCeptorIconButton(onClick = onNextPage, enabled = hasNext) {
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = stringResource(R.string.viewer_pdf_next_page),
@@ -104,7 +104,7 @@ internal fun PdfBottomNavigationBar(
                 )
             }
 
-            IconButton(onClick = onLastPage, enabled = hasNext) {
+            WormaCeptorIconButton(onClick = onLastPage, enabled = hasNext) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.LastPage,
                     contentDescription = stringResource(R.string.viewer_pdf_last_page),
@@ -114,7 +114,7 @@ internal fun PdfBottomNavigationBar(
                 )
             }
 
-            IconButton(onClick = onToggleThumbnails) {
+            WormaCeptorIconButton(onClick = onToggleThumbnails) {
                 Icon(
                     imageVector = if (showThumbnails) Icons.Default.GridOff else Icons.Default.GridOn,
                     contentDescription = if (showThumbnails) {

@@ -9,7 +9,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.TextWithStartEllipsis
@@ -104,7 +104,7 @@ private fun SearchAction(
     onEvent: (TransactionDetailViewEvent) -> Unit,
 ) {
     if (showSearch) {
-        IconButton(
+        WormaCeptorIconButton(
             onClick = { onEvent(TransactionDetailViewEvent.Search.VisibilityChanged(false)) },
         ) {
             Icon(
@@ -113,7 +113,7 @@ private fun SearchAction(
             )
         }
     } else if (selectedTabIndex > 0 && currentTabHasContent) {
-        IconButton(
+        WormaCeptorIconButton(
             onClick = { onEvent(TransactionDetailViewEvent.Search.VisibilityChanged(true)) },
         ) {
             Icon(
@@ -129,7 +129,7 @@ private fun MenuAction(
     showMenu: Boolean,
     onEvent: (TransactionDetailViewEvent) -> Unit,
 ) {
-    IconButton(
+    WormaCeptorIconButton(
         onClick = { onEvent(TransactionDetailViewEvent.Menu.VisibilityChanged(true)) },
     ) {
         Icon(

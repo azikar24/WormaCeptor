@@ -7,8 +7,6 @@
     <ID>LateinitUsage:FloatingButtonService.kt$FloatingButtonService$private lateinit var layoutParams: WindowManager.LayoutParams</ID>
     <ID>LateinitUsage:FloatingButtonService.kt$FloatingButtonService$private lateinit var windowManager: WindowManager</ID>
     <ID>LongMethod:FloatingButtonService.kt$FloatingButtonService$private fun setupFloatingButton( savedX: Int, savedY: Int, )</ID>
-    <ID>MagicNumber:FloatingButtonConstants.kt$FloatingButtonConstants.Visual$0xFF0D9488</ID>
-    <ID>MagicNumber:FloatingButtonConstants.kt$FloatingButtonConstants.Visual$0xFFFFFFFF</ID>
     <ID>MagicNumber:FloatingButtonService.kt$FloatingButtonService$4</ID>
     <ID>MutableStateAutoboxing:FloatingButtonService.kt$FloatingButtonService$mutableStateOf(1f)</ID>
     <ID>MutableStateParam:FloatingButtonService.kt$pressedScaleState</ID>

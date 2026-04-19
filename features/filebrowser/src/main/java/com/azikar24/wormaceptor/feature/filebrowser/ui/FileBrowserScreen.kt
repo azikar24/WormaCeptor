@@ -24,7 +24,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -41,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -123,7 +123,7 @@ private fun FileBrowserTopBar(
             onBack = { onEvent(FileBrowserViewEvent.NavigateBack) },
             backContentDescription = stringResource(R.string.filebrowser_back),
             actions = {
-                IconButton(
+                WormaCeptorIconButton(
                     onClick = { onSearchActiveChange(!searchActive) },
                 ) {
                     Icon(
@@ -175,7 +175,7 @@ private fun SortMenuButton(
     onEvent: (FileBrowserViewEvent) -> Unit,
 ) {
     Box {
-        IconButton(onClick = { onShowSortMenuChange(true) }) {
+        WormaCeptorIconButton(onClick = { onShowSortMenuChange(true) }) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.Sort,
                 contentDescription = stringResource(R.string.filebrowser_sort),

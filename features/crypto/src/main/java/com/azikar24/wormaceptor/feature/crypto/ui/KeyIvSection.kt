@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
@@ -116,7 +116,7 @@ private fun KeyInput(
         },
         trailingIcon = {
             Row {
-                IconButton(onClick = onToggleVisibility) {
+                WormaCeptorIconButton(onClick = onToggleVisibility) {
                     Icon(
                         imageVector = if (showPassword) {
                             Icons.Default.VisibilityOff
@@ -130,7 +130,7 @@ private fun KeyInput(
                         },
                     )
                 }
-                IconButton(onClick = { onEvent(CryptoViewEvent.Config.GenerateKey) }) {
+                WormaCeptorIconButton(onClick = { onEvent(CryptoViewEvent.Config.GenerateKey) }) {
                     Icon(Icons.Default.Refresh, stringResource(R.string.crypto_generate_key))
                 }
             }
@@ -169,7 +169,7 @@ private fun IvInput(
             },
             trailingIcon = {
                 Row {
-                    IconButton(onClick = onToggleVisibility) {
+                    WormaCeptorIconButton(onClick = onToggleVisibility) {
                         Icon(
                             imageVector = if (showPassword) {
                                 Icons.Default.VisibilityOff
@@ -179,7 +179,7 @@ private fun IvInput(
                             contentDescription = if (showPassword) hideIv else showIv,
                         )
                     }
-                    IconButton(onClick = { onEvent(CryptoViewEvent.Config.GenerateIv) }) {
+                    WormaCeptorIconButton(onClick = { onEvent(CryptoViewEvent.Config.GenerateIv) }) {
                         Icon(Icons.Default.Refresh, generateIv)
                     }
                 }

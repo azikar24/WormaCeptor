@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -33,7 +33,6 @@ import com.azikar24.wormaceptor.domain.entities.FileInfo
 import com.azikar24.wormaceptor.feature.filebrowser.R
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEvent
 
-/** Modal bottom sheet displaying metadata for a selected file. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FileInfoSheet(
@@ -142,7 +141,7 @@ private fun FilePathRow(
                 color = WormaCeptorTokens.semantic().textPrimary,
             )
         }
-        IconButton(onClick = onCopyPath) {
+        WormaCeptorIconButton(onClick = onCopyPath) {
             Icon(
                 imageVector = Icons.Default.ContentCopy,
                 contentDescription = stringResource(R.string.filebrowser_copy_path),

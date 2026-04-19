@@ -23,7 +23,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -33,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.list.WormaCeptorListItem
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -88,7 +88,7 @@ private fun PreferencesListTopBar(
         onBack = onNavigateBack,
         backContentDescription = stringResource(R.string.preferences_back),
         actions = {
-            IconButton(onClick = onToggleSearch) {
+            WormaCeptorIconButton(onClick = onToggleSearch) {
                 Icon(
                     imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
                     contentDescription = if (searchActive) {

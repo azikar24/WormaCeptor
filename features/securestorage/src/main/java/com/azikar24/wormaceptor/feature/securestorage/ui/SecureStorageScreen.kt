@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -44,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
@@ -124,13 +124,13 @@ private fun SecureStorageTopAppBar(
             onBack = onBack,
             backContentDescription = stringResource(R.string.securestorage_back),
             actions = {
-                IconButton(onClick = onSearchToggle) {
+                WormaCeptorIconButton(onClick = onSearchToggle) {
                     Icon(
                         imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
                         contentDescription = stringResource(R.string.securestorage_search),
                     )
                 }
-                IconButton(
+                WormaCeptorIconButton(
                     onClick = { onEvent(SecureStorageViewEvent.Refresh) },
                     enabled = !state.isLoading,
                 ) {

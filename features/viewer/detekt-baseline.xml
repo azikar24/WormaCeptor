@@ -177,7 +177,6 @@
     <ID>ModifierMissing:SwipeBackContainer.kt$SwipeBackContainer</ID>
     <ID>MultipleEmitters:HomeTopBar.kt$CrashesOverflowMenu</ID>
     <ID>MultipleEmitters:HomeTopBar.kt$TransactionsOverflowMenu</ID>
-    <ID>MultipleEmitters:TransactionDetailHeader.kt$MenuAction</ID>
     <ID>NestedBlockDepth:TransactionExportUtils.kt$internal fun savePdfToDownloads( context: Context, pdfData: ByteArray, ): String</ID>
     <ID>OutdatedDocumentation:ToolsTab.kt$@Suppress("LongMethod") @Composable fun ToolsTab( state: HomeViewState, onEvent: (HomeViewEvent) -&gt; Unit, onNavigate: (String) -&gt; Unit, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>OutdatedDocumentation:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, selectionState: TransactionSelectionState = TransactionSelectionState(), itemActions: TransactionItemActions = TransactionItemActions(), isInitialLoading: Boolean = false, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, header: (@Composable () -&gt; Unit)? = null, )</ID>
@@ -224,6 +223,7 @@
     <ID>UndocumentedPublicFunction:CrashDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashDetailPagerScreen( crashes: List&lt;Crash&gt;, initialCrashIndex: Int, onBack: () -&gt; Unit, )</ID>
     <ID>UndocumentedPublicFunction:CrashDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashDetailScreen( crash: Crash, onBack: () -&gt; Unit, )</ID>
     <ID>UndocumentedPublicFunction:FullscreenImageViewer.kt$@Composable fun FullscreenImageViewer( imageData: ByteArray, metadata: ImageMetadata?, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun HomeScreen( homeState: HomeViewState, transactionState: TransactionListViewState, crashState: CrashListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, snackBarMessage: Flow&lt;String&gt;? = null, )</ID>
     <ID>UndocumentedPublicFunction:HomeTopBar.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun HomeTopBar( homeState: HomeViewState, transactionState: TransactionListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, pagerState: PagerState, titles: List&lt;String&gt;, )</ID>
     <ID>UndocumentedPublicFunction:ImageShareUtils.kt$fun saveImageToGallery( context: Context, imageData: ByteArray, format: String, ): ImageOperationResult</ID>
     <ID>UndocumentedPublicFunction:ImageShareUtils.kt$fun shareImage( context: Context, imageData: ByteArray, format: String, ): ImageOperationResult</ID>

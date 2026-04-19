@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -50,6 +49,7 @@ import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.toggle.SwitchVariant
@@ -146,7 +146,7 @@ private fun MockRulesTopBar(
         backContentDescription = stringResource(R.string.mock_rules_back),
         actions = {
             if (hasRules) {
-                IconButton(onClick = onDeleteAll) {
+                WormaCeptorIconButton(onClick = onDeleteAll) {
                     Icon(
                         imageVector = Icons.Default.DeleteSweep,
                         contentDescription = stringResource(R.string.mock_rules_delete_all),
@@ -392,7 +392,7 @@ private fun MockRuleItem(
 
             // Switch + delete
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(
+                WormaCeptorIconButton(
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onDelete()

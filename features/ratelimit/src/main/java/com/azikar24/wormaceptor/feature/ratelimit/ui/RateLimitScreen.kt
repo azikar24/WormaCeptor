@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,6 +23,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
@@ -58,13 +58,13 @@ fun RateLimitScreen(
                 onBack = onBack,
                 backContentDescription = stringResource(R.string.ratelimit_back),
                 actions = {
-                    IconButton(onClick = { onEvent(RateLimitViewEvent.ResetToDefaults) }) {
+                    WormaCeptorIconButton(onClick = { onEvent(RateLimitViewEvent.ResetToDefaults) }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
                             contentDescription = stringResource(R.string.ratelimit_reset_defaults),
                         )
                     }
-                    IconButton(onClick = {
+                    WormaCeptorIconButton(onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onEvent(RateLimitViewEvent.ClearStats)
                     }) {

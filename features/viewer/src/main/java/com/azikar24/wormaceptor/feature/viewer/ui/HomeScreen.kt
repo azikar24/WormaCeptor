@@ -24,7 +24,6 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -49,6 +48,7 @@ import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.components.badge.BadgeVariant
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorBadge
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -67,9 +67,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-/**
- * HomeScreen with multi-select, context menus, and consolidated event dispatch.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -277,10 +274,6 @@ fun HomeScreen(
     }
 }
 
-/**
- * Banner showing active filters with dismiss chips.
- * Only visible on the Transactions tab when not in selection mode.
- */
 @Composable
 private fun ActiveFiltersBanner(
     transactionState: TransactionListViewState,
@@ -316,7 +309,7 @@ private fun ActiveFiltersBanner(
                         color = WormaCeptorTokens.semantic().textSecondary,
                         fontWeight = FontWeight.Medium,
                     )
-                    IconButton(
+                    WormaCeptorIconButton(
                         onClick = {
                             onTransactionEvent(TransactionListViewEvent.ClearFilters)
                         },

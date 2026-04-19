@@ -22,7 +22,6 @@ import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -44,6 +43,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.components.toggle.WormaCeptorSwitch
@@ -54,7 +54,6 @@ import com.azikar24.wormaceptor.feature.preferences.vm.PreferenceEditorState
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewEvent
 import kotlinx.collections.immutable.ImmutableList
 
-/** Bottom sheet for creating or editing a preference item. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ModifierMissing")
 @Composable
@@ -411,7 +410,7 @@ private fun StringSetChips(
                 onClick = {},
                 label = { Text(text = value, fontFamily = FontFamily.Monospace) },
                 trailingIcon = {
-                    IconButton(onClick = { onRemoveItem(index) }) {
+                    WormaCeptorIconButton(onClick = { onRemoveItem(index) }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = stringResource(R.string.preferences_remove),
@@ -441,7 +440,7 @@ private fun StringSetAddRow(
 
         Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
-        IconButton(onClick = onAddItem, enabled = newItem.isNotBlank()) {
+        WormaCeptorIconButton(onClick = onAddItem, enabled = newItem.isNotBlank()) {
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = stringResource(R.string.preferences_add),

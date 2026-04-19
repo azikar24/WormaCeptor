@@ -3,13 +3,11 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>LongMethod:DirectionFilterChips.kt$@Composable internal fun DirectionFilterChips( selectedDirection: WebSocketMessageDirection?, directionCounts: Map&lt;WebSocketMessageDirection, Int&gt;, onDirectionToggle: (WebSocketMessageDirection) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:MessageList.kt$@Composable private fun MessageItem( message: WebSocketMessage, isExpanded: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WebSocketDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebSocketDetailScreen( state: WebSocketViewState, onEvent: (WebSocketViewEvent) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WebSocketListScreen.kt$@Composable private fun ConnectionItem( connection: WebSocketConnection, messageCount: Int, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WebSocketListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebSocketListScreen( state: WebSocketViewState, onEvent: (WebSocketViewEvent) -&gt; Unit, getMessageCount: (Long) -&gt; Int, onConnectionClick: (WebSocketConnection) -&gt; Unit, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
     <ID>MagicNumber:DirectionFilterChips.kt$12</ID>
     <ID>MagicNumber:DirectionFilterChips.kt$8</ID>
-    <ID>MagicNumber:MessageList.kt$150</ID>
     <ID>UndocumentedPublicClass:WebSocketNavigator.kt$WebSocketNavigator : FeatureNavigator</ID>
     <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent</ID>
     <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ClearAllConfirmed : WebSocketViewEvent</ID>

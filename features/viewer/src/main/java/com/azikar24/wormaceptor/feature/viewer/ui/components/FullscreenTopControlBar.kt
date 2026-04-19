@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ZoomIn
 import androidx.compose.material.icons.filled.ZoomOut
-import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Surface
@@ -20,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFilledTonalIconButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -44,7 +44,7 @@ internal fun FullscreenTopControlBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            FilledTonalIconButton(
+            WormaCeptorFilledTonalIconButton(
                 onClick = onClose,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
                     containerColor = WormaCeptorTokens.Colors.Viewer.onOverlay.copy(
@@ -63,7 +63,7 @@ internal fun FullscreenTopControlBar(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                FilledTonalIconButton(
+                WormaCeptorFilledTonalIconButton(
                     onClick = onZoomOut,
                     enabled = currentZoom > 1f,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(
@@ -85,7 +85,7 @@ internal fun FullscreenTopControlBar(
                     )
                 }
 
-                FilledTonalIconButton(
+                WormaCeptorFilledTonalIconButton(
                     onClick = onZoomIn,
                     enabled = currentZoom < FullscreenImageDefaults.MAX_ZOOM,
                     colors = IconButtonDefaults.filledTonalIconButtonColors(

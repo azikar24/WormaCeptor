@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -40,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -88,7 +88,7 @@ private fun PushTokenTopAppBar(
         onBack = onBack,
         backContentDescription = stringResource(R.string.pushtoken_back),
         actions = {
-            IconButton(
+            WormaCeptorIconButton(
                 onClick = { onEvent(PushTokenViewEvent.FetchToken) },
                 enabled = !state.isLoading,
             ) {
@@ -214,7 +214,7 @@ private fun PushTokenErrorCard(
                 color = WormaCeptorTokens.semantic().error,
                 modifier = Modifier.weight(1f),
             )
-            IconButton(onClick = onDismiss) {
+            WormaCeptorIconButton(onClick = onDismiss) {
                 Icon(Icons.Default.Close, stringResource(R.string.pushtoken_dismiss))
             }
         }

@@ -6,12 +6,12 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.feature.webviewmonitor.R
 
 @Composable
@@ -31,13 +31,13 @@ internal fun ListTopBar(
             onBack = onNavigateBack,
             backContentDescription = stringResource(R.string.webviewmonitor_action_back),
             actions = {
-                IconButton(onClick = onSearchToggle) {
+                WormaCeptorIconButton(onClick = onSearchToggle) {
                     Icon(
                         imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
                         contentDescription = stringResource(R.string.webviewmonitor_action_search),
                     )
                 }
-                IconButton(onClick = {
+                WormaCeptorIconButton(onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     onClearRequests()
                 }) {

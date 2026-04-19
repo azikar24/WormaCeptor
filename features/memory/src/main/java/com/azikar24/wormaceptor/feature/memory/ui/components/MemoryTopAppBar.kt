@@ -7,11 +7,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorWarningBadge
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.feature.memory.R
 import com.azikar24.wormaceptor.feature.memory.vm.MemoryViewEvent
@@ -51,7 +51,7 @@ internal fun MemoryTopAppBar(
                     }
                 },
             )
-            IconButton(onClick = onClearHistory) {
+            WormaCeptorIconButton(onClick = onClearHistory) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.memory_clear_history),

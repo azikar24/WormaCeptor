@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +31,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
@@ -282,7 +282,7 @@ internal fun TemplateCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (!isPreset) {
-                    IconButton(
+                    WormaCeptorIconButton(
                         onClick = onDelete,
                         modifier = Modifier.size(WormaCeptorTokens.TouchTarget.minimum),
                     ) {

@@ -22,7 +22,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
@@ -144,7 +144,7 @@ private fun PreferenceDetailTopBar(
         onBack = onBack,
         backContentDescription = stringResource(R.string.preferences_back),
         actions = {
-            IconButton(onClick = onToggleSearch) {
+            WormaCeptorIconButton(onClick = onToggleSearch) {
                 Icon(
                     imageVector = if (searchActive) Icons.Default.Close else Icons.Default.Search,
                     contentDescription = stringResource(
@@ -152,7 +152,7 @@ private fun PreferenceDetailTopBar(
                     ),
                 )
             }
-            IconButton(onClick = { showMenu = true }) {
+            WormaCeptorIconButton(onClick = { showMenu = true }) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = stringResource(R.string.preferences_more_options),

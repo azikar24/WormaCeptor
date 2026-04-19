@@ -49,6 +49,7 @@
     <ID>UndocumentedPublicClass:PreferencesViewModelFactory.kt$PreferencesViewModelFactory : Factory</ID>
     <ID>UndocumentedPublicClass:PreferencesViewState.kt$PreferencesViewState</ID>
     <ID>UndocumentedPublicFunction:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceDetailScreen( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, onBack: () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:PreferenceEditSheet.kt$@OptIn(ExperimentalMaterial3Api::class) @Suppress("ModifierMissing") @Composable fun PreferenceEditSheet( editor: PreferenceEditorState, onEvent: (PreferencesViewEvent) -&gt; Unit, showDelete: Boolean, )</ID>
     <ID>UndocumentedPublicFunction:PreferenceEditorState.kt$PreferenceEditorState$fun toPreferenceValue(): PreferenceValue</ID>
     <ID>UndocumentedPublicFunction:PreferenceEditorState.kt$PreferenceEditorState.Companion$fun fromItem(item: PreferenceItem?): PreferenceEditorState</ID>
     <ID>UndocumentedPublicFunction:PreferenceItemCard.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun PreferenceItemCard( item: PreferenceItem, typeColors: ToolColors.Preferences.TypeScheme, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>

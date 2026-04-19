@@ -23,7 +23,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -104,7 +104,7 @@ private fun TableDataTopBar(
         onBack = onBack,
         backContentDescription = stringResource(R.string.database_table_data_back),
         actions = {
-            IconButton(onClick = onToggleSchema) {
+            WormaCeptorIconButton(onClick = onToggleSchema) {
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = stringResource(R.string.database_table_data_schema),
@@ -115,7 +115,7 @@ private fun TableDataTopBar(
                     },
                 )
             }
-            IconButton(
+            WormaCeptorIconButton(
                 onClick = onPrevious,
                 enabled = currentPage > 0,
             ) {
@@ -124,7 +124,7 @@ private fun TableDataTopBar(
                     contentDescription = stringResource(R.string.database_table_data_previous),
                 )
             }
-            IconButton(
+            WormaCeptorIconButton(
                 onClick = onNext,
                 enabled = hasNextPage,
             ) {

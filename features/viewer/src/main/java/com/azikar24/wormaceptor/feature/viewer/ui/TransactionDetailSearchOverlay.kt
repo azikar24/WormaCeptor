@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,13 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent
 
-/**
- * Floating search match navigation overlay shown at the bottom-end of the screen.
- */
 @Composable
 internal fun TransactionDetailSearchOverlay(
     visible: Boolean,
@@ -64,7 +61,7 @@ internal fun TransactionDetailSearchOverlay(
                         style = MaterialTheme.typography.labelLarge,
                         modifier = Modifier.padding(end = WormaCeptorTokens.Spacing.xs),
                     )
-                    IconButton(
+                    WormaCeptorIconButton(
                         onClick = { onEvent(TransactionDetailViewEvent.Search.NavigateToPrevious) },
                         modifier = Modifier.size(WormaCeptorTokens.ComponentSize.iconButtonSmall),
                     ) {
@@ -73,7 +70,7 @@ internal fun TransactionDetailSearchOverlay(
                             stringResource(R.string.viewer_search_previous_match),
                         )
                     }
-                    IconButton(
+                    WormaCeptorIconButton(
                         onClick = { onEvent(TransactionDetailViewEvent.Search.NavigateToNext) },
                         modifier = Modifier.size(WormaCeptorTokens.ComponentSize.iconButtonSmall),
                     ) {

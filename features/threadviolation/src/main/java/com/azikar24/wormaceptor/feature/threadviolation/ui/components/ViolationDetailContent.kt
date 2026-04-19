@@ -16,7 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.detail.DetailItem
 import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailHeader
 import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailSection
@@ -105,7 +105,7 @@ internal fun ViolationDetailContent(
                             fontWeight = FontWeight.SemiBold,
                             color = WormaCeptorTokens.semantic().textSecondary,
                         )
-                        IconButton(
+                        WormaCeptorIconButton(
                             onClick = {
                                 val clipData = ClipData.newPlainText(
                                     "Stack Trace",

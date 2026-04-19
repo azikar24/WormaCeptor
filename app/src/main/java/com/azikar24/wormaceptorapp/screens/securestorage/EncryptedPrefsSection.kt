@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,6 +30,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -121,7 +121,7 @@ private fun EncryptedPrefItem(
                 )
             }
 
-            IconButton(onClick = { isValueVisible = !isValueVisible }) {
+            WormaCeptorIconButton(onClick = { isValueVisible = !isValueVisible }) {
                 Icon(
                     imageVector = if (isValueVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                     contentDescription = if (isValueVisible) "Hide value" else "Show value",

@@ -5,7 +5,6 @@
     <ID>LongMethod:EntryCard.kt$@Composable internal fun EntryCard( entry: SecureStorageEntry, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:EntryDetailContent.kt$@Composable internal fun EntryDetailContent( entry: SecureStorageEntry, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:SecureStorageScreen.kt$@Composable private fun SecureStorageContent( state: SecureStorageViewState, onEvent: (SecureStorageViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:SecureStorageScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun SecureStorageTopAppBar( state: SecureStorageViewState, searchActive: Boolean, onSearchToggle: () -&gt; Unit, onEvent: (SecureStorageViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, )</ID>
     <ID>LongParameterList:SummarySection.kt$( count: Int, label: String, icon: ImageVector, color: Color, isAccessible: Boolean, accessibleText: String, notAccessibleText: String, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:EntryCard.kt$100</ID>
     <ID>ParameterNaming:TypeFilterChips.kt$onTypeSelected</ID>

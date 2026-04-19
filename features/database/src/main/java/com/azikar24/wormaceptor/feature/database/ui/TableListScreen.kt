@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.TableChart
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.components.list.WormaCeptorListItem
@@ -91,13 +91,13 @@ private fun TableListTopBar(
             onBack = onBack,
             backContentDescription = stringResource(R.string.database_table_list_back),
             actions = {
-                IconButton(onClick = { onEvent(DatabaseViewEvent.Tables.ToggleSearch) }) {
+                WormaCeptorIconButton(onClick = { onEvent(DatabaseViewEvent.Tables.ToggleSearch) }) {
                     Icon(
                         imageVector = if (state.isTableSearchActive) Icons.Default.Close else Icons.Default.Search,
                         contentDescription = stringResource(R.string.database_table_list_search),
                     )
                 }
-                IconButton(onClick = onQueryClick) {
+                WormaCeptorIconButton(onClick = onQueryClick) {
                     Icon(
                         imageVector = Icons.Default.Terminal,
                         contentDescription = stringResource(R.string.database_table_list_sql_query),

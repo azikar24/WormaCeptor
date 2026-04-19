@@ -14,7 +14,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -26,6 +25,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
@@ -98,7 +98,7 @@ fun HomeTopBar(
                     actions = {
                         // Overflow Menu - only show on Transactions and Crashes tabs
                         if (pagerState.currentPage < HomeTabs.TOOLS) {
-                            IconButton(
+                            WormaCeptorIconButton(
                                 onClick = {
                                     onHomeEvent(HomeViewEvent.OverflowMenuVisibilityChanged(true))
                                 },
@@ -135,7 +135,7 @@ fun HomeTopBar(
 
                         // Search toggle - only show on Tools tab
                         if (pagerState.currentPage == HomeTabs.TOOLS) {
-                            IconButton(
+                            WormaCeptorIconButton(
                                 onClick = {
                                     onHomeEvent(
                                         HomeViewEvent.ToolsSearchActiveChanged(

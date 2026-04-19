@@ -11,7 +11,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -51,7 +51,7 @@ internal fun PdfTopControlBar(
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(onClick = onClose) {
+            WormaCeptorIconButton(onClick = onClose) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.viewer_pdf_close),
@@ -78,7 +78,7 @@ internal fun PdfTopControlBar(
                 )
             }
 
-            IconButton(onClick = onDownload) {
+            WormaCeptorIconButton(onClick = onDownload) {
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = stringResource(R.string.viewer_pdf_download),
@@ -86,7 +86,7 @@ internal fun PdfTopControlBar(
                 )
             }
 
-            IconButton(onClick = onShare) {
+            WormaCeptorIconButton(onClick = onShare) {
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = stringResource(R.string.viewer_pdf_share),

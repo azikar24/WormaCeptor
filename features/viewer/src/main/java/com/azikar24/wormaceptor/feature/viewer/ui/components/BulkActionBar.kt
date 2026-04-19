@@ -8,13 +8,13 @@ import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 
@@ -37,7 +37,7 @@ fun BulkActionBar(
         title = stringResource(R.string.viewer_bulk_selected_count, selectedCount),
         modifier = modifier,
         navigationIcon = {
-            IconButton(onClick = onCancel) {
+            WormaCeptorIconButton(onClick = onCancel) {
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(R.string.viewer_bulk_cancel_selection),
@@ -46,14 +46,14 @@ fun BulkActionBar(
         },
         actions = {
             if (selectedCount < totalCount) {
-                IconButton(onClick = onSelectAll) {
+                WormaCeptorIconButton(onClick = onSelectAll) {
                     Icon(
                         imageVector = Icons.Default.SelectAll,
                         contentDescription = stringResource(R.string.viewer_bulk_select_all),
                     )
                 }
             } else {
-                IconButton(onClick = onDeselectAll) {
+                WormaCeptorIconButton(onClick = onDeselectAll) {
                     Icon(
                         imageVector = Icons.Outlined.Deselect,
                         contentDescription = stringResource(R.string.viewer_bulk_deselect_all),
@@ -61,28 +61,28 @@ fun BulkActionBar(
                 }
             }
 
-            IconButton(onClick = onShare) {
+            WormaCeptorIconButton(onClick = onShare) {
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = stringResource(R.string.viewer_bulk_share_selected),
                 )
             }
 
-            IconButton(onClick = onExport) {
+            WormaCeptorIconButton(onClick = onExport) {
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = stringResource(R.string.viewer_bulk_export_selected),
                 )
             }
 
-            IconButton(onClick = onExportAsHar) {
+            WormaCeptorIconButton(onClick = onExportAsHar) {
                 Icon(
                     imageVector = Icons.Default.Download,
                     contentDescription = stringResource(R.string.viewer_bulk_export_selected_as_har),
                 )
             }
 
-            IconButton(
+            WormaCeptorIconButton(
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     onDelete()

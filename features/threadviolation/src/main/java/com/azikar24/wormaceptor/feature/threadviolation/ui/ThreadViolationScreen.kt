@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -24,6 +23,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorPlayPauseButton
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.monitoring.WormaCeptorMonitoringIndicator
@@ -77,7 +77,7 @@ fun ThreadViolationScreen(
                         activeContentDescription = stringResource(R.string.threadviolation_action_stop),
                         inactiveContentDescription = stringResource(R.string.threadviolation_action_start),
                     )
-                    IconButton(onClick = {
+                    WormaCeptorIconButton(onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         onEvent(ThreadViolationViewEvent.ClearViolations)
                     }) {

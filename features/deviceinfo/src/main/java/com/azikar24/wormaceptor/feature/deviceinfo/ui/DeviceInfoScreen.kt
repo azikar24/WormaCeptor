@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -36,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatDateFull
@@ -124,13 +124,13 @@ private fun DeviceInfoTopBar(
         backContentDescription = stringResource(R.string.deviceinfo_back),
         actions = {
             if (hasDeviceInfo) {
-                IconButton(onClick = { onEvent(DeviceInfoViewEvent.CopyAll) }) {
+                WormaCeptorIconButton(onClick = { onEvent(DeviceInfoViewEvent.CopyAll) }) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.deviceinfo_copy_all),
                     )
                 }
-                IconButton(onClick = { onEvent(DeviceInfoViewEvent.ShareReport) }) {
+                WormaCeptorIconButton(onClick = { onEvent(DeviceInfoViewEvent.ShareReport) }) {
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = stringResource(R.string.deviceinfo_share),

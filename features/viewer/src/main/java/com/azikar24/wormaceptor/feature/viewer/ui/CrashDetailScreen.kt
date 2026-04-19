@@ -40,7 +40,6 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -65,6 +64,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -207,7 +207,7 @@ private fun CrashDetailContent(
                     onBack = onBack,
                     backContentDescription = stringResource(R.string.viewer_crash_detail_back),
                     actions = {
-                        IconButton(onClick = { shareCrash(context, crash) }) {
+                        WormaCeptorIconButton(onClick = { shareCrash(context, crash) }) {
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = stringResource(R.string.viewer_crash_detail_share),
@@ -356,7 +356,7 @@ private fun MessageCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
-                IconButton(
+                WormaCeptorIconButton(
                     onClick = { copyToClipboard(context, "Message", message) },
                 ) {
                     Icon(
@@ -405,7 +405,7 @@ private fun StackTraceSection(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
-                IconButton(
+                WormaCeptorIconButton(
                     onClick = { copyToClipboard(context, "Stack Trace", fullStackTrace) },
                 ) {
                     Icon(

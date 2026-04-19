@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -47,6 +46,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -108,14 +108,14 @@ private fun QueryTopBar(
         backContentDescription = stringResource(R.string.database_query_back),
         actions = {
             if (sqlQuery.isNotEmpty()) {
-                IconButton(onClick = onClear) {
+                WormaCeptorIconButton(onClick = onClear) {
                     Icon(
                         imageVector = Icons.Default.Clear,
                         contentDescription = stringResource(R.string.database_query_clear),
                     )
                 }
             }
-            IconButton(
+            WormaCeptorIconButton(
                 onClick = onExecute,
                 enabled = sqlQuery.isNotBlank() && !isExecuting,
             ) {

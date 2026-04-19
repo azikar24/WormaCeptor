@@ -10,12 +10,12 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -37,6 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavTransitions
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -246,11 +247,11 @@ class MainActivity : ComponentActivity() {
         sheetState: SheetState,
     ) {
         if (state.showTestToolsSheet) {
-            ModalBottomSheet(
-                modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xxxl),
+            WormaCeptorBottomSheet(
                 onDismissRequest = { onEvent(MainViewEvent.TestToolsSheetDismissed) },
+                modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xxxl),
                 sheetState = sheetState,
-                containerColor = WormaCeptorTokens.semantic().surface,
+                contentPadding = PaddingValues(),
             ) {
                 TestToolsSheetContent(
                     modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.lg),

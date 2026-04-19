@@ -159,3 +159,4 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
 sort-dependencies = { id = "com.squareup.sort-dependencies", version.ref = "sortDependencies" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5-plugin" }
+vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }

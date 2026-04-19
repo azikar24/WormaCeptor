@@ -7,7 +7,7 @@
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-UI-blue.svg)](https://developer.android.com/jetpack/compose)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**20 debug tools in one library, zero lines in your release APK.**
+**23 debug tools in one library, zero lines in your release APK.**
 Inspect network traffic, monitor performance, browse databases, simulate locations, and more. Ships only in debug builds through Gradle's `debugImplementation`, so nothing reaches production.
 
 ## Demo

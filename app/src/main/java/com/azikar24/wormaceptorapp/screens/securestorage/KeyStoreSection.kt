@@ -66,7 +66,7 @@ private fun KeyStoreItem(
 ) {
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        backgroundColor = WormaCeptorTokens.semantic().surface,
     ) {
         Row(
             modifier = Modifier
@@ -115,7 +115,7 @@ private fun KeyStoreDetails(
             text = entry.alias,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
         Row {
@@ -131,7 +131,7 @@ private fun KeyStoreDetails(
 private fun KeyStoreChip(text: String) {
     Surface(
         shape = WormaCeptorTokens.Shapes.chip,
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        color = WormaCeptorTokens.semantic().surfaceVariant,
     ) {
         Text(
             text = text,
@@ -140,7 +140,7 @@ private fun KeyStoreChip(text: String) {
                 vertical = WormaCeptorTokens.Spacing.xxs,
             ),
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }

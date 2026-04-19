@@ -125,6 +125,8 @@ object WormaCeptorTokens {
 
         /** Content viewer colors. */
         val Viewer = ToolColors.Viewer
+
+        val FloatingButton = ToolColors.FloatingButton
     }
 
     /** Spacing scale tokens (xs through xxxl). */

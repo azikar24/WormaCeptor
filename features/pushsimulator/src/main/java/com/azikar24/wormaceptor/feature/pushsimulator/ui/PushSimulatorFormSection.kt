@@ -37,8 +37,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -213,13 +211,12 @@ private fun ChannelSelector(
         onExpandedChange = { expanded = it },
         modifier = Modifier.fillMaxWidth(),
     ) {
-        OutlinedTextField(
+        WormaCeptorTextField(
             value = selectedChannel?.name.orEmpty(),
             onValueChange = {},
             readOnly = true,
             label = { Text(stringResource(R.string.pushsimulator_channel_label)) },
             placeholder = { Text(stringResource(R.string.pushsimulator_channel_placeholder)) },
-            textStyle = MaterialTheme.typography.bodyMedium,
             trailingIcon = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -230,13 +227,6 @@ private fun ChannelSelector(
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 }
             },
-            shape = WormaCeptorTokens.Shapes.textField,
-            colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(
-                    alpha = WormaCeptorTokens.Alpha.BOLD,
-                ),
-                focusedBorderColor = WormaCeptorTokens.semantic().accent,
-            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = true),

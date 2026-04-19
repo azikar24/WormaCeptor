@@ -115,7 +115,7 @@ private fun MetricDisplay(
         Text(
             text = formattedValue,
             style = WormaCeptorTokens.Typography.overlayValue,
-            color = Color.White,
+            color = WormaCeptorTokens.Colors.Overlay.textPrimary,
         )
     }
 }

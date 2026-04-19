@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
@@ -159,7 +158,7 @@ class MainActivity : ComponentActivity() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+                .background(WormaCeptorTokens.semantic().background),
         ) {
             NavHost(
                 navController = navController,
@@ -227,7 +226,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize(),
         ) {
             Scaffold(
-                containerColor = MaterialTheme.colorScheme.background,
+                containerColor = WormaCeptorTokens.semantic().background,
             ) { _ ->
                 WelcomeScreen(
                     onLaunchClick = { onEvent(MainViewEvent.LaunchWormaCeptorClicked) },
@@ -251,7 +250,7 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.xxxl),
                 onDismissRequest = { onEvent(MainViewEvent.TestToolsSheetDismissed) },
                 sheetState = sheetState,
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = WormaCeptorTokens.semantic().surface,
             ) {
                 TestToolsSheetContent(
                     modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.lg),

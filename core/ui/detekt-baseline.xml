@@ -32,7 +32,9 @@
     <ID>UndocumentedPublicProperty:DetailItem.kt$DetailItem$val label: String</ID>
     <ID>UndocumentedPublicProperty:DetailItem.kt$DetailItem$val value: String</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accent: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accentSecondary: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accentSubtle: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accentTertiary: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val background: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val error: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val errorDark: Color</ID>
@@ -43,6 +45,7 @@
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textSecondary: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textTertiary: Color</ID>
     <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val warning: Color</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorTokens.kt$WormaCeptorTokens.Colors$val FloatingButton = ToolColors.FloatingButton</ID>
     <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorError = 0xFFF44336</ID>
     <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorPending = 0xFFFFC107</ID>
     <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorSuccess = 0xFF4CAF50</ID>

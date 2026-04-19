@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>Deprecation:PreferenceEditSheet.kt$MenuAnchorType</ID>
     <ID>InjectDispatcher:PreferencesRepositoryImpl.kt$PreferencesRepositoryImpl$IO</ID>
     <ID>InjectDispatcher:PreferencesViewModel.kt$PreferencesViewModel$Default</ID>
     <ID>LongMethod:PreferenceDetailScreen.kt$@Composable private fun PreferenceDetailBody( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, typeColors: ToolColors.Preferences.TypeScheme, searchActive: Boolean, modifier: Modifier = Modifier, )</ID>

@@ -151,7 +151,7 @@ private fun SectionHeader(
     Text(
         text = title,
         style = MaterialTheme.typography.labelMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = WormaCeptorTokens.semantic().textSecondary,
         modifier = modifier
             .fillMaxWidth()
             .padding(
@@ -173,15 +173,15 @@ private fun ToolListItem(
     status: ToolStatus = ToolStatus.Idle,
 ) {
     val textColor = if (isDestructive) {
-        MaterialTheme.colorScheme.error
+        WormaCeptorTokens.semantic().error
     } else {
-        MaterialTheme.colorScheme.onSurface
+        WormaCeptorTokens.semantic().textPrimary
     }
 
     val iconTint = if (isDestructive) {
-        MaterialTheme.colorScheme.error.copy(alpha = WormaCeptorTokens.Alpha.HEAVY)
+        WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.HEAVY)
     } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
+        WormaCeptorTokens.semantic().textSecondary
     }
 
     val showDescription = description != null && status == ToolStatus.WaitingForAction
@@ -236,7 +236,7 @@ private fun ToolListItemLabel(
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                color = WormaCeptorTokens.semantic().textSecondary.copy(
                     alpha = WormaCeptorTokens.Alpha.HEAVY,
                 ),
             )
@@ -261,20 +261,20 @@ private fun ToolListItemTrailing(
             ToolStatus.Running -> CircularProgressIndicator(
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                 strokeWidth = WormaCeptorTokens.BorderWidth.thick,
-                color = MaterialTheme.colorScheme.primary,
+                color = WormaCeptorTokens.semantic().accent,
             )
             ToolStatus.Done -> Icon(
                 imageVector = Icons.Outlined.Check,
                 contentDescription = "Done",
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                tint = MaterialTheme.colorScheme.primary,
+                tint = WormaCeptorTokens.semantic().accent,
             )
             else -> if (showChevron) {
                 Icon(
                     imageVector = Icons.Outlined.ChevronRight,
                     contentDescription = null,
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+                    tint = WormaCeptorTokens.semantic().textSecondary.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                 )
             } else {
                 Spacer(modifier = Modifier.size(WormaCeptorTokens.IconSize.md))

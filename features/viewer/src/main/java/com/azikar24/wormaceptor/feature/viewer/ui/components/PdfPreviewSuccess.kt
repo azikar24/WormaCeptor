@@ -173,14 +173,14 @@ internal fun PdfPreviewSuccessContent(
                     PdfMetadataChip(
                         icon = null,
                         text = stringResource(R.string.viewer_pdf_version, version),
-                        tint = WormaCeptorTokens.semantic().accent,
+                        tint = WormaCeptorTokens.semantic().accentSecondary,
                     )
                 }
                 metadata.author?.let { author ->
                     PdfMetadataChip(
                         icon = Icons.Default.Person,
                         text = author,
-                        tint = WormaCeptorTokens.semantic().accent,
+                        tint = WormaCeptorTokens.semantic().accentTertiary,
                     )
                 }
             }

@@ -146,14 +146,14 @@ fun MetricsCard(
                 WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_total),
                     value = totalRequests.toString(),
-                    color = WormaCeptorTokens.semantic().accent,
+                    color = WormaCeptorTokens.semantic().accentSecondary,
                     modifier = Modifier.weight(1f),
                 )
 
                 WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_avg_time),
                     value = formatDurationAvg(avgDuration),
-                    color = WormaCeptorTokens.semantic().accent,
+                    color = WormaCeptorTokens.semantic().accentTertiary,
                     modifier = Modifier.weight(1f),
                 )
             }

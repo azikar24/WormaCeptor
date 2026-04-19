@@ -39,10 +39,10 @@ internal object FloatingButtonConstants {
      */
     object Visual {
         /** Primary button background color (teal accent). */
-        val BUTTON_COLOR: Color = Color(0xFF0D9488)
+        val BUTTON_COLOR: Color = WormaCeptorTokens.Colors.FloatingButton.background
 
         /** Icon tint color. */
-        val ICON_TINT: Color = Color(0xFFFFFFFF)
+        val ICON_TINT: Color = WormaCeptorTokens.Colors.FloatingButton.iconTint
 
         /** Icon alpha/opacity. */
         val ICON_ALPHA = WormaCeptorTokens.Alpha.PROMINENT

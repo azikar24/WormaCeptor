@@ -125,7 +125,7 @@ private fun HeroSection() {
                 fontWeight = FontWeight.Bold,
                 letterSpacing = (-0.5).sp,
             ),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
@@ -133,7 +133,7 @@ private fun HeroSection() {
         Text(
             text = stringResource(id = R.string.app_subtitle),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
+            color = WormaCeptorTokens.semantic().textPrimary.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
             textAlign = TextAlign.Center,
         )
     }
@@ -189,7 +189,7 @@ private fun FeatureCard(
                 },
             ),
         shape = WormaCeptorTokens.Shapes.cardLarge,
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+        color = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
         tonalElevation = 0.dp,
     ) {
         Row(
@@ -237,12 +237,12 @@ private fun FeatureTextContent(
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.SemiBold,
             ),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
         Text(
             text = stringResource(feature.descriptionRes),
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
+            color = WormaCeptorTokens.semantic().textPrimary.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
         )
     }
 }
@@ -289,12 +289,12 @@ private fun Footer(onGitHubClick: () -> Unit) {
         // Version badge
         Surface(
             shape = WormaCeptorTokens.Shapes.button,
-            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.STRONG),
+            color = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.STRONG),
         ) {
             Text(
                 text = "v${BuildConfig.VERSION_NAME}",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+                color = WormaCeptorTokens.semantic().textPrimary.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                 modifier = Modifier.padding(
                     horizontal = WormaCeptorTokens.Spacing.sm,
                     vertical = WormaCeptorTokens.Spacing.xs,
@@ -323,12 +323,12 @@ private fun Footer(onGitHubClick: () -> Unit) {
                 imageVector = IcGithubBuilder.build(),
                 contentDescription = null,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
-                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+                tint = WormaCeptorTokens.semantic().textPrimary.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
             )
             Text(
                 text = stringResource(id = R.string.view_on_github),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+                color = WormaCeptorTokens.semantic().textPrimary.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
             )
         }
     }

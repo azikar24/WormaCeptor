@@ -53,7 +53,7 @@ internal fun AddSecureEntryDialog(
                 Text(
                     text = "This value will be encrypted using AES-256-GCM",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         },

@@ -15,12 +15,12 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -182,7 +182,7 @@ private fun SecureStorageTabRow(
     keyStoreEntriesCount: Int,
     onSelectTab: (Int) -> Unit,
 ) {
-    TabRow(selectedTabIndex = currentPage) {
+    PrimaryTabRow(selectedTabIndex = currentPage) {
         Tab(
             selected = currentPage == 0,
             onClick = { onSelectTab(0) },

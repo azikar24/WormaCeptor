@@ -19,7 +19,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ComposeSyntaxColors
 import com.azikar24.wormaceptor.domain.contracts.XmlFormatter
@@ -78,7 +77,7 @@ private fun XmlLineView(
     colors: ComposeSyntaxColors,
 ) {
     Row(
-        modifier = Modifier.padding(vertical = 1.dp),
+        modifier = Modifier.padding(vertical = WormaCeptorTokens.Spacing.xxs),
         verticalAlignment = Alignment.Top,
     ) {
         Text(

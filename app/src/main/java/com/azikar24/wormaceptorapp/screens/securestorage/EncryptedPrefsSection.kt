@@ -71,7 +71,7 @@ private fun EncryptedPrefItem(
 
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        backgroundColor = WormaCeptorTokens.semantic().surface,
     ) {
         Row(
             modifier = Modifier
@@ -89,7 +89,7 @@ private fun EncryptedPrefItem(
                         text = entry.key,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                     Surface(
                         shape = WormaCeptorTokens.Shapes.chip,
@@ -115,7 +115,7 @@ private fun EncryptedPrefItem(
                     text = if (isValueVisible) entry.value else maskValue(entry.value),
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -125,7 +125,7 @@ private fun EncryptedPrefItem(
                 Icon(
                     imageVector = if (isValueVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                     contentDescription = if (isValueVisible) "Hide value" else "Show value",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }

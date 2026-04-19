@@ -1,8 +1,8 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.vm.CrashListViewEvent
 import com.azikar24.wormaceptor.feature.viewer.vm.CrashListViewState
@@ -53,15 +53,14 @@ fun HomeDialogs(
             ).toImmutableMap()
         }
 
-        ModalBottomSheet(
+        WormaCeptorBottomSheet(
             modifier = Modifier.imePadding(),
             onDismissRequest = {
                 focusManager.clearFocus()
                 onTransactionEvent(TransactionListViewEvent.FilterSheetVisibilityChanged(false))
             },
             sheetState = sheetState,
-            shape = WormaCeptorTokens.Shapes.sheet,
-            containerColor = WormaCeptorTokens.semantic().surface,
+            contentPadding = PaddingValues(),
         ) {
             FilterBottomSheetContent(
                 state = transactionState,

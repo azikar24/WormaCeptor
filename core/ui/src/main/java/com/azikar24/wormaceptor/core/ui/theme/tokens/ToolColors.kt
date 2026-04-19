@@ -648,6 +648,7 @@ object ToolColors {
         val warning = Palette.OverlayAmber
         val critical = Palette.OverlayRed
         val inactive = Palette.OverlayGray
+        val textPrimary = Palette.White
         val textSecondary = Palette.OverlayGray
     }
 
@@ -658,6 +659,7 @@ object ToolColors {
     object DismissZone {
         val error = Palette.Red600
         val surface = Palette.Gray925
+        val iconTint = Palette.White
     }
 
     // ================================================================
@@ -667,5 +669,16 @@ object ToolColors {
     object Viewer {
         val protobufAccent = Palette.Purple600
         val onOverlay = Palette.White
+    }
+
+    // ================================================================
+    // FLOATING BUTTON — platform service overlay
+    // Runs in a non-themed WindowManager context, so values are bound
+    // statically to the light-mode semantic accent (Teal600).
+    // ================================================================
+
+    object FloatingButton {
+        val background = Palette.Teal600
+        val iconTint = Palette.White
     }
 }

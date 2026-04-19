@@ -147,7 +147,7 @@ private fun LocationTestScreenContent(
                             color = if (state.isLocationMocked) {
                                 WormaCeptorTokens.Colors.Location.enabled
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
+                                WormaCeptorTokens.semantic().textSecondary
                             },
                         )
                     }
@@ -207,14 +207,14 @@ private fun LocationInfoSection(
                     color = if (isMocked) {
                         WormaCeptorTokens.Colors.Location.enabled
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        WormaCeptorTokens.semantic().textSecondary
                     },
                 )
                 Text(
                     text = stringResource(R.string.location_coordinate_format, location.latitude, location.longitude),
                     style = MaterialTheme.typography.bodyLarge,
                     fontFamily = FontFamily.Monospace,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
             }
         }
@@ -222,7 +222,7 @@ private fun LocationInfoSection(
             Text(
                 text = "Location permission required",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 modifier = modifier.then(Modifier.padding(start = WormaCeptorTokens.Spacing.md)),
             )
         }
@@ -230,7 +230,7 @@ private fun LocationInfoSection(
             Text(
                 text = "Waiting for location...",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 modifier = modifier.then(Modifier.padding(start = WormaCeptorTokens.Spacing.md)),
             )
         }

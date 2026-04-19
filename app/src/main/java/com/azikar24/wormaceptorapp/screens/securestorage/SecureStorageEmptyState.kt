@@ -35,7 +35,7 @@ internal fun SecureStorageEmptyState(
         ) {
             Surface(
                 shape = CircleShape,
-                color = MaterialTheme.colorScheme.surfaceVariant,
+                color = WormaCeptorTokens.semantic().surfaceVariant,
                 modifier = Modifier.size(64.dp),
             ) {
                 Box(
@@ -46,7 +46,7 @@ internal fun SecureStorageEmptyState(
                         imageVector = icon,
                         contentDescription = null,
                         modifier = Modifier.size(32.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }
@@ -59,7 +59,7 @@ internal fun SecureStorageEmptyState(
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }

@@ -354,13 +354,13 @@ fun ImagePreviewCard(
                                 icon = Icons.Outlined.Memory,
                                 label = stringResource(R.string.viewer_image_size),
                                 value = formatBytes(meta.fileSize),
-                                tint = WormaCeptorTokens.semantic().accent,
+                                tint = WormaCeptorTokens.semantic().accentSecondary,
                             )
                             MetadataItem(
                                 icon = Icons.Outlined.ColorLens,
                                 label = stringResource(R.string.viewer_image_color),
                                 value = meta.colorSpace ?: if (meta.hasAlpha) "RGBA" else "RGB",
-                                tint = WormaCeptorTokens.semantic().accent,
+                                tint = WormaCeptorTokens.semantic().accentTertiary,
                             )
                         }
                     }

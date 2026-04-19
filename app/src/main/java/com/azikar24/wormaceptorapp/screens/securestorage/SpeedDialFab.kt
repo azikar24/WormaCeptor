@@ -87,7 +87,7 @@ private fun SpeedDialItem(
         ) {
             Surface(
                 shape = WormaCeptorTokens.Shapes.button,
-                color = MaterialTheme.colorScheme.surfaceVariant,
+                color = WormaCeptorTokens.semantic().surfaceVariant,
             ) {
                 Text(
                     text = label,

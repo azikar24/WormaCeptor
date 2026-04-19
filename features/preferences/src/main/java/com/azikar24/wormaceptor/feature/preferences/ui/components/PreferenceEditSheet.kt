@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.feature.preferences.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,15 +18,13 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -45,6 +44,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.components.toggle.WormaCeptorSwitch
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -70,10 +70,10 @@ fun PreferenceEditSheet(
         if (editor.isCreating) focusRequester.requestFocus()
     }
 
-    ModalBottomSheet(
+    WormaCeptorBottomSheet(
         onDismissRequest = { onEvent(PreferencesViewEvent.Detail.EditSheetDismissed) },
         sheetState = sheetState,
-        shape = WormaCeptorTokens.Shapes.sheet,
+        contentPadding = PaddingValues(),
     ) {
         PreferenceEditSheetContent(
             editor = editor,
@@ -158,7 +158,7 @@ private fun EditSheetTypeSelector(
             }
         },
     ) {
-        OutlinedTextField(
+        WormaCeptorTextField(
             value = editor.selectedType,
             onValueChange = {},
             readOnly = true,
@@ -170,9 +170,8 @@ private fun EditSheetTypeSelector(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
             enabled = editor.isCreating,
-            shape = WormaCeptorTokens.Shapes.button,
         )
         if (editor.isCreating) {
             ExposedDropdownMenu(

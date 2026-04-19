@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.core.ui.components.dialog
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +27,8 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.scaled
  * @param title Optional sheet title rendered as a heading above the content.
  * @param sheetState External sheet state (for programmatic show/hide).
  *                   Defaults to [rememberModalBottomSheetState].
+ * @param contentPadding Pass [PaddingValues] of zero when the content owns its
+ *                       own scrolling or padding.
  * @param content Sheet body composed inside a padded [ColumnScope].
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +38,10 @@ fun WormaCeptorBottomSheet(
     modifier: Modifier = Modifier,
     title: String? = null,
     sheetState: SheetState = rememberModalBottomSheetState(),
+    contentPadding: PaddingValues = PaddingValues(
+        horizontal = WormaCeptorTokens.Spacing.lg.scaled(),
+        vertical = WormaCeptorTokens.Spacing.md.scaled(),
+    ),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     ModalBottomSheet(
@@ -42,16 +49,13 @@ fun WormaCeptorBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
         shape = WormaCeptorTokens.Shapes.sheet,
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+        containerColor = WormaCeptorTokens.semantic().surface,
+        contentColor = WormaCeptorTokens.semantic().textPrimary,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = WormaCeptorTokens.Spacing.lg.scaled(),
-                    vertical = WormaCeptorTokens.Spacing.md.scaled(),
-                ),
+                .padding(contentPadding),
         ) {
             if (title != null) {
                 Text(

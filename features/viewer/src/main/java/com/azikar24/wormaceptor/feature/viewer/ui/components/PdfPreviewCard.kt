@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.createBitmap
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.PdfMetadata
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
@@ -112,7 +111,6 @@ fun PdfPreviewCard(
         onClick = onFullscreen,
         modifier = modifier.fillMaxWidth(),
         style = CardStyle.Outlined,
-        borderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
         enabled = loadState is PdfLoadState.Success,
     ) {
         when (val state = loadState) {

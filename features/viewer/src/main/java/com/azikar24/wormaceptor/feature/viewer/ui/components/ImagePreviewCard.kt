@@ -151,7 +151,6 @@ fun ImagePreviewCard(
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
         style = CardStyle.Outlined,
-        borderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
     ) {
         Box(
             modifier = Modifier

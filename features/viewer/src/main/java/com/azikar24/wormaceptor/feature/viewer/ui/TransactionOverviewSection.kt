@@ -316,7 +316,6 @@ internal fun EnhancedOverviewCard(
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
         style = CardStyle.Outlined,
-        borderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
     ) {
         Column(modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg)) {
             // Header with icon

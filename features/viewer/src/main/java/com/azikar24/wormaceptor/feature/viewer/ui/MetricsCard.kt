@@ -90,7 +90,6 @@ fun MetricsCard(
             .fillMaxWidth()
             .padding(horizontal = WormaCeptorTokens.Spacing.sm, vertical = WormaCeptorTokens.Spacing.md),
         style = CardStyle.Outlined,
-        borderColor = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
     ) {
         Column(
             modifier = Modifier

@@ -1,7 +1,7 @@
 # WormaCeptor
 
 [![GitHub Stars](https://img.shields.io/github/stars/azikar24/WormaCeptor?style=social)](https://github.com/azikar24/WormaCeptor)
-[![JitPack](https://jitpack.io/v/azikar24/WormaCeptor.svg)](https://jitpack.io/#azikar24/WormaCeptor)
+[![Maven Central](https://img.shields.io/maven-central/v/com.azikar24.wormaceptor/wormaceptor-client.svg)](https://central.sonatype.com/artifact/com.azikar24.wormaceptor/wormaceptor-client)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg)](https://developer.android.com/about/versions/marshmallow)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)](https://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-UI-blue.svg)](https://developer.android.com/jetpack/compose)
@@ -31,12 +31,12 @@ Network inspection, system tools, and performance monitoring side by side:
 
 ## Quick Start
 
-Add JitPack to your `settings.gradle.kts`:
+Make sure `mavenCentral()` is declared in your `settings.gradle.kts` (it's in the default Android template):
 
 ```kotlin
 dependencyResolutionManagement {
     repositories {
-        maven { url = uri("https://jitpack.io") }
+        mavenCentral()
     }
 }
 ```
@@ -45,8 +45,8 @@ Add the dependencies in your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.github.azikar24.WormaCeptor:api-client:2.3.0")
-    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.3.0")
+    implementation("com.azikar24.wormaceptor:wormaceptor-client:2.3.0")
+    debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:2.3.0")
 }
 ```
 
@@ -101,9 +101,9 @@ Every feature is its own module. Enable exactly what you need at init time, disa
 
 Your release APK never sees debug code. Here's why:
 
-1. `api-client` ships in all build types. It contains only interfaces and a reflection-based lookup, no debug logic.
-2. `api-impl-persistence` (or `api-impl-imdb`) ships only in debug via `debugImplementation`. It registers itself through classpath discovery.
-3. In release builds, no implementation exists on the classpath. `api-client` falls back to a no-op automatically. No ProGuard rules, no runtime checks, no dead code.
+1. `wormaceptor-client` ships in all build types. It contains only interfaces and a reflection-based lookup, no debug logic.
+2. `wormaceptor-persistence` (or `wormaceptor-imdb`) ships only in debug via `debugImplementation`. It registers itself through classpath discovery.
+3. In release builds, no implementation exists on the classpath. `wormaceptor-client` falls back to a no-op automatically. No ProGuard rules, no runtime checks, no dead code.
 
 More details in [No-Op Behavior](https://wormaceptor.com/docs/no-op-behavior).
 

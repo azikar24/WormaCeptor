@@ -206,6 +206,20 @@ public final class com/azikar24/wormaceptor/core/ui/components/button/Composable
 	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
+public final class com/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorFilledTonalIconButtonKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorFilledTonalIconButtonKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorIconButtonKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorIconButtonKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class com/azikar24/wormaceptor/core/ui/components/button/WormaCeptorButtonKt {
 	public static final fun WormaCeptorButton--42sRYA (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/azikar24/wormaceptor/core/ui/components/button/ButtonVariant;ZZLandroidx/compose/ui/graphics/Color;Landroidx/compose/ui/graphics/Color;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
@@ -214,6 +228,16 @@ public final class com/azikar24/wormaceptor/core/ui/components/button/WormaCepto
 	public static final fun WormaCeptorExtendedFAB (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun WormaCeptorFAB (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/runtime/Composer;II)V
 	public static final fun WormaCeptorSmallFAB-wBJOh4Y (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;JJLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/core/ui/components/button/WormaCeptorFilledTonalIconButtonKt {
+	public static final fun WormaCeptorFilledTonalIconButton (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/material3/IconButtonColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun WormaCeptorFilledTonalIconButton (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLandroidx/compose/material3/IconButtonColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/core/ui/components/button/WormaCeptorIconButtonKt {
+	public static final fun WormaCeptorIconButton (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun WormaCeptorIconButton-yyHmmpQ (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/graphics/Color;Landroidx/compose/ui/unit/Dp;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/button/WormaCeptorPlayPauseButtonKt {
@@ -475,7 +499,7 @@ public final class com/azikar24/wormaceptor/core/ui/components/dialog/WormaCepto
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/dialog/WormaCeptorBottomSheetKt {
-	public static final fun WormaCeptorBottomSheet (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/material3/SheetState;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun WormaCeptorBottomSheet (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/material3/SheetState;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/divider/ComposableSingletons$WormaCeptorDividerKt {
@@ -687,10 +711,6 @@ public final class com/azikar24/wormaceptor/core/ui/components/section/Composabl
 	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-8$ui_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function2;
-}
-
-public final class com/azikar24/wormaceptor/core/ui/components/section/WormaCeptorFlowRowKt {
-	public static final fun WormaCeptorFlowRow (Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/Arrangement$Horizontal;Landroidx/compose/foundation/layout/Arrangement$Vertical;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/section/WormaCeptorScrollableRowKt {
@@ -1117,6 +1137,7 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorTokens$Colo
 	public final fun getDependenciesInspector ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector;
 	public final fun getDismissZone ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DismissZone;
 	public final fun getFileBrowser ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser;
+	public final fun getFloatingButton ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FloatingButton;
 	public final fun getFps ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Fps;
 	public final fun getHttpMethod ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/Colors$HttpMethod;
 	public final fun getLeakDetection ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LeakDetection;
@@ -1270,11 +1291,13 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/LocalDensityKt 
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/SemanticColors {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component10-0d7_KjU ()J
 	public final fun component11-0d7_KjU ()J
 	public final fun component12-0d7_KjU ()J
+	public final fun component13-0d7_KjU ()J
+	public final fun component14-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
 	public final fun component4-0d7_KjU ()J
@@ -1283,11 +1306,13 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/SemanticColors 
 	public final fun component7-0d7_KjU ()J
 	public final fun component8-0d7_KjU ()J
 	public final fun component9-0d7_KjU ()J
-	public final fun copy-2qZNXz8 (JJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/SemanticColors;
-	public static synthetic fun copy-2qZNXz8$default (Lcom/azikar24/wormaceptor/core/ui/theme/tokens/SemanticColors;JJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/SemanticColors;
+	public final fun copy-dVHXu7A (JJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/SemanticColors;
+	public static synthetic fun copy-dVHXu7A$default (Lcom/azikar24/wormaceptor/core/ui/theme/tokens/SemanticColors;JJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/SemanticColors;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAccent-0d7_KjU ()J
+	public final fun getAccentSecondary-0d7_KjU ()J
 	public final fun getAccentSubtle-0d7_KjU ()J
+	public final fun getAccentTertiary-0d7_KjU ()J
 	public final fun getBackground-0d7_KjU ()J
 	public final fun getError-0d7_KjU ()J
 	public final fun getErrorDark-0d7_KjU ()J
@@ -1350,12 +1375,22 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/TokenBorderWidt
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/TokenComponentSize {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/TokenComponentSize;
+	public final fun getChartHeight-D9Ej5fM ()F
 	public final fun getDot-D9Ej5fM ()F
 	public final fun getDotInset-D9Ej5fM ()F
+	public final fun getGaugeContainerHeight-D9Ej5fM ()F
+	public final fun getGaugeSize-D9Ej5fM ()F
+	public final fun getGaugeStrokeWidth-D9Ej5fM ()F
+	public final fun getIconButtonSmall-D9Ej5fM ()F
+	public final fun getPerCoreLabelWidth-D9Ej5fM ()F
+	public final fun getPerCorePercentageWidth-D9Ej5fM ()F
 	public final fun getProgressBarHeight-D9Ej5fM ()F
+	public final fun getTableCellMaxWidth-D9Ej5fM ()F
+	public final fun getTableCellMinWidth-D9Ej5fM ()F
 	public final fun getTemplateCardWidth-D9Ej5fM ()F
 	public final fun getTextAreaHeight-D9Ej5fM ()F
 	public final fun getToolTileHeight-D9Ej5fM ()F
+	public final fun getTreeIndent-D9Ej5fM ()F
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/TokenDensity : java/lang/Enum {
@@ -1606,6 +1641,7 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Dism
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DismissZone;
 	public final fun getError-0d7_KjU ()J
+	public final fun getIconTint-0d7_KjU ()J
 	public final fun getSurface-0d7_KjU ()J
 }
 
@@ -1668,6 +1704,13 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$File
 	public final fun getXmlTag-0d7_KjU ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FloatingButton {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FloatingButton;
+	public final fun getBackground-0d7_KjU ()J
+	public final fun getIconTint-0d7_KjU ()J
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Fps {
@@ -1784,6 +1827,7 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Over
 	public final fun getCritical-0d7_KjU ()J
 	public final fun getGood-0d7_KjU ()J
 	public final fun getInactive-0d7_KjU ()J
+	public final fun getTextPrimary-0d7_KjU ()J
 	public final fun getTextSecondary-0d7_KjU ()J
 	public final fun getWarning-0d7_KjU ()J
 }
@@ -1929,6 +1973,7 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Thre
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Viewer {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Viewer;
+	public final fun getOnOverlay-0d7_KjU ()J
 	public final fun getProtobufAccent-0d7_KjU ()J
 }
 

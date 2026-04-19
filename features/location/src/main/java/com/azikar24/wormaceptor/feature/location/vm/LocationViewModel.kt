@@ -7,6 +7,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
@@ -42,8 +43,9 @@ class LocationViewModel(
     private val repository: LocationSimulatorRepository,
     private val engine: LocationSimulatorEngine,
     context: Context,
-) : BaseViewModel<LocationViewState, LocationViewEffect, LocationViewEvent>(
+) : BaseViewModel<LocationViewState, LocationViewEffect, LocationViewEvent, NoOpNavigator>(
     LocationViewState(isMockLocationAvailable = engine.isMockLocationAvailable()),
+    NoOpNavigator,
 ) {
 
     private val fusedLocationClient: FusedLocationProviderClient =
@@ -119,6 +121,8 @@ class LocationViewModel(
             LocationViewEvent.StartRealLocationUpdates -> startRealLocationUpdates()
             LocationViewEvent.StopRealLocationUpdates -> stopRealLocationUpdates()
             LocationViewEvent.ToggleMapExpanded -> updateState { copy(isMapExpanded = !isMapExpanded) }
+            LocationViewEvent.ShowSavePresetDialog -> updateState { copy(showSavePresetDialog = true) }
+            LocationViewEvent.DismissSavePresetDialog -> updateState { copy(showSavePresetDialog = false) }
         }
     }
 
@@ -282,7 +286,7 @@ class LocationViewModel(
                     isBuiltIn = false,
                 )
                 repository.savePreset(preset)
-                updateState { copy(isLoading = false) }
+                updateState { copy(isLoading = false, showSavePresetDialog = false) }
                 emitEffect(LocationViewEffect.ShowSuccess("Preset saved: ${preset.name}"))
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 Log.w(TAG, "Failed to save preset", e)

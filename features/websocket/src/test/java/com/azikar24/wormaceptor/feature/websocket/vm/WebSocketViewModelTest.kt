@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.websocket.vm
 
-import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
@@ -8,6 +7,7 @@ import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageType
 import com.azikar24.wormaceptor.domain.entities.WebSocketState
+import com.azikar24.wormaceptor.feature.websocket.navigator.WebSocketNavigator
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainKey
@@ -35,6 +35,8 @@ class WebSocketViewModelTest {
 
     private val connectionsFlow = MutableStateFlow<List<WebSocketConnection>>(emptyList())
     private val messagesFlow = MutableStateFlow<List<WebSocketMessage>>(emptyList())
+
+    private val navigator = mockk<WebSocketNavigator>(relaxed = true)
 
     private val engine = mockk<WebSocketMonitorEngine>(relaxed = true) {
         every { connections } returns connectionsFlow
@@ -73,7 +75,7 @@ class WebSocketViewModelTest {
     @BeforeEach
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = WebSocketViewModel(engine)
+        viewModel = WebSocketViewModel(engine, navigator)
     }
 
     @AfterEach
@@ -81,39 +83,27 @@ class WebSocketViewModelTest {
         Dispatchers.resetMain()
     }
 
-    /**
-     * Helper that keeps consuming items from the turbine until [predicate] returns true.
-     * The debounce + flowOn(Dispatchers.Default) pipeline may emit intermediate states
-     * before the final filtered result arrives.
-     */
-    private suspend fun <T> ReceiveTurbine<T>.awaitUntil(predicate: (T) -> Boolean): T {
-        while (true) {
-            val item = awaitItem()
-            if (predicate(item)) return item
-        }
-    }
-
     @Nested
     inner class `initial state` {
 
         @Test
         fun `connection search query is empty`() {
-            viewModel.connectionSearchQuery.value shouldBe ""
+            viewModel.uiState.value.connectionSearchQuery shouldBe ""
         }
 
         @Test
         fun `message search query is empty`() {
-            viewModel.messageSearchQuery.value shouldBe ""
+            viewModel.uiState.value.messageSearchQuery shouldBe ""
         }
 
         @Test
         fun `direction filter is null`() {
-            viewModel.directionFilter.value shouldBe null
+            viewModel.uiState.value.directionFilter shouldBe null
         }
 
         @Test
         fun `expanded message id is null`() {
-            viewModel.expandedMessageId.value shouldBe null
+            viewModel.uiState.value.expandedMessageId shouldBe null
         }
     }
 
@@ -129,24 +119,24 @@ class WebSocketViewModelTest {
             )
             advanceUntilIdle()
 
-            viewModel.connections.test {
-                val conns = awaitUntil { it.size == 3 }
-                conns.map { it.id } shouldBe listOf(2L, 3L, 1L)
+            viewModel.uiState.test {
+                val state = awaitUntil { it.connections.size == 3 }
+                state.connections.map { it.id } shouldBe listOf(2L, 3L, 1L)
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
         @Test
         fun `filters connections by search query matching url`() = runTest {
-            viewModel.connections.test {
+            viewModel.uiState.test {
                 connectionsFlow.value = listOf(
                     makeConnection(id = 1, url = "wss://api.example.com/chat"),
                     makeConnection(id = 2, url = "wss://other.service.com/feed"),
                 )
-                viewModel.onConnectionSearchQueryChanged("example")
+                viewModel.sendEvent(WebSocketViewEvent.ConnectionSearchQueryChanged("example"))
 
-                val conns = awaitUntil { it.size == 1 }
-                conns.first().id shouldBe 1L
+                val state = awaitUntil { it.connections.size == 1 }
+                state.connections.first().id shouldBe 1L
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -159,8 +149,8 @@ class WebSocketViewModelTest {
             )
             advanceUntilIdle()
 
-            viewModel.connections.test {
-                awaitUntil { it.size == 2 } shouldHaveSize 2
+            viewModel.uiState.test {
+                awaitUntil { it.connections.size == 2 }.connections shouldHaveSize 2
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -171,15 +161,15 @@ class WebSocketViewModelTest {
 
         @Test
         fun `sets selected connection and resets message filters`() = runTest {
-            viewModel.onMessageSearchQueryChanged("something")
-            viewModel.toggleDirectionFilter(WebSocketMessageDirection.SENT)
-            viewModel.toggleMessageExpanded(42)
+            viewModel.sendEvent(WebSocketViewEvent.MessageSearchQueryChanged("something"))
+            viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.SENT))
+            viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(42))
 
-            viewModel.selectConnection(1L)
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
 
-            viewModel.messageSearchQuery.value shouldBe ""
-            viewModel.directionFilter.value shouldBe null
-            viewModel.expandedMessageId.value shouldBe null
+            viewModel.uiState.value.messageSearchQuery shouldBe ""
+            viewModel.uiState.value.directionFilter shouldBe null
+            viewModel.uiState.value.expandedMessageId shouldBe null
         }
 
         @Test
@@ -189,13 +179,13 @@ class WebSocketViewModelTest {
                 makeConnection(id = 2, url = "wss://second.com"),
             )
 
-            viewModel.selectConnection(2L)
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(2L))
             advanceUntilIdle()
 
-            viewModel.selectedConnection.test {
-                val conn = awaitItem()
-                conn?.id shouldBe 2L
-                conn?.url shouldBe "wss://second.com"
+            viewModel.uiState.test {
+                val state = awaitUntil { it.selectedConnection != null }
+                state.selectedConnection?.id shouldBe 2L
+                state.selectedConnection?.url shouldBe "wss://second.com"
             }
         }
     }
@@ -205,27 +195,25 @@ class WebSocketViewModelTest {
 
         @Test
         fun `clears all selection and message state`() = runTest {
-            viewModel.selectConnection(1L)
-            viewModel.onMessageSearchQueryChanged("query")
-            viewModel.toggleDirectionFilter(WebSocketMessageDirection.SENT)
-            viewModel.toggleMessageExpanded(5)
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+            viewModel.sendEvent(WebSocketViewEvent.MessageSearchQueryChanged("query"))
+            viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.SENT))
+            viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(5))
 
-            viewModel.clearConnectionSelection()
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelectionCleared)
 
-            viewModel.messageSearchQuery.value shouldBe ""
-            viewModel.directionFilter.value shouldBe null
-            viewModel.expandedMessageId.value shouldBe null
+            viewModel.uiState.value.messageSearchQuery shouldBe ""
+            viewModel.uiState.value.directionFilter shouldBe null
+            viewModel.uiState.value.expandedMessageId shouldBe null
         }
 
         @Test
         fun `selectedConnection becomes null`() = runTest {
-            viewModel.selectConnection(1L)
-            viewModel.clearConnectionSelection()
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelectionCleared)
             advanceUntilIdle()
 
-            viewModel.selectedConnection.test {
-                awaitItem() shouldBe null
-            }
+            viewModel.uiState.value.selectedConnection shouldBe null
         }
     }
 
@@ -237,64 +225,66 @@ class WebSocketViewModelTest {
             messagesFlow.value = listOf(makeMessage())
             advanceUntilIdle()
 
-            viewModel.messages.test {
-                awaitUntil { it.isEmpty() }.shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitUntil { it.messages.isEmpty() }.messages.shouldBeEmpty()
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
         @Test
         fun `filters messages by selected connection`() = runTest {
-            viewModel.messages.test {
+            viewModel.uiState.test {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L),
                     makeMessage(id = 2, connectionId = 2L),
                     makeMessage(id = 3, connectionId = 1L),
                 )
-                viewModel.selectConnection(1L)
+                viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
 
-                awaitUntil { it.size == 2 } shouldHaveSize 2
+                awaitUntil { it.messages.size == 2 }.messages shouldHaveSize 2
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
         @Test
         fun `filters messages by search query in payload`() = runTest {
-            viewModel.messages.test {
+            viewModel.uiState.test {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, payload = "Hello World"),
                     makeMessage(id = 2, connectionId = 1L, payload = "Goodbye"),
                 )
-                viewModel.selectConnection(1L)
-                viewModel.onMessageSearchQueryChanged("Hello")
+                viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+                viewModel.sendEvent(WebSocketViewEvent.MessageSearchQueryChanged("Hello"))
 
-                val msgs = awaitUntil { it.size == 1 && it.first().payload == "Hello World" }
-                msgs shouldHaveSize 1
-                msgs.first().payload shouldBe "Hello World"
+                val state = awaitUntil { it.messages.size == 1 && it.messages.first().payload == "Hello World" }
+                state.messages shouldHaveSize 1
+                state.messages.first().payload shouldBe "Hello World"
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
         @Test
         fun `filters messages by direction`() = runTest {
-            viewModel.messages.test {
+            viewModel.uiState.test {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, direction = WebSocketMessageDirection.SENT),
                     makeMessage(id = 2, connectionId = 1L, direction = WebSocketMessageDirection.RECEIVED),
                 )
-                viewModel.selectConnection(1L)
-                viewModel.toggleDirectionFilter(WebSocketMessageDirection.SENT)
+                viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+                viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.SENT))
 
-                val msgs = awaitUntil { it.size == 1 && it.first().direction == WebSocketMessageDirection.SENT }
-                msgs shouldHaveSize 1
-                msgs.first().direction shouldBe WebSocketMessageDirection.SENT
+                val state = awaitUntil {
+                    it.messages.size == 1 && it.messages.first().direction == WebSocketMessageDirection.SENT
+                }
+                state.messages shouldHaveSize 1
+                state.messages.first().direction shouldBe WebSocketMessageDirection.SENT
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
         @Test
         fun `combines all filters`() = runTest {
-            viewModel.messages.test {
+            viewModel.uiState.test {
                 messagesFlow.value = listOf(
                     makeMessage(
                         id = 1,
@@ -321,48 +311,48 @@ class WebSocketViewModelTest {
                         payload = "ping",
                     ),
                 )
-                viewModel.selectConnection(1L)
-                viewModel.toggleDirectionFilter(WebSocketMessageDirection.SENT)
-                viewModel.onMessageSearchQueryChanged("ping")
+                viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+                viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.SENT))
+                viewModel.sendEvent(WebSocketViewEvent.MessageSearchQueryChanged("ping"))
 
-                val msgs = awaitUntil { it.size == 1 && it.first().id == 1L }
-                msgs shouldHaveSize 1
-                msgs.first().id shouldBe 1L
+                val state = awaitUntil { it.messages.size == 1 && it.messages.first().id == 1L }
+                state.messages shouldHaveSize 1
+                state.messages.first().id shouldBe 1L
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
         @Test
         fun `search is case insensitive`() = runTest {
-            viewModel.messages.test {
+            viewModel.uiState.test {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, payload = "Hello World"),
                     makeMessage(id = 2, connectionId = 1L, payload = "Goodbye"),
                 )
-                viewModel.selectConnection(1L)
-                viewModel.onMessageSearchQueryChanged("hello")
+                viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+                viewModel.sendEvent(WebSocketViewEvent.MessageSearchQueryChanged("hello"))
 
-                val msgs = awaitUntil { it.size == 1 && it.first().payload == "Hello World" }
-                msgs shouldHaveSize 1
-                msgs.first().payload shouldBe "Hello World"
+                val state = awaitUntil { it.messages.size == 1 && it.messages.first().payload == "Hello World" }
+                state.messages shouldHaveSize 1
+                state.messages.first().payload shouldBe "Hello World"
                 cancelAndIgnoreRemainingEvents()
             }
         }
 
         @Test
         fun `reacts to new messages from engine`() = runTest {
-            viewModel.messages.test {
+            viewModel.uiState.test {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, payload = "first"),
                 )
-                viewModel.selectConnection(1L)
-                awaitUntil { it.size == 1 }
+                viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+                awaitUntil { it.messages.size == 1 }
 
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, payload = "first"),
                     makeMessage(id = 2, connectionId = 1L, payload = "second"),
                 )
-                awaitUntil { it.size == 2 } shouldHaveSize 2
+                awaitUntil { it.messages.size == 2 }.messages shouldHaveSize 2
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -373,25 +363,25 @@ class WebSocketViewModelTest {
 
         @Test
         fun `sets direction when currently null`() {
-            viewModel.toggleDirectionFilter(WebSocketMessageDirection.SENT)
+            viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.SENT))
 
-            viewModel.directionFilter.value shouldBe WebSocketMessageDirection.SENT
+            viewModel.uiState.value.directionFilter shouldBe WebSocketMessageDirection.SENT
         }
 
         @Test
         fun `clears direction when toggling same value`() {
-            viewModel.toggleDirectionFilter(WebSocketMessageDirection.SENT)
-            viewModel.toggleDirectionFilter(WebSocketMessageDirection.SENT)
+            viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.SENT))
+            viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.SENT))
 
-            viewModel.directionFilter.value shouldBe null
+            viewModel.uiState.value.directionFilter shouldBe null
         }
 
         @Test
         fun `switches to different direction`() {
-            viewModel.toggleDirectionFilter(WebSocketMessageDirection.SENT)
-            viewModel.toggleDirectionFilter(WebSocketMessageDirection.RECEIVED)
+            viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.SENT))
+            viewModel.sendEvent(WebSocketViewEvent.DirectionFilterToggled(WebSocketMessageDirection.RECEIVED))
 
-            viewModel.directionFilter.value shouldBe WebSocketMessageDirection.RECEIVED
+            viewModel.uiState.value.directionFilter shouldBe WebSocketMessageDirection.RECEIVED
         }
     }
 
@@ -400,25 +390,25 @@ class WebSocketViewModelTest {
 
         @Test
         fun `expands when currently null`() {
-            viewModel.toggleMessageExpanded(5L)
+            viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(5L))
 
-            viewModel.expandedMessageId.value shouldBe 5L
+            viewModel.uiState.value.expandedMessageId shouldBe 5L
         }
 
         @Test
         fun `collapses when toggling same id`() {
-            viewModel.toggleMessageExpanded(5L)
-            viewModel.toggleMessageExpanded(5L)
+            viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(5L))
+            viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(5L))
 
-            viewModel.expandedMessageId.value shouldBe null
+            viewModel.uiState.value.expandedMessageId shouldBe null
         }
 
         @Test
         fun `switches to different id`() {
-            viewModel.toggleMessageExpanded(5L)
-            viewModel.toggleMessageExpanded(10L)
+            viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(5L))
+            viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(10L))
 
-            viewModel.expandedMessageId.value shouldBe 10L
+            viewModel.uiState.value.expandedMessageId shouldBe 10L
         }
     }
 
@@ -432,18 +422,18 @@ class WebSocketViewModelTest {
                 makeMessage(id = 2, connectionId = 1L),
                 makeMessage(id = 3, connectionId = 2L),
             )
-            viewModel.selectConnection(1L)
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
             advanceUntilIdle()
 
-            viewModel.totalMessageCount.test {
-                awaitItem() shouldBe 2
+            viewModel.uiState.test {
+                awaitUntil { it.totalMessageCount == 2 }.totalMessageCount shouldBe 2
             }
         }
 
         @Test
         fun `is 0 when no connection selected`() = runTest {
-            viewModel.totalMessageCount.test {
-                awaitItem() shouldBe 0
+            viewModel.uiState.test {
+                awaitItem().totalMessageCount shouldBe 0
             }
         }
     }
@@ -458,14 +448,14 @@ class WebSocketViewModelTest {
                 makeMessage(id = 2, connectionId = 1L, direction = WebSocketMessageDirection.SENT),
                 makeMessage(id = 3, connectionId = 1L, direction = WebSocketMessageDirection.RECEIVED),
             )
-            viewModel.selectConnection(1L)
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
             advanceUntilIdle()
 
-            viewModel.directionCounts.test {
-                val counts = awaitItem()
-                counts shouldContainKey WebSocketMessageDirection.SENT
-                counts[WebSocketMessageDirection.SENT] shouldBe 2
-                counts[WebSocketMessageDirection.RECEIVED] shouldBe 1
+            viewModel.uiState.test {
+                val state = awaitUntil { it.directionCounts.isNotEmpty() }
+                state.directionCounts shouldContainKey WebSocketMessageDirection.SENT
+                state.directionCounts[WebSocketMessageDirection.SENT] shouldBe 2
+                state.directionCounts[WebSocketMessageDirection.RECEIVED] shouldBe 1
             }
         }
     }
@@ -476,9 +466,10 @@ class WebSocketViewModelTest {
         @Test
         fun `reflects connection list size`() = runTest {
             connectionsFlow.value = listOf(makeConnection(id = 1), makeConnection(id = 2))
+            advanceUntilIdle()
 
-            viewModel.totalConnectionCount.test {
-                awaitItem() shouldBe 2
+            viewModel.uiState.test {
+                awaitUntil { it.totalConnectionCount == 2 }.totalConnectionCount shouldBe 2
             }
         }
     }
@@ -488,13 +479,13 @@ class WebSocketViewModelTest {
 
         @Test
         fun `delegates to engine and resets selection`() {
-            viewModel.selectConnection(1L)
-            viewModel.toggleMessageExpanded(5)
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+            viewModel.sendEvent(WebSocketViewEvent.MessageExpandToggled(5))
 
-            viewModel.clearAll()
+            viewModel.sendEvent(WebSocketViewEvent.ClearAllConfirmed)
 
             verify { engine.clear() }
-            viewModel.expandedMessageId.value shouldBe null
+            viewModel.uiState.value.expandedMessageId shouldBe null
         }
     }
 
@@ -503,17 +494,17 @@ class WebSocketViewModelTest {
 
         @Test
         fun `delegates to engine with connection id`() {
-            viewModel.selectConnection(1L)
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
 
-            viewModel.clearCurrentConnectionMessages()
+            viewModel.sendEvent(WebSocketViewEvent.ClearMessagesConfirmed)
 
             verify { engine.clearMessagesForConnection(1L) }
-            viewModel.expandedMessageId.value shouldBe null
+            viewModel.uiState.value.expandedMessageId shouldBe null
         }
 
         @Test
         fun `does nothing when no connection selected`() {
-            viewModel.clearCurrentConnectionMessages()
+            viewModel.sendEvent(WebSocketViewEvent.ClearMessagesConfirmed)
 
             verify(exactly = 0) { engine.clearMessagesForConnection(any()) }
         }
@@ -527,6 +518,39 @@ class WebSocketViewModelTest {
             every { engine.getMessageCountForConnection(1L) } returns 7
 
             viewModel.getMessageCountForConnection(1L) shouldBe 7
+        }
+    }
+
+    @Nested
+    inner class `navigation` {
+
+        @Test
+        fun `selecting a connection navigates to messages screen`() = runTest {
+            connectionsFlow.value = listOf(makeConnection(id = 1L))
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+            verify { navigator.navigateToMessages() }
+        }
+
+        @Test
+        fun `ConnectionBackPressed clears selection and navigates back`() = runTest {
+            connectionsFlow.value = listOf(makeConnection(id = 1L))
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
+            viewModel.sendEvent(WebSocketViewEvent.ConnectionBackPressed)
+
+            viewModel.uiState.value.selectedConnection shouldBe null
+            verify { navigator.navigateBack() }
+        }
+    }
+
+    /**
+     * Helper that keeps consuming items from the turbine until [predicate] returns true.
+     * The debounce + flowOn(Dispatchers.Default) pipeline may emit intermediate states
+     * before the final filtered result arrives.
+     */
+    private suspend fun <T> app.cash.turbine.ReceiveTurbine<T>.awaitUntil(predicate: (T) -> Boolean): T {
+        while (true) {
+            val item = awaitItem()
+            if (predicate(item)) return item
         }
     }
 }

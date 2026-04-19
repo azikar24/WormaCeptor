@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.FileProvider
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -209,23 +209,15 @@ fun getStatusColor(
     code: Int?,
 ): Color {
     return when (status) {
-        TransactionStatus.COMPLETED -> when {
-            code == null -> WormaCeptorColors.StatusAmber
-            code in 200..299 -> WormaCeptorColors.StatusGreen
-            code in 300..399 -> WormaCeptorColors.StatusBlue
-            code in 400..499 -> WormaCeptorColors.StatusAmber
-            code in 500..599 -> WormaCeptorColors.StatusRed
-            else -> WormaCeptorColors.StatusGrey
+        TransactionStatus.COMPLETED -> when (code) {
+            in 200..299 -> WormaCeptorTokens.Colors.Status.green
+            in 300..399 -> WormaCeptorTokens.Colors.Status.blue
+            in 400..499 -> WormaCeptorTokens.Colors.Status.amber
+            in 500..599 -> WormaCeptorTokens.Colors.Status.red
+            null -> WormaCeptorTokens.Colors.Status.amber
+            else -> WormaCeptorTokens.Colors.Status.grey
         }
-        TransactionStatus.FAILED -> WormaCeptorColors.StatusRed
-        TransactionStatus.ACTIVE -> WormaCeptorColors.StatusGrey
+        TransactionStatus.FAILED -> WormaCeptorTokens.Colors.Status.red
+        TransactionStatus.ACTIVE -> WormaCeptorTokens.Colors.Status.grey
     }
 }
-
-/**
- * Determines the color for HTTP methods.
- *
- * @param method The HTTP method string
- * @return The appropriate Color for the method
- */
-fun getMethodColor(method: String): Color = WormaCeptorColors.HttpMethod.forMethod(method)

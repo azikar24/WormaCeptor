@@ -54,6 +54,9 @@ enum class Feature {
     /** Detects StrictMode violations for disk and network operations on main thread. */
     THREAD_VIOLATIONS,
 
+    /** On-device Jetpack Compose recomposition counter and heatmap. */
+    COMPOSE_RECOMPOSITION_INSPECTOR,
+
     // ========== Network Features ==========
 
     /** Monitors WebSocket connections and messages. */
@@ -61,6 +64,9 @@ enum class Feature {
 
     /** Tests rate limiting behavior by artificially slowing requests. */
     RATE_LIMITER,
+
+    /** Mocks/overrides HTTP responses at the interceptor level. */
+    MOCK_RULES,
 
     // ========== Simulation Features ==========
 

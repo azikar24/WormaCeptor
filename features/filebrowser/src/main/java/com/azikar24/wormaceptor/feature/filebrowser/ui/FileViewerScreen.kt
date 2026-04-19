@@ -1,8 +1,10 @@
 package com.azikar24.wormaceptor.feature.filebrowser.ui
 
+import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.Build
 import android.os.ParcelFileDescriptor
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -18,77 +20,76 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.core.graphics.createBitmap
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.FileContent
 import com.azikar24.wormaceptor.feature.filebrowser.R
-import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
+import com.azikar24.wormaceptor.feature.filebrowser.ui.util.BytesPerLine
+import com.azikar24.wormaceptor.feature.filebrowser.ui.util.buildHexLine
+import com.azikar24.wormaceptor.feature.filebrowser.ui.util.highlightJson
+import com.azikar24.wormaceptor.feature.filebrowser.ui.util.highlightXml
+import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEvent
+import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.Locale
 
-/**
- * Screen for viewing file content.
- */
 @Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FileViewerScreen(
-    filePath: String,
-    content: FileContent,
-    onBack: () -> Unit,
+    state: FileBrowserViewState,
+    onEvent: (FileBrowserViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val filePath = state.selectedFile ?: return
+    val content = state.fileContent ?: return
     val fileName = File(filePath).name
+
+    BackHandler {
+        onEvent(FileBrowserViewEvent.CloseFileViewer)
+    }
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text(fileName) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.filebrowser_back),
-                        )
-                    }
-                },
+            WormaCeptorTopBar(
+                title = fileName,
+                onBack = { onEvent(FileBrowserViewEvent.CloseFileViewer) },
+                backContentDescription = stringResource(R.string.filebrowser_back),
             )
         },
         modifier = modifier,
@@ -142,13 +143,13 @@ private fun TextFileContent(content: FileContent.Text) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .horizontalScroll(rememberScrollState())
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
+            .padding(WormaCeptorTokens.Spacing.lg),
     ) {
         Text(
             text = content.content,
             style = MaterialTheme.typography.bodySmall,
             fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
     }
 }
@@ -159,34 +160,34 @@ private fun JsonFileContent(content: FileContent.Json) {
     val invalidJsonDesc = stringResource(R.string.filebrowser_invalid_json)
     val validText = stringResource(R.string.filebrowser_valid)
     val invalidText = stringResource(R.string.filebrowser_invalid)
-    val validColor = WormaCeptorDesignSystem.ThemeColors.Success
-    val invalidColor = WormaCeptorDesignSystem.ThemeColors.Warning
+    val validColor = WormaCeptorTokens.semantic().success
+    val invalidColor = WormaCeptorTokens.semantic().warning
 
     Column(modifier = Modifier.fillMaxSize()) {
         // Header with validity indicator
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(R.string.filebrowser_json_lines, content.lineCount),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = if (content.isValid) Icons.Default.Check else Icons.Default.Warning,
                 contentDescription = if (content.isValid) validJsonDesc else invalidJsonDesc,
                 tint = if (content.isValid) validColor else invalidColor,
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
             )
             Text(
                 text = if (content.isValid) validText else invalidText,
                 style = MaterialTheme.typography.labelSmall,
                 color = if (content.isValid) validColor else invalidColor,
-                modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
+                modifier = Modifier.padding(start = WormaCeptorTokens.Spacing.xs),
             )
         }
 
@@ -196,7 +197,7 @@ private fun JsonFileContent(content: FileContent.Json) {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+                .padding(horizontal = WormaCeptorTokens.Spacing.lg),
         ) {
             Text(
                 text = highlightJson(content.formattedContent),
@@ -213,34 +214,34 @@ private fun XmlFileContent(content: FileContent.Xml) {
     val invalidXmlDesc = stringResource(R.string.filebrowser_invalid_xml)
     val validText = stringResource(R.string.filebrowser_valid)
     val invalidText = stringResource(R.string.filebrowser_invalid)
-    val validColor = WormaCeptorDesignSystem.ThemeColors.Success
-    val invalidColor = WormaCeptorDesignSystem.ThemeColors.Warning
+    val validColor = WormaCeptorTokens.semantic().success
+    val invalidColor = WormaCeptorTokens.semantic().warning
 
     Column(modifier = Modifier.fillMaxSize()) {
         // Header with validity indicator
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
+                .padding(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(R.string.filebrowser_xml_lines, content.lineCount),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 imageVector = if (content.isValid) Icons.Default.Check else Icons.Default.Warning,
                 contentDescription = if (content.isValid) validXmlDesc else invalidXmlDesc,
                 tint = if (content.isValid) validColor else invalidColor,
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
             )
             Text(
                 text = if (content.isValid) validText else invalidText,
                 style = MaterialTheme.typography.labelSmall,
                 color = if (content.isValid) validColor else invalidColor,
-                modifier = Modifier.padding(start = WormaCeptorDesignSystem.Spacing.xs),
+                modifier = Modifier.padding(start = WormaCeptorTokens.Spacing.xs),
             )
         }
 
@@ -250,7 +251,7 @@ private fun XmlFileContent(content: FileContent.Xml) {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.lg),
+                .padding(horizontal = WormaCeptorTokens.Spacing.lg),
         ) {
             Text(
                 text = highlightXml(content.formattedContent),
@@ -262,225 +263,30 @@ private fun XmlFileContent(content: FileContent.Xml) {
 }
 
 @Composable
-private fun highlightJson(json: String): AnnotatedString {
-    val colors = FileBrowserDesignSystem.syntaxColors()
-    return buildAnnotatedString {
-        var i = 0
-        while (i < json.length) {
-            when {
-                // String (key or value)
-                json[i] == '"' -> {
-                    val start = i
-                    i++
-                    while (i < json.length && json[i] != '"') {
-                        if (json[i] == '\\' && i + 1 < json.length) i++
-                        i++
-                    }
-                    i++ // Include closing quote
-                    val str = json.substring(start, minOf(i, json.length))
-
-                    // Check if this is a key (followed by colon)
-                    var j = i
-                    while (j < json.length && json[j].isWhitespace()) j++
-                    val isKey = j < json.length && json[j] == ':'
-
-                    withStyle(SpanStyle(color = if (isKey) colors.jsonKey else colors.jsonString)) {
-                        append(str)
-                    }
-                }
-                // Number
-                json[i].isDigit() || json[i] == '-' && i + 1 < json.length && json[i + 1].isDigit() -> {
-                    val start = i
-                    if (json[i] == '-') i++
-                    while (
-                        i < json.length &&
-                        (
-                            json[i].isDigit() || json[i] == '.' ||
-                                json[i] == 'e' || json[i] == 'E' ||
-                                json[i] == '+' || json[i] == '-'
-                            )
-                    ) {
-                        i++
-                    }
-                    withStyle(SpanStyle(color = colors.jsonNumber)) {
-                        append(json.substring(start, i))
-                    }
-                }
-                // Boolean or null
-                json.substring(i).startsWith("true") -> {
-                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
-                        append("true")
-                    }
-                    i += 4
-                }
-                json.substring(i).startsWith("false") -> {
-                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
-                        append("false")
-                    }
-                    i += 5
-                }
-                json.substring(i).startsWith("null") -> {
-                    withStyle(SpanStyle(color = colors.jsonBoolNull, fontWeight = FontWeight.Bold)) {
-                        append("null")
-                    }
-                    i += 4
-                }
-                // Brackets and braces
-                json[i] in "{}[]" -> {
-                    withStyle(SpanStyle(color = colors.jsonBracket, fontWeight = FontWeight.Bold)) {
-                        append(json[i])
-                    }
-                    i++
-                }
-                else -> {
-                    append(json[i])
-                    i++
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun highlightXml(xml: String): AnnotatedString {
-    val colors = FileBrowserDesignSystem.syntaxColors()
-    return buildAnnotatedString {
-        var i = 0
-        while (i < xml.length) {
-            if (xml[i] == '<') {
-                val start = i
-                i++
-
-                // Check for comment, CDATA, or processing instruction
-                if (i < xml.length && xml[i] == '!') {
-                    // Comment or CDATA
-                    while (i < xml.length && xml[i] != '>') i++
-                    i++
-                    withStyle(SpanStyle(color = colors.xmlComment)) {
-                        append(xml.substring(start, minOf(i, xml.length)))
-                    }
-                } else if (i < xml.length && xml[i] == '?') {
-                    // Processing instruction
-                    while (i < xml.length && !(xml[i - 1] == '?' && xml[i] == '>')) i++
-                    i++
-                    withStyle(SpanStyle(color = colors.xmlComment)) {
-                        append(xml.substring(start, minOf(i, xml.length)))
-                    }
-                } else {
-                    // Regular tag
-                    withStyle(SpanStyle(color = colors.xmlTag)) {
-                        append("<")
-                    }
-
-                    // Closing tag slash
-                    if (i < xml.length && xml[i] == '/') {
-                        withStyle(SpanStyle(color = colors.xmlTag)) {
-                            append("/")
-                        }
-                        i++
-                    }
-
-                    // Tag name
-                    val nameStart = i
-                    while (
-                        i < xml.length &&
-                        !xml[i].isWhitespace() &&
-                        xml[i] != '>' &&
-                        xml[i] != '/'
-                        ) i++
-                    withStyle(SpanStyle(color = colors.xmlTag, fontWeight = FontWeight.Bold)) {
-                        append(xml.substring(nameStart, i))
-                    }
-
-                    // Attributes
-                    while (i < xml.length && xml[i] != '>') {
-                        if (xml[i].isWhitespace()) {
-                            append(xml[i])
-                            i++
-                        } else if (xml[i] == '/') {
-                            withStyle(SpanStyle(color = colors.xmlTag)) {
-                                append("/")
-                            }
-                            i++
-                        } else if (xml[i] == '=') {
-                            append("=")
-                            i++
-                        } else if (xml[i] == '"' || xml[i] == '\'') {
-                            val quote = xml[i]
-                            val attrStart = i
-                            i++
-                            while (i < xml.length && xml[i] != quote) i++
-                            i++
-                            withStyle(SpanStyle(color = colors.xmlAttrValue)) {
-                                append(xml.substring(attrStart, minOf(i, xml.length)))
-                            }
-                        } else {
-                            // Attribute name
-                            val attrNameStart = i
-                            while (
-                                i < xml.length &&
-                                !xml[i].isWhitespace() &&
-                                xml[i] != '=' &&
-                                xml[i] != '>' &&
-                                xml[i] != '/'
-                                ) i++
-                            withStyle(SpanStyle(color = colors.xmlAttrName)) {
-                                append(xml.substring(attrNameStart, i))
-                            }
-                        }
-                    }
-
-                    if (i < xml.length && xml[i] == '>') {
-                        withStyle(SpanStyle(color = colors.xmlTag)) {
-                            append(">")
-                        }
-                        i++
-                    }
-                }
-            } else {
-                // Text content
-                val contentStart = i
-                while (i < xml.length && xml[i] != '<') i++
-                val content = xml.substring(contentStart, i)
-                if (content.isNotBlank()) {
-                    withStyle(SpanStyle(color = colors.xmlContent)) {
-                        append(content)
-                    }
-                } else {
-                    append(content)
-                }
-            }
-        }
-    }
-}
-
-private const val BYTES_PER_LINE = 16
-
-@Composable
 private fun BinaryFileContent(content: FileContent.Binary) {
     val bytes = content.bytes
-    val lineCount = (bytes.size + BYTES_PER_LINE - 1) / BYTES_PER_LINE
+    val lineCount = (bytes.size + BytesPerLine - 1) / BytesPerLine
 
     Column(modifier = Modifier.fillMaxSize()) {
         // Header
         Text(
             text = stringResource(R.string.filebrowser_binary_file, formatBytes(content.displaySize.toLong())),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            color = WormaCeptorTokens.semantic().textPrimary,
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
         )
 
         // Hex dump using LazyColumn for efficient scrolling
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
+                .padding(horizontal = WormaCeptorTokens.Spacing.md),
         ) {
             items(lineCount) { lineIndex ->
                 HexDumpLine(bytes, lineIndex)
             }
             item {
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
             }
         }
     }
@@ -491,7 +297,7 @@ private fun HexDumpLine(
     bytes: ByteArray,
     lineIndex: Int,
 ) {
-    val lineStart = lineIndex * BYTES_PER_LINE
+    val lineStart = lineIndex * BytesPerLine
     val lineText = remember(lineIndex) {
         buildHexLine(bytes, lineStart)
     }
@@ -503,53 +309,8 @@ private fun HexDumpLine(
             lineHeight = androidx.compose.ui.unit.TextUnit(14f, androidx.compose.ui.unit.TextUnitType.Sp),
         ),
         fontFamily = FontFamily.Monospace,
-        color = MaterialTheme.colorScheme.onSurface,
+        color = WormaCeptorTokens.semantic().textPrimary,
     )
-}
-
-private fun buildHexLine(
-    bytes: ByteArray,
-    lineStart: Int,
-): String {
-    val builder = StringBuilder()
-
-    // Address column
-    builder.append(String.format(Locale.US, "%08X  ", lineStart))
-
-    // Hex bytes - first 8 bytes
-    for (i in 0 until 8) {
-        val index = lineStart + i
-        if (index < bytes.size) {
-            builder.append(String.format(Locale.US, "%02X ", bytes[index].toInt() and 0xFF))
-        } else {
-            builder.append("   ")
-        }
-    }
-
-    builder.append(" ")
-
-    // Hex bytes - second 8 bytes
-    for (i in 8 until BYTES_PER_LINE) {
-        val index = lineStart + i
-        if (index < bytes.size) {
-            builder.append(String.format(Locale.US, "%02X ", bytes[index].toInt() and 0xFF))
-        } else {
-            builder.append("   ")
-        }
-    }
-
-    builder.append(" ")
-
-    // ASCII representation
-    for (i in 0 until BYTES_PER_LINE) {
-        val index = lineStart + i
-        if (index < bytes.size) {
-            val byte = bytes[index].toInt() and 0xFF
-            builder.append(if (byte in 32..126) byte.toChar() else '.')
-        }
-    }
-
-    return builder.toString()
 }
 
 @Composable
@@ -581,14 +342,14 @@ private fun ImageFileContent(content: FileContent.Image) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(WormaCeptorDesignSystem.Spacing.lg),
+            .padding(WormaCeptorTokens.Spacing.lg),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = dimensionsText,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.md),
+            color = WormaCeptorTokens.semantic().textSecondary,
+            modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.md),
         )
 
         AsyncImage(
@@ -609,9 +370,14 @@ private fun PdfFileContent(content: FileContent.Pdf) {
     val pdfState = remember(content.filePath) {
         try {
             val parcelFileDescriptor = ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY)
-            val renderer = PdfRenderer(parcelFileDescriptor)
-            PdfState.Ready(renderer, parcelFileDescriptor)
-        } catch (e: Exception) {
+            try {
+                val renderer = PdfRenderer(parcelFileDescriptor)
+                PdfState.Ready(renderer, parcelFileDescriptor)
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                parcelFileDescriptor.close()
+                PdfState.Error(e.message ?: "Failed to open PDF")
+            }
+        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
             PdfState.Error(e.message ?: "Failed to open PDF")
         }
     }
@@ -636,22 +402,22 @@ private fun PdfFileContent(content: FileContent.Pdf) {
                         formatBytes(content.sizeBytes),
                     ),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+                    color = WormaCeptorTokens.semantic().textPrimary,
+                    modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
                 )
 
                 // PDF pages
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
-                    verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                        .padding(horizontal = WormaCeptorTokens.Spacing.md),
+                    verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
                 ) {
-                    itemsIndexed(List(pdfState.renderer.pageCount) { it }) { index, _ ->
-                        PdfPageCard(pdfState.renderer, index)
+                    items(pdfState.renderer.pageCount) { index ->
+                        PdfPageCard(pdfState.renderer, pdfState.mutex, index)
                     }
                     item {
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
                     }
                 }
             }
@@ -665,48 +431,61 @@ private fun PdfFileContent(content: FileContent.Pdf) {
 @Composable
 private fun PdfPageCard(
     renderer: PdfRenderer,
+    mutex: Mutex,
     pageIndex: Int,
 ) {
     val pageNumber = pageIndex + 1
-    val bitmap = remember(pageIndex) {
-        val page = renderer.openPage(pageIndex)
-        val scale = 2f // Render at 2x for better quality
-        val bitmap = createBitmap((page.width * scale).toInt(), (page.height * scale).toInt())
-        bitmap.eraseColor(android.graphics.Color.WHITE)
-        page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-        page.close()
-        bitmap
+
+    @Suppress("InjectDispatcher")
+    val bitmap by produceState<Bitmap?>(initialValue = null, pageIndex) {
+        value = withContext(Dispatchers.IO) {
+            mutex.withLock {
+                val page = renderer.openPage(pageIndex)
+                val scale = 2f
+                val bmp = createBitmap((page.width * scale).toInt(), (page.height * scale).toInt())
+                bmp.eraseColor(android.graphics.Color.WHITE)
+                page.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                page.close()
+                bmp
+            }
+        }
     }
 
-    Card(
+    WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = WormaCeptorDesignSystem.Elevation.sm),
+        style = CardStyle.Outlined,
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.sm),
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.sm),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = stringResource(R.string.filebrowser_page_number, pageNumber),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
+                color = WormaCeptorTokens.semantic().textSecondary,
+                modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.xs),
             )
-            Image(
-                bitmap = bitmap.asImageBitmap(),
-                contentDescription = stringResource(R.string.filebrowser_pdf_page, pageNumber),
-                modifier = Modifier.fillMaxWidth(),
-            )
+            val currentBitmap = bitmap
+            if (currentBitmap != null) {
+                Image(
+                    bitmap = currentBitmap.asImageBitmap(),
+                    contentDescription = stringResource(R.string.filebrowser_pdf_page, pageNumber),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(WormaCeptorTokens.ComponentSize.textAreaHeight),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
+                    )
+                }
+            }
         }
     }
-}
-
-private sealed class PdfState {
-    data class Ready(val renderer: PdfRenderer, val fileDescriptor: ParcelFileDescriptor) : PdfState()
-    data class Error(val message: String) : PdfState()
 }
 
 @Composable
@@ -718,7 +497,7 @@ private fun ErrorContent(message: String) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.error,
+            color = WormaCeptorTokens.semantic().error,
         )
     }
 }

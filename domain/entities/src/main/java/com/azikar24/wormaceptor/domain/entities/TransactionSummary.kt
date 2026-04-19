@@ -18,6 +18,7 @@ import java.util.UUID
  * @property hasResponseBody Whether a response body is present.
  * @property status Current lifecycle status of the transaction.
  * @property timestamp Epoch millis when the transaction was initiated.
+ * @property isMocked Whether this transaction was served from a mock rule.
  */
 data class TransactionSummary(
     val id: UUID,
@@ -30,4 +31,5 @@ data class TransactionSummary(
     val hasResponseBody: Boolean,
     val status: TransactionStatus,
     val timestamp: EpochMillis,
+    val isMocked: Boolean = false,
 )

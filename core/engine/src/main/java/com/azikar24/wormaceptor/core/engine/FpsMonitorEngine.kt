@@ -196,6 +196,9 @@ class FpsMonitorEngine(
     companion object {
         /** Default number of FPS history samples to retain. */
         const val DEFAULT_HISTORY_SIZE = 60
+
+        /** Warning threshold for low FPS (below this is considered poor). */
+        const val FPS_WARNING_THRESHOLD = 30f
         private const val FPS_CALCULATION_WINDOW = 10
         private const val HISTORY_SAMPLE_INTERVAL = 6 // Sample every 6 frames (~100ms at 60fps)
         private const val NANOS_PER_SECOND = 1_000_000_000.0

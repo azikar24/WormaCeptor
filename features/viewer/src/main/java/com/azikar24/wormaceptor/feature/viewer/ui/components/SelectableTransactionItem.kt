@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,10 +33,10 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.sp
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorMethodBadge
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.asSubtleBackground
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getStatusColor
@@ -57,6 +56,7 @@ fun SelectableTransactionItem(
     onLongClick: () -> Unit,
     onCopyUrl: () -> Unit,
     onShare: () -> Unit,
+    onShareAsHar: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
     modifier: Modifier = Modifier,
@@ -82,31 +82,31 @@ fun SelectableTransactionItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                    vertical = WormaCeptorDesignSystem.Spacing.xs,
+                    horizontal = WormaCeptorTokens.Spacing.sm,
+                    vertical = WormaCeptorTokens.Spacing.xs,
                 )
                 .scale(scale)
-                .clip(WormaCeptorDesignSystem.Shapes.card)
+                .clip(WormaCeptorTokens.Shapes.card)
                 .border(
                     width = if (isSelected) {
-                        WormaCeptorDesignSystem.BorderWidth.thick
+                        WormaCeptorTokens.BorderWidth.thick
                     } else {
-                        WormaCeptorDesignSystem.BorderWidth.regular
+                        WormaCeptorTokens.BorderWidth.regular
                     },
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.primary
+                        WormaCeptorTokens.semantic().accent
                     } else {
-                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
+                        WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
                     },
-                    shape = WormaCeptorDesignSystem.Shapes.card,
+                    shape = WormaCeptorTokens.Shapes.card,
                 )
                 .background(
                     color = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
+                        WormaCeptorTokens.semantic().accentSubtle.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
                     } else {
-                        statusColor.asSubtleBackground()
+                        statusColor.copy(alpha = TokenAlpha.SUBTLE)
                     },
-                    shape = WormaCeptorDesignSystem.Shapes.card,
+                    shape = WormaCeptorTokens.Shapes.card,
                 )
                 .combinedClickable(
                     interactionSource = interactionSource,
@@ -126,55 +126,45 @@ fun SelectableTransactionItem(
                         onLongClick()
                     },
                 )
-                .padding(WormaCeptorDesignSystem.Spacing.md),
+                .padding(WormaCeptorTokens.Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Transaction content
             Column(modifier = Modifier.weight(1f)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                 ) {
                     WormaCeptorMethodBadge(transaction.method)
                     TextWithStartEllipsis(
                         text = transaction.path,
-                        fontSize = 15.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.weight(1f, fill = false),
-                        color = MaterialTheme.colorScheme.primary,
+                        color = WormaCeptorTokens.semantic().accent,
                     )
                 }
 
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
                 HostChip(transaction.host)
             }
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
 
             // Status code and duration
             Column(horizontalAlignment = Alignment.End) {
-                Surface(
-                    color = statusColor.asSubtleBackground(),
+                WormaCeptorStatusBadge(
+                    text = transaction.code?.toString() ?: "?",
+                    containerColor = statusColor.copy(alpha = TokenAlpha.SUBTLE),
                     contentColor = statusColor,
-                    shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                ) {
-                    Text(
-                        text = transaction.code?.toString() ?: "?",
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp,
-                        modifier = Modifier.padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                            vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                        ),
-                    )
-                }
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xxs))
+                )
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xxs))
                 Text(
                     text = formatDuration(transaction.tookMs),
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                        alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(
+                        alpha = WormaCeptorTokens.Alpha.HEAVY,
                     ),
                 )
             }
@@ -182,16 +172,16 @@ fun SelectableTransactionItem(
 
         // Context menu
         TransactionContextMenu(
-            transaction = transaction,
             expanded = showContextMenu,
             onDismiss = { showContextMenu = false },
             onCopyUrl = onCopyUrl,
             onShare = onShare,
+            onShareAsHar = onShareAsHar,
             onDelete = onDelete,
             onCopyAsCurl = onCopyAsCurl,
             offset = DpOffset(
-                x = WormaCeptorDesignSystem.Spacing.lg,
-                y = -WormaCeptorDesignSystem.Spacing.sm,
+                x = WormaCeptorTokens.Spacing.lg,
+                y = -WormaCeptorTokens.Spacing.sm,
             ),
         )
     }
@@ -200,16 +190,16 @@ fun SelectableTransactionItem(
 @Composable
 private fun HostChip(host: String) {
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
+        color = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
+        shape = WormaCeptorTokens.Shapes.pill,
     ) {
         Text(
             text = host,
-            fontSize = 11.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelSmall,
+            color = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xxs,
             ),
         )
     }

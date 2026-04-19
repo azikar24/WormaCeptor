@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,11 +33,13 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+
+private val EdgeIndicatorWidth = 48.dp
+private val PeakShadowElevation = 16.dp
 
 /**
  * SwipeBackContainer - A container that allows swipe-from-left-edge gesture to navigate back.
@@ -64,6 +65,7 @@ fun SwipeBackContainer(
     thresholdFraction: Float = 0.35f,
     content: @Composable BoxScope.() -> Unit,
 ) {
+    val darkColors = WormaCeptorTokens.semantic(darkTheme = true)
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
     val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
@@ -165,7 +167,7 @@ fun SwipeBackContainer(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(ThemeColors.DarkBackground.copy(alpha = 0.3f * (1f - progress))),
+                    .background(darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.MODERATE * (1f - progress))),
             )
         }
 
@@ -174,11 +176,11 @@ fun SwipeBackContainer(
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(48.dp)
+                    .width(EdgeIndicatorWidth)
                     .offset { IntOffset(0, 0) }
                     .background(
-                        MaterialTheme.colorScheme.primaryContainer.copy(
-                            alpha = progress * WormaCeptorDesignSystem.Alpha.STRONG,
+                        WormaCeptorTokens.semantic().accentSubtle.copy(
+                            alpha = progress * WormaCeptorTokens.Alpha.STRONG,
                         ),
                     ),
                 contentAlignment = Alignment.CenterStart,
@@ -186,7 +188,7 @@ fun SwipeBackContainer(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.viewer_gesture_back),
-                    tint = MaterialTheme.colorScheme.primary.copy(
+                    tint = WormaCeptorTokens.semantic().accent.copy(
                         alpha = (progress * 2f).coerceIn(0f, 1f),
                     ),
                     modifier = Modifier
@@ -202,11 +204,11 @@ fun SwipeBackContainer(
                 .fillMaxSize()
                 .offset { IntOffset(offsetX.value.roundToInt(), 0) }
                 .shadow(
-                    elevation = 16.dp * progress,
-                    ambientColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
-                    spotColor = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+                    elevation = PeakShadowElevation * progress,
+                    ambientColor = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+                    spotColor = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
                 )
-                .background(MaterialTheme.colorScheme.surface),
+                .background(WormaCeptorTokens.semantic().surface),
             content = content,
         )
     }

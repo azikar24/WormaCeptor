@@ -3,6 +3,8 @@ package com.azikar24.wormaceptor.feature.filebrowser.vm
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
+import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.contracts.FileSystemRepository
 import com.azikar24.wormaceptor.domain.entities.FileEntry
 import com.azikar24.wormaceptor.feature.filebrowser.R
@@ -10,14 +12,13 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
-/**
- * ViewModel for the File Browser feature.
- * Manages navigation stack, file listing, and file operations.
- */
 class FileBrowserViewModel(
     private val repository: FileSystemRepository,
     private val application: Application,
-) : BaseViewModel<FileBrowserViewState, FileBrowserViewEffect, FileBrowserViewEvent>(FileBrowserViewState()) {
+) : BaseViewModel<FileBrowserViewState, FileBrowserViewEffect, FileBrowserViewEvent, NoOpNavigator>(
+    FileBrowserViewState(),
+    NoOpNavigator,
+) {
 
     init {
         handleLoadRootDirectories()
@@ -34,6 +35,7 @@ class FileBrowserViewModel(
             is FileBrowserViewEvent.FileClicked -> handleFileClicked(event.file)
             is FileBrowserViewEvent.FileLongClicked -> handleFileLongClicked(event.file)
             is FileBrowserViewEvent.DeleteFile -> handleDeleteFile(event.path)
+            is FileBrowserViewEvent.CopyFilePath -> handleCopyFilePath(event.path)
             FileBrowserViewEvent.CloseFileViewer -> updateState { copy(selectedFile = null, fileContent = null) }
             FileBrowserViewEvent.HideFileInfo -> updateState { copy(fileInfo = null) }
             FileBrowserViewEvent.ClearError -> updateState { copy(error = null) }
@@ -48,6 +50,7 @@ class FileBrowserViewModel(
                 updateState {
                     copy(
                         isLoading = false,
+                        isFilesLoading = false,
                         filteredFiles = roots.toImmutableList(),
                         currentPath = null,
                         navigationStack = persistentListOf(),
@@ -57,6 +60,7 @@ class FileBrowserViewModel(
                 updateState {
                     copy(
                         isLoading = false,
+                        isFilesLoading = false,
                         error = application.getString(R.string.filebrowser_error_load_root, e.message),
                     )
                 }
@@ -222,6 +226,15 @@ class FileBrowserViewModel(
                 updateState { copy(error = application.getString(R.string.filebrowser_error_file_info, e.message)) }
             }
         }
+    }
+
+    private fun handleCopyFilePath(path: String) {
+        val message = copyToClipboard(
+            application,
+            application.getString(R.string.filebrowser_label_path),
+            path,
+        )
+        emitEffect(FileBrowserViewEffect.ShowSnackBar(message))
     }
 
     private fun handleDeleteFile(path: String) {

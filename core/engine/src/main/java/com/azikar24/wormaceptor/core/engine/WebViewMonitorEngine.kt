@@ -364,6 +364,8 @@ class WebViewMonitorEngine(
             view: WebView?,
             request: WebResourceRequest?,
         ): WebResourceResponse? {
+            var capturedId: String? = null
+
             if (_isEnabled.value && request != null) {
                 val url = request.url.toString()
                 val method = request.method ?: "GET"
@@ -389,10 +391,23 @@ class WebViewMonitorEngine(
                     },
                 )
 
+                capturedId = webViewRequest.id
                 addRequest(webViewRequest)
             }
 
-            return delegate?.shouldInterceptRequest(view, request)
+            val response = delegate?.shouldInterceptRequest(view, request)
+
+            if (capturedId != null && response != null) {
+                updateRequest(
+                    requestId = capturedId,
+                    statusCode = response.statusCode,
+                    mimeType = response.mimeType,
+                    encoding = response.encoding,
+                    responseHeaders = response.responseHeaders ?: emptyMap(),
+                )
+            }
+
+            return response
         }
 
         @Deprecated("Deprecated in Java")
@@ -401,6 +416,8 @@ class WebViewMonitorEngine(
             view: WebView?,
             url: String?,
         ): WebResourceResponse? {
+            var capturedId: String? = null
+
             if (_isEnabled.value && url != null) {
                 val resourceType = WebViewResourceType.fromUrl(url)
 
@@ -415,11 +432,24 @@ class WebViewMonitorEngine(
                     isRedirect = false,
                 )
 
+                capturedId = webViewRequest.id
                 addRequest(webViewRequest)
             }
 
             @Suppress("DEPRECATION")
-            return delegate?.shouldInterceptRequest(view, url)
+            val response = delegate?.shouldInterceptRequest(view, url)
+
+            if (capturedId != null && response != null) {
+                updateRequest(
+                    requestId = capturedId,
+                    statusCode = response.statusCode,
+                    mimeType = response.mimeType,
+                    encoding = response.encoding,
+                    responseHeaders = response.responseHeaders ?: emptyMap(),
+                )
+            }
+
+            return response
         }
 
         override fun onPageStarted(
@@ -434,6 +464,17 @@ class WebViewMonitorEngine(
             view: WebView?,
             url: String?,
         ) {
+            if (_isEnabled.value) {
+                // Error callbacks (onReceivedError, onReceivedHttpError,
+                // onReceivedSslError) fire before onPageFinished, so any
+                // request still pending at this point completed successfully.
+                val pending = _requests.value.filter {
+                    it.webViewId == webViewId && it.isPending
+                }
+                for (req in pending) {
+                    updateRequest(requestId = req.id, statusCode = 200)
+                }
+            }
             delegate?.onPageFinished(view, url)
         }
 

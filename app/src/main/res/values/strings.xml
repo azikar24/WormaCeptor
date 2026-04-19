@@ -21,5 +21,21 @@
     <string name="crash_dialog_cancel">Cancel</string>
 
     <!-- Showcase Tab -->
-    <string name="app_version">v2.1.0</string>
+
+    <!-- KeyStore Section -->
+    <string name="keystore_empty_title">No keystore entries</string>
+    <string name="keystore_empty_subtitle">Tap \'Add Test Data\' to create some keys</string>
+    <string name="keystore_key_size_format">%d-bit</string>
+
+    <!-- Location Test Screen -->
+    <string name="location_coordinate_format" translatable="false">%.6f, %.6f</string>
+
+    <!-- Welcome Screen -->
+    <string name="action_test_tools">Test Tools</string>
+    <string name="feature_network_title">Network Inspector</string>
+    <string name="feature_network_description">Monitor HTTP requests, responses, and headers in real-time</string>
+    <string name="feature_crashes_title">Crash Reporter</string>
+    <string name="feature_crashes_description">Capture and analyze crashes with detailed stack traces</string>
+    <string name="feature_tools_title">Developer Tools</string>
+    <string name="feature_tools_description">Access shared preferences, databases, and more</string>
 </resources>

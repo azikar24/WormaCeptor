@@ -3,6 +3,7 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$private fun addTransactionToCursor( cursor: MatrixCursor, item: Any, )</ID>
+    <ID>CyclomaticComplexMethod:WormaCeptorInterceptor.kt$WormaCeptorInterceptor$@Throws(IOException::class) override fun intercept(chain: Interceptor.Chain): Response</ID>
     <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${ }</ID>
     <ID>EmptyFunctionBlock:WormaCeptorApi.kt$WormaCeptorApi.NoOpProvider${}</ID>
     <ID>LateinitUsage:WormaCeptorContentProvider.kt$WormaCeptorContentProvider$private lateinit var uriMatcher: UriMatcher</ID>

@@ -2,42 +2,30 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:RateLimitScreen.kt$@Composable private fun ConfigurationCard( config: RateLimitConfig, enabled: Boolean, onDownloadSpeedChanged: (Long) -&gt; Unit, onUploadSpeedChanged: (Long) -&gt; Unit, onLatencyChanged: (Long) -&gt; Unit, onPacketLossChanged: (Float) -&gt; Unit, colors: RateLimitColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:RateLimitScreen.kt$@Composable private fun EnableToggleCard( enabled: Boolean, onToggle: () -&gt; Unit, colors: RateLimitColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:RateLimitScreen.kt$@Composable private fun StatisticsCard( stats: ThrottleStats, colors: RateLimitColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:RateLimitScreen.kt$@OptIn(ExperimentalLayoutApi::class) @Composable private fun NetworkPresetsCard( selectedPreset: RateLimitConfig.NetworkPreset?, enabled: Boolean, onPresetSelected: (RateLimitConfig.NetworkPreset?) -&gt; Unit, colors: RateLimitColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:RateLimitScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun RateLimitScreen( config: RateLimitConfig, stats: ThrottleStats, selectedPreset: RateLimitConfig.NetworkPreset?, onEnableToggle: () -&gt; Unit, onPresetSelected: (RateLimitConfig.NetworkPreset?) -&gt; Unit, onDownloadSpeedChanged: (Long) -&gt; Unit, onUploadSpeedChanged: (Long) -&gt; Unit, onLatencyChanged: (Long) -&gt; Unit, onPacketLossChanged: (Float) -&gt; Unit, onClearStats: () -&gt; Unit, onResetToDefaults: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:RateLimitScreen.kt$( config: RateLimitConfig, enabled: Boolean, onDownloadSpeedChanged: (Long) -&gt; Unit, onUploadSpeedChanged: (Long) -&gt; Unit, onLatencyChanged: (Long) -&gt; Unit, onPacketLossChanged: (Float) -&gt; Unit, colors: RateLimitColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:RateLimitScreen.kt$( config: RateLimitConfig, stats: ThrottleStats, selectedPreset: RateLimitConfig.NetworkPreset?, onEnableToggle: () -&gt; Unit, onPresetSelected: (RateLimitConfig.NetworkPreset?) -&gt; Unit, onDownloadSpeedChanged: (Long) -&gt; Unit, onUploadSpeedChanged: (Long) -&gt; Unit, onLatencyChanged: (Long) -&gt; Unit, onPacketLossChanged: (Float) -&gt; Unit, onClearStats: () -&gt; Unit, onResetToDefaults: () -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:RateLimitScreen.kt$( icon: ImageVector, label: String, value: Float, valueText: String, minValue: Float, maxValue: Float, enabled: Boolean, color: Color, onValueChange: (Float) -&gt; Unit, colors: RateLimitColors, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF1E1E1E</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF212121</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF424242</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF64B5F6</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF757575</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF7C4DFF</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF81C784</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFF9E9E9E</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFB388FF</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFBDBDBD</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFE0E0E0</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFE57373</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFF44336</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFFAFAFA</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFFF5722</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFFF8A65</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:RateLimitColors.kt$0xFFFFB74D</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$1000</ID>
-    <ID>MagicNumber:RateLimitScreen.kt$1000.0</ID>
-    <ID>MagicNumber:RateLimitViewModel.kt$RateLimitViewModel$5000</ID>
-    <ID>ParameterNaming:RateLimitScreen.kt$onDownloadSpeedChanged</ID>
-    <ID>ParameterNaming:RateLimitScreen.kt$onLatencyChanged</ID>
-    <ID>ParameterNaming:RateLimitScreen.kt$onPacketLossChanged</ID>
-    <ID>ParameterNaming:RateLimitScreen.kt$onPresetSelected</ID>
-    <ID>ParameterNaming:RateLimitScreen.kt$onUploadSpeedChanged</ID>
-    <ID>ViewModelInjection:RateLimitFeature.kt$viewModel</ID>
+    <ID>LongMethod:EnableToggleCard.kt$@Composable internal fun EnableToggleCard( enabled: Boolean, onToggle: () -&gt; Unit, colors: ToolColors.RateLimit.Scheme, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicClass:RateLimitNavigationContributor.kt$RateLimitNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ClearStats : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ResetToDefaults : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SelectPreset : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetDownloadSpeed : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetLatency : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetPacketLoss : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$SetUploadSpeed : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewEvent.kt$RateLimitViewEvent$ToggleEnabled : RateLimitViewEvent</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewModelFactory.kt$RateLimitViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicClass:RateLimitViewState.kt$RateLimitViewState</ID>
+    <ID>UndocumentedPublicFunction:RateLimitScreen.kt$@Suppress("LongMethod") @OptIn(ExperimentalMaterial3Api::class) @Composable fun RateLimitScreen( state: RateLimitViewState, onEvent: (RateLimitViewEvent) -&gt; Unit, onBack: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SelectPreset$val preset: NetworkPreset?</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetDownloadSpeed$val speedKbps: Long</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetLatency$val latencyMs: Long</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetPacketLoss$val percent: Float</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewEvent.kt$RateLimitViewEvent.SetUploadSpeed$val speedKbps: Long</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val config: RateLimitConfig = RateLimitConfig.default()</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val formattedDownloadSpeed: String = ""</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val formattedPresetDownload: String = ""</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val formattedPresetUpload: String = ""</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val formattedUploadSpeed: String = ""</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val selectedPreset: NetworkPreset? = null</ID>
+    <ID>UndocumentedPublicProperty:RateLimitViewState.kt$RateLimitViewState$val stats: ThrottleStats = ThrottleStats.empty()</ID>
   </CurrentIssues>
 </SmellBaseline>

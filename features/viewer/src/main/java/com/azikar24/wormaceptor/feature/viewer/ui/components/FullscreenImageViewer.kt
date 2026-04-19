@@ -1,12 +1,5 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components
 
-import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
-import android.media.MediaScannerConnection.scanFile
-import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -24,33 +17,11 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.calculatePan
 import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.ZoomIn
-import androidx.compose.material.icons.filled.ZoomOut
-import androidx.compose.material.icons.outlined.AspectRatio
-import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -66,43 +37,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
-import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.SemanticColors
 import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
 import java.util.Locale
 import kotlin.math.abs
 
-/**
- * A fullscreen image viewer with pinch-to-zoom, pan, and double-tap to zoom functionality.
- * Features:
- * - Pinch-to-zoom with smooth spring animations
- * - Pan/drag when zoomed in
- * - Double-tap to toggle between 1x and 2.5x zoom
- * - Swipe down to dismiss
- * - Dark overlay background
- * - Action buttons (download, share)
- * - Image metadata display
- */
+private val ZoomIndicatorTopOffset = 80.dp
+
 @Composable
 fun FullscreenImageViewer(
     imageData: ByteArray,
@@ -138,80 +98,59 @@ private fun FullscreenImageContent(
     onDownload: () -> Unit,
     onShare: () -> Unit,
 ) {
+    val darkColors = WormaCeptorTokens.semantic(darkTheme = true)
     val context = LocalContext.current
     val gifImageLoader = rememberGifImageLoader()
     val scope = rememberCoroutineScope()
 
-    // Zoom and pan state
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     var isZoomed by remember { mutableStateOf(false) }
 
-    // Animation for smooth zoom transitions
     val animatedScale = remember { Animatable(1f) }
     val animatedOffset = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
 
-    // Swipe to dismiss state
     var swipeOffset by remember { mutableFloatStateOf(0f) }
-    val dismissThreshold = 200f
 
-    // UI visibility
     var showControls by remember { mutableStateOf(true) }
     var isLoading by remember { mutableStateOf(true) }
 
-    // Sync animated values with state
     LaunchedEffect(animatedScale.value) {
         scale = animatedScale.value
-        isZoomed = scale > 1.1f
+        isZoomed = scale > FullscreenImageDefaults.ZOOM_THRESHOLD
     }
 
     LaunchedEffect(animatedOffset.value) {
         offset = animatedOffset.value
     }
 
-    // Background alpha based on swipe progress
     val backgroundAlpha by animateFloatAsState(
-        targetValue = 1f - (abs(swipeOffset) / dismissThreshold).coerceIn(0f, 0.5f),
-        animationSpec = tween(durationMillis = 100),
+        targetValue = 1f - (abs(swipeOffset) / FullscreenImageDefaults.DISMISS_THRESHOLD).coerceIn(0f, 0.5f),
+        animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.ULTRA_FAST),
         label = "background_alpha",
     )
+
+    val toggleControlsLabel = stringResource(R.string.viewer_image_toggle_controls)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(ThemeColors.DarkBackground.copy(alpha = backgroundAlpha * 0.95f))
+            .background(darkColors.background.copy(alpha = backgroundAlpha * FullscreenImageDefaults.BACKGROUND_ALPHA))
+            .semantics {
+                onClick(label = toggleControlsLabel) { true }
+            }
             .pointerInput(Unit) {
                 detectTapGestures(
-                    onTap = {
-                        showControls = !showControls
-                    },
+                    onTap = { showControls = !showControls },
                     onDoubleTap = { _ ->
                         scope.launch {
-                            if (scale > 1.1f) {
-                                // Zoom out
-                                animatedScale.animateTo(
-                                    targetValue = 1f,
-                                    animationSpec = spring(
-                                        dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium,
-                                    ),
-                                )
-                                animatedOffset.animateTo(
-                                    targetValue = Offset.Zero,
-                                    animationSpec = spring(
-                                        dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium,
-                                    ),
-                                )
+                            if (scale > FullscreenImageDefaults.ZOOM_THRESHOLD) {
+                                animatedScale.animateTo(1f, FullscreenImageDefaults.ZoomSpring)
+                                animatedOffset.animateTo(Offset.Zero, FullscreenImageDefaults.OffsetSpring)
                             } else {
-                                // Zoom in to tap location
-                                val targetScale = 2.5f
                                 animatedScale.animateTo(
-                                    targetValue = targetScale,
-                                    animationSpec = spring(
-                                        dampingRatio = Spring.DampingRatioMediumBouncy,
-                                        stiffness = Spring.StiffnessMedium,
-                                    ),
+                                    FullscreenImageDefaults.DOUBLE_TAP_ZOOM,
+                                    FullscreenImageDefaults.ZoomSpring,
                                 )
                             }
                         }
@@ -219,120 +158,47 @@ private fun FullscreenImageContent(
                 )
             },
     ) {
-        // Main image with gestures
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer {
-                    scaleX = scale
-                    scaleY = scale
-                    translationX = offset.x
-                    translationY = offset.y + swipeOffset
+        ZoomableImageBox(
+            imageData = imageData,
+            scale = scale,
+            offset = offset,
+            swipeOffset = swipeOffset,
+            isZoomed = isZoomed,
+            isLoading = isLoading,
+            gifImageLoader = gifImageLoader,
+            onScaleChange = { scope.launch { animatedScale.snapTo(it) } },
+            onOffsetChange = { scope.launch { animatedOffset.snapTo(it) } },
+            onSwipeOffsetChange = { swipeOffset += it },
+            onBounceBack = {
+                scope.launch {
+                    animatedScale.animateTo(1f, spring(stiffness = Spring.StiffnessMedium))
                 }
-                .pointerInput(Unit) {
-                    awaitEachGesture {
-                        awaitFirstDown(pass = PointerEventPass.Initial)
-                        do {
-                            val event = awaitPointerEvent(pass = PointerEventPass.Initial)
-                            val zoomChange = event.calculateZoom()
-                            val panChange = event.calculatePan()
+            },
+            onDismiss = onDismiss,
+            onSwipeReset = {
+                scope.launch {
+                    val anim = Animatable(swipeOffset)
+                    anim.animateTo(
+                        targetValue = 0f,
+                        animationSpec = spring(stiffness = Spring.StiffnessMedium),
+                    ) { swipeOffset = value }
+                }
+            },
+            onLoadingChanged = { isLoading = it },
+        )
 
-                            // Apply zoom
-                            val newScale = (scale * zoomChange).coerceIn(0.5f, 5f)
-
-                            scope.launch {
-                                animatedScale.snapTo(newScale)
-                            }
-
-                            // Apply pan when zoomed
-                            if (scale > 1f) {
-                                val newOffset = offset + panChange * scale
-                                scope.launch {
-                                    animatedOffset.snapTo(newOffset)
-                                }
-                            } else {
-                                // Swipe to dismiss when not zoomed
-                                if (abs(panChange.y) > abs(panChange.x) && event.changes.size == 1) {
-                                    swipeOffset += panChange.y
-                                }
-                            }
-
-                            event.changes.forEach { change ->
-                                if (change.positionChanged()) {
-                                    change.consume()
-                                }
-                            }
-                        } while (event.changes.any { it.pressed })
-
-                        // Handle gesture end
-                        if (scale < 1f) {
-                            scope.launch {
-                                animatedScale.animateTo(
-                                    targetValue = 1f,
-                                    animationSpec = spring(stiffness = Spring.StiffnessMedium),
-                                )
-                            }
-                        }
-
-                        // Check for dismiss
-                        if (abs(swipeOffset) > dismissThreshold && !isZoomed) {
-                            onDismiss()
-                        } else {
-                            // Snap back
-                            scope.launch {
-                                val anim = Animatable(swipeOffset)
-                                anim.animateTo(
-                                    targetValue = 0f,
-                                    animationSpec = spring(stiffness = Spring.StiffnessMedium),
-                                ) {
-                                    swipeOffset = value
-                                }
-                            }
-                        }
-                    }
-                },
-            contentAlignment = Alignment.Center,
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(context)
-                    .data(imageData)
-                    .crossfade(true)
-                    .build(),
-                imageLoader = gifImageLoader,
-                contentDescription = stringResource(R.string.viewer_image_preview),
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize(),
-                onState = { state ->
-                    isLoading = state is AsyncImagePainter.State.Loading
-                },
-            )
-
-            // Loading indicator
-            AnimatedVisibility(
-                visible = isLoading,
-                enter = fadeIn(),
-                exit = fadeOut(),
-            ) {
-                CircularProgressIndicator(
-                    color = ThemeColors.LightBackground,
-                    modifier = Modifier.size(48.dp),
-                )
-            }
-        }
-
-        // Top controls
         AnimatedVisibility(
             visible = showControls,
             enter = slideInVertically { -it } + fadeIn(),
             exit = slideOutVertically { -it } + fadeOut(),
             modifier = Modifier.align(Alignment.TopCenter),
         ) {
-            TopControlBar(
+            FullscreenTopControlBar(
                 onClose = onDismiss,
                 onZoomIn = {
                     scope.launch {
                         animatedScale.animateTo(
-                            (scale * 1.5f).coerceAtMost(5f),
+                            (scale * FullscreenImageDefaults.ZOOM_STEP).coerceAtMost(FullscreenImageDefaults.MAX_ZOOM),
                             spring(stiffness = Spring.StiffnessMedium),
                         )
                     }
@@ -340,7 +206,7 @@ private fun FullscreenImageContent(
                 onZoomOut = {
                     scope.launch {
                         animatedScale.animateTo(
-                            (scale / 1.5f).coerceAtLeast(1f),
+                            (scale / FullscreenImageDefaults.ZOOM_STEP).coerceAtLeast(1f),
                             spring(stiffness = Spring.StiffnessMedium),
                         )
                         if (animatedScale.value <= 1f) {
@@ -352,380 +218,180 @@ private fun FullscreenImageContent(
             )
         }
 
-        // Bottom controls with metadata
         AnimatedVisibility(
             visible = showControls,
             enter = slideInVertically { it } + fadeIn(),
             exit = slideOutVertically { it } + fadeOut(),
             modifier = Modifier.align(Alignment.BottomCenter),
         ) {
-            BottomControlBar(
+            FullscreenBottomControlBar(
                 metadata = metadata,
                 onDownload = onDownload,
                 onShare = onShare,
             )
         }
 
-        // Zoom indicator
         AnimatedVisibility(
             visible = isZoomed && showControls,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 80.dp, end = WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            Surface(
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.sm),
-                color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
-            ) {
-                Text(
-                    text = "${String.format(Locale.US, "%.1f", scale)}x",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = ThemeColors.LightBackground,
-                    modifier = Modifier.padding(
-                        horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                        vertical = WormaCeptorDesignSystem.Spacing.xs,
-                    ),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun TopControlBar(
-    onClose: () -> Unit,
-    onZoomIn: () -> Unit,
-    onZoomOut: () -> Unit,
-    currentZoom: Float,
-) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.md)
-                .windowInsetsPadding(WindowInsets.statusBars),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // Close button
-            FilledTonalIconButton(
-                onClick = onClose,
-                colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-                    contentColor = ThemeColors.LightBackground,
+                .padding(
+                    top = ZoomIndicatorTopOffset,
+                    end = WormaCeptorTokens.Spacing.lg,
                 ),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(R.string.viewer_image_close),
-                )
-            }
-
-            // Zoom controls
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                FilledTonalIconButton(
-                    onClick = onZoomOut,
-                    enabled = currentZoom > 1f,
-                    colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-                        contentColor = ThemeColors.LightBackground,
-                        disabledContainerColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.HINT,
-                        ),
-                        disabledContentColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
-                        ),
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ZoomOut,
-                        contentDescription = stringResource(R.string.viewer_image_zoom_out),
-                    )
-                }
-
-                FilledTonalIconButton(
-                    onClick = onZoomIn,
-                    enabled = currentZoom < 5f,
-                    colors = IconButtonDefaults.filledTonalIconButtonColors(
-                        containerColor = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-                        contentColor = ThemeColors.LightBackground,
-                        disabledContainerColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.HINT,
-                        ),
-                        disabledContentColor = ThemeColors.LightBackground.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
-                        ),
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ZoomIn,
-                        contentDescription = stringResource(R.string.viewer_image_zoom_in),
-                    )
-                }
-            }
+        ) {
+            ZoomIndicator(scale = scale, darkColors = darkColors)
         }
     }
 }
 
 @Composable
-private fun BottomControlBar(
-    metadata: ImageMetadata?,
-    onDownload: () -> Unit,
-    onShare: () -> Unit,
+private fun ZoomableImageBox(
+    imageData: ByteArray,
+    scale: Float,
+    offset: Offset,
+    swipeOffset: Float,
+    isZoomed: Boolean,
+    isLoading: Boolean,
+    gifImageLoader: coil.ImageLoader,
+    onScaleChange: (Float) -> Unit,
+    onOffsetChange: (Offset) -> Unit,
+    onSwipeOffsetChange: (Float) -> Unit,
+    onBounceBack: () -> Unit,
+    onDismiss: () -> Unit,
+    onSwipeReset: () -> Unit,
+    onLoadingChanged: (Boolean) -> Unit,
 ) {
-    Surface(
+    val context = LocalContext.current
+
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = WormaCeptorDesignSystem.Spacing.xxl),
-        color = ThemeColors.DarkBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            // Metadata row
-            metadata?.let { meta ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    MetadataChip(
-                        icon = Icons.Outlined.AspectRatio,
-                        text = "${meta.width} x ${meta.height}",
-                    )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-                    MetadataChip(
-                        icon = Icons.Outlined.Memory,
-                        text = formatBytes(meta.fileSize),
-                    )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
-                    Surface(
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-                    ) {
-                        Text(
-                            text = meta.format,
-                            style = MaterialTheme.typography.labelMedium.copy(
-                                fontWeight = FontWeight.Medium,
-                            ),
-                            color = ThemeColors.LightBackground,
-                            modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xs,
+            .fillMaxSize()
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+                translationX = offset.x
+                translationY = offset.y + swipeOffset
+            }
+            .pointerInput(Unit) {
+                awaitEachGesture {
+                    awaitFirstDown(pass = PointerEventPass.Initial)
+                    do {
+                        val event = awaitPointerEvent(pass = PointerEventPass.Initial)
+                        val zoomChange = event.calculateZoom()
+                        val panChange = event.calculatePan()
+
+                        onScaleChange(
+                            (scale * zoomChange).coerceIn(
+                                FullscreenImageDefaults.MIN_ZOOM,
+                                FullscreenImageDefaults.MAX_ZOOM,
                             ),
                         )
+
+                        if (scale > 1f) {
+                            onOffsetChange(offset + panChange * scale)
+                        } else {
+                            if (abs(panChange.y) > abs(panChange.x) && event.changes.size == 1) {
+                                onSwipeOffsetChange(panChange.y)
+                            }
+                        }
+
+                        event.changes.forEach { change ->
+                            if (change.positionChanged()) {
+                                change.consume()
+                            }
+                        }
+                    } while (event.changes.any { it.pressed })
+
+                    if (scale < 1f) {
+                        onBounceBack()
+                    }
+
+                    if (abs(swipeOffset) > FullscreenImageDefaults.DISMISS_THRESHOLD && !isZoomed) {
+                        onDismiss()
+                    } else {
+                        onSwipeReset()
                     }
                 }
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        AsyncImage(
+            model = ImageRequest.Builder(context)
+                .data(imageData)
+                .crossfade(true)
+                .build(),
+            imageLoader = gifImageLoader,
+            contentDescription = stringResource(R.string.viewer_image_preview),
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.fillMaxSize(),
+            onState = { state ->
+                onLoadingChanged(state is AsyncImagePainter.State.Loading)
+            },
+        )
 
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-            }
-
-            // Action buttons
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(
-                    WormaCeptorDesignSystem.Spacing.md,
-                    Alignment.CenterHorizontally,
-                ),
-            ) {
-                ActionChip(
-                    icon = Icons.Default.Download,
-                    label = stringResource(R.string.viewer_image_save_to_gallery),
-                    onClick = onDownload,
-                )
-                ActionChip(
-                    icon = Icons.Default.Share,
-                    label = stringResource(R.string.viewer_image_share),
-                    onClick = onShare,
-                )
-            }
+        AnimatedVisibility(
+            visible = isLoading,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            CircularProgressIndicator(
+                color = WormaCeptorTokens.Colors.Viewer.onOverlay,
+                modifier = Modifier.size(WormaCeptorTokens.IconSize.xxxl),
+            )
         }
     }
 }
 
 @Composable
-private fun MetadataChip(
-    icon: ImageVector,
-    text: String,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            tint = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.HEAVY),
-            modifier = Modifier.size(16.dp),
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodySmall,
-            color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.PROMINENT),
-        )
-    }
-}
-
-@Composable
-private fun ActionChip(
-    icon: ImageVector,
-    label: String,
-    onClick: () -> Unit,
+internal fun ZoomIndicator(
+    scale: Float,
+    darkColors: SemanticColors,
 ) {
     Surface(
-        onClick = onClick,
-        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill),
-        color = ThemeColors.LightBackground.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
+        shape = WormaCeptorTokens.Shapes.button,
+        color = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.INTENSE),
     ) {
-        Row(
+        Text(
+            text = "${String.format(Locale.US, "%.1f", scale)}x",
+            style = MaterialTheme.typography.labelMedium,
+            color = WormaCeptorTokens.Colors.Viewer.onOverlay,
             modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                vertical = WormaCeptorDesignSystem.Spacing.md,
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xs,
             ),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = label,
-                tint = ThemeColors.LightBackground,
-                modifier = Modifier.size(18.dp),
-            )
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-                color = ThemeColors.LightBackground,
-            )
-        }
-    }
-}
-
-/**
- * Saves image data to the device gallery.
- *
- * @return Result message to display to the user
- */
-fun saveImageToGallery(
-    context: Context,
-    imageData: ByteArray,
-    format: String,
-): String {
-    return try {
-        val filename = "WormaCeptor_${System.currentTimeMillis()}.${format.lowercase()}"
-        val mimeType = when (format.uppercase()) {
-            "PNG" -> "image/png"
-            "JPEG", "JPG" -> "image/jpeg"
-            "GIF" -> "image/gif"
-            "WEBP" -> "image/webp"
-            "BMP" -> "image/bmp"
-            else -> "image/png"
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            // Use MediaStore for Android 10+
-            val contentValues = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, filename)
-                put(MediaStore.Images.Media.MIME_TYPE, mimeType)
-                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/WormaCeptor")
-                put(MediaStore.Images.Media.IS_PENDING, 1)
-            }
-
-            val uri = context.contentResolver.insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues,
-            )
-
-            uri?.let {
-                context.contentResolver.openOutputStream(it)?.use { outputStream ->
-                    outputStream.write(imageData)
-                }
-
-                contentValues.clear()
-                contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
-                context.contentResolver.update(uri, contentValues, null, null)
-            }
-
-            "Image saved to gallery"
-        } else {
-            // Legacy approach for older Android versions
-            val picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            val wormaceptorDir = File(picturesDir, "WormaCeptor")
-            if (!wormaceptorDir.exists()) {
-                wormaceptorDir.mkdirs()
-            }
-
-            val file = File(wormaceptorDir, filename)
-            FileOutputStream(file).use { it.write(imageData) }
-
-            // Notify media scanner
-            scanFile(
-                context,
-                arrayOf(file.absolutePath),
-                arrayOf(mimeType),
-                null,
-            )
-
-            "Image saved to gallery"
-        }
-    } catch (e: Exception) {
-        "Failed to save image: ${e.message}"
-    }
-}
-
-/**
- * Shares image data using Android's share sheet.
- *
- * @return Error message if sharing failed, null on success (share sheet handles success)
- */
-fun shareImage(
-    context: Context,
-    imageData: ByteArray,
-    format: String,
-): String? {
-    return try {
-        val filename = "WormaCeptor_${System.currentTimeMillis()}.${format.lowercase()}"
-        val mimeType = when (format.uppercase()) {
-            "PNG" -> "image/png"
-            "JPEG", "JPG" -> "image/jpeg"
-            "GIF" -> "image/gif"
-            "WEBP" -> "image/webp"
-            "BMP" -> "image/bmp"
-            else -> "image/png"
-        }
-
-        // Write to cache directory
-        val file = File(context.cacheDir, filename)
-        file.outputStream().use { it.write(imageData) }
-
-        // Get URI via FileProvider
-        val uri = FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.wormaceptor.fileprovider",
-            file,
         )
+    }
+}
 
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = mimeType
-            putExtra(Intent.EXTRA_STREAM, uri)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
+@Preview(showBackground = true, backgroundColor = 0xFF1C1B1F)
+@Composable
+private fun ZoomIndicatorPreview() {
+    WormaCeptorTheme {
+        ZoomIndicator(
+            scale = 2.5f,
+            darkColors = WormaCeptorTokens.semantic(darkTheme = true),
+        )
+    }
+}
 
-        context.startActivity(Intent.createChooser(intent, "Share Image"))
-        null // Success - share sheet will handle it
-    } catch (e: Exception) {
-        "Failed to share image: ${e.message}"
+@Preview(showBackground = true)
+@Composable
+private fun FullscreenImageViewerPreview() {
+    WormaCeptorTheme {
+        FullscreenImageViewer(
+            imageData = byteArrayOf(),
+            metadata = ImageMetadata(
+                width = 1920,
+                height = 1080,
+                format = "PNG",
+                fileSize = 2_048_000L,
+            ),
+            onDismiss = {},
+            onDownload = {},
+            onShare = {},
+        )
     }
 }

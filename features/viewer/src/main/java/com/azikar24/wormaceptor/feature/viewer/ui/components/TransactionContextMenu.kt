@@ -9,16 +9,16 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.domain.entities.TransactionSummary
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 
 /**
@@ -27,11 +27,11 @@ import com.azikar24.wormaceptor.feature.viewer.R
  */
 @Composable
 fun TransactionContextMenu(
-    transaction: TransactionSummary,
     expanded: Boolean,
     onDismiss: () -> Unit,
     onCopyUrl: () -> Unit,
     onShare: () -> Unit,
+    onShareAsHar: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
     modifier: Modifier = Modifier,
@@ -42,7 +42,7 @@ fun TransactionContextMenu(
         onDismissRequest = onDismiss,
         modifier = modifier,
         offset = offset,
-        shape = WormaCeptorDesignSystem.Shapes.card,
+        shape = WormaCeptorTokens.Shapes.card,
     ) {
         DropdownMenuItem(
             text = { Text(stringResource(R.string.viewer_context_menu_copy_url)) },
@@ -50,7 +50,7 @@ fun TransactionContextMenu(
                 Icon(
                     imageVector = Icons.Default.ContentCopy,
                     contentDescription = stringResource(R.string.viewer_context_menu_copy_url),
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 )
             },
             onClick = {
@@ -65,11 +65,26 @@ fun TransactionContextMenu(
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = stringResource(R.string.viewer_context_menu_share_transaction),
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 )
             },
             onClick = {
                 onShare()
+                onDismiss()
+            },
+        )
+
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.viewer_context_menu_share_as_har)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = stringResource(R.string.viewer_context_menu_share_as_har_description),
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+                )
+            },
+            onClick = {
+                onShareAsHar()
                 onDismiss()
             },
         )
@@ -80,7 +95,7 @@ fun TransactionContextMenu(
                 Icon(
                     imageVector = Icons.Default.Code,
                     contentDescription = stringResource(R.string.viewer_context_menu_copy_as_curl_description),
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 )
             },
             onClick = {
@@ -95,21 +110,37 @@ fun TransactionContextMenu(
             text = {
                 Text(
                     text = stringResource(R.string.viewer_context_menu_delete),
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                 )
             },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.viewer_context_menu_delete_transaction),
-                    tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(20.dp),
+                    tint = WormaCeptorTokens.semantic().error,
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 )
             },
             onClick = {
                 onDelete()
                 onDismiss()
             },
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TransactionContextMenuPreview() {
+    WormaCeptorTheme {
+        TransactionContextMenu(
+            expanded = true,
+            onDismiss = {},
+            onCopyUrl = {},
+            onShare = {},
+            onShareAsHar = {},
+            onDelete = {},
+            onCopyAsCurl = {},
         )
     }
 }

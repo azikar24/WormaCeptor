@@ -73,6 +73,21 @@ class WormaCeptorInterceptor : Interceptor {
         }
     }
 
+    // Lazy-loaded mock engine from Koin via reflection
+    private val mockEngineInstance: Any? by lazy {
+        try {
+            val engineClass = Class.forName(
+                "com.azikar24.wormaceptor.core.engine.MockEngine",
+            )
+            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val getMethod = koinClass.getMethod("get", Class::class.java)
+            getMethod.invoke(null, engineClass)
+        } catch (e: Exception) {
+            Log.d(TAG, "Mock engine not available: ${e.message}")
+            null
+        }
+    }
+
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val provider = WormaCeptorApi.provider ?: return chain.proceed(chain.request())
@@ -114,7 +129,34 @@ class WormaCeptorInterceptor : Interceptor {
             Log.w(TAG, "Failed to capture request for ${request.url}", e)
         }
 
-        // 2. Network Call (with rate limiting if enabled)
+        // 2. Check mock rules BEFORE making the network call
+        val mockResponse = tryMockRequest(request)
+        if (mockResponse != null) {
+            // Capture the mocked response
+            if (transactionId != null) {
+                try {
+                    val mockBody = mockResponse.peekBody(maxContentLength)
+                    val mockHeaders = mockResponse.headers.toMultimap()
+                    val bodyText = mockBody.string()
+                    provider.completeTransaction(
+                        id = transactionId,
+                        code = mockResponse.code,
+                        message = mockResponse.message.ifEmpty { "MOCKED" },
+                        headers = mockHeaders,
+                        bodyStream = bodyText.byteInputStream(),
+                        bodySize = bodyText.length.toLong(),
+                        protocol = mockResponse.protocol.toString(),
+                        tlsVersion = null,
+                        error = null,
+                    )
+                } catch (e: Exception) {
+                    Log.w(TAG, "Failed to capture mocked response for ${request.url}", e)
+                }
+            }
+            return mockResponse
+        }
+
+        // 3. Network Call (with rate limiting if enabled)
         val response: Response
         try {
             // Apply rate limiting before proceeding with the actual network call
@@ -136,7 +178,7 @@ class WormaCeptorInterceptor : Interceptor {
             throw e
         }
 
-        // 3. Capture Response
+        // 4. Capture Response
         if (transactionId != null) {
             try {
                 val responseBody = response.peekBody(maxContentLength)
@@ -285,5 +327,54 @@ class WormaCeptorInterceptor : Interceptor {
     fun redactXmlValue(tag: String): WormaCeptorInterceptor {
         WormaCeptorApi.redactionConfig.redactXmlValue(tag)
         return this
+    }
+
+    /**
+     * Checks if any mock rule matches the given request.
+     * Returns a fully formed OkHttp [Response] if a mock applies, null otherwise.
+     * Uses reflection to access MockEngine to avoid hard class-loading dependency.
+     */
+    @Suppress("TooGenericExceptionCaught")
+    private fun tryMockRequest(request: okhttp3.Request): Response? {
+        val engine = mockEngineInstance ?: return null
+        try {
+            val engineClass = engine.javaClass
+
+            // Call findMatchingRule(url, method, headers)
+            val findMethod = engineClass.getMethod(
+                "findMatchingRule",
+                String::class.java,
+                String::class.java,
+                Map::class.java,
+            )
+            val matchedRule = findMethod.invoke(
+                engine,
+                request.url.toString(),
+                request.method,
+                request.headers.toMultimap(),
+            ) ?: return null
+
+            // Call resolveResponse(rule) -> MockResponse?
+            val resolveMethod = engineClass.getMethod("resolveResponse", matchedRule.javaClass)
+            val mockResponse = resolveMethod.invoke(engine, matchedRule) ?: return null
+
+            // Call computeDelayMs(rule) -> Long
+            val delayMethod = engineClass.getMethod("computeDelayMs", matchedRule.javaClass)
+            val delayMs = delayMethod.invoke(engine, matchedRule) as Long
+            if (delayMs > 0) {
+                Thread.sleep(delayMs)
+            }
+
+            // Call buildOkHttpResponse(mockResponse, request) -> okhttp3.Response
+            val buildMethod = engineClass.getMethod(
+                "buildOkHttpResponse",
+                mockResponse.javaClass,
+                okhttp3.Request::class.java,
+            )
+            return buildMethod.invoke(engine, mockResponse, request) as Response
+        } catch (e: Exception) {
+            Log.d(TAG, "Mock engine check failed: ${e.message}")
+            return null
+        }
     }
 }

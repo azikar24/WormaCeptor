@@ -5,7 +5,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -24,13 +23,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,14 +35,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.ProtobufDecoder
 import com.azikar24.wormaceptor.domain.entities.ProtobufDecodeResult
 import com.azikar24.wormaceptor.domain.entities.ProtobufField
@@ -75,14 +71,14 @@ fun ProtobufView(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
     ) {
         when (decodeResult) {
             is ProtobufDecodeResult.Success -> {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
+                        .padding(bottom = WormaCeptorTokens.Spacing.xs),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -93,7 +89,7 @@ fun ProtobufView(
                             decodeResult.fields.size,
                         ),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
 
@@ -106,47 +102,47 @@ fun ProtobufView(
             }
 
             is ProtobufDecodeResult.Failure -> {
-                Card(
+                WormaCeptorCard(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer.copy(
-                            alpha = WormaCeptorDesignSystem.Alpha.LIGHT,
-                        ),
+                    backgroundColor = WormaCeptorTokens.semantic().error.copy(
+                        alpha = WormaCeptorTokens.Alpha.SUBTLE,
+                    ).copy(
+                        alpha = WormaCeptorTokens.Alpha.LIGHT,
                     ),
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(WormaCeptorDesignSystem.Spacing.md),
+                            .padding(WormaCeptorTokens.Spacing.md),
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Warning,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.size(18.dp),
+                                tint = WormaCeptorTokens.semantic().error,
+                                modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                             )
                             Text(
                                 text = stringResource(R.string.viewer_protobuf_decode_error),
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Medium,
                                 ),
-                                color = MaterialTheme.colorScheme.error,
+                                color = WormaCeptorTokens.semantic().error,
                             )
                         }
 
-                        Spacer(modifier = Modifier.padding(top = WormaCeptorDesignSystem.Spacing.sm))
+                        Spacer(modifier = Modifier.padding(top = WormaCeptorTokens.Spacing.sm))
 
                         Text(
                             text = stringResource(R.string.viewer_protobuf_hex_dump),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.xs),
+                            color = WormaCeptorTokens.semantic().textSecondary,
+                            modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.xs),
                         )
 
                         SelectionContainer {
@@ -155,7 +151,7 @@ fun ProtobufView(
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     fontFamily = FontFamily.Monospace,
                                 ),
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = WormaCeptorTokens.semantic().textPrimary,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .horizontalScroll(rememberScrollState()),
@@ -168,7 +164,7 @@ fun ProtobufView(
     }
 }
 
-private val protobufAccentColor = Color(0xFF8B5CF6)
+private val protobufAccentColor = WormaCeptorTokens.Colors.Viewer.protobufAccent
 
 @Composable
 private fun ProtobufFieldCard(
@@ -178,35 +174,27 @@ private fun ProtobufFieldCard(
     var expanded by remember { mutableStateOf(initiallyExpanded) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+        animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "chevron_rotation",
     )
 
-    Card(
+    WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                WormaCeptorDesignSystem.Elevation.sm,
-            ),
-        ),
-        border = BorderStroke(
-            width = WormaCeptorDesignSystem.BorderWidth.thin,
-            color = if (expanded) {
-                protobufAccentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.MODERATE)
-            } else {
-                MaterialTheme.colorScheme.outlineVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.MEDIUM,
-                )
-            },
-        ),
-        shape = WormaCeptorDesignSystem.Shapes.card,
+        style = CardStyle.Outlined,
+        borderColor = if (expanded) {
+            protobufAccentColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+        } else {
+            WormaCeptorTokens.semantic().surfaceVariant.copy(
+                alpha = WormaCeptorTokens.Alpha.MEDIUM,
+            )
+        },
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { expanded = !expanded }
-                    .padding(WormaCeptorDesignSystem.Spacing.md),
+                    .padding(WormaCeptorTokens.Spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -217,28 +205,28 @@ private fun ProtobufFieldCard(
                         stringResource(R.string.viewer_body_expand)
                     },
                     modifier = Modifier
-                        .size(18.dp)
+                        .size(WormaCeptorTokens.IconSize.md)
                         .rotate(rotation),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
 
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
                 Surface(
-                    shape = WormaCeptorDesignSystem.Shapes.chip,
-                    color = protobufAccentColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+                    shape = WormaCeptorTokens.Shapes.chip,
+                    color = protobufAccentColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Code,
                         contentDescription = null,
                         modifier = Modifier
-                            .padding(WormaCeptorDesignSystem.Spacing.xs)
-                            .size(16.dp),
+                            .padding(WormaCeptorTokens.Spacing.xs)
+                            .size(WormaCeptorTokens.IconSize.sm),
                         tint = protobufAccentColor,
                     )
                 }
 
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
@@ -246,12 +234,12 @@ private fun ProtobufFieldCard(
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Medium,
                         ),
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                     Text(
                         text = field.wireTypeName,
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }
@@ -259,21 +247,21 @@ private fun ProtobufFieldCard(
             AnimatedVisibility(
                 visible = expanded,
                 enter = expandVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
                 ),
                 exit = shrinkVertically(
-                    animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.NORMAL),
+                    animationSpec = tween(WormaCeptorTokens.Animation.NORMAL),
                 ),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            MaterialTheme.colorScheme.surfaceVariant.copy(
-                                alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
+                            WormaCeptorTokens.semantic().surfaceVariant.copy(
+                                alpha = WormaCeptorTokens.Alpha.MODERATE,
                             ),
                         )
-                        .padding(WormaCeptorDesignSystem.Spacing.md),
+                        .padding(WormaCeptorTokens.Spacing.md),
                 ) {
                     SelectionContainer {
                         Text(
@@ -281,7 +269,7 @@ private fun ProtobufFieldCard(
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontFamily = FontFamily.Monospace,
                             ),
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = WormaCeptorTokens.semantic().textPrimary,
                             modifier = Modifier.horizontalScroll(rememberScrollState()),
                         )
                     }

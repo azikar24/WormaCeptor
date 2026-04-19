@@ -6,4 +6,17 @@
     <string name="logs_scroll_to_bottom">Scroll to bottom</string>
     <string name="logs_search_placeholder">Search by tag or message…</string>
     <string name="logs_console_title">Console Logs</string>
+    <string name="logs_pause_capture">Pause capture</string>
+    <string name="logs_start_capture">Start capture</string>
+    <string name="logs_empty_capturing_title">Waiting for logs…</string>
+    <string name="logs_empty_capturing_subtitle">Logs will appear here as they are generated</string>
+    <string name="logs_empty_paused_title">No logs captured</string>
+    <string name="logs_empty_paused_subtitle">Tap play to start capturing logs</string>
+    <string name="logs_start_capture_action">Start Capture</string>
+    <string name="logs_count_overflow">999+</string>
+    <string name="logs_status_capturing">Capturing</string>
+    <string name="logs_status_paused">Paused</string>
+    <string name="logs_pid">PID: %1$d</string>
+    <string name="logs_entries_filtered">%1$d / %2$d entries</string>
+    <string name="logs_entries_total">%1$d entries</string>
 </resources>

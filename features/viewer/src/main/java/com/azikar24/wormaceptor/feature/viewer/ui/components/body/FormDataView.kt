@@ -18,11 +18,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import com.azikar24.wormaceptor.core.ui.components.ContainerStyle
-import com.azikar24.wormaceptor.core.ui.components.DividerStyle
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorContainer
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
+import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.FormDataParser
 import com.azikar24.wormaceptor.feature.viewer.R
 import org.koin.java.KoinJavaComponent.get
@@ -50,18 +49,17 @@ fun FormDataView(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(WormaCeptorDesignSystem.Spacing.lg),
+                    .padding(WormaCeptorTokens.Spacing.lg),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = stringResource(R.string.viewer_form_no_data),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         } else {
             WormaCeptorContainer(
-                style = ContainerStyle.Outlined,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Column {
@@ -69,13 +67,13 @@ fun FormDataView(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(
-                                MaterialTheme.colorScheme.surfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.BOLD,
+                                WormaCeptorTokens.semantic().surfaceVariant.copy(
+                                    alpha = WormaCeptorTokens.Alpha.BOLD,
                                 ),
                             )
                             .padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.md,
-                                vertical = WormaCeptorDesignSystem.Spacing.sm,
+                                horizontal = WormaCeptorTokens.Spacing.md,
+                                vertical = WormaCeptorTokens.Spacing.sm,
                             ),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
@@ -84,7 +82,7 @@ fun FormDataView(
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             modifier = Modifier.weight(0.4f),
                         )
                         Text(
@@ -92,7 +90,7 @@ fun FormDataView(
                             style = MaterialTheme.typography.labelMedium.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             modifier = Modifier.weight(0.6f),
                         )
                     }
@@ -108,7 +106,7 @@ fun FormDataView(
 
                         if (index < parsedData.lastIndex) {
                             WormaCeptorDivider(
-                                modifier = Modifier.padding(horizontal = WormaCeptorDesignSystem.Spacing.md),
+                                modifier = Modifier.padding(horizontal = WormaCeptorTokens.Spacing.md),
                                 style = DividerStyle.Subtle,
                             )
                         }
@@ -130,14 +128,14 @@ private fun FormDataRow(
             .fillMaxWidth()
             .background(
                 if (isEven) {
-                    MaterialTheme.colorScheme.surface
+                    WormaCeptorTokens.semantic().surface
                 } else {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM)
+                    WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
                 },
             )
             .padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.md,
-                vertical = WormaCeptorDesignSystem.Spacing.sm,
+                horizontal = WormaCeptorTokens.Spacing.md,
+                vertical = WormaCeptorTokens.Spacing.sm,
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Top,
@@ -149,7 +147,7 @@ private fun FormDataRow(
                     fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Medium,
                 ),
-                color = MaterialTheme.colorScheme.primary,
+                color = WormaCeptorTokens.semantic().accent,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -161,7 +159,7 @@ private fun FormDataRow(
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontFamily = FontFamily.Monospace,
                 ),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
             )
         }
     }

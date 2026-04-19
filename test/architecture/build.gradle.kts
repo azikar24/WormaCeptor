@@ -1,21 +1,9 @@
 plugins {
-    alias(libs.plugins.kotlin.android) // or JVM plugin, but android project usually implies android
-    alias(libs.plugins.android.library)
+    id("wormaceptor.android.library")
 }
 
 android {
     namespace = "com.azikar24.wormaceptor.test.architecture"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 dependencies {

@@ -28,4 +28,6 @@ data class PushSimulatorViewState(
     val newActionTitle: String = "",
     val templates: ImmutableList<NotificationTemplate> = persistentListOf(),
     val channels: ImmutableList<NotificationChannelInfo> = persistentListOf(),
+    val showSaveDialog: Boolean = false,
+    val showPermissionDialog: Boolean = false,
 )

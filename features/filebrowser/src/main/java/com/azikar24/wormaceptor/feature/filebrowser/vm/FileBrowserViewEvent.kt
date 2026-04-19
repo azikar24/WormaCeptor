@@ -65,6 +65,13 @@ sealed class FileBrowserViewEvent {
     /** Dismisses the file info bottom sheet. */
     data object HideFileInfo : FileBrowserViewEvent()
 
+    /**
+     * Copies the file path to the system clipboard.
+     *
+     * @property path Absolute path to copy.
+     */
+    data class CopyFilePath(val path: String) : FileBrowserViewEvent()
+
     /** Dismisses the current error message. */
     data object ClearError : FileBrowserViewEvent()
 }

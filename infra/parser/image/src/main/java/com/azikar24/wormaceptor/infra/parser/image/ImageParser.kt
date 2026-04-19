@@ -96,8 +96,6 @@ class ImageParser : BaseBodyParser(), ImageMetadataExtractor {
         )
     }
 
-    // --- ImageMetadataExtractor interface ---
-
     override fun extractMetadata(data: ByteArray): ImageMetadata {
         if (data.isEmpty()) {
             return ImageMetadata.unknown(0)
@@ -116,8 +114,6 @@ class ImageParser : BaseBodyParser(), ImageMetadataExtractor {
     override fun isImageData(data: ByteArray): Boolean {
         return MagicByteDetector.detect(data) != null
     }
-
-    // --- Private helpers ---
 
     private fun buildFormattedString(metadata: ImageMetadata): String {
         return buildString {

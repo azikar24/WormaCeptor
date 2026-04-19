@@ -14,6 +14,7 @@ import androidx.room.TypeConverters
  * - v4: Added leak detection storage
  * - v5: Added location presets, mock location, and push templates
  * - v6: Added WebView request storage
+ * - v7: Added mock rule persistence
  */
 @Database(
     entities = [
@@ -24,9 +25,10 @@ import androidx.room.TypeConverters
         MockLocationEntity::class,
         PushTemplateEntity::class,
         WebViewRequestEntity::class,
+        MockRuleEntity::class,
     ],
-    version = 6,
-    exportSchema = false,
+    version = 7,
+    exportSchema = true,
 )
 @TypeConverters(Converters::class)
 abstract class WormaCeptorDatabase : RoomDatabase() {
@@ -50,4 +52,7 @@ abstract class WormaCeptorDatabase : RoomDatabase() {
 
     /** Provides access to WebView request CRUD operations. */
     abstract fun webViewRequestDao(): WebViewRequestDao
+
+    /** Provides access to mock rule CRUD operations. */
+    abstract fun mockRuleDao(): MockRuleDao
 }

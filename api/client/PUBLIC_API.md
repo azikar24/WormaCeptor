@@ -252,6 +252,7 @@ Enum of all available WormaCeptor features for selective enabling.
 |-------|-------------|
 | `WEBSOCKET_MONITOR` | WebSocket monitoring |
 | `RATE_LIMITER` | Network rate limiting |
+| `MOCK_RULES` | Mock/override HTTP responses at the interceptor level |
 
 #### Simulation Features
 

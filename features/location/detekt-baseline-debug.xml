@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>InjectDispatcher:LocationViewModel.kt$LocationViewModel$Default</ID>
+    <ID>LongMethod:LocationInputSection.kt$@Composable internal fun CoordinateInputCard( latitudeInput: String, longitudeInput: String, isInputValid: Boolean, isLoading: Boolean, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, currentMockLatitude: Double?, currentMockLongitude: Double?, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onSaveAsPreset: () -&gt; Unit, )</ID>
+    <ID>LongMethod:LocationMapCard.kt$@Composable fun LocationMapCard( realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LocationNavigationContributor.kt$@Suppress("ViewModelForwarding") @Composable private fun LocationDestination(onBack: (() -&gt; Unit)? = null)</ID>
+    <ID>LongMethod:LocationPresetsSection.kt$@Composable internal fun CollapsibleMapSection( isExpanded: Boolean, onToggle: () -&gt; Unit, realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LocationPresetsSection.kt$@Composable internal fun PresetItem( preset: LocationPreset, isSelected: Boolean, onClick: () -&gt; Unit, onDelete: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LocationScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationScreen( state: LocationViewState, onEvent: (LocationViewEvent) -&gt; Unit, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }, )</ID>
+    <ID>LongMethod:LocationStatusSection.kt$@Composable internal fun MockLocationWarningBanner()</ID>
+    <ID>LongParameterList:LocationInputSection.kt$( latitudeInput: String, longitudeInput: String, isInputValid: Boolean, isLoading: Boolean, isMockEnabled: Boolean, isMockLocationAvailable: Boolean, currentMockLatitude: Double?, currentMockLongitude: Double?, onLatitudeChanged: (String) -&gt; Unit, onLongitudeChanged: (String) -&gt; Unit, onSetMockLocation: () -&gt; Unit, onSetToCurrentLocation: () -&gt; Unit, onSaveAsPreset: () -&gt; Unit, )</ID>
+    <ID>LongParameterList:LocationPresetsSection.kt$( isExpanded: Boolean, onToggle: () -&gt; Unit, realLocation: GeoPoint?, mockLocation: GeoPoint?, isMockActive: Boolean, onMapTap: (GeoPoint) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:LocationInputSection.kt$180.0</ID>
+    <ID>MagicNumber:LocationInputSection.kt$90.0</ID>
+    <ID>MagicNumber:LocationMapView.kt$1000</ID>
+    <ID>MagicNumber:LocationMapView.kt$15.0</ID>
+    <ID>MagicNumber:LocationMapView.kt$19.0</ID>
+    <ID>MagicNumber:LocationMapView.kt$3.0</ID>
+    <ID>MagicNumber:LocationScreen.kt$0.1278</ID>
+    <ID>MagicNumber:LocationScreen.kt$40.7128</ID>
+    <ID>MagicNumber:LocationScreen.kt$51.5074</ID>
+    <ID>MagicNumber:LocationScreen.kt$74.0060</ID>
+    <ID>NullableToStringCall:LocationViewModel.kt$LocationViewModel$${e.message}</ID>
+    <ID>ParameterNaming:LocationInputSection.kt$onLatitudeChanged</ID>
+    <ID>ParameterNaming:LocationInputSection.kt$onLongitudeChanged</ID>
+    <ID>SwallowedException:LocationViewModel.kt$LocationViewModel$e: SecurityException</ID>
+    <ID>UndocumentedPublicClass:LocationNavigationContributor.kt$LocationNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:LocationViewModelFactory.kt$LocationViewModelFactory : Factory</ID>
+    <ID>UnnecessaryLet:LocationViewModel.kt$LocationViewModel$let { stateFlow -&gt; combine(stateFlow) { states -&gt; val state = states[0] val latitude = state.latitudeInput.toDoubleOrNull() val longitude = state.longitudeInput.toDoubleOrNull() latitude != null &amp;&amp; longitude != null &amp;&amp; latitude in -LAT_RANGE..LAT_RANGE &amp;&amp; longitude in -LON_RANGE..LON_RANGE }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIPTION_TIMEOUT), false) }</ID>
+    <ID>ViewModelInjection:LocationNavigationContributor.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

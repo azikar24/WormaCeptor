@@ -288,16 +288,15 @@ class PushSimulatorViewModelTest {
         }
 
         @Test
-        fun `emits PermissionRequired when engine throws NotificationPermissionException`() = runTest {
+        fun `shows permission dialog when engine throws NotificationPermissionException`() = runTest {
             every { engine.sendNotification(any()) } throws NotificationPermissionException("No permission")
             advanceUntilIdle()
             viewModel.sendEvent(PushSimulatorViewEvent.UpdateTitle("Test"))
 
-            viewModel.effects.test {
-                viewModel.sendEvent(PushSimulatorViewEvent.SendNotification)
-                advanceUntilIdle()
-                awaitItem() shouldBe PushSimulatorViewEffect.PermissionRequired
-            }
+            viewModel.sendEvent(PushSimulatorViewEvent.SendNotification)
+            advanceUntilIdle()
+
+            viewModel.uiState.value.showPermissionDialog shouldBe true
         }
 
         @Test
@@ -441,15 +440,14 @@ class PushSimulatorViewModelTest {
         }
 
         @Test
-        fun `emits PermissionRequired on permission error`() = runTest {
+        fun `shows permission dialog on permission error`() = runTest {
             every { engine.sendNotification(any()) } throws NotificationPermissionException("No permission")
             advanceUntilIdle()
 
-            viewModel.effects.test {
-                viewModel.sendEvent(PushSimulatorViewEvent.SendFromTemplate(sampleTemplate))
-                advanceUntilIdle()
-                awaitItem() shouldBe PushSimulatorViewEffect.PermissionRequired
-            }
+            viewModel.sendEvent(PushSimulatorViewEvent.SendFromTemplate(sampleTemplate))
+            advanceUntilIdle()
+
+            viewModel.uiState.value.showPermissionDialog shouldBe true
         }
     }
 

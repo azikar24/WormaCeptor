@@ -2,17 +2,15 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:FpsScreen.kt$@Composable private fun CurrentFpsCard( fpsInfo: FpsInfo, isMonitoring: Boolean, colors: FpsColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:FpsScreen.kt$@Composable private fun DroppedFramesCard( droppedFrames: Int, jankFrames: Int, colors: FpsColors, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:FpsScreen.kt$@Composable private fun EmptyState( onStartMonitoring: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:FpsScreen.kt$@Composable private fun FpsChart( data: ImmutableList&lt;FpsInfo&gt;, colors: FpsColors, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:FpsScreen.kt$30f</ID>
-    <ID>MagicNumber:FpsScreen.kt$55f</ID>
-    <ID>MagicNumber:FpsScreen.kt$60f</ID>
-    <ID>MagicNumber:FpsScreen.kt$65f</ID>
-    <ID>MagicNumber:FpsScreen.kt$8f</ID>
-    <ID>MagicNumber:FpsViewModel.kt$FpsViewModel$5000</ID>
-    <ID>UnusedPrivateMember:FpsScreen.kt$@Suppress("MagicNumber") @Preview(showBackground = true) @Composable private fun FpsScreenContentPreview()</ID>
-    <ID>ViewModelInjection:FpsFeature.kt$viewModel</ID>
+    <ID>UndocumentedPublicClass:FpsNavigationContributor.kt$FpsNavigationContributor : FeatureNavigationContributor</ID>
+    <ID>UndocumentedPublicClass:FpsViewEvent.kt$FpsViewEvent$ResetStats : FpsViewEvent</ID>
+    <ID>UndocumentedPublicClass:FpsViewEvent.kt$FpsViewEvent$StartMonitoring : FpsViewEvent</ID>
+    <ID>UndocumentedPublicClass:FpsViewEvent.kt$FpsViewEvent$StopMonitoring : FpsViewEvent</ID>
+    <ID>UndocumentedPublicClass:FpsViewEvent.kt$FpsViewEvent$ToggleMonitoring : FpsViewEvent</ID>
+    <ID>UndocumentedPublicClass:FpsViewModelFactory.kt$FpsViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicClass:FpsViewState.kt$FpsViewState</ID>
+    <ID>UndocumentedPublicProperty:FpsViewState.kt$FpsViewState$val currentFpsInfo: FpsInfo = FpsInfo.EMPTY</ID>
+    <ID>UndocumentedPublicProperty:FpsViewState.kt$FpsViewState$val fpsHistory: ImmutableList&lt;FpsInfo&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:FpsViewState.kt$FpsViewState$val isMonitoring: Boolean = false</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -81,48 +81,48 @@ class LoadedLibrariesViewModelTest {
 
         @Test
         fun `selectedType is null`() = runTest {
-            viewModel.selectedType.value shouldBe null
+            viewModel.uiState.value.selectedType shouldBe null
         }
 
         @Test
         fun `showSystemLibs is true`() = runTest {
-            viewModel.showSystemLibs.value shouldBe true
+            viewModel.uiState.value.showSystemLibs shouldBe true
         }
 
         @Test
         fun `searchQuery is empty`() = runTest {
-            viewModel.searchQuery.value shouldBe ""
+            viewModel.uiState.value.searchQuery shouldBe ""
         }
 
         @Test
         fun `selectedLibrary is null`() = runTest {
-            viewModel.selectedLibrary.value shouldBe null
+            viewModel.uiState.value.selectedLibrary shouldBe null
         }
 
         @Test
         fun `filteredLibraries is empty`() = runTest {
-            viewModel.filteredLibraries.test {
-                awaitItem().shouldBeEmpty()
+            viewModel.uiState.test {
+                awaitItem().filteredLibraries.shouldBeEmpty()
             }
         }
     }
 
     @Nested
-    inner class `setSelectedType` {
+    inner class `SetSelectedType event` {
 
         @Test
         fun `updates selected type`() = runTest {
-            viewModel.setSelectedType(LibraryType.NATIVE_SO)
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSelectedType(LibraryType.NATIVE_SO))
 
-            viewModel.selectedType.value shouldBe LibraryType.NATIVE_SO
+            viewModel.uiState.value.selectedType shouldBe LibraryType.NATIVE_SO
         }
 
         @Test
         fun `setting null clears the type filter`() = runTest {
-            viewModel.setSelectedType(LibraryType.DEX)
-            viewModel.setSelectedType(null)
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSelectedType(LibraryType.DEX))
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSelectedType(null))
 
-            viewModel.selectedType.value shouldBe null
+            viewModel.uiState.value.selectedType shouldBe null
         }
 
         @Test
@@ -135,25 +135,27 @@ class LoadedLibrariesViewModelTest {
                 isSystemLibrary = false,
             )
             librariesFlow.value = listOf(nativeLib, dexLib)
-            viewModel.setSelectedType(LibraryType.NATIVE_SO)
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSelectedType(LibraryType.NATIVE_SO))
 
-            viewModel.filteredLibraries.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "libc.so" }
-                items shouldHaveSize 1
-                items.first().type shouldBe LibraryType.NATIVE_SO
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredLibraries.size == 1 && it.filteredLibraries.first().name == "libc.so"
+                }
+                state.filteredLibraries shouldHaveSize 1
+                state.filteredLibraries.first().type shouldBe LibraryType.NATIVE_SO
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `setShowSystemLibs` {
+    inner class `SetShowSystemLibs event` {
 
         @Test
         fun `updates showSystemLibs flag`() = runTest {
-            viewModel.setShowSystemLibs(false)
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetShowSystemLibs(false))
 
-            viewModel.showSystemLibs.value shouldBe false
+            viewModel.uiState.value.showSystemLibs shouldBe false
         }
 
         @Test
@@ -165,12 +167,14 @@ class LoadedLibrariesViewModelTest {
                 isSystemLibrary = false,
             )
             librariesFlow.value = listOf(systemLib, appLib)
-            viewModel.setShowSystemLibs(false)
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetShowSystemLibs(false))
 
-            viewModel.filteredLibraries.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "libapp.so" }
-                items shouldHaveSize 1
-                items.first().isSystemLibrary shouldBe false
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredLibraries.size == 1 && it.filteredLibraries.first().name == "libapp.so"
+                }
+                state.filteredLibraries shouldHaveSize 1
+                state.filteredLibraries.first().isSystemLibrary shouldBe false
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -185,22 +189,22 @@ class LoadedLibrariesViewModelTest {
             )
             librariesFlow.value = listOf(systemLib, appLib)
 
-            viewModel.filteredLibraries.test {
-                val items = awaitUntil { it.size == 2 }
-                items shouldHaveSize 2
+            viewModel.uiState.test {
+                val state = awaitUntil { it.filteredLibraries.size == 2 }
+                state.filteredLibraries shouldHaveSize 2
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `setSearchQuery` {
+    inner class `SetSearchQuery event` {
 
         @Test
         fun `updates search query`() = runTest {
-            viewModel.setSearchQuery("libc")
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSearchQuery("libc"))
 
-            viewModel.searchQuery.value shouldBe "libc"
+            viewModel.uiState.value.searchQuery shouldBe "libc"
         }
 
         @Test
@@ -208,12 +212,14 @@ class LoadedLibrariesViewModelTest {
             val libc = makeLibrary(name = "libc.so", path = "/system/lib64/libc.so")
             val libm = makeLibrary(name = "libm.so", path = "/system/lib64/libm.so")
             librariesFlow.value = listOf(libc, libm)
-            viewModel.setSearchQuery("LIBC")
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSearchQuery("LIBC"))
 
-            viewModel.filteredLibraries.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "libc.so" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "libc.so"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredLibraries.size == 1 && it.filteredLibraries.first().name == "libc.so"
+                }
+                state.filteredLibraries shouldHaveSize 1
+                state.filteredLibraries.first().name shouldBe "libc.so"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -227,12 +233,14 @@ class LoadedLibrariesViewModelTest {
                 isSystemLibrary = false,
             )
             librariesFlow.value = listOf(sysLib, appLib)
-            viewModel.setSearchQuery("/data/app")
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSearchQuery("/data/app"))
 
-            viewModel.filteredLibraries.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "libapp.so" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "libapp.so"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredLibraries.size == 1 && it.filteredLibraries.first().name == "libapp.so"
+                }
+                state.filteredLibraries shouldHaveSize 1
+                state.filteredLibraries.first().name shouldBe "libapp.so"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -242,37 +250,37 @@ class LoadedLibrariesViewModelTest {
             val lib1 = makeLibrary(name = "libc.so")
             val lib2 = makeLibrary(name = "libm.so", path = "/system/lib64/libm.so")
             librariesFlow.value = listOf(lib1, lib2)
-            viewModel.setSearchQuery("libc")
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSearchQuery("libc"))
 
-            viewModel.filteredLibraries.test {
-                awaitUntil { it.size == 1 }
+            viewModel.uiState.test {
+                awaitUntil { it.filteredLibraries.size == 1 }
 
-                viewModel.setSearchQuery("")
-                val items = awaitUntil { it.size == 2 }
-                items shouldHaveSize 2
+                viewModel.sendEvent(LoadedLibrariesViewEvent.SetSearchQuery(""))
+                val state = awaitUntil { it.filteredLibraries.size == 2 }
+                state.filteredLibraries shouldHaveSize 2
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Nested
-    inner class `selectLibrary and dismissDetail` {
+    inner class `SelectLibrary and DismissDetail events` {
 
         @Test
-        fun `selectLibrary sets the selected library`() = runTest {
+        fun `SelectLibrary sets the selected library`() = runTest {
             val lib = makeLibrary(name = "libc.so")
 
-            viewModel.selectLibrary(lib)
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SelectLibrary(lib))
 
-            viewModel.selectedLibrary.value shouldBe lib
+            viewModel.uiState.value.selectedLibrary shouldBe lib
         }
 
         @Test
-        fun `dismissDetail clears the selected library`() = runTest {
-            viewModel.selectLibrary(makeLibrary())
-            viewModel.dismissDetail()
+        fun `DismissDetail clears the selected library`() = runTest {
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SelectLibrary(makeLibrary()))
+            viewModel.sendEvent(LoadedLibrariesViewEvent.DismissDetail)
 
-            viewModel.selectedLibrary.value shouldBe null
+            viewModel.uiState.value.selectedLibrary shouldBe null
         }
     }
 
@@ -280,8 +288,8 @@ class LoadedLibrariesViewModelTest {
     inner class `engine delegation` {
 
         @Test
-        fun `refresh delegates to engine`() {
-            viewModel.refresh()
+        fun `Refresh event delegates to engine`() {
+            viewModel.sendEvent(LoadedLibrariesViewEvent.Refresh)
 
             verify { engine.refresh() }
         }
@@ -298,19 +306,19 @@ class LoadedLibrariesViewModelTest {
 
         @Test
         fun `isLoading reflects engine state`() = runTest {
-            viewModel.isLoading.test {
-                awaitItem() shouldBe false
+            viewModel.uiState.test {
+                awaitItem().isLoading shouldBe false
                 isLoadingFlow.value = true
-                awaitItem() shouldBe true
+                awaitUntil { it.isLoading }.isLoading shouldBe true
             }
         }
 
         @Test
         fun `error reflects engine state`() = runTest {
-            viewModel.error.test {
-                awaitItem() shouldBe null
+            viewModel.uiState.test {
+                awaitItem().error shouldBe null
                 errorFlow.value = "Scan failed"
-                awaitItem() shouldBe "Scan failed"
+                awaitUntil { it.error == "Scan failed" }.error shouldBe "Scan failed"
             }
         }
     }
@@ -337,13 +345,15 @@ class LoadedLibrariesViewModelTest {
                 isSystemLibrary = false,
             )
             librariesFlow.value = listOf(nativeLibc, nativeLibm, dexClasses)
-            viewModel.setSelectedType(LibraryType.NATIVE_SO)
-            viewModel.setSearchQuery("libc")
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSelectedType(LibraryType.NATIVE_SO))
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSearchQuery("libc"))
 
-            viewModel.filteredLibraries.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "libc.so" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "libc.so"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredLibraries.size == 1 && it.filteredLibraries.first().name == "libc.so"
+                }
+                state.filteredLibraries shouldHaveSize 1
+                state.filteredLibraries.first().name shouldBe "libc.so"
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -368,13 +378,15 @@ class LoadedLibrariesViewModelTest {
                 isSystemLibrary = false,
             )
             librariesFlow.value = listOf(sysNative, appNative, appDex)
-            viewModel.setSelectedType(LibraryType.NATIVE_SO)
-            viewModel.setShowSystemLibs(false)
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetSelectedType(LibraryType.NATIVE_SO))
+            viewModel.sendEvent(LoadedLibrariesViewEvent.SetShowSystemLibs(false))
 
-            viewModel.filteredLibraries.test {
-                val items = awaitUntil { it.size == 1 && it.first().name == "libapp.so" }
-                items shouldHaveSize 1
-                items.first().name shouldBe "libapp.so"
+            viewModel.uiState.test {
+                val state = awaitUntil {
+                    it.filteredLibraries.size == 1 && it.filteredLibraries.first().name == "libapp.so"
+                }
+                state.filteredLibraries shouldHaveSize 1
+                state.filteredLibraries.first().name shouldBe "libapp.so"
                 cancelAndIgnoreRemainingEvents()
             }
         }

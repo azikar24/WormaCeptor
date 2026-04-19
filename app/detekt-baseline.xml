@@ -3,19 +3,14 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ContentSlotReused:GlitchEffect.kt$content</ID>
-    <ID>CyclomaticComplexMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen( onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>EmptyFunctionBlock:LocationTestScreen.kt$&lt;no name provided&gt;${}</ID>
     <ID>EndOfSentenceFormat:MockProtobufInterceptor.kt$MockProtobufInterceptor.Companion$* Builds sample protobuf binary data representing a mock "User" message: * - field 1 (varint): id = 42 * - field 2 (length-delimited): name = "WormaCeptor" * - field 3 (length-delimited): email = "test@example.com" * - field 4 (varint): age = 28 * - field 5 (fixed32): score = 3.14f * - field 6 (fixed64): timestamp = 1700000000000 * - field 7 (varint): is_active = 1 (true)</ID>
-    <ID>LambdaParameterEventTrailing:WelcomeScreen.kt$onClick</ID>
     <ID>LambdaParameterInRestartableEffect:MainActivity.kt$MainActivity$onEvent</ID>
+    <ID>LongMethod:EncryptedPrefsSection.kt$@Composable private fun EncryptedPrefItem( entry: EncryptedPrefEntry, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:GlitchEffect.kt$@Composable private fun GlitchMeltdownEffectFallback( progress: Float, modifier: Modifier = Modifier, content: @Composable () -&gt; Unit, )</ID>
-    <ID>LongMethod:LocationTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun LocationTestScreen( onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:RememberWormaceptorLogo.kt$@Composable fun rememberWormaceptorLogo(): ImageVector</ID>
-    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun EncryptedPrefItem( entry: EncryptedPrefEntry, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun KeyStoreItem( entry: KeyStoreEntry, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:SecureStorageTestScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SecureStorageTestScreen( onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:TestToolsTab.kt$@Composable fun TestToolsTab( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
-    <ID>LongParameterList:TestToolsTab.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
+    <ID>LongMethod:SecureStorageTestScreen.kt$@Composable private fun SecureStorageTestScreenContent( state: SecureStorageTestViewState, onBack: () -&gt; Unit, onEvent: (SecureStorageTestViewEvent) -&gt; Unit, snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:TestToolsSheetContent.kt$@Composable fun TestToolsSheetContent( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
+    <ID>LongParameterList:TestToolsSheetContent.kt$( onRunApiTests: () -&gt; Unit, onWebSocketTest: () -&gt; Unit, onTriggerCrash: () -&gt; Unit, onTriggerLeak: () -&gt; Unit, onThreadViolation: () -&gt; Unit, onLocationClick: () -&gt; Unit, onWebViewClick: () -&gt; Unit, onSecureStorageClick: () -&gt; Unit, modifier: Modifier = Modifier, apiTestStatus: ToolStatus = ToolStatus.Idle, webSocketStatus: ToolStatus = ToolStatus.Idle, leakStatus: ToolStatus = ToolStatus.Idle, threadViolationStatus: ToolStatus = ToolStatus.Idle, )</ID>
     <ID>MagicNumber:Data.kt$Data$10</ID>
     <ID>MagicNumber:GlitchEffect.kt$0.5f</ID>
     <ID>MagicNumber:IcGithub.kt$0xFFFFFFFF</ID>
@@ -119,12 +114,6 @@
     <ID>MagicNumber:IcGithub.kt$9.466f</ID>
     <ID>MagicNumber:IcGithub.kt$9.81f</ID>
     <ID>MagicNumber:IcGithub.kt$9.954f</ID>
-    <ID>MagicNumber:LocationTestScreen.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:LocationTestScreen.kt$1000L</ID>
-    <ID>MagicNumber:LocationTestScreen.kt$15.0</ID>
-    <ID>MagicNumber:LocationTestScreen.kt$19.0</ID>
-    <ID>MagicNumber:LocationTestScreen.kt$20.0</ID>
-    <ID>MagicNumber:LocationTestScreen.kt$4.0</ID>
     <ID>MagicNumber:MainViewModel.kt$MainViewModel$1234</ID>
     <ID>MagicNumber:MainViewModel.kt$MainViewModel$15</ID>
     <ID>MagicNumber:MainViewModel.kt$MainViewModel$2.34567891</ID>
@@ -299,28 +288,15 @@
     <ID>MagicNumber:SampleWebSocketService.kt$SampleWebSocketService$1000</ID>
     <ID>MagicNumber:SampleWebSocketService.kt$SampleWebSocketService$250_000L</ID>
     <ID>MagicNumber:SampleWebSocketService.kt$SampleWebSocketService.&lt;no name provided&gt;$1000</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF00BCD4</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF2196F3</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF4CAF50</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF757575</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFF9C27B0</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFFE91E63</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFFF44336</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$0xFFFF9800</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$256</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$4</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$42</ID>
-    <ID>MagicNumber:SecureStorageTestScreen.kt$8</ID>
-    <ID>MagicNumber:TestToolsTab.kt$150</ID>
     <ID>MagicNumber:VeryLargeData.kt$VeryLargeData$1_000_000</ID>
     <ID>MagicNumber:VeryLargeData.kt$VeryLargeData$999</ID>
-    <ID>TooGenericExceptionCaught:SecureStorageTestScreen.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:SecureStorageTestViewModel.kt$SecureStorageTestViewModel$e: Exception</ID>
     <ID>TooManyFunctions:HttpBinApi.kt$HttpBinApi</ID>
     <ID>TopLevelPropertyNaming:GlitchEffect.kt$private const val GLITCH_SHADER = """ uniform shader content; uniform float2 resolution; uniform float progress; uniform float time; // Saturate/clamp helper float sat(float t) { return clamp(t, 0.0, 1.0); } float2 sat2(float2 t) { return clamp(t, float2(0.0), float2(1.0)); } // Remaps interval [a;b] to [0;1] float remap(float t, float a, float b) { return sat((t - a) / (b - a)); } // Triangle wave: t=[0;0.5;1], y=[0;1;0] float linterp(float t) { return sat(1.0 - abs(2.0 * t - 1.0)); } // Chromatic spectrum offset float3 spectrum_offset(float t) { float lo = step(t, 0.5); float hi = 1.0 - lo; float w = linterp(remap(t, 1.0 / 6.0, 5.0 / 6.0)); float neg_w = 1.0 - w; float3 ret = float3(lo, 1.0, hi) * float3(neg_w, w, neg_w); return pow(ret, float3(1.0 / 2.2)); } // Pseudo-random [0;1] float rand(float2 n) { return fract(sin(dot(n, float2(12.9898, 78.233))) * 43758.5453); } // Pseudo-random [-1;1] float srand(float2 n) { return rand(n) * 2.0 - 1.0; } // Truncate to discrete levels float mytrunc(float x, float num_levels) { return floor(x * num_levels) / num_levels; } float2 mytrunc2(float2 x, float num_levels) { return floor(x * num_levels) / num_levels; } half4 main(float2 coord) { float2 uv = coord / resolution; float modTime = mod(time * 100.0, 32.0) / 110.0; float GLITCH = clamp(progress, 0.0, 1.0); float gnm = sat(GLITCH); float rnd0 = rand(mytrunc2(float2(modTime, modTime), 6.0)); float r0 = sat((1.0 - gnm) * 0.7 + rnd0); float rnd1 = rand(float2(mytrunc(uv.x, 10.0 * r0), modTime)); float r1 = 0.5 - 0.5 * gnm + rnd1; r1 = 1.0 - max(0.0, (r1 &lt; 1.0) ? r1 : 0.9999999); float rnd2 = rand(float2(mytrunc(uv.y, 40.0 * r1), modTime)); float r2 = sat(rnd2); float rnd3 = rand(float2(mytrunc(uv.y, 10.0 * r0), modTime)); float r3 = (1.0 - sat(rnd3 + 0.8)) - 0.1; float pxrnd = rand(uv + modTime); float ofs = 0.05 * r2 * GLITCH * (rnd0 &gt; 0.5 ? 1.0 : -1.0); ofs += 0.5 * pxrnd * ofs; float2 distortedUV = uv; distortedUV.y += 0.1 * r3 * GLITCH; const int NUM_SAMPLES = 20; const float RCP_NUM_SAMPLES_F = 1.0 / float(NUM_SAMPLES); float4 sum = float4(0.0); float3 wsum = float3(0.0); for (int i = 0; i &lt; NUM_SAMPLES; ++i) { float t = float(i) * RCP_NUM_SAMPLES_F; float2 sampleUV = distortedUV; sampleUV.x = sat(sampleUV.x + ofs * t); half4 sampleCol = content.eval(sampleUV * resolution); float3 s = spectrum_offset(t); sum.rgb += float3(sampleCol.rgb) * s; sum.a += float(sampleCol.a); wsum += s; } sum.rgb /= wsum; sum.a *= RCP_NUM_SAMPLES_F; return half4(half3(sum.rgb), half(sum.a)); } """</ID>
     <ID>UnnecessaryParentheses:MockProtobufInterceptor.kt$MockProtobufInterceptor.Companion$(i * 8)</ID>
-    <ID>UnusedPrivateMember:CrashConfirmationDialog.kt$@Preview(showBackground = true) @Composable private fun CrashConfirmationDialogPreview()</ID>
-    <ID>UnusedPrivateMember:TestToolsTab.kt$@Preview(showBackground = true) @Composable private fun TestToolsTabPreview()</ID>
-    <ID>UnusedPrivateMember:WelcomeScreen.kt$@Preview(showBackground = true) @Composable private fun WelcomeScreenPreview()</ID>
+    <ID>ViewModelForwarding:LocationTestScreen.kt$BaseScreen( viewModel = viewModel, onEffect = { effect -&gt; when (effect) { LocationTestViewEffect.RequestLocationPermission -&gt; { permissionLauncher.launch( arrayOf( Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, ), ) } LocationTestViewEffect.OpenMockLocationTool -&gt; { val intent = android.content.Intent( android.content.Intent.ACTION_VIEW, "wormaceptor://tools/location".toUri(), ) context.startActivity(intent) } } }, ) { state, onEvent -&gt; LocationTestScreenContent( state = state, onBack = onBack, onEvent = onEvent, modifier = modifier, ) }</ID>
+    <ID>ViewModelForwarding:SecureStorageTestScreen.kt$BaseScreen( viewModel = viewModel, onEffect = { effect -&gt; when (effect) { is SecureStorageTestViewEffect.ShowError -&gt; { scope.launch { snackbarHostState.showSnackbar(effect.message) } } } }, ) { state, onEvent -&gt; SecureStorageTestScreenContent( state = state, onBack = onBack, onEvent = onEvent, snackbarHostState = snackbarHostState, modifier = modifier, ) }</ID>
+    <ID>ViewModelForwarding:WebViewTestScreen.kt$BaseScreen( viewModel = viewModel, onEffect = { effect -&gt; when (effect) { is WebViewTestViewEffect.NavigateToUrl -&gt; webViewRef?.loadUrl(effect.url) } }, ) { state, onEvent -&gt; WebViewTestScreenContent( state = state, onBack = onBack, onEvent = onEvent, onCreateWebView = { webViewRef = it }, modifier = modifier, ) }</ID>
     <ID>ViewModelInjection:MainActivity.kt$MainActivity$mainViewModel</ID>
   </CurrentIssues>
 </SmellBaseline>

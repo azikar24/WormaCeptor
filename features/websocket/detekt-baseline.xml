@@ -2,22 +2,51 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>LongMethod:WebSocketDetailScreen.kt$@Composable private fun DirectionFilterChips( selectedDirection: WebSocketMessageDirection?, directionCounts: Map&lt;WebSocketMessageDirection, Int&gt;, onDirectionToggle: (WebSocketMessageDirection) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:WebSocketDetailScreen.kt$@Composable private fun MessageItem( message: WebSocketMessage, isExpanded: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:WebSocketDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebSocketDetailScreen( connection: WebSocketConnection?, messages: ImmutableList&lt;WebSocketMessage&gt;, searchQuery: String, directionFilter: WebSocketMessageDirection?, totalMessageCount: Int, directionCounts: Map&lt;WebSocketMessageDirection, Int&gt;, expandedMessageId: Long?, onSearchQueryChanged: (String) -&gt; Unit, onDirectionFilterToggle: (WebSocketMessageDirection) -&gt; Unit, onMessageClick: (Long) -&gt; Unit, onClearMessages: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:DirectionFilterChips.kt$@Composable internal fun DirectionFilterChips( selectedDirection: WebSocketMessageDirection?, directionCounts: Map&lt;WebSocketMessageDirection, Int&gt;, onDirectionToggle: (WebSocketMessageDirection) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:WebSocketDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebSocketDetailScreen( state: WebSocketViewState, onEvent: (WebSocketViewEvent) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:WebSocketListScreen.kt$@Composable private fun ConnectionItem( connection: WebSocketConnection, messageCount: Int, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:WebSocketListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebSocketListScreen( connections: ImmutableList&lt;WebSocketConnection&gt;, searchQuery: String, totalCount: Int, onSearchQueryChanged: (String) -&gt; Unit, onConnectionClick: (WebSocketConnection) -&gt; Unit, onClearAll: () -&gt; Unit, getMessageCount: (Long) -&gt; Int, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>LongParameterList:WebSocketDetailScreen.kt$( connection: WebSocketConnection?, messages: ImmutableList&lt;WebSocketMessage&gt;, searchQuery: String, directionFilter: WebSocketMessageDirection?, totalMessageCount: Int, directionCounts: Map&lt;WebSocketMessageDirection, Int&gt;, expandedMessageId: Long?, onSearchQueryChanged: (String) -&gt; Unit, onDirectionFilterToggle: (WebSocketMessageDirection) -&gt; Unit, onMessageClick: (Long) -&gt; Unit, onClearMessages: () -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:WebSocketListScreen.kt$( connections: ImmutableList&lt;WebSocketConnection&gt;, searchQuery: String, totalCount: Int, onSearchQueryChanged: (String) -&gt; Unit, onConnectionClick: (WebSocketConnection) -&gt; Unit, onClearAll: () -&gt; Unit, getMessageCount: (Long) -&gt; Int, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
-    <ID>MagicNumber:WebSocketColors.kt$0xFF212121</ID>
-    <ID>MagicNumber:WebSocketColors.kt$0xFFE0E0E0</ID>
-    <ID>MagicNumber:WebSocketColors.kt$0xFFF5F5F5</ID>
-    <ID>MagicNumber:WebSocketDetailScreen.kt$150</ID>
-    <ID>MagicNumber:WebSocketViewModel.kt$WebSocketViewModel$150</ID>
-    <ID>MagicNumber:WebSocketViewModel.kt$WebSocketViewModel$5000</ID>
-    <ID>ParameterNaming:WebSocketDetailScreen.kt$onSearchQueryChanged</ID>
-    <ID>ParameterNaming:WebSocketListScreen.kt$onSearchQueryChanged</ID>
-    <ID>UnusedPrivateMember:WebSocketDetailScreen.kt$@Preview(showBackground = true) @Composable private fun WebSocketDetailScreenPreview()</ID>
-    <ID>UnusedPrivateMember:WebSocketListScreen.kt$@Preview(showBackground = true) @Composable private fun WebSocketListScreenPreview()</ID>
+    <ID>LongMethod:WebSocketListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable internal fun WebSocketListScreen( state: WebSocketViewState, onEvent: (WebSocketViewEvent) -&gt; Unit, getMessageCount: (Long) -&gt; Int, onConnectionClick: (WebSocketConnection) -&gt; Unit, modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, )</ID>
+    <ID>MagicNumber:DirectionFilterChips.kt$12</ID>
+    <ID>MagicNumber:DirectionFilterChips.kt$8</ID>
+    <ID>UndocumentedPublicClass:WebSocketNavigator.kt$WebSocketNavigator : FeatureNavigator</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ClearAllConfirmed : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ClearAllDismissed : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ClearAllRequested : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ClearMessagesConfirmed : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ClearMessagesDismissed : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ClearMessagesRequested : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ConnectionBackPressed : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ConnectionSearchQueryChanged : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ConnectionSelected : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$ConnectionSelectionCleared : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$DirectionFilterToggled : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$MessageExpandToggled : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewEvent.kt$WebSocketViewEvent$MessageSearchQueryChanged : WebSocketViewEvent</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewModel.kt$WebSocketViewModel : BaseViewModel</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewModelFactory.kt$WebSocketViewModelFactory : Factory</ID>
+    <ID>UndocumentedPublicClass:WebSocketViewState.kt$WebSocketViewState</ID>
+    <ID>UndocumentedPublicFunction:WebSocketNavigation.kt$fun NavGraphBuilder.webSocketGraph( navController: NavHostController, onNavigateBack: () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:WebSocketNavigator.kt$WebSocketNavigator$fun navigateBack()</ID>
+    <ID>UndocumentedPublicFunction:WebSocketNavigator.kt$WebSocketNavigator$fun navigateToMessages()</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewEvent.kt$WebSocketViewEvent.ConnectionSearchQueryChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewEvent.kt$WebSocketViewEvent.ConnectionSelected$val connectionId: Long</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewEvent.kt$WebSocketViewEvent.DirectionFilterToggled$val direction: WebSocketMessageDirection</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewEvent.kt$WebSocketViewEvent.MessageExpandToggled$val messageId: Long</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewEvent.kt$WebSocketViewEvent.MessageSearchQueryChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val connectionSearchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val connections: ImmutableList&lt;WebSocketConnection&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val directionCounts: Map&lt;WebSocketMessageDirection, Int&gt; = emptyMap()</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val directionFilter: WebSocketMessageDirection? = null</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val expandedMessageId: Long? = null</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val isConnectionsLoading: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val isMessagesLoading: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val messageSearchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val messages: ImmutableList&lt;WebSocketMessage&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val selectedConnection: WebSocketConnection? = null</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val showClearAllConfirmation: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val showClearMessagesConfirmation: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val totalConnectionCount: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:WebSocketViewState.kt$WebSocketViewState$val totalMessageCount: Int = 0</ID>
   </CurrentIssues>
 </SmellBaseline>

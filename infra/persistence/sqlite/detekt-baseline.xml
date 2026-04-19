@@ -5,5 +5,32 @@
     <ID>LongParameterList:TransactionDao.kt$TransactionDao$( offset: Int, limit: Int, searchQuery: String?, statusMin: Int?, statusMax: Int?, method: String?, )</ID>
     <ID>TooGenericExceptionCaught:InMemoryTransactionRepository.kt$InMemoryTransactionRepository.InMemoryPagingSource$e: Exception</ID>
     <ID>TooGenericExceptionCaught:TransactionPagingSource.kt$TransactionPagingSource$e: Exception</ID>
+    <ID>UndocumentedPublicClass:MockRuleDao.kt$MockRuleDao</ID>
+    <ID>UndocumentedPublicClass:MockRuleEntity.kt$MockRuleEntity</ID>
+    <ID>UndocumentedPublicClass:MockRuleEntity.kt$MockRuleEntity$Companion</ID>
+    <ID>UndocumentedPublicClass:RoomMockRuleRepository.kt$RoomMockRuleRepository : MockRuleRepository</ID>
+    <ID>UndocumentedPublicFunction:MockRuleDao.kt$MockRuleDao$@Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun upsert(entity: MockRuleEntity)</ID>
+    <ID>UndocumentedPublicFunction:MockRuleDao.kt$MockRuleDao$@Query("DELETE FROM mock_rules WHERE id = :id") suspend fun deleteById(id: String)</ID>
+    <ID>UndocumentedPublicFunction:MockRuleDao.kt$MockRuleDao$@Query("DELETE FROM mock_rules") suspend fun deleteAll()</ID>
+    <ID>UndocumentedPublicFunction:MockRuleDao.kt$MockRuleDao$@Query("SELECT * FROM mock_rules ORDER BY createdAt DESC") fun observeAll(): Flow&lt;List&lt;MockRuleEntity&gt;&gt;</ID>
+    <ID>UndocumentedPublicFunction:MockRuleDao.kt$MockRuleDao$@Query("SELECT * FROM mock_rules WHERE id = :id LIMIT 1") suspend fun getById(id: String): MockRuleEntity?</ID>
+    <ID>UndocumentedPublicFunction:MockRuleEntity.kt$MockRuleEntity$fun toDomain(): MockRule</ID>
+    <ID>UndocumentedPublicFunction:MockRuleEntity.kt$MockRuleEntity.Companion$fun fromDomain(rule: MockRule): MockRuleEntity</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$@PrimaryKey val id: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val behaviorJson: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val body: String?</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val contentType: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val createdAt: Long</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val delayJson: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val enabled: Boolean</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val matchType: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val matcherHeadersJson: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val method: String?</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val name: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val priority: Int</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val responseHeadersJson: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val statusCode: Int</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val statusMessage: String</ID>
+    <ID>UndocumentedPublicProperty:MockRuleEntity.kt$MockRuleEntity$val urlPattern: String</ID>
   </CurrentIssues>
 </SmellBaseline>

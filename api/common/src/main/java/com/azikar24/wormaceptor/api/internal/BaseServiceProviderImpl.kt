@@ -23,6 +23,7 @@ import com.azikar24.wormaceptor.domain.contracts.FormDataParser
 import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
 import com.azikar24.wormaceptor.domain.contracts.LeakRepository
 import com.azikar24.wormaceptor.domain.contracts.LocationSimulatorRepository
+import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
 import com.azikar24.wormaceptor.domain.contracts.MultipartParser
 import com.azikar24.wormaceptor.domain.contracts.ProtobufDecoder
 import com.azikar24.wormaceptor.domain.contracts.PushSimulatorRepository
@@ -39,8 +40,10 @@ import com.azikar24.wormaceptor.infra.parser.protobuf.ProtobufBodyParser
 import com.azikar24.wormaceptor.infra.parser.xml.XmlBodyParser
 import com.azikar24.wormaceptor.infra.syntax.json.JsonHighlighter
 import com.azikar24.wormaceptor.infra.syntax.xml.XmlHighlighter
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.dsl.module
@@ -56,6 +59,12 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
     protected var extensionRegistry: ExtensionRegistry? = null
     protected var notificationHelper: WormaCeptorNotificationHelper? = null
 
+    private val scope = CoroutineScope(
+        SupervisorJob() + Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
+            Log.w(TAG, "Background operation failed", throwable)
+        },
+    )
+
     protected data class StorageDependencies(
         val transactionRepository: TransactionRepository,
         val crashRepository: CrashRepository,
@@ -64,6 +73,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         val locationSimulatorRepository: LocationSimulatorRepository,
         val pushSimulatorRepository: PushSimulatorRepository,
         val webViewMonitorRepository: WebViewMonitorRepository,
+        val mockRuleRepository: MockRuleRepository,
     )
 
     protected abstract fun createDependencies(context: Context): StorageDependencies
@@ -107,6 +117,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
                 module {
                     single<LocationSimulatorRepository> { deps.locationSimulatorRepository }
                     single<PushSimulatorRepository> { deps.pushSimulatorRepository }
+                    single<MockRuleRepository> { deps.mockRuleRepository }
                 },
             ),
         )
@@ -125,6 +136,8 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
         // Register body parsers
         configureParsers(context)
+
+        // Feature navigation contributors are discovered automatically via ServiceLoader
     }
 
     private fun configureLeakDetection(
@@ -242,7 +255,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         tlsVersion: String?,
         error: String?,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             captureEngine?.completeTransaction(
                 id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error,
             )
@@ -254,7 +267,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
     }
 
     override fun cleanup(threshold: Long) {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             captureEngine?.cleanup(threshold)
         }
     }
@@ -280,7 +293,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
     }
 
     override fun clearTransactions() {
-        CoroutineScope(Dispatchers.IO).launch {
+        scope.launch {
             queryEngine?.clear()
         }
     }

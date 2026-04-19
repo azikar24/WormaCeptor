@@ -3,11 +3,9 @@ package com.azikar24.wormaceptor.core.engine
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.MediaType
 import okhttp3.Response
@@ -164,9 +162,7 @@ class RateLimitEngine {
 
             // Apply artificial latency
             if (currentConfig.latencyMs > 0) {
-                runBlocking {
-                    delay(currentConfig.latencyMs)
-                }
+                Thread.sleep(currentConfig.latencyMs)
                 totalDelayMs.addAndGet(currentConfig.latencyMs)
                 requestsThrottled.incrementAndGet()
                 updateStats()
@@ -190,9 +186,7 @@ class RateLimitEngine {
                 if (contentLength > 0) {
                     val uploadDelayMs = calculateThrottleDelay(contentLength, currentConfig.uploadSpeedKbps)
                     if (uploadDelayMs > 0) {
-                        runBlocking {
-                            delay(uploadDelayMs)
-                        }
+                        Thread.sleep(uploadDelayMs)
                         totalDelayMs.addAndGet(uploadDelayMs)
                         bytesThrottled.addAndGet(contentLength)
                         updateStats()
@@ -289,9 +283,7 @@ class RateLimitEngine {
                     val sleepTime = expectedTimeMs - elapsedTime
 
                     if (sleepTime > 0) {
-                        runBlocking {
-                            delay(sleepTime)
-                        }
+                        Thread.sleep(sleepTime)
                         totalDelayMs.addAndGet(sleepTime)
                         requestsThrottled.incrementAndGet()
                         updateStats()

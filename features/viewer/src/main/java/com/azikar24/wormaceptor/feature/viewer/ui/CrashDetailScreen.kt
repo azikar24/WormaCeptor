@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -17,7 +16,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,27 +31,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,10 +53,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -75,8 +63,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -85,14 +77,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/**
- * Pager screen for crash details with swipe navigation between crashes.
- * Swipe on the top bar to navigate between crashes.
- *
- * @param crashes List of all crashes
- * @param initialCrashIndex Initial index to display
- * @param onBack Callback to navigate back
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CrashDetailPagerScreen(
@@ -132,14 +116,17 @@ fun CrashDetailPagerScreen(
     }
 
     // Smooth animation config
-    val animDuration = WormaCeptorDesignSystem.AnimationDuration.NORMAL
     val slideOffset = 100
 
     // Smooth directional slide transition
     AnimatedContent(
         targetState = currentCrashIndex to currentCrash,
         transitionSpec = {
-            val slideSpec = tween<IntOffset>(animDuration, easing = FastOutSlowInEasing)
+            val slideSpec = tween<IntOffset>(
+                durationMillis = WormaCeptorTokens.Animation.NORMAL,
+                easing = WormaCeptorTokens.Easing.standard,
+            )
+
             if (navigationDirection >= 0) {
                 // Going forward (next) - content slides in from right
                 slideInHorizontally(slideSpec) { slideOffset } togetherWith
@@ -168,16 +155,13 @@ fun CrashDetailPagerScreen(
             ) {
                 Text(
                     stringResource(R.string.viewer_crash_detail_not_found),
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                 )
             }
         }
     }
 }
 
-/**
- * Original CrashDetailScreen - kept for backward compatibility.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CrashDetailScreen(
@@ -190,9 +174,6 @@ fun CrashDetailScreen(
     )
 }
 
-/**
- * Crash detail content - the actual content.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongMethod")
 @Composable
@@ -221,18 +202,12 @@ private fun CrashDetailContent(
                 canSwipeLeft = canNavigateNext,
                 canSwipeRight = canNavigatePrev,
             ) {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.viewer_crash_detail_title)) },
-                    navigationIcon = {
-                        IconButton(onClick = onBack) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.viewer_crash_detail_back),
-                            )
-                        }
-                    },
+                WormaCeptorTopBar(
+                    title = stringResource(R.string.viewer_crash_detail_title),
+                    onBack = onBack,
+                    backContentDescription = stringResource(R.string.viewer_crash_detail_back),
                     actions = {
-                        IconButton(onClick = { shareCrash(context, crash) }) {
+                        WormaCeptorIconButton(onClick = { shareCrash(context, crash) }) {
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = stringResource(R.string.viewer_crash_detail_share),
@@ -249,10 +224,10 @@ private fun CrashDetailContent(
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    start = WormaCeptorDesignSystem.Spacing.lg,
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    end = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.lg +
+                    start = WormaCeptorTokens.Spacing.lg,
+                    top = WormaCeptorTokens.Spacing.lg,
+                    end = WormaCeptorTokens.Spacing.lg,
+                    bottom = WormaCeptorTokens.Spacing.lg +
                         WindowInsets.navigationBars.asPaddingValues()
                             .calculateBottomPadding(),
                 ),
@@ -260,13 +235,13 @@ private fun CrashDetailContent(
             // Exception Info Card
             ExceptionInfoCard(crash, dateFormat)
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
 
             // Message Card
             val message = crash.message
             if (!message.isNullOrBlank()) {
                 MessageCard(message, context)
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
             }
 
             // Stack Trace Section
@@ -275,67 +250,23 @@ private fun CrashDetailContent(
     }
 }
 
-/**
- * Swipeable container for the TopAppBar that handles horizontal swipes
- * to navigate between crashes.
- */
-@Composable
-private fun SwipeableTopBar(
-    onSwipeLeft: () -> Unit,
-    onSwipeRight: () -> Unit,
-    canSwipeLeft: Boolean,
-    canSwipeRight: Boolean,
-    content: @Composable () -> Unit,
-) {
-    val haptics = LocalHapticFeedback.current
-    var dragOffset by remember { mutableFloatStateOf(0f) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .pointerInput(canSwipeLeft, canSwipeRight) {
-                detectHorizontalDragGestures(
-                    onDragEnd = {
-                        val threshold = size.width * 0.15f
-                        when {
-                            dragOffset < -threshold && canSwipeLeft -> {
-                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                                onSwipeLeft()
-                            }
-                            dragOffset > threshold && canSwipeRight -> {
-                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                                onSwipeRight()
-                            }
-                        }
-                        dragOffset = 0f
-                    },
-                    onDragCancel = { dragOffset = 0f },
-                    onHorizontalDrag = { _, dragAmount ->
-                        dragOffset += dragAmount
-                    },
-                )
-            },
-    ) {
-        content()
-    }
-}
-
 @Composable
 private fun ExceptionInfoCard(
     crash: Crash,
     dateFormat: SimpleDateFormat,
 ) {
-    Card(
+    WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = WormaCeptorDesignSystem.Shapes.card,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer.copy(
-                alpha = WormaCeptorDesignSystem.Alpha.SUBTLE,
-            ),
+        style = CardStyle.Outlined,
+        backgroundColor = WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE).copy(
+            alpha = WormaCeptorTokens.Alpha.SUBTLE,
+        ),
+        borderColor = WormaCeptorTokens.semantic().error.copy(
+            alpha = WormaCeptorTokens.Alpha.MODERATE,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
         ) {
             // Error indicator
             Row(
@@ -343,57 +274,57 @@ private fun ExceptionInfoCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(WormaCeptorDesignSystem.Spacing.sm)
-                        .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.pill))
-                        .background(MaterialTheme.colorScheme.error),
+                        .size(WormaCeptorTokens.Spacing.sm)
+                        .clip(WormaCeptorTokens.Shapes.pill)
+                        .background(WormaCeptorTokens.semantic().error),
                 )
-                Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
                 Text(
                     text = stringResource(R.string.viewer_crash_detail_crash_label),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                     fontWeight = FontWeight.Bold,
                 )
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
             // Exception Type
             SelectionContainer {
                 Text(
                     text = crash.exceptionType,
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.error,
+                    color = WormaCeptorTokens.semantic().error,
                     fontWeight = FontWeight.Bold,
                 )
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
             // Timestamp
             Text(
                 text = dateFormat.format(Date(crash.timestamp)),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
 
             // Crash Location
             val location = remember(crash.stackTrace) { CrashUtils.extractCrashLocation(crash.stackTrace) }
             if (location != null) {
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.viewer_crash_detail_at),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
-                    Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
+                    Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.xs))
                     SelectionContainer {
                         Text(
                             text = location,
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.secondary,
+                            color = WormaCeptorTokens.semantic().accent,
                             fontWeight = FontWeight.Medium,
                         )
                     }
@@ -408,15 +339,12 @@ private fun MessageCard(
     message: String,
     context: Context,
 ) {
-    Card(
+    WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = WormaCeptorDesignSystem.Shapes.card,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
-        ),
+        style = CardStyle.Outlined,
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -428,24 +356,24 @@ private fun MessageCard(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
-                IconButton(
+                WormaCeptorIconButton(
                     onClick = { copyToClipboard(context, "Message", message) },
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.viewer_crash_detail_copy_message),
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
             SelectionContainer {
                 Text(
                     text = message,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
             }
         }
@@ -460,15 +388,12 @@ private fun StackTraceSection(
 ) {
     var showAllFrames by remember { mutableStateOf(false) }
 
-    Card(
+    WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = WormaCeptorDesignSystem.Shapes.card,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
+        style = CardStyle.Outlined,
     ) {
         Column(
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -480,18 +405,18 @@ private fun StackTraceSection(
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
-                IconButton(
+                WormaCeptorIconButton(
                     onClick = { copyToClipboard(context, "Stack Trace", fullStackTrace) },
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = stringResource(R.string.viewer_crash_detail_copy_stack_trace),
-                        modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
             // Show important frames (app code) first
             val appFrames = stackFrames.filter { it.isAppCode }
@@ -501,33 +426,33 @@ private fun StackTraceSection(
                 Text(
                     text = stringResource(R.string.viewer_crash_detail_app_code, appFrames.size),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+                    color = WormaCeptorTokens.semantic().accent,
+                    modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.sm),
                 )
                 appFrames.forEachIndexed { index, frame ->
                     StackFrameItem(frame, isHighlighted = true)
                     if (index < appFrames.lastIndex) {
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
                     }
                 }
             }
 
             if (frameworkFrames.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
                 // Collapsible framework section
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { showAllFrames = !showAllFrames }
-                        .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                        .padding(vertical = WormaCeptorTokens.Spacing.xs),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = stringResource(R.string.viewer_crash_detail_framework_system, frameworkFrames.size),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                     Icon(
                         imageVector = if (showAllFrames) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
@@ -538,7 +463,7 @@ private fun StackTraceSection(
                         } else {
                             stringResource(R.string.viewer_body_expand)
                         },
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
 
@@ -561,7 +486,7 @@ private fun StackTraceSection(
                         frameworkFrames.forEachIndexed { index, frame ->
                             StackFrameItem(frame, isHighlighted = false)
                             if (index < frameworkFrames.lastIndex) {
-                                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                                Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
                             }
                         }
                     }
@@ -577,24 +502,24 @@ private fun StackFrameItem(
     isHighlighted: Boolean,
 ) {
     val backgroundColor = if (isHighlighted) {
-        MaterialTheme.colorScheme.primaryContainer.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT)
+        WormaCeptorTokens.semantic().accentSubtle.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)
     } else {
         Color.Transparent
     }
 
     val textColor = if (isHighlighted) {
-        MaterialTheme.colorScheme.onSurface
+        WormaCeptorTokens.semantic().textPrimary
     } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
+        WormaCeptorTokens.semantic().textSecondary
     }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(backgroundColor, RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs))
+            .background(backgroundColor, WormaCeptorTokens.Shapes.chip)
             .padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                vertical = WormaCeptorDesignSystem.Spacing.xs,
+                horizontal = WormaCeptorTokens.Spacing.sm,
+                vertical = WormaCeptorTokens.Spacing.xs,
             ),
     ) {
         if (frame.className != null && frame.methodName != null) {
@@ -602,7 +527,7 @@ private fun StackFrameItem(
             SelectionContainer {
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE))) {
+                        withStyle(SpanStyle(color = textColor.copy(alpha = WormaCeptorTokens.Alpha.INTENSE))) {
                             append("at ")
                         }
                         withStyle(
@@ -618,21 +543,21 @@ private fun StackFrameItem(
                         }
                         if (frame.fileName != null && frame.lineNumber != null) {
                             withStyle(
-                                SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE)),
+                                SpanStyle(color = textColor.copy(alpha = WormaCeptorTokens.Alpha.INTENSE)),
                             ) {
                                 append("(")
                             }
-                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
+                            withStyle(SpanStyle(color = WormaCeptorTokens.semantic().accent)) {
                                 append("${frame.fileName}:${frame.lineNumber}")
                             }
                             withStyle(
-                                SpanStyle(color = textColor.copy(alpha = WormaCeptorDesignSystem.Alpha.INTENSE)),
+                                SpanStyle(color = textColor.copy(alpha = WormaCeptorTokens.Alpha.INTENSE)),
                             ) {
                                 append(")")
                             }
                         }
                     },
-                    style = WormaCeptorDesignSystem.Typography.codeMedium,
+                    style = WormaCeptorTokens.Typography.codeMedium,
                 )
             }
         } else {
@@ -640,7 +565,7 @@ private fun StackFrameItem(
             SelectionContainer {
                 Text(
                     text = frame.fullLine,
-                    style = WormaCeptorDesignSystem.Typography.codeMedium,
+                    style = WormaCeptorTokens.Typography.codeMedium,
                     color = textColor,
                 )
             }

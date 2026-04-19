@@ -650,8 +650,6 @@ class ImageMetadataExtractorImplTest {
         }
     }
 
-    // --- Helper functions to build minimal valid binary headers ---
-
     @Suppress("MagicNumber")
     private fun buildMinimalPng(
         width: Int,

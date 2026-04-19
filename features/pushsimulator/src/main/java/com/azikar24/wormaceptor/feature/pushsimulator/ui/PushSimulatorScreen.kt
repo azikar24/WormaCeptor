@@ -6,56 +6,35 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.pushsimulator.R
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewEffect
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewEvent
@@ -63,9 +42,6 @@ import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewModel
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewState
 import kotlinx.coroutines.launch
 
-/**
- * Main screen for the Push Notification Simulator.
- */
 @Composable
 fun PushSimulatorScreen(
     viewModel: PushSimulatorViewModel,
@@ -76,10 +52,6 @@ fun PushSimulatorScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var showSaveDialog by remember { mutableStateOf(false) }
-    var showPermissionDialog by remember { mutableStateOf(false) }
-
-    // Permission launcher for Android 13+
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
     ) { isGranted ->
@@ -87,13 +59,10 @@ fun PushSimulatorScreen(
             viewModel.sendEvent(PushSimulatorViewEvent.SendNotification)
         } else {
             val message = context.getString(R.string.pushsimulator_notification_permission_denied)
-            scope.launch {
-                snackBarHostState.showSnackbar(message)
-            }
+            scope.launch { snackBarHostState.showSnackbar(message) }
         }
     }
 
-    // String resources for snackbar messages
     val notificationSentMessage = stringResource(R.string.pushsimulator_notification_sent)
     val templateSavedMessage = stringResource(R.string.pushsimulator_template_saved)
     val templateDeletedMessage = stringResource(R.string.pushsimulator_template_deleted)
@@ -118,9 +87,6 @@ fun PushSimulatorScreen(
                         )
                     }
                 }
-                is PushSimulatorViewEffect.PermissionRequired -> {
-                    showPermissionDialog = true
-                }
                 is PushSimulatorViewEffect.Error -> {
                     scope.launch { snackBarHostState.showSnackbar(effect.message) }
                 }
@@ -129,11 +95,9 @@ fun PushSimulatorScreen(
     ) { state, onEvent ->
         PushSimulatorScreenContent(
             state = state,
-            snackBarHostState = snackBarHostState,
-            showSaveDialog = showSaveDialog,
-            showPermissionDialog = showPermissionDialog,
-            onBack = onBack,
             onEvent = onEvent,
+            onBack = onBack,
+            snackBarHostState = snackBarHostState,
             onSendClick = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     val permission = Manifest.permission.POST_NOTIFICATIONS
@@ -148,51 +112,32 @@ fun PushSimulatorScreen(
                     onEvent(PushSimulatorViewEvent.SendNotification)
                 }
             },
-            onSaveClick = { showSaveDialog = true },
-            onSaveTemplate = { name ->
-                onEvent(PushSimulatorViewEvent.SaveAsTemplate(name))
-                showSaveDialog = false
-            },
-            onDismissSaveDialog = { showSaveDialog = false },
-            onDismissPermissionDialog = { showPermissionDialog = false },
             modifier = modifier,
         )
     }
 }
 
-@Suppress("LongParameterList", "LongMethod")
+@Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun PushSimulatorScreenContent(
     state: PushSimulatorViewState,
-    snackBarHostState: SnackbarHostState,
-    showSaveDialog: Boolean,
-    showPermissionDialog: Boolean,
-    onBack: () -> Unit,
     onEvent: (PushSimulatorViewEvent) -> Unit,
-    onSendClick: () -> Unit,
-    onSaveClick: () -> Unit,
-    onSaveTemplate: (String) -> Unit,
-    onDismissSaveDialog: () -> Unit,
-    onDismissPermissionDialog: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    onSendClick: () -> Unit = { onEvent(PushSimulatorViewEvent.SendNotification) },
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.pushsimulator_title)) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.pushsimulator_back),
-                        )
-                    }
-                },
+            WormaCeptorTopBar(
+                title = stringResource(R.string.pushsimulator_title),
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.pushsimulator_back),
                 actions = {
-                    IconButton(onClick = { onEvent(PushSimulatorViewEvent.ClearForm) }) {
+                    WormaCeptorIconButton(onClick = { onEvent(PushSimulatorViewEvent.ClearForm) }) {
                         Icon(
                             imageVector = Icons.Default.Clear,
                             contentDescription = stringResource(R.string.pushsimulator_clear_form),
@@ -209,16 +154,24 @@ internal fun PushSimulatorScreenContent(
                 .padding(padding)
                 .imePadding(),
             contentPadding = PaddingValues(
-                start = WormaCeptorDesignSystem.Spacing.lg,
-                top = WormaCeptorDesignSystem.Spacing.lg,
-                end = WormaCeptorDesignSystem.Spacing.lg,
-                bottom = WormaCeptorDesignSystem.Spacing.lg +
+                start = WormaCeptorTokens.Spacing.lg,
+                top = WormaCeptorTokens.Spacing.lg,
+                end = WormaCeptorTokens.Spacing.lg,
+                bottom = WormaCeptorTokens.Spacing.lg +
                     WindowInsets.navigationBars.asPaddingValues()
                         .calculateBottomPadding(),
             ),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
         ) {
-            // Notification Form
+            item {
+                TemplatesRow(
+                    templates = state.templates,
+                    onLoad = { onEvent(PushSimulatorViewEvent.LoadTemplate(it)) },
+                    onSend = { onEvent(PushSimulatorViewEvent.SendFromTemplate(it)) },
+                    onDelete = { onEvent(PushSimulatorViewEvent.DeleteTemplate(it.id)) },
+                )
+            }
+
             item {
                 NotificationFormCard(
                     state = state,
@@ -235,164 +188,33 @@ internal fun PushSimulatorScreenContent(
                 )
             }
 
-            // Action Buttons
             item {
                 ActionButtonsRow(
                     onSendClick = onSendClick,
-                    onSaveClick = onSaveClick,
+                    onSaveClick = { onEvent(PushSimulatorViewEvent.ShowSaveDialog) },
                     isTitleEmpty = state.title.isBlank(),
                 )
             }
-
-            // Templates Section
-            item {
-                SectionHeader(
-                    text = stringResource(R.string.pushsimulator_templates_header),
-                    count = state.templates.size,
-                )
-            }
-
-            if (state.templates.isEmpty()) {
-                item {
-                    EmptyTemplatesCard()
-                }
-            } else {
-                items(state.templates, key = { it.id }) { template ->
-                    TemplateCard(
-                        template = template,
-                        onLoad = { onEvent(PushSimulatorViewEvent.LoadTemplate(template)) },
-                        onSend = { onEvent(PushSimulatorViewEvent.SendFromTemplate(template)) },
-                        onDelete = { onEvent(PushSimulatorViewEvent.DeleteTemplate(template.id)) },
-                    )
-                }
-            }
         }
     }
 
-    // Save Template Dialog
-    if (showSaveDialog) {
+    if (state.showSaveDialog) {
         SaveTemplateDialog(
-            onDismiss = onDismissSaveDialog,
-            onSave = onSaveTemplate,
+            onDismiss = { onEvent(PushSimulatorViewEvent.DismissSaveDialog) },
+            onSave = { name -> onEvent(PushSimulatorViewEvent.SaveAsTemplate(name)) },
         )
     }
 
-    // Permission Dialog
-    if (showPermissionDialog) {
-        AlertDialog(
-            onDismissRequest = onDismissPermissionDialog,
-            title = { Text(stringResource(R.string.pushsimulator_permission_title)) },
-            text = {
-                Text(
-                    text = stringResource(R.string.pushsimulator_permission_message),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            },
-            confirmButton = {
-                Button(onClick = onDismissPermissionDialog) {
-                    Text(stringResource(R.string.pushsimulator_ok))
-                }
-            },
+    if (state.showPermissionDialog) {
+        WormaCeptorAlertDialog(
+            title = stringResource(R.string.pushsimulator_permission_title),
+            message = stringResource(R.string.pushsimulator_permission_message),
+            confirmLabel = stringResource(R.string.pushsimulator_ok),
+            onConfirm = { onEvent(PushSimulatorViewEvent.DismissPermissionDialog) },
+            dismissLabel = stringResource(R.string.pushsimulator_dialog_cancel),
+            onDismiss = { onEvent(PushSimulatorViewEvent.DismissPermissionDialog) },
         )
     }
-}
-
-@Composable
-private fun ActionButtonsRow(
-    onSendClick: () -> Unit,
-    onSaveClick: () -> Unit,
-    isTitleEmpty: Boolean = false,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-    ) {
-        OutlinedButton(
-            onClick = onSaveClick,
-            modifier = Modifier
-                .weight(1f)
-                .height(WormaCeptorDesignSystem.Spacing.xxxl),
-            contentPadding = PaddingValues(
-                horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                vertical = WormaCeptorDesignSystem.Spacing.sm,
-            ),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Save,
-                contentDescription = null,
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-            )
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-            Text(stringResource(R.string.pushsimulator_save_template))
-        }
-
-        Button(
-            onClick = onSendClick,
-            modifier = Modifier
-                .weight(1f)
-                .height(WormaCeptorDesignSystem.Spacing.xxxl),
-            contentPadding = PaddingValues(
-                horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                vertical = WormaCeptorDesignSystem.Spacing.sm,
-            ),
-            enabled = !isTitleEmpty,
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.Send,
-                contentDescription = null,
-                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-            )
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
-            Text(stringResource(R.string.pushsimulator_send))
-        }
-    }
-}
-
-@Composable
-private fun SaveTemplateDialog(
-    onDismiss: () -> Unit,
-    onSave: (String) -> Unit,
-) {
-    var templateName by remember { mutableStateOf("") }
-    val isValid by remember(templateName) { derivedStateOf { templateName.isNotBlank() } }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.pushsimulator_dialog_save_title)) },
-        text = {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-            ) {
-                Text(
-                    text = stringResource(R.string.pushsimulator_dialog_save_description),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                OutlinedTextField(
-                    value = templateName,
-                    onValueChange = { templateName = it },
-                    label = { Text(stringResource(R.string.pushsimulator_dialog_template_name)) },
-                    placeholder = { Text(stringResource(R.string.pushsimulator_dialog_template_placeholder)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = WormaCeptorDesignSystem.Shapes.textField,
-                )
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = { onSave(templateName) },
-                enabled = isValid,
-            ) {
-                Text(stringResource(R.string.pushsimulator_dialog_save))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.pushsimulator_dialog_cancel))
-            }
-        },
-    )
 }
 
 @Suppress("UnusedPrivateMember")
@@ -402,16 +224,8 @@ private fun PushSimulatorScreenContentPreview() {
     WormaCeptorTheme {
         PushSimulatorScreenContent(
             state = PushSimulatorViewState(title = "Test Notification", body = "This is a test"),
-            snackBarHostState = remember { SnackbarHostState() },
-            showSaveDialog = false,
-            showPermissionDialog = false,
-            onBack = {},
             onEvent = {},
-            onSendClick = {},
-            onSaveClick = {},
-            onSaveTemplate = {},
-            onDismissSaveDialog = {},
-            onDismissPermissionDialog = {},
+            onBack = {},
         )
     }
 }

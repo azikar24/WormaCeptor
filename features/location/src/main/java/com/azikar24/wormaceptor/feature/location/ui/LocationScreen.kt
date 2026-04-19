@@ -16,27 +16,16 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -44,118 +33,58 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.LocationPreset
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 import com.azikar24.wormaceptor.feature.location.R
-import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
-import kotlinx.collections.immutable.ImmutableList
+import com.azikar24.wormaceptor.feature.location.vm.LocationViewEvent
+import com.azikar24.wormaceptor.feature.location.vm.LocationViewState
 import kotlinx.collections.immutable.persistentListOf
 import org.osmdroid.util.GeoPoint
 
-/**
- * Main screen for the Location Simulation feature.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationScreen(
-    latitudeInput: String,
-    longitudeInput: String,
-    searchQuery: String,
-    presets: ImmutableList<LocationPreset>,
-    currentMockLocation: MockLocation?,
-    isMockEnabled: Boolean,
-    isMockLocationAvailable: Boolean,
-    isInputValid: Boolean,
-    isLoading: Boolean,
-    errorMessage: String?,
-    successMessage: String?,
-    realDeviceLocation: GeoPoint?,
-    onLatitudeChanged: (String) -> Unit,
-    onLongitudeChanged: (String) -> Unit,
-    onSearchQueryChanged: (String) -> Unit,
-    onSetMockLocation: () -> Unit,
-    onClearMockLocation: () -> Unit,
-    onSetToCurrentLocation: () -> Unit,
-    onPresetClick: (LocationPreset) -> Unit,
-    onDeletePreset: (String) -> Unit,
-    onSavePreset: (String) -> Unit,
-    onClearError: () -> Unit,
-    onClearSuccessMessage: () -> Unit,
-    onMapTap: (GeoPoint) -> Unit,
-    isMapExpanded: Boolean,
-    onToggleMapExpanded: () -> Unit,
+    state: LocationViewState,
+    onEvent: (LocationViewEvent) -> Unit,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    var showSavePresetDialog by remember { mutableStateOf(false) }
-
-    // Show error as snackbar
-    LaunchedEffect(errorMessage) {
-        errorMessage?.let {
-            snackBarHostState.showSnackbar(it)
-            onClearError()
-        }
-    }
-
-    // Show success as snackbar
-    LaunchedEffect(successMessage) {
-        successMessage?.let {
-            snackBarHostState.showSnackbar(it)
-            onClearSuccessMessage()
-        }
-    }
-
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.location_title),
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        if (isMockEnabled) {
-                            Surface(
-                                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                                color = LocationColors.enabled.copy(alpha = WormaCeptorDesignSystem.Alpha.SOFT),
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.location_status_active),
-                                    modifier = Modifier.padding(
-                                        horizontal = 6.dp,
-                                        vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                                    ),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = LocationColors.enabled,
-                                )
-                            }
-                        }
-                    }
-                },
-                navigationIcon = {
-                    onBack?.let { back ->
-                        IconButton(onClick = back) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.location_back),
+            WormaCeptorTopBar(
+                title = stringResource(R.string.location_title),
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.location_back),
+                titleTrailing = if (state.isMockEnabled) {
+                    {
+                        Surface(
+                            shape = WormaCeptorTokens.Shapes.chip,
+                            color = WormaCeptorTokens.Colors.Location.enabled.copy(
+                                alpha = WormaCeptorTokens.Alpha.SOFT,
+                            ),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.location_status_active),
+                                modifier = Modifier.padding(
+                                    horizontal = WormaCeptorTokens.Spacing.sm,
+                                    vertical = WormaCeptorTokens.Spacing.xxs,
+                                ),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = WormaCeptorTokens.Colors.Location.enabled,
                             )
                         }
                     }
+                } else {
+                    null
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
             )
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
@@ -164,17 +93,17 @@ fun LocationScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(
-                    start = WormaCeptorDesignSystem.Spacing.lg,
-                    top = WormaCeptorDesignSystem.Spacing.lg,
-                    end = WormaCeptorDesignSystem.Spacing.lg,
-                    bottom = WormaCeptorDesignSystem.Spacing.lg +
+                    start = WormaCeptorTokens.Spacing.lg,
+                    top = WormaCeptorTokens.Spacing.lg,
+                    end = WormaCeptorTokens.Spacing.lg,
+                    bottom = WormaCeptorTokens.Spacing.lg +
                         WindowInsets.navigationBars.asPaddingValues()
                             .calculateBottomPadding(),
                 ),
-                verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
             ) {
                 // Warning banner if mock locations not available
-                if (!isMockLocationAvailable) {
+                if (!state.isMockLocationAvailable) {
                     item {
                         MockLocationWarningBanner()
                     }
@@ -183,46 +112,52 @@ fun LocationScreen(
                 // Current mock location status card
                 item {
                     MockLocationStatusCard(
-                        currentMockLocation = currentMockLocation,
-                        isMockEnabled = isMockEnabled,
+                        currentMockLocation = state.currentMockLocation,
+                        isMockEnabled = state.isMockEnabled,
                         onToggle = {
-                            if (isMockEnabled) onClearMockLocation() else onSetMockLocation()
+                            if (state.isMockEnabled) {
+                                onEvent(LocationViewEvent.ClearMockLocation)
+                            } else {
+                                onEvent(LocationViewEvent.SetMockLocationFromInput)
+                            }
                         },
-                        isEnabled = isMockLocationAvailable,
-                        isInputValid = isInputValid,
+                        isEnabled = state.isMockLocationAvailable,
+                        isInputValid = state.isInputValid,
                     )
                 }
 
                 // Collapsible map visualization
                 item {
                     CollapsibleMapSection(
-                        isExpanded = isMapExpanded,
-                        onToggle = onToggleMapExpanded,
-                        realLocation = realDeviceLocation,
-                        mockLocation = currentMockLocation?.let {
+                        isExpanded = state.isMapExpanded,
+                        onToggle = { onEvent(LocationViewEvent.ToggleMapExpanded) },
+                        realLocation = state.realDeviceLocation,
+                        mockLocation = state.currentMockLocation?.let {
                             GeoPoint(it.latitude, it.longitude)
                         },
-                        isMockActive = isMockEnabled,
-                        onMapTap = onMapTap,
+                        isMockActive = state.isMockEnabled,
+                        onMapTap = { geoPoint ->
+                            onEvent(LocationViewEvent.MapTapped(geoPoint.latitude, geoPoint.longitude))
+                        },
                     )
                 }
 
                 // Coordinate input section
                 item {
                     CoordinateInputCard(
-                        latitudeInput = latitudeInput,
-                        longitudeInput = longitudeInput,
-                        isInputValid = isInputValid,
-                        isLoading = isLoading,
-                        isMockEnabled = isMockEnabled,
-                        isMockLocationAvailable = isMockLocationAvailable,
-                        currentMockLatitude = currentMockLocation?.latitude,
-                        currentMockLongitude = currentMockLocation?.longitude,
-                        onLatitudeChanged = onLatitudeChanged,
-                        onLongitudeChanged = onLongitudeChanged,
-                        onSetMockLocation = onSetMockLocation,
-                        onSetToCurrentLocation = onSetToCurrentLocation,
-                        onSaveAsPreset = { showSavePresetDialog = true },
+                        latitudeInput = state.latitudeInput,
+                        longitudeInput = state.longitudeInput,
+                        isInputValid = state.isInputValid,
+                        isLoading = state.isLoading,
+                        isMockEnabled = state.isMockEnabled,
+                        isMockLocationAvailable = state.isMockLocationAvailable,
+                        currentMockLatitude = state.currentMockLocation?.latitude,
+                        currentMockLongitude = state.currentMockLocation?.longitude,
+                        onLatitudeChanged = { onEvent(LocationViewEvent.LatitudeChanged(it)) },
+                        onLongitudeChanged = { onEvent(LocationViewEvent.LongitudeChanged(it)) },
+                        onSetMockLocation = { onEvent(LocationViewEvent.SetMockLocationFromInput) },
+                        onSetToCurrentLocation = { onEvent(LocationViewEvent.SetToCurrentRealLocation) },
+                        onSaveAsPreset = { onEvent(LocationViewEvent.ShowSavePresetDialog) },
                     )
                 }
 
@@ -237,13 +172,13 @@ fun LocationScreen(
                             text = stringResource(R.string.location_presets_title),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = WormaCeptorTokens.semantic().textPrimary,
                             modifier = Modifier.semantics { heading() },
                         )
                         Text(
-                            text = stringResource(R.string.location_presets_count, presets.size),
+                            text = stringResource(R.string.location_presets_count, state.presets.size),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                         )
                     }
                 }
@@ -251,23 +186,23 @@ fun LocationScreen(
                 // Search presets
                 item {
                     WormaCeptorSearchBar(
-                        query = searchQuery,
-                        onQueryChange = onSearchQueryChanged,
+                        query = state.searchQuery,
+                        onQueryChange = { onEvent(LocationViewEvent.SearchQueryChanged(it)) },
                         placeholder = stringResource(R.string.location_search_placeholder),
                     )
                 }
 
                 // Preset items
-                items(presets, key = { it.id }) { preset ->
+                items(state.presets, key = { it.id }) { preset ->
                     PresetItem(
                         preset = preset,
-                        isSelected = currentMockLocation?.let {
+                        isSelected = state.currentMockLocation?.let {
                             it.latitude == preset.location.latitude &&
                                 it.longitude == preset.location.longitude
                         } == true,
-                        onClick = { onPresetClick(preset) },
+                        onClick = { onEvent(LocationViewEvent.SetMockLocationFromPreset(preset)) },
                         onDelete = if (!preset.isBuiltIn) {
-                            { onDeletePreset(preset.id) }
+                            { onEvent(LocationViewEvent.DeletePreset(preset.id)) }
                         } else {
                             null
                         },
@@ -276,16 +211,16 @@ fun LocationScreen(
                 }
 
                 // Empty state for presets
-                if (presets.isEmpty()) {
+                if (state.presets.isEmpty()) {
                     item {
-                        EmptyPresetsState(hasSearchQuery = searchQuery.isNotBlank())
+                        EmptyPresetsState(hasSearchQuery = state.searchQuery.isNotBlank())
                     }
                 }
             }
 
             // Loading overlay
             AnimatedVisibility(
-                visible = isLoading,
+                visible = state.isLoading,
                 enter = fadeIn(),
                 exit = fadeOut(),
                 modifier = Modifier.align(Alignment.Center),
@@ -295,14 +230,10 @@ fun LocationScreen(
         }
     }
 
-    // Save preset dialog
-    if (showSavePresetDialog) {
+    if (state.showSavePresetDialog) {
         SavePresetDialog(
-            onDismiss = { showSavePresetDialog = false },
-            onSave = { name ->
-                onSavePreset(name)
-                showSavePresetDialog = false
-            },
+            onDismiss = { onEvent(LocationViewEvent.DismissSavePresetDialog) },
+            onSave = { name -> onEvent(LocationViewEvent.SaveCurrentAsPreset(name)) },
         )
     }
 }
@@ -312,45 +243,27 @@ fun LocationScreen(
 private fun LocationScreenPreview() {
     WormaCeptorTheme {
         LocationScreen(
-            latitudeInput = "40.7128",
-            longitudeInput = "-74.0060",
-            searchQuery = "",
-            presets = persistentListOf(
-                LocationPreset(
-                    id = "1",
-                    name = "New York City",
-                    location = MockLocation.from(40.7128, -74.0060, "New York City"),
-                    isBuiltIn = true,
-                ),
-                LocationPreset(
-                    id = "2",
-                    name = "London",
-                    location = MockLocation.from(51.5074, -0.1278, "London"),
-                    isBuiltIn = true,
+            state = LocationViewState(
+                latitudeInput = "40.7128",
+                longitudeInput = "-74.0060",
+                isMockLocationAvailable = true,
+                isInputValid = true,
+                presets = persistentListOf(
+                    LocationPreset(
+                        id = "1",
+                        name = "New York City",
+                        location = MockLocation.from(40.7128, -74.0060, "New York City"),
+                        isBuiltIn = true,
+                    ),
+                    LocationPreset(
+                        id = "2",
+                        name = "London",
+                        location = MockLocation.from(51.5074, -0.1278, "London"),
+                        isBuiltIn = true,
+                    ),
                 ),
             ),
-            currentMockLocation = null,
-            isMockEnabled = false,
-            isMockLocationAvailable = true,
-            isInputValid = true,
-            isLoading = false,
-            errorMessage = null,
-            successMessage = null,
-            realDeviceLocation = null,
-            onLatitudeChanged = {},
-            onLongitudeChanged = {},
-            onSearchQueryChanged = {},
-            onSetMockLocation = {},
-            onClearMockLocation = {},
-            onSetToCurrentLocation = {},
-            onPresetClick = {},
-            onDeletePreset = {},
-            onSavePreset = {},
-            onClearError = {},
-            onClearSuccessMessage = {},
-            onMapTap = {},
-            isMapExpanded = false,
-            onToggleMapExpanded = {},
+            onEvent = {},
             onBack = {},
         )
     }

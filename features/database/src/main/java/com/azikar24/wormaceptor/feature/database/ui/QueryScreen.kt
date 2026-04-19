@@ -16,24 +16,23 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -41,165 +40,224 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.DividerStyle
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
+import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.feature.database.R
+import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewEvent
+import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-/**
- * Screen for executing SQL queries.
- */
+private val QueryInputMinHeight = 100.dp
+private val QueryInputMaxHeight = 200.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QueryScreen(
-    databaseName: String,
-    sqlQuery: String,
-    queryResult: QueryResult?,
-    queryHistory: ImmutableList<String>,
-    isExecuting: Boolean,
-    onQueryChanged: (String) -> Unit,
-    onExecuteQuery: () -> Unit,
-    onClearQuery: () -> Unit,
-    onSelectFromHistory: (String) -> Unit,
+    state: DatabaseViewState,
+    onEvent: (DatabaseViewEvent) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.database_query_title)) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.database_query_back),
-                        )
-                    }
-                },
-                actions = {
-                    if (sqlQuery.isNotEmpty()) {
-                        IconButton(onClick = onClearQuery) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = stringResource(R.string.database_query_clear),
-                            )
-                        }
-                    }
-                    IconButton(
-                        onClick = onExecuteQuery,
-                        enabled = sqlQuery.isNotBlank() && !isExecuting,
-                    ) {
-                        if (isExecuting) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.sm),
-                                strokeWidth = WormaCeptorDesignSystem.Spacing.xxs,
-                            )
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.PlayArrow,
-                                contentDescription = stringResource(R.string.database_query_execute),
-                            )
-                        }
-                    }
-                },
+            QueryTopBar(
+                sqlQuery = state.sqlQuery,
+                isExecuting = state.isQueryExecuting,
+                onClear = { onEvent(DatabaseViewEvent.Query.Clear) },
+                onExecute = { onEvent(DatabaseViewEvent.Query.Execute) },
+                onBack = onBack,
             )
         },
         modifier = modifier,
     ) { padding ->
-        Column(
+        QueryBody(
+            state = state,
+            onEvent = onEvent,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .navigationBarsPadding()
                 .imePadding(),
-        ) {
-            // Query input
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 100.dp, max = 200.dp)
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.BOLD),
+        )
+    }
+}
+
+@Composable
+private fun QueryTopBar(
+    sqlQuery: String,
+    isExecuting: Boolean,
+    onClear: () -> Unit,
+    onExecute: () -> Unit,
+    onBack: () -> Unit,
+) {
+    WormaCeptorTopBar(
+        title = stringResource(R.string.database_query_title),
+        onBack = onBack,
+        backContentDescription = stringResource(R.string.database_query_back),
+        actions = {
+            if (sqlQuery.isNotEmpty()) {
+                WormaCeptorIconButton(onClick = onClear) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = stringResource(R.string.database_query_clear),
                     )
-                    .padding(WormaCeptorDesignSystem.Spacing.md),
+                }
+            }
+            WormaCeptorIconButton(
+                onClick = onExecute,
+                enabled = sqlQuery.isNotBlank() && !isExecuting,
             ) {
+                if (isExecuting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.padding(WormaCeptorTokens.Spacing.sm),
+                        strokeWidth = WormaCeptorTokens.Spacing.xxs,
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.PlayArrow,
+                        contentDescription = stringResource(R.string.database_query_execute),
+                    )
+                }
+            }
+        },
+    )
+}
+
+@Composable
+private fun QueryBody(
+    state: DatabaseViewState,
+    onEvent: (DatabaseViewEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        QueryInputField(
+            sqlQuery = state.sqlQuery,
+            onQueryChange = { onEvent(DatabaseViewEvent.Query.SqlChanged(it)) },
+        )
+
+        WormaCeptorDivider()
+
+        QueryResults(
+            databaseName = state.selectedDatabaseName ?: "",
+            queryResult = state.queryExecutionResult,
+            queryHistory = state.queryHistory,
+            onSelectHistory = { onEvent(DatabaseViewEvent.Query.HistorySelected(it)) },
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f),
+        )
+    }
+}
+
+@Composable
+private fun QueryInputField(
+    sqlQuery: String,
+    onQueryChange: (String) -> Unit,
+) {
+    BasicTextField(
+        value = sqlQuery,
+        onValueChange = onQueryChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = QueryInputMinHeight, max = QueryInputMaxHeight)
+            .background(
+                WormaCeptorTokens.semantic().surfaceVariant
+                    .copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+            )
+            .padding(WormaCeptorTokens.Spacing.md),
+        textStyle = TextStyle(
+            fontFamily = FontFamily.Monospace,
+            color = WormaCeptorTokens.semantic().textPrimary,
+        ),
+        cursorBrush = SolidColor(WormaCeptorTokens.semantic().accent),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Ascii,
+            imeAction = ImeAction.None,
+        ),
+        decorationBox = { innerTextField ->
+            Box(modifier = Modifier.fillMaxSize()) {
                 if (sqlQuery.isEmpty()) {
                     Text(
                         text = stringResource(R.string.database_query_placeholder),
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
-                BasicTextField(
-                    value = sqlQuery,
-                    onValueChange = onQueryChanged,
-                    modifier = Modifier.fillMaxSize(),
-                    textStyle = TextStyle(
-                        fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    ),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                )
+                innerTextField()
             }
+        },
+    )
+}
 
-            WormaCeptorDivider()
+@Composable
+private fun QueryResults(
+    databaseName: String,
+    queryResult: QueryResult?,
+    queryHistory: ImmutableList<String>,
+    onSelectHistory: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when {
+        queryResult != null -> {
+            QueryResultView(
+                result = queryResult,
+                modifier = modifier,
+            )
+        }
 
-            // Results or History
-            when {
-                queryResult != null -> {
-                    QueryResultView(
-                        result = queryResult,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f),
-                    )
-                }
+        queryHistory.isNotEmpty() -> {
+            QueryHistoryView(
+                history = queryHistory,
+                onSelectQuery = onSelectHistory,
+                modifier = modifier,
+            )
+        }
 
-                queryHistory.isNotEmpty() -> {
-                    QueryHistoryView(
-                        history = queryHistory,
-                        onSelectQuery = onSelectFromHistory,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f),
-                    )
-                }
+        else -> {
+            QueryEmptyState(
+                databaseName = databaseName,
+                modifier = modifier,
+            )
+        }
+    }
+}
 
-                else -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.database_query_instruction),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                            Text(
-                                text = stringResource(R.string.database_query_database_label, databaseName),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
-            }
+@Composable
+private fun QueryEmptyState(
+    databaseName: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+        ) {
+            Text(
+                text = stringResource(R.string.database_query_instruction),
+                style = MaterialTheme.typography.bodyLarge,
+                color = WormaCeptorTokens.semantic().textSecondary,
+            )
+            Text(
+                text = stringResource(R.string.database_query_database_label, databaseName),
+                style = MaterialTheme.typography.bodySmall,
+                color = WormaCeptorTokens.semantic().textSecondary,
+            )
         }
     }
 }
@@ -211,15 +269,16 @@ private fun QueryResultView(
 ) {
     val horizontalScrollState = rememberScrollState()
 
-    if (result.error != null) {
+    val error = result.error
+    if (error != null) {
         Box(
-            modifier = modifier.padding(WormaCeptorDesignSystem.Spacing.lg),
+            modifier = modifier.padding(WormaCeptorTokens.Spacing.lg),
             contentAlignment = Alignment.TopStart,
         ) {
             Text(
-                text = stringResource(R.string.database_query_error, result.error ?: ""),
+                text = stringResource(R.string.database_query_error, error),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.error,
+                color = WormaCeptorTokens.semantic().error,
             )
         }
     } else {
@@ -227,8 +286,8 @@ private fun QueryResultView(
             Text(
                 text = stringResource(R.string.database_query_rows_returned, result.rowCount),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+                color = WormaCeptorTokens.semantic().textSecondary,
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
             )
 
             LazyColumn(
@@ -240,14 +299,17 @@ private fun QueryResultView(
                 item {
                     Row(
                         modifier = Modifier
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                            .background(WormaCeptorTokens.semantic().surfaceVariant)
+                            .padding(vertical = WormaCeptorTokens.Spacing.xs),
                     ) {
                         result.columns.forEach { column ->
                             Box(
                                 modifier = Modifier
-                                    .widthIn(min = 100.dp, max = 200.dp)
-                                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
+                                    .widthIn(
+                                        min = WormaCeptorTokens.ComponentSize.tableCellMinWidth,
+                                        max = WormaCeptorTokens.ComponentSize.tableCellMaxWidth,
+                                    )
+                                    .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                             ) {
                                 Text(
                                     text = column,
@@ -263,28 +325,31 @@ private fun QueryResultView(
                 }
 
                 // Data rows
-                items(
+                itemsIndexed(
                     items = result.rows,
-                    key = { it.hashCode() },
-                ) { row ->
+                    key = { index, _ -> "row_$index" },
+                ) { _, row ->
+                    val nullValue = stringResource(R.string.database_query_null_value)
                     Row(
-                        modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
+                        modifier = Modifier.padding(vertical = WormaCeptorTokens.Spacing.xs),
                     ) {
                         row.forEach { cell ->
                             Box(
                                 modifier = Modifier
-                                    .widthIn(min = 100.dp, max = 200.dp)
-                                    .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm),
+                                    .widthIn(
+                                        min = WormaCeptorTokens.ComponentSize.tableCellMinWidth,
+                                        max = WormaCeptorTokens.ComponentSize.tableCellMaxWidth,
+                                    )
+                                    .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                             ) {
-                                val nullValue = stringResource(R.string.database_query_null_value)
                                 Text(
                                     text = cell?.toString() ?: nullValue,
                                     style = MaterialTheme.typography.bodySmall,
                                     fontFamily = FontFamily.Monospace,
                                     color = if (cell == null) {
-                                        WormaCeptorColors.Database.NullValue
+                                        WormaCeptorTokens.Colors.Database.nullValue
                                     } else {
-                                        MaterialTheme.colorScheme.onSurface
+                                        WormaCeptorTokens.semantic().textPrimary
                                     },
                                     maxLines = 2,
                                     overflow = TextOverflow.Ellipsis,
@@ -305,20 +370,22 @@ private fun QueryHistoryView(
     onSelectQuery: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val reversedHistory = remember(history) { history.reversed() }
+
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.database_query_history_title),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(WormaCeptorDesignSystem.Spacing.md),
+            color = WormaCeptorTokens.semantic().accent,
+            modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
         )
 
         LazyColumn {
-            items(
-                items = history.reversed(),
-                key = { it },
-            ) { query ->
+            itemsIndexed(
+                items = reversedHistory,
+                key = { index, _ -> "history_$index" },
+            ) { _, query ->
                 ListItem(
                     modifier = Modifier.clickable { onSelectQuery(query) },
                     headlineContent = {
@@ -334,7 +401,7 @@ private fun QueryHistoryView(
                         Icon(
                             imageVector = Icons.Default.History,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = WormaCeptorTokens.semantic().textSecondary,
                         )
                     },
                 )
@@ -349,18 +416,15 @@ private fun QueryHistoryView(
 private fun QueryScreenPreview() {
     WormaCeptorTheme {
         QueryScreen(
-            databaseName = "app_database.db",
-            sqlQuery = "SELECT * FROM users WHERE active = 1",
-            queryResult = null,
-            queryHistory = persistentListOf(
-                "SELECT * FROM users",
-                "SELECT COUNT(*) FROM transactions",
+            state = DatabaseViewState(
+                selectedDatabaseName = "app_database.db",
+                sqlQuery = "SELECT * FROM users WHERE active = 1",
+                queryHistory = persistentListOf(
+                    "SELECT * FROM users",
+                    "SELECT COUNT(*) FROM transactions",
+                ),
             ),
-            isExecuting = false,
-            onQueryChanged = {},
-            onExecuteQuery = {},
-            onClearQuery = {},
-            onSelectFromHistory = {},
+            onEvent = {},
             onBack = {},
         )
     }

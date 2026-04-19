@@ -10,6 +10,7 @@
 
     <!-- Section headers -->
     <string name="crypto_presets">Presets</string>
+    <string name="crypto_advanced">Advanced</string>
     <string name="crypto_algorithm">Algorithm</string>
     <string name="crypto_mode">Mode</string>
     <string name="crypto_padding">Padding</string>
@@ -40,6 +41,9 @@
     <string name="crypto_use_as_input">Use as Input</string>
     <string name="crypto_clear_result">Clear result</string>
     <string name="crypto_clear_all">Clear all</string>
+    <string name="crypto_clear_history_title">Clear history</string>
+    <string name="crypto_clear_history_message">Are you sure you want to clear all crypto history? This action cannot be undone.</string>
+    <string name="crypto_cancel">Cancel</string>
     <string name="crypto_dismiss">Dismiss</string>
     <string name="crypto_remove">Remove</string>
 

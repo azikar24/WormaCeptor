@@ -20,6 +20,8 @@
     <string name="dependenciesinspector_detail_label_method">Method</string>
     <string name="dependenciesinspector_detail_label_confidence">Confidence</string>
     <string name="dependenciesinspector_detail_label_version_status">Version Status</string>
+    <string name="dependenciesinspector_detail_version_format">v%1$s</string>
+    <string name="dependenciesinspector_detail_dependency_icon">Dependency icon</string>
     <string name="dependenciesinspector_empty_title">No dependencies found</string>
     <string name="dependenciesinspector_empty_subtitle">Try adjusting your filters</string>
 </resources>

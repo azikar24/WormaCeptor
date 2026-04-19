@@ -37,9 +37,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.ComposeSyntaxColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.theme.syntaxColors
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.ComposeSyntaxColors
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -53,7 +52,7 @@ fun JsonTreeView(
     modifier: Modifier = Modifier,
     initiallyExpanded: Boolean = true,
     maxDepth: Int = 10,
-    colors: ComposeSyntaxColors = syntaxColors(),
+    colors: ComposeSyntaxColors = WormaCeptorTokens.syntax(),
 ) {
     val json = remember(jsonString) {
         try {
@@ -71,8 +70,8 @@ fun JsonTreeView(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(colors.codeBackground, WormaCeptorDesignSystem.Shapes.chip)
-            .padding(WormaCeptorDesignSystem.Spacing.sm),
+            .background(colors.codeBackground, WormaCeptorTokens.Shapes.chip)
+            .padding(WormaCeptorTokens.Spacing.sm),
     ) {
         if (json != null) {
             SelectionContainer {
@@ -124,7 +123,7 @@ private fun JsonObjectNode(
     var expanded by remember { mutableStateOf(initiallyExpanded && depth < maxDepth) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+        animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "chevron_rotation",
     )
 
@@ -136,7 +135,7 @@ private fun JsonObjectNode(
         Row(
             modifier = Modifier
                 .clickable(enabled = !isEmpty) { expanded = !expanded }
-                .padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
+                .padding(vertical = WormaCeptorTokens.Spacing.xxs),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width((depth * 16).dp))
@@ -146,12 +145,12 @@ private fun JsonObjectNode(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = if (expanded) "Collapse" else "Expand",
                     modifier = Modifier
-                        .size(14.dp)
+                        .size(WormaCeptorTokens.IconSize.xs)
                         .rotate(rotation),
                     tint = colors.punctuation,
                 )
             } else {
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.ComponentSize.treeIndent))
             }
 
             if (keyName != null) {
@@ -196,8 +195,8 @@ private fun JsonObjectNode(
 
         AnimatedVisibility(
             visible = expanded && !isEmpty,
-            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
-            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
+            enter = expandVertically(animationSpec = tween(WormaCeptorTokens.Animation.FAST)),
+            exit = shrinkVertically(animationSpec = tween(WormaCeptorTokens.Animation.FAST)),
         ) {
             Column {
                 keys.forEachIndexed { index, key ->
@@ -258,7 +257,7 @@ private fun JsonArrayNode(
     var expanded by remember { mutableStateOf(initiallyExpanded && depth < maxDepth) }
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 90f else 0f,
-        animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST),
+        animationSpec = tween(WormaCeptorTokens.Animation.FAST),
         label = "chevron_rotation",
     )
 
@@ -268,7 +267,7 @@ private fun JsonArrayNode(
         Row(
             modifier = Modifier
                 .clickable(enabled = !isEmpty) { expanded = !expanded }
-                .padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
+                .padding(vertical = WormaCeptorTokens.Spacing.xxs),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width((depth * 16).dp))
@@ -278,12 +277,12 @@ private fun JsonArrayNode(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = if (expanded) "Collapse" else "Expand",
                     modifier = Modifier
-                        .size(14.dp)
+                        .size(WormaCeptorTokens.IconSize.xs)
                         .rotate(rotation),
                     tint = colors.punctuation,
                 )
             } else {
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.ComponentSize.treeIndent))
             }
 
             if (keyName != null) {
@@ -328,8 +327,8 @@ private fun JsonArrayNode(
 
         AnimatedVisibility(
             visible = expanded && !isEmpty,
-            enter = expandVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
-            exit = shrinkVertically(animationSpec = tween(WormaCeptorDesignSystem.AnimationDuration.FAST)),
+            enter = expandVertically(animationSpec = tween(WormaCeptorTokens.Animation.FAST)),
+            exit = shrinkVertically(animationSpec = tween(WormaCeptorTokens.Animation.FAST)),
         ) {
             Column {
                 for (i in 0 until array.length()) {
@@ -384,7 +383,7 @@ private fun JsonValueNode(
     colors: ComposeSyntaxColors,
 ) {
     Row(
-        modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
+        modifier = Modifier.padding(vertical = WormaCeptorTokens.Spacing.xxs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width((depth * 16 + 14).dp))
@@ -418,7 +417,7 @@ private fun JsonArrayValueNode(
     colors: ComposeSyntaxColors,
 ) {
     Row(
-        modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.xxs),
+        modifier = Modifier.padding(vertical = WormaCeptorTokens.Spacing.xxs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width((depth * 16 + 14).dp))

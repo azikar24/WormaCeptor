@@ -501,8 +501,6 @@ class ImageParserTest {
         }
     }
 
-    // --- Helper functions ---
-
     @Suppress("MagicNumber")
     private fun buildMinimalPng(
         width: Int,

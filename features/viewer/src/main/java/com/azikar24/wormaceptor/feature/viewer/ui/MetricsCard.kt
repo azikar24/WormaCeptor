@@ -7,7 +7,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,16 +18,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.DataUsage
 import androidx.compose.material.icons.outlined.Speed
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,15 +33,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.DividerStyle
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDistributionBar
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSectionHeader
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatItem
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorColors
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.metric.WormaCeptorDistributionBar
+import com.azikar24.wormaceptor.core.ui.components.metric.WormaCeptorStatItem
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorSectionHeader
+import com.azikar24.wormaceptor.core.ui.components.status.WormaCeptorStatusDot
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.util.clickableWithoutRipple
 import com.azikar24.wormaceptor.core.ui.util.formatDurationAvg
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
@@ -61,7 +57,7 @@ fun MetricsCard(
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     val rotationAngle by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
-        animationSpec = tween(durationMillis = 300),
+        animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.PAGE),
         label = "expand_icon_rotation",
     )
 
@@ -89,28 +85,17 @@ fun MetricsCard(
         .toList()
         .sortedByDescending { it.second }
 
-    val surfaceColor = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-
-    Card(
+    WormaCeptorCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = WormaCeptorDesignSystem.Spacing.sm, vertical = WormaCeptorDesignSystem.Spacing.md),
-        colors = CardDefaults.cardColors(
-            containerColor = surfaceColor,
-        ),
-        border = androidx.compose.foundation.BorderStroke(
-            1.dp,
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
-        ),
+            .padding(horizontal = WormaCeptorTokens.Spacing.sm, vertical = WormaCeptorTokens.Spacing.md),
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(
-                    interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
-                    indication = null,
-                ) { isExpanded = !isExpanded }
-                .padding(WormaCeptorDesignSystem.Spacing.xl),
+                .clickableWithoutRipple { isExpanded = !isExpanded }
+                .padding(WormaCeptorTokens.Spacing.xl),
         ) {
             // Header
             Row(
@@ -134,11 +119,11 @@ fun MetricsCard(
                         stringResource(R.string.viewer_body_expand)
                     },
                     modifier = Modifier.rotate(rotationAngle),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
 
             // Always visible summary with enhanced visuals
             Row(
@@ -150,9 +135,9 @@ fun MetricsCard(
                     label = stringResource(R.string.viewer_metrics_success),
                     value = stringResource(R.string.viewer_metrics_success_value, successRate),
                     color = when {
-                        successRate.toFloat() >= 90 -> WormaCeptorColors.Chart.Fast
-                        successRate.toFloat() >= 70 -> WormaCeptorColors.Chart.Medium
-                        else -> WormaCeptorColors.Chart.Slow
+                        successRate.toFloat() >= 90 -> WormaCeptorTokens.Colors.Chart.fast
+                        successRate.toFloat() >= 70 -> WormaCeptorTokens.Colors.Chart.medium
+                        else -> WormaCeptorTokens.Colors.Chart.slow
                     },
                     modifier = Modifier.weight(1f),
                 )
@@ -160,20 +145,20 @@ fun MetricsCard(
                 WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_total),
                     value = totalRequests.toString(),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = WormaCeptorTokens.semantic().accentSecondary,
                     modifier = Modifier.weight(1f),
                 )
 
                 WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_avg_time),
                     value = formatDurationAvg(avgDuration),
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = WormaCeptorTokens.semantic().accentTertiary,
                     modifier = Modifier.weight(1f),
                 )
             }
 
             // Expandable details
-            val expandDuration = WormaCeptorDesignSystem.AnimationDuration.PAGE
+            val expandDuration = WormaCeptorTokens.Animation.PAGE
             AnimatedVisibility(
                 visible = isExpanded,
                 enter = expandVertically(
@@ -188,57 +173,57 @@ fun MetricsCard(
                 ),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
                     WormaCeptorDivider(style = DividerStyle.Subtle)
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
 
                     // Response Time Distribution
                     WormaCeptorSectionHeader(
                         title = stringResource(R.string.viewer_metrics_response_time_distribution),
                         icon = Icons.Outlined.Speed,
                     )
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
                     WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_fast),
                         count = fastCount,
                         total = totalRequests,
-                        color = WormaCeptorColors.Chart.Fast,
+                        color = WormaCeptorTokens.Colors.Chart.fast,
                     )
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
                     WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_medium),
                         count = mediumCount,
                         total = totalRequests,
-                        color = WormaCeptorColors.Chart.Medium,
+                        color = WormaCeptorTokens.Colors.Chart.medium,
                     )
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
                     WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_slow),
                         count = slowCount,
                         total = totalRequests,
-                        color = WormaCeptorColors.Chart.Slow,
+                        color = WormaCeptorTokens.Colors.Chart.slow,
                     )
 
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
 
                     // Status Code Breakdown
                     WormaCeptorSectionHeader(
                         title = stringResource(R.string.viewer_metrics_status_code_breakdown),
                         icon = Icons.Outlined.DataUsage,
                     )
-                    Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.md))
+                    Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
                     if (status2xx > 0) {
                         WormaCeptorDistributionBar(
                             label = stringResource(R.string.viewer_metrics_status_2xx_success),
                             count = status2xx,
                             total = totalRequests,
-                            color = WormaCeptorColors.Chart.Success2xx,
+                            color = WormaCeptorTokens.Colors.Chart.success2xx,
                         )
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                     }
 
                     if (status3xx > 0) {
@@ -246,9 +231,9 @@ fun MetricsCard(
                             label = stringResource(R.string.viewer_metrics_status_3xx_redirect),
                             count = status3xx,
                             total = totalRequests,
-                            color = WormaCeptorColors.Chart.Redirect3xx,
+                            color = WormaCeptorTokens.Colors.Chart.redirect3xx,
                         )
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                     }
 
                     if (status4xx > 0) {
@@ -256,9 +241,9 @@ fun MetricsCard(
                             label = stringResource(R.string.viewer_metrics_status_4xx_client_error),
                             count = status4xx,
                             total = totalRequests,
-                            color = WormaCeptorColors.Chart.ClientError4xx,
+                            color = WormaCeptorTokens.Colors.Chart.clientError4xx,
                         )
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                     }
 
                     if (status5xx > 0) {
@@ -266,39 +251,39 @@ fun MetricsCard(
                             label = stringResource(R.string.viewer_metrics_status_5xx_server_error),
                             count = status5xx,
                             total = totalRequests,
-                            color = WormaCeptorColors.Chart.ServerError5xx,
+                            color = WormaCeptorTokens.Colors.Chart.serverError5xx,
                         )
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
                     }
 
                     if (methodBreakdown.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
 
                         Text(
                             text = stringResource(R.string.viewer_metrics_requests_by_method),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = WormaCeptorTokens.semantic().textPrimary,
                         )
-                        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+                        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
                         methodBreakdown.forEach { (method, count) ->
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
+                                    .padding(vertical = WormaCeptorTokens.Spacing.sm),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                                 ) {
                                     WormaCeptorStatusDot(
-                                        color = MaterialTheme.colorScheme.primary.copy(
-                                            alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
+                                        color = WormaCeptorTokens.semantic().accent.copy(
+                                            alpha = WormaCeptorTokens.Alpha.HEAVY,
                                         ),
-                                        size = 6.dp,
+                                        size = WormaCeptorTokens.ComponentSize.dot,
                                     )
                                     Text(
                                         text = method,
@@ -309,7 +294,7 @@ fun MetricsCard(
                                 Text(
                                     text = count.toString(),
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = WormaCeptorTokens.semantic().textSecondary,
                                     fontWeight = FontWeight.SemiBold,
                                 )
                             }

@@ -15,6 +15,7 @@
     <string name="leakdetection_detail_retained_size">Retained Size</string>
     <string name="leakdetection_detail_detected">Detected</string>
     <string name="leakdetection_section_reference_path">Reference Path</string>
+    <string name="leakdetection_leak_icon_desc">%1$s severity leak in %2$s</string>
     <string name="leakdetection_empty_monitoring">Monitoring for leaks…</string>
     <string name="leakdetection_empty_no_leaks">No leaks detected</string>
     <string name="leakdetection_empty_hint_monitoring">Navigate between activities to detect potential leaks</string>

@@ -645,7 +645,11 @@ class ExportManagerTest {
 
         @Test
         fun `should include exception message in error output`() = runTest {
-            every { context.cacheDir } returns File(System.getProperty("java.io.tmpdir")!!)
+            every {
+                context.cacheDir
+            } returns File(
+                requireNotNull(System.getProperty("java.io.tmpdir")) { "java.io.tmpdir system property not set" },
+            )
             val failingEngine = mockk<QueryEngine> {
                 coEvery { getBody(any()) } throws RuntimeException("disk full")
             }

@@ -1,65 +1,41 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
-import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -68,101 +44,49 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.api.WormaCeptorApi
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFAB
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.badge.BadgeVariant
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorBadge
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
-import com.azikar24.wormaceptor.feature.viewer.ui.components.BulkActionBar
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableMap
+import com.azikar24.wormaceptor.feature.viewer.vm.CrashListViewEvent
+import com.azikar24.wormaceptor.feature.viewer.vm.CrashListViewState
+import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewEvent
+import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewState
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionListViewEvent
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionListViewState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-/**
- * HomeScreen with multi-select and context menus.
- */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    transactions: ImmutableList<TransactionSummary>,
-    crashes: ImmutableList<Crash>,
-    searchQuery: String,
-    onSearchChanged: (String) -> Unit,
-    onTransactionClick: (TransactionSummary) -> Unit,
-    onCrashClick: (Crash) -> Unit,
-    filterMethods: Set<String>,
-    filterStatusRanges: Set<IntRange>,
-    onMethodFiltersChanged: (Set<String>) -> Unit,
-    onStatusFiltersChanged: (Set<IntRange>) -> Unit,
-    onClearFilters: () -> Unit,
-    onClearTransactions: () -> Unit,
-    onClearCrashes: () -> Unit,
-    onExportTransactions: () -> Unit,
-    onExportCrashes: () -> Unit,
-    selectedTabIndex: Int,
-    onTabSelected: (Int) -> Unit,
-    allTransactions: ImmutableList<TransactionSummary> = transactions,
-    // Loading state
-    isInitialLoading: Boolean = false,
-    // Pull-to-refresh parameters
-    isRefreshingTransactions: Boolean = false,
-    isRefreshingCrashes: Boolean = false,
-    onRefreshTransactions: () -> Unit = {},
-    onRefreshCrashes: () -> Unit = {},
-    // Selection parameters
-    selectedIds: Set<UUID> = emptySet(),
-    isSelectionMode: Boolean = false,
-    onSelectionToggle: (UUID) -> Unit = {},
-    onSelectAll: () -> Unit = {},
-    onClearSelection: () -> Unit = {},
-    onDeleteSelected: () -> Unit = {},
-    onShareSelected: () -> Unit = {},
-    onExportSelected: () -> Unit = {},
-    // Context menu action parameters
-    onCopyUrl: (TransactionSummary) -> Unit = {},
-    onShare: (TransactionSummary) -> Unit = {},
-    onDelete: (TransactionSummary) -> Unit = {},
-    onCopyAsCurl: (TransactionSummary) -> Unit = {},
-    // Generic tool navigation for Tools tab
-    onToolNavigate: (String) -> Unit = {},
-    // Tool category collapse state
-    collapsedToolCategories: Set<String> = emptySet(),
-    onToolCategoryCollapseToggled: (String) -> Unit = {},
-    // Dialog and menu visibility state
-    showFilterSheet: Boolean = false,
-    onFilterSheetVisibilityChanged: (Boolean) -> Unit = {},
-    showOverflowMenu: Boolean = false,
-    onOverflowMenuVisibilityChanged: (Boolean) -> Unit = {},
-    toolsSearchActive: Boolean = false,
-    onToolsSearchActiveChanged: (Boolean) -> Unit = {},
-    toolsSearchQuery: String = "",
-    onToolsSearchQueryChanged: (String) -> Unit = {},
-    showClearTransactionsDialog: Boolean = false,
-    onClearTransactionsDialogVisibilityChanged: (Boolean) -> Unit = {},
-    showClearCrashesDialog: Boolean = false,
-    onClearCrashesDialogVisibilityChanged: (Boolean) -> Unit = {},
-    showDeleteSelectedDialog: Boolean = false,
-    onDeleteSelectedDialogVisibilityChanged: (Boolean) -> Unit = {},
-    // Snackbar message flow from ViewModel
+    homeState: HomeViewState,
+    transactionState: TransactionListViewState,
+    crashState: CrashListViewState,
+    onHomeEvent: (HomeViewEvent) -> Unit,
+    onTransactionEvent: (TransactionListViewEvent) -> Unit,
+    onCrashEvent: (CrashListViewEvent) -> Unit,
     snackBarMessage: Flow<String>? = null,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val isSelectionMode = transactionState.selectedIds.isNotEmpty()
 
     // Hardware/System Back Button behavior
     BackHandler {
         if (isSelectionMode) {
-            onClearSelection()
+            onTransactionEvent(TransactionListViewEvent.SelectionCleared)
         } else {
-            (context as? Activity)?.finish()
+            onHomeEvent(HomeViewEvent.BackPressed)
         }
     }
 
@@ -183,48 +107,30 @@ fun HomeScreen(
     }
     val snackBarHostState = remember { SnackbarHostState() }
 
-    // Observe snackbar messages from ViewModel
-    LaunchedEffect(snackBarMessage) {
-        snackBarMessage?.collect { message ->
-            snackBarHostState.showSnackbar(message)
-        }
-    }
-
-    // Pager state for swipe between tabs - defined here so TabRow can access it
+    // Pager state for swipe between tabs
     val pagerState = rememberPagerState(
-        initialPage = selectedTabIndex,
+        initialPage = homeState.selectedTabIndex,
         pageCount = { titles.size },
     )
 
-    // Sync pagerState with selectedTabIndex when tab is clicked
-    LaunchedEffect(selectedTabIndex) {
-        if (pagerState.currentPage != selectedTabIndex) {
-            pagerState.animateScrollToPage(selectedTabIndex)
-        }
-    }
-
-    // Sync selectedTabIndex with pagerState when user swipes
-    val haptic = LocalHapticFeedback.current
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }
-            .distinctUntilChanged()
-            .collect { page ->
-                if (page != selectedTabIndex) {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    if (isSelectionMode) onClearSelection()
-                    onTabSelected(page)
-                }
-            }
-    }
+    // Side-effects: pager sync + snackbar observer
+    HomeScreenEffects(
+        pagerState = pagerState,
+        homeState = homeState,
+        transactionState = transactionState,
+        onHomeEvent = onHomeEvent,
+        onTransactionEvent = onTransactionEvent,
+        snackBarMessage = snackBarMessage,
+        snackBarHostState = snackBarHostState,
+    )
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         snackbarHost = { SnackbarHost(snackBarHostState) },
         floatingActionButton = {
-            val isFiltering = filterMethods.isNotEmpty() ||
-                filterStatusRanges.isNotEmpty() ||
-                searchQuery.isNotBlank()
-            val filterCount = filterMethods.size + filterStatusRanges.size + if (searchQuery.isNotBlank()) 1 else 0
+            val filterCount = transactionState.filterMethods.size +
+                transactionState.filterStatusRanges.size +
+                if (transactionState.searchQuery.isNotBlank()) 1 else 0
 
             AnimatedVisibility(
                 visible = pagerState.currentPage == 0 && !isSelectionMode,
@@ -233,22 +139,18 @@ fun HomeScreen(
             ) {
                 BadgedBox(
                     badge = {
-                        if (isFiltering) {
-                            Badge(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary,
-                            ) {
-                                Text(
-                                    text = filterCount.toString(),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                )
-                            }
+                        if (transactionState.hasActiveFilters) {
+                            WormaCeptorBadge(
+                                text = filterCount.toString(),
+                                variant = BadgeVariant.Filled(WormaCeptorTokens.semantic().accent),
+                            )
                         }
                     },
                 ) {
                     WormaCeptorFAB(
-                        onClick = { onFilterSheetVisibilityChanged(true) },
+                        onClick = {
+                            onTransactionEvent(TransactionListViewEvent.Filter.SheetOpened)
+                        },
                         icon = Icons.Default.FilterList,
                         contentDescription = stringResource(R.string.viewer_home_filter),
                     )
@@ -256,299 +158,24 @@ fun HomeScreen(
             }
         },
         topBar = {
-            Column {
-                // Crossfade between BulkActionBar and TopAppBar to avoid height shift
-                Crossfade(targetState = isSelectionMode) { inSelectionMode ->
-                    if (inSelectionMode) {
-                        BulkActionBar(
-                            selectedCount = selectedIds.size,
-                            totalCount = transactions.size,
-                            onShare = onShareSelected,
-                            onDelete = { onDeleteSelectedDialogVisibilityChanged(true) },
-                            onExport = onExportSelected,
-                            onSelectAll = onSelectAll,
-                            onDeselectAll = onClearSelection,
-                            onCancel = onClearSelection,
-                        )
-                    } else {
-                        TopAppBar(
-                            title = { Text(stringResource(R.string.viewer_home_title)) },
-                            navigationIcon = {
-                                IconButton(onClick = { (context as? Activity)?.finish() }) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                        contentDescription = stringResource(R.string.viewer_home_back),
-                                    )
-                                }
-                            },
-                            actions = {
-                                // Overflow Menu - only show on Transactions and Crashes tabs
-                                if (pagerState.currentPage < 2) {
-                                    IconButton(onClick = { onOverflowMenuVisibilityChanged(true) }) {
-                                        Icon(
-                                            imageVector = Icons.Default.MoreVert,
-                                            contentDescription = stringResource(R.string.viewer_home_more_options),
-                                        )
-                                    }
-
-                                    DropdownMenu(
-                                        expanded = showOverflowMenu,
-                                        onDismissRequest = { onOverflowMenuVisibilityChanged(false) },
-                                        shape = WormaCeptorDesignSystem.Shapes.cardLarge,
-                                    ) {
-                                        when (pagerState.currentPage) {
-                                            0 -> {
-                                                // Transactions tab menu
-                                                DropdownMenuItem(
-                                                    text = {
-                                                        Text(
-                                                            stringResource(R.string.viewer_home_export_transactions),
-                                                        )
-                                                    },
-                                                    leadingIcon = { Icon(Icons.Default.Share, null) },
-                                                    onClick = {
-                                                        onOverflowMenuVisibilityChanged(false)
-                                                        onExportTransactions()
-                                                    },
-                                                )
-                                                DropdownMenuItem(
-                                                    text = {
-                                                        Text(
-                                                            stringResource(R.string.viewer_home_clear_all_transactions),
-                                                        )
-                                                    },
-                                                    leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                                    onClick = {
-                                                        onOverflowMenuVisibilityChanged(false)
-                                                        onClearTransactionsDialogVisibilityChanged(true)
-                                                    },
-                                                )
-                                            }
-                                            1 -> {
-                                                // Crashes tab menu
-                                                DropdownMenuItem(
-                                                    text = {
-                                                        Text(
-                                                            stringResource(R.string.viewer_home_export_crashes),
-                                                        )
-                                                    },
-                                                    leadingIcon = { Icon(Icons.Default.Share, null) },
-                                                    onClick = {
-                                                        onOverflowMenuVisibilityChanged(false)
-                                                        onExportCrashes()
-                                                    },
-                                                )
-                                                DropdownMenuItem(
-                                                    text = {
-                                                        Text(
-                                                            stringResource(R.string.viewer_home_clear_all_crashes),
-                                                        )
-                                                    },
-                                                    leadingIcon = { Icon(Icons.Default.DeleteSweep, null) },
-                                                    onClick = {
-                                                        onOverflowMenuVisibilityChanged(false)
-                                                        onClearCrashesDialogVisibilityChanged(true)
-                                                    },
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // Search toggle - only show on Tools tab
-                                if (pagerState.currentPage == 2) {
-                                    IconButton(
-                                        onClick = {
-                                            onToolsSearchActiveChanged(!toolsSearchActive)
-                                        },
-                                    ) {
-                                        Icon(
-                                            imageVector = if (toolsSearchActive) {
-                                                Icons.Default.Close
-                                            } else {
-                                                Icons.Default.Search
-                                            },
-                                            contentDescription = stringResource(
-                                                R.string.viewer_tools_search_placeholder,
-                                            ),
-                                        )
-                                    }
-                                }
-                            },
-                        )
-                    }
-                }
-
-                TabRow(selectedTabIndex = pagerState.currentPage) {
-                    titles.forEachIndexed { index, title ->
-                        Tab(
-                            selected = pagerState.currentPage == index,
-                            onClick = {
-                                if (isSelectionMode) onClearSelection()
-                                scope.launch { pagerState.animateScrollToPage(index) }
-                            },
-                            text = { Text(title) },
-                        )
-                    }
-                }
-            }
+            HomeTopBar(
+                homeState = homeState,
+                transactionState = transactionState,
+                onHomeEvent = onHomeEvent,
+                onTransactionEvent = onTransactionEvent,
+                onCrashEvent = onCrashEvent,
+                pagerState = pagerState,
+                titles = titles,
+            )
         },
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             // Active Filters Banner
-            if (pagerState.currentPage == 0 && !isSelectionMode) {
-                val hasActiveFilters = filterMethods.isNotEmpty() ||
-                    filterStatusRanges.isNotEmpty() ||
-                    searchQuery.isNotBlank()
-                AnimatedVisibility(
-                    visible = hasActiveFilters,
-                    enter = expandVertically() + fadeIn(),
-                    exit = shrinkVertically() + fadeOut(),
-                ) {
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                                    vertical = WormaCeptorDesignSystem.Spacing.sm,
-                                ),
-                            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Text(
-                                text = stringResource(R.string.viewer_home_active_filters),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                fontWeight = FontWeight.Medium,
-                            )
-
-                            WormaCeptorFlowRow(
-                                modifier = Modifier.weight(1f),
-                                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
-                            ) {
-                                if (searchQuery.isNotBlank()) {
-                                    AssistChip(
-                                        onClick = { onSearchChanged("") },
-                                        label = {
-                                            Text(
-                                                text = "\"$searchQuery\"",
-                                                style = MaterialTheme.typography.labelSmall,
-                                            )
-                                        },
-                                        leadingIcon = {
-                                            Icon(
-                                                imageVector = Icons.Default.Search,
-                                                contentDescription = null,
-                                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                                            )
-                                        },
-                                        trailingIcon = {
-                                            Icon(
-                                                imageVector = Icons.Default.Close,
-                                                contentDescription = null,
-                                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                                            )
-                                        },
-                                        shape = WormaCeptorDesignSystem.Shapes.chip,
-                                        modifier = Modifier.semantics {
-                                            role = Role.Button
-                                            selected = true
-                                            contentDescription = context.getString(
-                                                R.string.viewer_home_search_filter_description,
-                                                searchQuery,
-                                            )
-                                        },
-                                    )
-                                }
-
-                                filterMethods.forEach { method ->
-                                    AssistChip(
-                                        onClick = { onMethodFiltersChanged(filterMethods - method) },
-                                        label = {
-                                            Text(
-                                                text = method,
-                                                style = MaterialTheme.typography.labelSmall,
-                                            )
-                                        },
-                                        trailingIcon = {
-                                            Icon(
-                                                imageVector = Icons.Default.Close,
-                                                contentDescription = null,
-                                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                                            )
-                                        },
-                                        shape = WormaCeptorDesignSystem.Shapes.chip,
-                                        modifier = Modifier.semantics {
-                                            role = Role.Button
-                                            selected = true
-                                            contentDescription = context.getString(
-                                                R.string.viewer_home_method_filter_description,
-                                                method,
-                                            )
-                                        },
-                                    )
-                                }
-
-                                filterStatusRanges.forEach { range ->
-                                    val statusLabel = when (range) {
-                                        200..299 -> "2xx"
-                                        300..399 -> "3xx"
-                                        400..499 -> "4xx"
-                                        500..599 -> "5xx"
-                                        else -> context.getString(R.string.viewer_home_status_label)
-                                    }
-                                    AssistChip(
-                                        onClick = {
-                                            onStatusFiltersChanged(
-                                                filterStatusRanges.filter { it != range }.toSet(),
-                                            )
-                                        },
-                                        label = {
-                                            Text(
-                                                text = statusLabel,
-                                                style = MaterialTheme.typography.labelSmall,
-                                            )
-                                        },
-                                        trailingIcon = {
-                                            Icon(
-                                                imageVector = Icons.Default.Close,
-                                                contentDescription = null,
-                                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
-                                            )
-                                        },
-                                        shape = WormaCeptorDesignSystem.Shapes.chip,
-                                        modifier = Modifier.semantics {
-                                            role = Role.Button
-                                            selected = true
-                                            contentDescription = context.getString(
-                                                R.string.viewer_home_status_filter_description,
-                                                statusLabel,
-                                            )
-                                        },
-                                    )
-                                }
-                            }
-
-                            IconButton(
-                                onClick = {
-                                    onClearFilters()
-                                    onSearchChanged("")
-                                },
-                                modifier = Modifier.size(48.dp),
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.viewer_home_clear_all_filters),
-                                    modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.md),
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+            ActiveFiltersBanner(
+                transactionState = transactionState,
+                currentPage = pagerState.currentPage,
+                onTransactionEvent = onTransactionEvent,
+            )
 
             // HorizontalPager for swipe between Transactions and Crashes
             HorizontalPager(
@@ -560,181 +187,262 @@ fun HomeScreen(
             ) { page ->
                 when (page) {
                     0 -> SelectableTransactionListScreen(
-                        transactions = transactions,
-                        onItemClick = onTransactionClick,
-                        isInitialLoading = isInitialLoading,
-                        hasActiveFilters = filterMethods.isNotEmpty() ||
-                            filterStatusRanges.isNotEmpty() ||
-                            searchQuery.isNotBlank(),
-                        onClearFilters = {
-                            onClearFilters()
-                            onSearchChanged("")
-                        },
-                        isRefreshing = isRefreshingTransactions,
-                        onRefresh = onRefreshTransactions,
-                        selectedIds = selectedIds,
-                        isSelectionMode = isSelectionMode,
-                        onSelectionToggle = onSelectionToggle,
-                        onLongClick = { id ->
-                            if (!isSelectionMode) {
-                                onSelectionToggle(id)
-                            }
-                        },
-                        onCopyUrl = onCopyUrl,
-                        onShare = onShare,
-                        onDelete = onDelete,
-                        onCopyAsCurl = onCopyAsCurl,
-                        modifier = Modifier.fillMaxSize(),
-                        header = { MetricsCard(transactions = transactions) },
-                    )
-                    1 -> CrashListScreen(
-                        crashes = crashes,
-                        onCrashClick = onCrashClick,
-                        isRefreshing = isRefreshingCrashes,
-                        onRefresh = onRefreshCrashes,
-                    )
-                    2 -> if (showToolsTab) {
-                        ToolsTab(
-                            onNavigate = onToolNavigate,
-                            onShowMessage = { message ->
-                                scope.launch {
-                                    snackBarHostState.showSnackbar(message)
+                        transactions = transactionState.transactions,
+                        onItemClick = { onHomeEvent(HomeViewEvent.TransactionClicked(it)) },
+                        selectionState = TransactionSelectionState(
+                            selectedIds = transactionState.selectedIds,
+                            isSelectionMode = isSelectionMode,
+                            onSelectionToggle = {
+                                onTransactionEvent(TransactionListViewEvent.SelectionToggled(it))
+                            },
+                            onLongClick = { id ->
+                                if (!isSelectionMode) {
+                                    onTransactionEvent(
+                                        TransactionListViewEvent.SelectionToggled(id),
+                                    )
                                 }
                             },
-                            searchActive = toolsSearchActive,
-                            searchQuery = toolsSearchQuery,
-                            onSearchQueryChanged = { onToolsSearchQueryChanged(it) },
-                            collapsedCategories = collapsedToolCategories,
-                            onToggleCollapse = onToolCategoryCollapseToggled,
-                            modifier = Modifier.fillMaxSize(),
-                        )
-                    }
+                        ),
+                        itemActions = TransactionItemActions(
+                            onCopyUrl = {
+                                onTransactionEvent(TransactionListViewEvent.CopyTransactionUrl(it))
+                            },
+                            onShare = {
+                                onTransactionEvent(TransactionListViewEvent.ShareTransaction(it))
+                            },
+                            onShareAsHar = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.ShareTransactionAsHar(it.id),
+                                )
+                            },
+                            onDelete = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.DeleteTransaction(it.id),
+                                )
+                            },
+                            onCopyAsCurl = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.CopyTransactionAsCurl(it.id),
+                                )
+                            },
+                        ),
+                        isInitialLoading = transactionState.isInitialLoading,
+                        hasActiveFilters = transactionState.hasActiveFilters,
+                        onClearFilters = {
+                            onTransactionEvent(TransactionListViewEvent.ClearFilters)
+                        },
+                        isRefreshing = transactionState.isRefreshingTransactions,
+                        onRefresh = {
+                            onTransactionEvent(TransactionListViewEvent.RefreshTransactions)
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                        header = {
+                            MetricsCard(transactions = transactionState.transactions)
+                        },
+                    )
+
+                    1 -> CrashListScreen(
+                        crashes = crashState.crashes,
+                        onCrashClick = { onHomeEvent(HomeViewEvent.CrashClicked(it)) },
+                        isInitialLoading = crashState.isCrashesLoading,
+                        isRefreshing = crashState.isRefreshingCrashes,
+                        onRefresh = { onCrashEvent(CrashListViewEvent.RefreshCrashes) },
+                    )
+
+                    2 -> ToolsTab(
+                        state = homeState,
+                        onEvent = onHomeEvent,
+                        onNavigate = { onHomeEvent(HomeViewEvent.ToolNavigated(it)) },
+                        onShowMessage = { message ->
+                            scope.launch {
+                                snackBarHostState.showSnackbar(message)
+                            }
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                    )
                 }
             }
         }
 
-        // Filter bottom sheet (SelectableHomeScreen)
-        if (showFilterSheet) {
-            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-            val focusManager = LocalFocusManager.current
+        // Dialogs and bottom sheets
+        HomeDialogs(
+            transactionState = transactionState,
+            crashState = crashState,
+            onTransactionEvent = onTransactionEvent,
+            onCrashEvent = onCrashEvent,
+        )
+    }
+}
 
-            val methodCounts = remember(allTransactions) {
-                allTransactions.groupBy { it.method }.mapValues { it.value.size }.toImmutableMap()
-            }
-            val statusCounts = remember(allTransactions) {
-                mapOf(
-                    200..299 to allTransactions.count { (it.code ?: 0) in 200..299 },
-                    300..399 to allTransactions.count { (it.code ?: 0) in 300..399 },
-                    400..499 to allTransactions.count { (it.code ?: 0) in 400..499 },
-                    500..599 to allTransactions.count { (it.code ?: 0) in 500..599 },
-                ).toImmutableMap()
-            }
+@Composable
+private fun ActiveFiltersBanner(
+    transactionState: TransactionListViewState,
+    currentPage: Int,
+    onTransactionEvent: (TransactionListViewEvent) -> Unit,
+) {
+    val context = LocalContext.current
 
-            ModalBottomSheet(
-                modifier = Modifier.imePadding(),
-                onDismissRequest = {
-                    focusManager.clearFocus()
-                    onFilterSheetVisibilityChanged(false)
-                },
-                sheetState = sheetState,
-                shape = WormaCeptorDesignSystem.Shapes.sheet,
-                containerColor = MaterialTheme.colorScheme.surface,
+    if (currentPage != 0 || transactionState.selectedIds.isNotEmpty()) return
+
+    AnimatedVisibility(
+        visible = transactionState.hasActiveFilters,
+        enter = expandVertically() + fadeIn(),
+        exit = shrinkVertically() + fadeOut(),
+    ) {
+        Surface(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier
+                    .padding(
+                        horizontal = WormaCeptorTokens.Spacing.lg,
+                        vertical = WormaCeptorTokens.Spacing.xs,
+                    ),
+                horizontalAlignment = Alignment.Start,
             ) {
-                FilterBottomSheetContent(
-                    initialSearchQuery = searchQuery,
-                    initialFilterMethods = filterMethods,
-                    initialFilterStatusRanges = filterStatusRanges,
-                    onApply = { query, methods, statusRanges ->
-                        onSearchChanged(query)
-                        onMethodFiltersChanged(methods)
-                        onStatusFiltersChanged(statusRanges)
-                        focusManager.clearFocus()
-                        onFilterSheetVisibilityChanged(false)
-                    },
-                    filteredCount = transactions.size,
-                    totalCount = allTransactions.size,
-                    methodCounts = methodCounts,
-                    statusCounts = statusCounts,
-                )
-            }
-        }
-
-        // Clear Transactions Confirmation Dialog (SelectableHomeScreen)
-        if (showClearTransactionsDialog) {
-            AlertDialog(
-                onDismissRequest = { onClearTransactionsDialogVisibilityChanged(false) },
-                title = { Text(stringResource(R.string.viewer_dialog_clear_transactions_title)) },
-                text = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
                     Text(
-                        stringResource(R.string.viewer_dialog_clear_transactions_message),
+                        text = stringResource(R.string.viewer_home_active_filters),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = WormaCeptorTokens.semantic().textSecondary,
+                        fontWeight = FontWeight.Medium,
                     )
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = { onClearTransactions() },
+                    WormaCeptorIconButton(
+                        onClick = {
+                            onTransactionEvent(TransactionListViewEvent.ClearFilters)
+                        },
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.xxxl),
                     ) {
-                        Text(stringResource(R.string.viewer_dialog_button_clear))
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { onClearTransactionsDialogVisibilityChanged(false) }) {
-                        Text(stringResource(R.string.viewer_dialog_button_cancel))
-                    }
-                },
-            )
-        }
-
-        // Clear Crashes Confirmation Dialog (SelectableHomeScreen)
-        if (showClearCrashesDialog) {
-            AlertDialog(
-                onDismissRequest = { onClearCrashesDialogVisibilityChanged(false) },
-                title = { Text(stringResource(R.string.viewer_dialog_clear_crashes_title)) },
-                text = {
-                    Text(
-                        stringResource(R.string.viewer_dialog_clear_crashes_message),
-                    )
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = { onClearCrashes() },
-                    ) {
-                        Text(stringResource(R.string.viewer_dialog_button_clear))
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { onClearCrashesDialogVisibilityChanged(false) }) {
-                        Text(stringResource(R.string.viewer_dialog_button_cancel))
-                    }
-                },
-            )
-        }
-
-        // Delete Selected Confirmation Dialog
-        if (showDeleteSelectedDialog) {
-            AlertDialog(
-                onDismissRequest = { onDeleteSelectedDialogVisibilityChanged(false) },
-                title = { Text(stringResource(R.string.viewer_dialog_delete_selected_title, selectedIds.size)) },
-                text = {
-                    Text(
-                        stringResource(R.string.viewer_dialog_delete_selected_message),
-                    )
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = { onDeleteSelected() },
-                    ) {
-                        Text(
-                            stringResource(R.string.viewer_dialog_button_delete),
-                            color = MaterialTheme.colorScheme.error,
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(
+                                R.string.viewer_home_clear_all_filters,
+                            ),
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                         )
                     }
-                },
-                dismissButton = {
-                    TextButton(onClick = { onDeleteSelectedDialogVisibilityChanged(false) }) {
-                        Text(stringResource(R.string.viewer_dialog_button_cancel))
+                }
+
+                WormaCeptorScrollableRow(
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
+                ) {
+                    if (transactionState.searchQuery.isNotBlank()) {
+                        AssistChip(
+                            onClick = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.SearchQueryChanged(""),
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = "\"${transactionState.searchQuery}\"",
+                                    style = MaterialTheme.typography.labelSmall,
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                                )
+                            },
+                            trailingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                                )
+                            },
+                            shape = WormaCeptorTokens.Shapes.chip,
+                            modifier = Modifier.semantics {
+                                role = Role.Button
+                                selected = true
+                                contentDescription = context.getString(
+                                    R.string.viewer_home_search_filter_description,
+                                    transactionState.searchQuery,
+                                )
+                            },
+                        )
                     }
-                },
-            )
+
+                    transactionState.filterMethods.forEach { method ->
+                        AssistChip(
+                            onClick = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.MethodFiltersChanged(
+                                        transactionState.filterMethods - method,
+                                    ),
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = method,
+                                    style = MaterialTheme.typography.labelSmall,
+                                )
+                            },
+                            trailingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                                )
+                            },
+                            shape = WormaCeptorTokens.Shapes.chip,
+                            modifier = Modifier.semantics {
+                                role = Role.Button
+                                selected = true
+                                contentDescription = context.getString(
+                                    R.string.viewer_home_method_filter_description,
+                                    method,
+                                )
+                            },
+                        )
+                    }
+
+                    transactionState.filterStatusRanges.forEach { range ->
+                        val statusLabel = when (range) {
+                            200..299 -> "2xx"
+                            300..399 -> "3xx"
+                            400..499 -> "4xx"
+                            500..599 -> "5xx"
+                            else -> context.getString(R.string.viewer_home_status_label)
+                        }
+                        AssistChip(
+                            onClick = {
+                                onTransactionEvent(
+                                    TransactionListViewEvent.StatusFiltersChanged(
+                                        transactionState.filterStatusRanges.minusElement(range),
+                                    ),
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = statusLabel,
+                                    style = MaterialTheme.typography.labelSmall,
+                                )
+                            },
+                            trailingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                                )
+                            },
+                            shape = WormaCeptorTokens.Shapes.chip,
+                            modifier = Modifier.semantics {
+                                role = Role.Button
+                                selected = true
+                                contentDescription = context.getString(
+                                    R.string.viewer_home_status_filter_description,
+                                    statusLabel,
+                                )
+                            },
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -744,56 +452,49 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     WormaCeptorTheme {
         HomeScreen(
-            transactions = kotlinx.collections.immutable.persistentListOf(
-                TransactionSummary(
-                    id = UUID.randomUUID(),
-                    method = "GET",
-                    host = "api.example.com",
-                    path = "/users",
-                    code = 200,
-                    tookMs = 120L,
-                    hasRequestBody = false,
-                    hasResponseBody = true,
-                    status = TransactionStatus.COMPLETED,
-                    timestamp = System.currentTimeMillis(),
-                ),
-                TransactionSummary(
-                    id = UUID.randomUUID(),
-                    method = "POST",
-                    host = "api.example.com",
-                    path = "/auth/login",
-                    code = 401,
-                    tookMs = 250L,
-                    hasRequestBody = true,
-                    hasResponseBody = true,
-                    status = TransactionStatus.COMPLETED,
-                    timestamp = System.currentTimeMillis() - 30_000,
-                ),
-            ),
-            crashes = kotlinx.collections.immutable.persistentListOf(
-                Crash(
-                    id = 1L,
-                    timestamp = System.currentTimeMillis() - 60_000,
-                    exceptionType = "NullPointerException",
-                    message = "Attempt to invoke on null",
-                    stackTrace = "java.lang.NullPointerException\n\tat com.example.App.run(App.kt:10)",
+            homeState = HomeViewState(),
+            transactionState = TransactionListViewState(
+                transactions = persistentListOf(
+                    TransactionSummary(
+                        id = UUID.randomUUID(),
+                        method = "GET",
+                        host = "api.example.com",
+                        path = "/users",
+                        code = 200,
+                        tookMs = 120L,
+                        hasRequestBody = false,
+                        hasResponseBody = true,
+                        status = TransactionStatus.COMPLETED,
+                        timestamp = System.currentTimeMillis(),
+                    ),
+                    TransactionSummary(
+                        id = UUID.randomUUID(),
+                        method = "POST",
+                        host = "api.example.com",
+                        path = "/auth/login",
+                        code = 401,
+                        tookMs = 250L,
+                        hasRequestBody = true,
+                        hasResponseBody = true,
+                        status = TransactionStatus.COMPLETED,
+                        timestamp = System.currentTimeMillis() - 30_000,
+                    ),
                 ),
             ),
-            searchQuery = "",
-            onSearchChanged = {},
-            onTransactionClick = {},
-            onCrashClick = {},
-            filterMethods = emptySet(),
-            filterStatusRanges = emptySet(),
-            onMethodFiltersChanged = {},
-            onStatusFiltersChanged = {},
-            onClearFilters = {},
-            onClearTransactions = {},
-            onClearCrashes = {},
-            onExportTransactions = {},
-            onExportCrashes = {},
-            selectedTabIndex = 0,
-            onTabSelected = {},
+            crashState = CrashListViewState(
+                crashes = persistentListOf(
+                    Crash(
+                        id = 1L,
+                        timestamp = System.currentTimeMillis() - 60_000,
+                        exceptionType = "NullPointerException",
+                        message = "Attempt to invoke on null",
+                        stackTrace = "java.lang.NullPointerException\n\tat com.example.App.run(App.kt:10)",
+                    ),
+                ),
+            ),
+            onHomeEvent = {},
+            onTransactionEvent = {},
+            onCrashEvent = {},
         )
     }
 }

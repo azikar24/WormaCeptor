@@ -1,11 +1,7 @@
-public final class com/azikar24/wormaceptor/feature/logs/LogsFeature {
+public final class com/azikar24/wormaceptor/feature/logs/LogsNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/LogsFeature;
-	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/LogCaptureEngine;)Lcom/azikar24/wormaceptor/feature/logs/LogsViewModelFactory;
-}
-
-public final class com/azikar24/wormaceptor/feature/logs/LogsFeatureKt {
-	public static final fun LogViewer (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
 }
 
 public final class com/azikar24/wormaceptor/feature/logs/LogsViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
@@ -17,82 +13,161 @@ public final class com/azikar24/wormaceptor/feature/logs/LogsViewModelFactory : 
 public final class com/azikar24/wormaceptor/feature/logs/ui/ComposableSingletons$LogsScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/ui/ComposableSingletons$LogsScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$logs_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$logs_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$logs_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$logs_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/logs/ui/LogsScreenKt {
 	public static final fun LogsScreen (Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewModel;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
-public final class com/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors {
+public abstract class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEffect {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun backgroundForLevel-vNxB06k (Lcom/azikar24/wormaceptor/domain/entities/LogLevel;)J
-	public final fun component1-0d7_KjU ()J
-	public final fun component10-0d7_KjU ()J
-	public final fun component11-0d7_KjU ()J
-	public final fun component12-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-0d7_KjU ()J
-	public final fun component7-0d7_KjU ()J
-	public final fun component8-0d7_KjU ()J
-	public final fun component9-0d7_KjU ()J
-	public final fun copy-2qZNXz8 (JJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors;
-	public static synthetic fun copy-2qZNXz8$default (Lcom/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors;JJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors;
+}
+
+public abstract class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$AllLevelsSelected : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$AllLevelsSelected;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun forLevel-vNxB06k (Lcom/azikar24/wormaceptor/domain/entities/LogLevel;)J
-	public final fun getAssert-0d7_KjU ()J
-	public final fun getAssertBackground-0d7_KjU ()J
-	public final fun getDebug-0d7_KjU ()J
-	public final fun getDebugBackground-0d7_KjU ()J
-	public final fun getError-0d7_KjU ()J
-	public final fun getErrorBackground-0d7_KjU ()J
-	public final fun getInfo-0d7_KjU ()J
-	public final fun getInfoBackground-0d7_KjU ()J
-	public final fun getVerbose-0d7_KjU ()J
-	public final fun getVerboseBackground-0d7_KjU ()J
-	public final fun getWarn-0d7_KjU ()J
-	public final fun getWarnBackground-0d7_KjU ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColorsKt {
-	public static final fun logLevelColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/logs/ui/theme/LogLevelColors;
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$AutoScrollSet : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public fun <init> (Z)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$AutoScrollSet;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$AutoScrollSet;ZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$AutoScrollSet;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEnabled ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewModel : androidx/lifecycle/ViewModel {
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$AutoScrollToggled : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$AutoScrollToggled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$CaptureStarted : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$CaptureStarted;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$CaptureStopped : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$CaptureStopped;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$FiltersCleared : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$FiltersCleared;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$LevelSelectionCleared : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$LevelSelectionCleared;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$LevelToggled : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/LogLevel;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/LogLevel;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$LevelToggled;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$LevelToggled;Lcom/azikar24/wormaceptor/domain/entities/LogLevel;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$LevelToggled;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLevel ()Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$LogsCleared : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$LogsCleared;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$MinimumLevelSet : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/LogLevel;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/LogLevel;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$MinimumLevelSet;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$MinimumLevelSet;Lcom/azikar24/wormaceptor/domain/entities/LogLevel;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$MinimumLevelSet;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLevel ()Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$SearchQueryChanged : com/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$SearchQueryChanged;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$SearchQueryChanged;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewEvent$SearchQueryChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LogCaptureEngine;)V
-	public final fun clearFilters ()V
-	public final fun clearLevelSelection ()V
-	public final fun clearLogs ()V
-	public final fun getAutoScroll ()Lkotlinx/coroutines/flow/StateFlow;
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/logs/vm/LogsViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LogLevel;Ljava/util/Set;ZZIZLkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LogLevel;Ljava/util/Set;ZZIZLkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/util/Map;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public final fun component3 ()Ljava/util/Set;
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()I
+	public final fun component7 ()Z
+	public final fun component8 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component9 ()I
+	public final fun copy (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LogLevel;Ljava/util/Set;ZZIZLkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewState;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/LogLevel;Ljava/util/Set;ZZIZLkotlinx/collections/immutable/ImmutableList;ILjava/util/Map;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/logs/vm/LogsViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAutoScroll ()Z
 	public final fun getCurrentPid ()I
-	public final fun getLevelCounts ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getLogs ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getMinimumLevel ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedLevels ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getTotalCount ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isCapturing ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun onSearchQueryChanged (Ljava/lang/String;)V
-	public final fun selectAllLevels ()V
-	public final fun setAutoScroll (Z)V
-	public final fun setMinimumLevel (Lcom/azikar24/wormaceptor/domain/entities/LogLevel;)V
-	public final fun startCapture ()V
-	public final fun stopCapture ()V
-	public final fun toggleAutoScroll ()V
-	public final fun toggleLevel (Lcom/azikar24/wormaceptor/domain/entities/LogLevel;)V
+	public final fun getLevelCounts ()Ljava/util/Map;
+	public final fun getLogs ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getMinimumLevel ()Lcom/azikar24/wormaceptor/domain/entities/LogLevel;
+	public final fun getSearchQuery ()Ljava/lang/String;
+	public final fun getSelectedLevels ()Ljava/util/Set;
+	public final fun getTotalCount ()I
+	public fun hashCode ()I
+	public final fun isCapturing ()Z
+	public final fun isLogsLoading ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

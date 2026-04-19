@@ -1,0 +1,597 @@
+package com.azikar24.wormaceptor.feature.viewer.vm
+
+import androidx.lifecycle.viewModelScope
+import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
+import com.azikar24.wormaceptor.common.presentation.SearchDebounce
+import com.azikar24.wormaceptor.core.engine.QueryEngine
+import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
+import com.azikar24.wormaceptor.domain.contracts.ContentType
+import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
+import com.azikar24.wormaceptor.domain.entities.ExportFormat
+import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.feature.viewer.FormatHeadersUseCase
+import com.azikar24.wormaceptor.feature.viewer.R
+import com.azikar24.wormaceptor.feature.viewer.ui.MatchInfo
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
+import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
+import com.azikar24.wormaceptor.feature.viewer.ui.generateTextSummary
+import com.azikar24.wormaceptor.feature.viewer.ui.isProtobufContentType
+import com.azikar24.wormaceptor.feature.viewer.ui.parseBodyViaRegistry
+import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
+import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+/**
+ * MVI ViewModel for the transaction detail screen.
+ *
+ * Manages body loading, search with debounce, copy/share logic,
+ * and image/PDF actions, exposing all state via [TransactionDetailViewState]
+ * and one-time side-effects via [TransactionDetailViewEffect].
+ */
+internal class TransactionDetailViewModel(
+    private val queryEngine: QueryEngine,
+) : BaseViewModel<TransactionDetailViewState, TransactionDetailViewEffect, TransactionDetailViewEvent, NoOpNavigator>(
+    TransactionDetailViewState(),
+    NoOpNavigator,
+) {
+
+    private val formatHeaders = FormatHeadersUseCase()
+    private var searchDebounceJob: Job? = null
+
+    override fun handleEvent(event: TransactionDetailViewEvent) {
+        when (event) {
+            is TransactionDetailViewEvent.Lifecycle -> handleLifecycleEvent(event)
+            is TransactionDetailViewEvent.Search -> handleSearchEvent(event)
+            is TransactionDetailViewEvent.Menu -> handleMenuEvent(event)
+            is TransactionDetailViewEvent.Request -> handleRequestEvent(event)
+            is TransactionDetailViewEvent.Response -> handleResponseEvent(event)
+            is TransactionDetailViewEvent.ShowMessage ->
+                emitEffect(TransactionDetailViewEffect.ShowSnackBar(event.message))
+        }
+    }
+
+    private fun handleLifecycleEvent(event: TransactionDetailViewEvent.Lifecycle) {
+        when (event) {
+            is TransactionDetailViewEvent.Lifecycle.TransactionLoaded ->
+                handleTransactionLoaded(event.transaction)
+        }
+    }
+
+    private fun handleSearchEvent(event: TransactionDetailViewEvent.Search) {
+        when (event) {
+            is TransactionDetailViewEvent.Search.VisibilityChanged ->
+                handleSearchVisibilityChanged(event.visible)
+            is TransactionDetailViewEvent.Search.QueryChanged ->
+                handleSearchQueryChanged(event.query)
+            is TransactionDetailViewEvent.Search.NavigateToNext -> handleNavigateToNextMatch()
+            is TransactionDetailViewEvent.Search.NavigateToPrevious -> handleNavigateToPreviousMatch()
+            is TransactionDetailViewEvent.Search.ActiveTabChanged ->
+                handleActiveTabChanged(event.tabIndex)
+        }
+    }
+
+    private fun handleMenuEvent(event: TransactionDetailViewEvent.Menu) {
+        when (event) {
+            is TransactionDetailViewEvent.Menu.VisibilityChanged ->
+                updateState { copy(showMenu = event.visible) }
+            is TransactionDetailViewEvent.Menu.CopyAsText -> handleCopyAsText()
+            is TransactionDetailViewEvent.Menu.CopyAsCurl -> handleCopyAsCurl()
+            is TransactionDetailViewEvent.Menu.ShareAsJson -> handleExport(ExportFormat.JSON)
+            is TransactionDetailViewEvent.Menu.ShareAsHar -> handleExport(ExportFormat.HAR)
+        }
+    }
+
+    private fun handleRequestEvent(event: TransactionDetailViewEvent.Request) {
+        when (event) {
+            is TransactionDetailViewEvent.Request.TogglePrettyMode -> handleToggleRequestPrettyMode()
+            is TransactionDetailViewEvent.Request.ToggleHeadersExpanded ->
+                updateState { copy(requestState = requestState.copy(headersExpanded = !requestState.headersExpanded)) }
+            is TransactionDetailViewEvent.Request.ToggleBodyExpanded ->
+                updateState { copy(requestState = requestState.copy(bodyExpanded = !requestState.bodyExpanded)) }
+            is TransactionDetailViewEvent.Request.CopyBody -> handleCopyBody(isRequest = true)
+            is TransactionDetailViewEvent.Request.CopyHeaders -> handleCopyHeaders(isRequest = true)
+            is TransactionDetailViewEvent.Request.CopyAllContent -> handleCopyAllContent(isRequest = true)
+        }
+    }
+
+    private fun handleResponseEvent(event: TransactionDetailViewEvent.Response) {
+        when (event) {
+            is TransactionDetailViewEvent.Response.TogglePrettyMode -> handleToggleResponsePrettyMode()
+            is TransactionDetailViewEvent.Response.ToggleHeadersExpanded ->
+                updateState {
+                    copy(responseState = responseState.copy(headersExpanded = !responseState.headersExpanded))
+                }
+            is TransactionDetailViewEvent.Response.ToggleBodyExpanded ->
+                updateState { copy(responseState = responseState.copy(bodyExpanded = !responseState.bodyExpanded)) }
+            is TransactionDetailViewEvent.Response.CopyBody -> handleCopyBody(isRequest = false)
+            is TransactionDetailViewEvent.Response.CopyHeaders -> handleCopyHeaders(isRequest = false)
+            is TransactionDetailViewEvent.Response.CopyAllContent -> handleCopyAllContent(isRequest = false)
+            is TransactionDetailViewEvent.Response.ShowImageViewer ->
+                updateState { copy(responseState = responseState.copy(showImageViewer = event.show)) }
+            is TransactionDetailViewEvent.Response.ShowPdfViewer ->
+                updateState { copy(responseState = responseState.copy(showPdfViewer = event.show)) }
+            is TransactionDetailViewEvent.Response.DownloadImage -> handleDownloadImage()
+            is TransactionDetailViewEvent.Response.ShareImage -> handleShareImage()
+            is TransactionDetailViewEvent.Response.DownloadPdf -> handleDownloadPdf()
+        }
+    }
+
+    private fun handleTransactionLoaded(transaction: NetworkTransaction) {
+        updateState {
+            TransactionDetailViewState(transaction = transaction)
+        }
+        loadRequestBody(transaction)
+        loadResponseBody(transaction)
+    }
+
+    private fun loadRequestBody(transaction: NetworkTransaction) {
+        val blobId = transaction.request.bodyRef ?: return
+        updateState { copy(requestState = requestState.copy(isLoading = true)) }
+
+        val requestContentType = transaction.request.headers.entries
+            .firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
+            ?.value?.firstOrNull()
+
+        viewModelScope.launch {
+            val bytes = withContext(Dispatchers.IO) {
+                queryEngine.getBodyBytes(blobId)
+            }
+
+            if (bytes != null && isProtobufContentType(requestContentType)) {
+                updateState {
+                    copy(
+                        requestState = requestState.copy(
+                            rawBodyBytes = bytes,
+                            parsedContentType = ContentType.PROTOBUF,
+                            isLoading = false,
+                        ),
+                    )
+                }
+            } else if (bytes != null) {
+                val raw = String(bytes, Charsets.UTF_8)
+                val result = withContext(Dispatchers.Default) {
+                    parseBodyViaRegistry(requestContentType, bytes, raw)
+                }
+                updateState {
+                    copy(
+                        requestState = requestState.copy(
+                            parsedBody = result.first,
+                            rawBody = raw,
+                            rawBodyBytes = bytes,
+                            parsedContentType = result.second,
+                            isLoading = false,
+                        ),
+                    )
+                }
+            } else {
+                updateState {
+                    copy(requestState = requestState.copy(isLoading = false))
+                }
+            }
+        }
+    }
+
+    private fun loadResponseBody(transaction: NetworkTransaction) {
+        val blobId = transaction.response?.bodyRef ?: return
+        updateState { copy(responseState = responseState.copy(isLoading = true)) }
+
+        val contentType = transaction.response?.headers?.entries
+            ?.firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
+            ?.value?.firstOrNull()
+
+        viewModelScope.launch {
+            val bytes = withContext(Dispatchers.IO) {
+                queryEngine.getBodyBytes(blobId)
+            }
+
+            when {
+                bytes != null && (isImageContentType(contentType) || isImageData(bytes)) -> {
+                    val metadata = withContext(Dispatchers.Default) {
+                        try {
+                            val extractor: ImageMetadataExtractor =
+                                org.koin.java.KoinJavaComponent.get(ImageMetadataExtractor::class.java)
+                            val meta = extractor.extractMetadata(bytes)
+                            if (meta.width > 0 && meta.height > 0) meta else null
+                        } catch (_: Exception) {
+                            null
+                        }
+                    }
+                    updateState {
+                        copy(
+                            responseState = responseState.copy(
+                                rawBodyBytes = bytes,
+                                imageMetadata = metadata,
+                                isLoading = false,
+                            ),
+                        )
+                    }
+                }
+
+                bytes != null && isPdfContent(contentType, bytes) -> {
+                    updateState {
+                        copy(
+                            responseState = responseState.copy(
+                                rawBodyBytes = bytes,
+                                isLoading = false,
+                            ),
+                        )
+                    }
+                }
+
+                bytes != null && isProtobufContentType(contentType) -> {
+                    updateState {
+                        copy(
+                            responseState = responseState.copy(
+                                rawBodyBytes = bytes,
+                                parsedContentType = ContentType.PROTOBUF,
+                                isLoading = false,
+                            ),
+                        )
+                    }
+                }
+
+                bytes != null -> {
+                    val raw = String(bytes, Charsets.UTF_8)
+                    val result = withContext(Dispatchers.Default) {
+                        parseBodyViaRegistry(contentType, bytes, raw)
+                    }
+                    updateState {
+                        copy(
+                            responseState = responseState.copy(
+                                parsedBody = result.first,
+                                rawBody = raw,
+                                rawBodyBytes = bytes,
+                                parsedContentType = result.second,
+                                isLoading = false,
+                            ),
+                        )
+                    }
+                }
+
+                else -> {
+                    updateState {
+                        copy(responseState = responseState.copy(isLoading = false))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleSearchVisibilityChanged(visible: Boolean) {
+        if (visible) {
+            updateState { copy(showSearch = true) }
+        } else {
+            searchDebounceJob?.cancel()
+            updateState {
+                copy(
+                    showSearch = false,
+                    searchQuery = "",
+                    debouncedSearchQuery = "",
+                    currentMatchIndex = 0,
+                    requestState = requestState.copy(matches = emptyList()),
+                    responseState = responseState.copy(matches = emptyList()),
+                )
+            }
+        }
+    }
+
+    private fun handleSearchQueryChanged(query: String) {
+        updateState { copy(searchQuery = query) }
+        searchDebounceJob?.cancel()
+
+        if (query.isEmpty()) {
+            updateState {
+                copy(
+                    debouncedSearchQuery = "",
+                    currentMatchIndex = 0,
+                    requestState = requestState.copy(matches = emptyList()),
+                    responseState = responseState.copy(matches = emptyList()),
+                )
+            }
+            return
+        }
+
+        searchDebounceJob = viewModelScope.launch {
+            delay(SearchDebounce.DEFAULT)
+            updateState { copy(debouncedSearchQuery = query) }
+            findMatches(query)
+        }
+    }
+
+    private fun findMatches(query: String) {
+        if (query.isEmpty()) {
+            updateState {
+                copy(
+                    currentMatchIndex = 0,
+                    requestState = requestState.copy(matches = emptyList()),
+                    responseState = responseState.copy(matches = emptyList()),
+                )
+            }
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.Default) {
+            val state = uiState.value
+
+            val requestMatches = findMatchesInBody(
+                query = query,
+                parsedBody = state.requestState.parsedBody,
+                rawBody = state.requestState.rawBody,
+                isPrettyMode = state.requestState.isPrettyMode,
+            )
+
+            val responseMatches = findMatchesInBody(
+                query = query,
+                parsedBody = state.responseState.parsedBody,
+                rawBody = state.responseState.rawBody,
+                isPrettyMode = state.responseState.isPrettyMode,
+            )
+
+            updateState {
+                copy(
+                    currentMatchIndex = 0,
+                    requestState = requestState.copy(matches = requestMatches),
+                    responseState = responseState.copy(matches = responseMatches),
+                )
+            }
+        }
+    }
+
+    private fun findMatchesInBody(
+        query: String,
+        parsedBody: String?,
+        rawBody: String?,
+        isPrettyMode: Boolean,
+    ): List<MatchInfo> {
+        val body = if (isPrettyMode) parsedBody ?: rawBody else rawBody ?: parsedBody
+        if (body.isNullOrEmpty()) return emptyList()
+
+        val result = mutableListOf<MatchInfo>()
+        var index = body.indexOf(query, ignoreCase = true)
+        while (index >= 0) {
+            result.add(MatchInfo(globalPosition = index, lineIndex = 0))
+            index = body.indexOf(query, index + 1, ignoreCase = true)
+        }
+        return result
+    }
+
+    private fun handleNavigateToNextMatch() {
+        val state = uiState.value
+        val matchCount = getActiveTabMatchCount(state)
+        if (matchCount <= 0) return
+        updateState { copy(currentMatchIndex = (currentMatchIndex + 1) % matchCount) }
+    }
+
+    private fun handleNavigateToPreviousMatch() {
+        val state = uiState.value
+        val matchCount = getActiveTabMatchCount(state)
+        if (matchCount <= 0) return
+        updateState { copy(currentMatchIndex = (currentMatchIndex - 1 + matchCount) % matchCount) }
+    }
+
+    private fun getActiveTabMatchCount(state: TransactionDetailViewState): Int {
+        return when (state.activeTabIndex) {
+            TAB_REQUEST -> state.requestMatchCount
+            TAB_RESPONSE -> state.responseMatchCount
+            else -> 0
+        }
+    }
+
+    private fun handleActiveTabChanged(tabIndex: Int) {
+        updateState { copy(activeTabIndex = tabIndex) }
+        // Close search when switching tabs (matches existing behavior)
+        if (uiState.value.showSearch) {
+            handleSearchVisibilityChanged(false)
+        }
+    }
+
+    private fun handleToggleRequestPrettyMode() {
+        updateState {
+            copy(requestState = requestState.copy(isPrettyMode = !requestState.isPrettyMode))
+        }
+        val debouncedQuery = uiState.value.debouncedSearchQuery
+        if (debouncedQuery.isNotEmpty()) {
+            findMatches(debouncedQuery)
+        }
+    }
+
+    private fun handleToggleResponsePrettyMode() {
+        updateState {
+            copy(responseState = responseState.copy(isPrettyMode = !responseState.isPrettyMode))
+        }
+        val debouncedQuery = uiState.value.debouncedSearchQuery
+        if (debouncedQuery.isNotEmpty()) {
+            findMatches(debouncedQuery)
+        }
+    }
+
+    private fun handleCopyBody(isRequest: Boolean) {
+        val state = uiState.value
+        val section = if (isRequest) state.requestState else state.responseState
+        val bodyContent = if (section.isPrettyMode) {
+            section.parsedBody ?: section.rawBody
+        } else {
+            section.rawBody ?: section.parsedBody
+        }
+        if (bodyContent == null) return
+
+        val transaction = state.transaction ?: return
+        val contentTypeHeader = if (isRequest) {
+            transaction.request.headers.entries
+                .firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
+                ?.value?.firstOrNull()
+        } else {
+            transaction.response?.headers?.entries
+                ?.firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
+                ?.value?.firstOrNull()
+        }
+
+        if (isContentTooLargeForClipboard(bodyContent)) {
+            val (ext, mime) = getFileInfoForContentType(contentTypeHeader)
+            val prefix = if (isRequest) "request" else "response"
+            emitEffect(
+                TransactionDetailViewEffect.Share.AsFile(
+                    content = bodyContent,
+                    fileName = "${prefix}_body.$ext",
+                    mimeType = mime,
+                    titleResId = if (isRequest) {
+                        R.string.viewer_share_request_body
+                    } else {
+                        R.string.viewer_share_response_body
+                    },
+                ),
+            )
+        } else {
+            val labelResId = if (isRequest) {
+                R.string.viewer_clipboard_request_body
+            } else {
+                R.string.viewer_clipboard_response_body
+            }
+            emitEffect(
+                TransactionDetailViewEffect.Clipboard.CopyText(labelResId = labelResId, content = bodyContent),
+            )
+        }
+    }
+
+    private fun handleCopyHeaders(isRequest: Boolean) {
+        val transaction = uiState.value.transaction ?: return
+        val headers = if (isRequest) {
+            transaction.request.headers
+        } else {
+            transaction.response?.headers ?: return
+        }
+        val formatted = formatHeaders.invoke(headers)
+        val labelResId = if (isRequest) {
+            R.string.viewer_clipboard_request_headers
+        } else {
+            R.string.viewer_clipboard_response_headers
+        }
+        emitEffect(
+            TransactionDetailViewEffect.Clipboard.CopyText(labelResId = labelResId, content = formatted),
+        )
+    }
+
+    private fun handleCopyAllContent(isRequest: Boolean) {
+        val state = uiState.value
+        val transaction = state.transaction ?: return
+        val content = buildString {
+            if (isRequest) {
+                appendLine("=== REQUEST HEADERS ===")
+                appendLine(formatHeaders.invoke(transaction.request.headers))
+                val section = state.requestState
+                val body = if (section.isPrettyMode) {
+                    section.parsedBody ?: section.rawBody
+                } else {
+                    section.rawBody ?: section.parsedBody
+                }
+                if (body != null) {
+                    appendLine("\n=== REQUEST BODY ===")
+                    appendLine(body)
+                }
+            } else {
+                transaction.response?.headers?.let { headers ->
+                    appendLine("=== RESPONSE HEADERS ===")
+                    appendLine(formatHeaders.invoke(headers))
+                }
+                val section = state.responseState
+                val body = if (section.isPrettyMode) {
+                    section.parsedBody ?: section.rawBody
+                } else {
+                    section.rawBody ?: section.parsedBody
+                }
+                if (body != null) {
+                    appendLine("\n=== RESPONSE BODY ===")
+                    appendLine(body)
+                }
+            }
+        }
+        val labelResId = if (isRequest) {
+            R.string.viewer_clipboard_request_content
+        } else {
+            R.string.viewer_clipboard_response_content
+        }
+        emitEffect(
+            TransactionDetailViewEffect.Clipboard.CopyText(labelResId = labelResId, content = content),
+        )
+    }
+
+    private fun handleCopyAsText() {
+        updateState { copy(showMenu = false) }
+        val transaction = uiState.value.transaction ?: return
+
+        viewModelScope.launch {
+            val (requestBody, responseBody) = withContext(Dispatchers.IO) {
+                val reqBody = transaction.request.bodyRef?.let { queryEngine.getBody(it) }
+                val resBody = transaction.response?.bodyRef?.let { queryEngine.getBody(it) }
+                reqBody to resBody
+            }
+            val summary = generateTextSummary(transaction, formatHeaders, requestBody, responseBody)
+            emitEffect(
+                TransactionDetailViewEffect.Clipboard.CopyText(
+                    labelResId = R.string.viewer_clipboard_transaction,
+                    content = summary,
+                ),
+            )
+        }
+    }
+
+    private fun handleCopyAsCurl() {
+        updateState { copy(showMenu = false) }
+        val transaction = uiState.value.transaction ?: return
+
+        viewModelScope.launch {
+            val body = withContext(Dispatchers.IO) {
+                transaction.request.bodyRef?.let { queryEngine.getBody(it) }
+            }
+            val curl = CurlGenerator.generate(
+                method = transaction.request.method,
+                url = transaction.request.url,
+                headers = transaction.request.headers,
+                body = body,
+            )
+            emitEffect(
+                TransactionDetailViewEffect.Clipboard.CopyText(
+                    labelResId = R.string.viewer_clipboard_curl,
+                    content = curl,
+                ),
+            )
+        }
+    }
+
+    private fun handleExport(format: ExportFormat) {
+        updateState { copy(showMenu = false) }
+        val transaction = uiState.value.transaction ?: return
+        emitEffect(TransactionDetailViewEffect.Save.ExportTransactions(listOf(transaction), format))
+    }
+
+    private fun handleDownloadImage() {
+        val state = uiState.value
+        val bytes = state.responseState.rawBodyBytes ?: return
+        val format = state.responseState.imageMetadata?.format ?: "Unknown"
+        emitEffect(TransactionDetailViewEffect.Save.ImageToGallery(BinaryPayload(bytes = bytes, format = format)))
+    }
+
+    private fun handleShareImage() {
+        val state = uiState.value
+        val bytes = state.responseState.rawBodyBytes ?: return
+        val format = state.responseState.imageMetadata?.format ?: "Unknown"
+        emitEffect(TransactionDetailViewEffect.Share.Image(BinaryPayload(bytes = bytes, format = format)))
+    }
+
+    private fun handleDownloadPdf() {
+        val state = uiState.value
+        val bytes = state.responseState.rawBodyBytes ?: return
+        emitEffect(TransactionDetailViewEffect.Save.PdfToDownloads(bytes = bytes))
+    }
+
+    companion object {
+        private const val TAB_REQUEST = 1
+        private const val TAB_RESPONSE = 2
+    }
+}

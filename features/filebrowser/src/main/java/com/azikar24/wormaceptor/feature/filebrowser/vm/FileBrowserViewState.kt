@@ -15,6 +15,7 @@ import kotlinx.collections.immutable.persistentListOf
  * @property searchQuery Current text used to filter files by name.
  * @property sortMode Active sort order for the file listing.
  * @property isLoading Whether a directory listing or file read is in progress.
+ * @property isFilesLoading Whether the initial file listing is still pending its first emission.
  * @property error Error message to display, or null if none.
  * @property selectedFile Path of the file currently open in the viewer, or null if none.
  * @property fileContent Parsed content of the selected file, or null if not loaded.
@@ -27,6 +28,7 @@ data class FileBrowserViewState(
     val searchQuery: String = "",
     val sortMode: SortMode = SortMode.NAME,
     val isLoading: Boolean = false,
+    val isFilesLoading: Boolean = true,
     val error: String? = null,
     val selectedFile: String? = null,
     val fileContent: FileContent? = null,

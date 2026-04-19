@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.Icon
@@ -27,10 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.location.R
-import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import org.osmdroid.util.GeoPoint
 
 /**
@@ -57,20 +54,20 @@ fun LocationMapCard(
         // Legend row
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.lg),
+            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             LegendItem(
-                color = LocationColors.builtIn,
+                color = WormaCeptorTokens.Colors.Location.builtInPreset,
                 label = stringResource(R.string.location_real_location),
             )
             LegendItem(
-                color = LocationColors.enabled,
+                color = WormaCeptorTokens.Colors.Location.enabled,
                 label = stringResource(R.string.location_mock_location),
             )
         }
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
         // Map view
         LocationMapView(
@@ -80,10 +77,10 @@ fun LocationMapCard(
             onMapTap = onMapTap,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp),
+                .height(WormaCeptorTokens.ComponentSize.chartHeight),
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
 
         // Footer with tap hint and distance
         Row(
@@ -94,18 +91,18 @@ fun LocationMapCard(
             // Tap hint
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
             ) {
                 Icon(
                     imageVector = Icons.Default.TouchApp,
                     contentDescription = null,
-                    modifier = Modifier.size(14.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
                 Text(
                     text = stringResource(R.string.location_tap_to_set),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 
@@ -118,17 +115,17 @@ fun LocationMapCard(
                 if (realLocation != null && mockLocation != null) {
                     val distance = calculateDistance(realLocation, mockLocation)
                     Surface(
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        shape = WormaCeptorTokens.Shapes.chip,
+                        color = WormaCeptorTokens.semantic().surfaceVariant,
                     ) {
                         Text(
                             text = stringResource(R.string.location_distance, formatDistance(distance)),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            color = WormaCeptorTokens.semantic().accent,
                             modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.sm,
-                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
+                                horizontal = WormaCeptorTokens.Spacing.sm,
+                                vertical = WormaCeptorTokens.Spacing.xxs,
                             ),
                         )
                     }
@@ -147,18 +144,18 @@ private fun LegendItem(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
     ) {
         Box(
             modifier = Modifier
-                .size(10.dp)
+                .size(WormaCeptorTokens.IconSize.xxs)
                 .clip(CircleShape)
                 .background(color),
         )
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }

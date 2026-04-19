@@ -9,97 +9,110 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem.ThemeColors
+import com.azikar24.wormaceptor.core.ui.theme.tokens.LocalWormaCeptorDensity
+import com.azikar24.wormaceptor.core.ui.theme.tokens.Palette
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenDensity
 
 private val LightColorScheme = lightColorScheme(
-    primary = ThemeColors.AccentLight,
-    onPrimary = ThemeColors.LightBackground,
-    primaryContainer = ThemeColors.AccentSubtleLight,
-    onPrimaryContainer = ThemeColors.AccentLight,
-    secondary = ThemeColors.AccentLight,
-    onSecondary = ThemeColors.LightBackground,
-    secondaryContainer = ThemeColors.AccentSubtleLight,
-    onSecondaryContainer = ThemeColors.AccentLight,
-    tertiary = ThemeColors.AccentLight,
-    onTertiary = ThemeColors.LightBackground,
-    tertiaryContainer = ThemeColors.AccentSubtleLight,
-    onTertiaryContainer = ThemeColors.AccentLight,
-    error = ThemeColors.Error,
-    errorContainer = ThemeColors.Error.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-    onError = ThemeColors.LightBackground,
-    onErrorContainer = ThemeColors.Error,
-    background = ThemeColors.LightBackground,
-    onBackground = ThemeColors.LightTextPrimary,
-    surface = ThemeColors.LightSurface,
-    onSurface = ThemeColors.LightTextPrimary,
-    surfaceVariant = ThemeColors.LightSurface,
-    onSurfaceVariant = ThemeColors.LightTextSecondary,
-    outline = ThemeColors.LightTextTertiary,
-    inverseOnSurface = ThemeColors.LightSurface,
-    inverseSurface = ThemeColors.DarkSurface,
-    inversePrimary = ThemeColors.AccentDark,
-    surfaceTint = ThemeColors.AccentLight,
-    outlineVariant = ThemeColors.LightTextTertiary,
-    scrim = Color(0xFF000000),
-    surfaceDim = ThemeColors.LightSurfaceVariant,
-    surfaceBright = ThemeColors.LightBackground,
-    surfaceContainerLowest = ThemeColors.LightBackground,
-    surfaceContainerLow = ThemeColors.LightSurface,
-    surfaceContainer = ThemeColors.LightSurface,
-    surfaceContainerHigh = ThemeColors.LightSurfaceVariant,
-    surfaceContainerHighest = ThemeColors.LightSurfaceVariant,
+    primary = Palette.Teal600,
+    onPrimary = Palette.White,
+    primaryContainer = Palette.AccentSubtleLight,
+    onPrimaryContainer = Palette.Teal600,
+    secondary = Palette.Teal600,
+    onSecondary = Palette.White,
+    secondaryContainer = Palette.AccentSubtleLight,
+    onSecondaryContainer = Palette.Teal600,
+    tertiary = Palette.Teal600,
+    onTertiary = Palette.White,
+    tertiaryContainer = Palette.AccentSubtleLight,
+    onTertiaryContainer = Palette.Teal600,
+    error = Palette.Red600,
+    errorContainer = Palette.Red600.copy(alpha = TokenAlpha.LIGHT),
+    onError = Palette.White,
+    onErrorContainer = Palette.Red600,
+    background = Palette.White,
+    onBackground = Palette.Gray990,
+    surface = Palette.Gray50,
+    onSurface = Palette.Gray990,
+    surfaceVariant = Palette.Gray50,
+    onSurfaceVariant = Palette.Gray650,
+    outline = Palette.Gray400,
+    inverseOnSurface = Palette.Gray50,
+    inverseSurface = Palette.Gray975,
+    inversePrimary = Palette.TealBright,
+    surfaceTint = Palette.Teal600,
+    outlineVariant = Palette.Gray400,
+    scrim = Palette.Black,
+    surfaceDim = Palette.Gray150,
+    surfaceBright = Palette.White,
+    surfaceContainerLowest = Palette.White,
+    surfaceContainerLow = Palette.Gray50,
+    surfaceContainer = Palette.Gray50,
+    surfaceContainerHigh = Palette.Gray150,
+    surfaceContainerHighest = Palette.Gray150,
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = ThemeColors.AccentDark,
-    onPrimary = ThemeColors.DarkBackground,
-    primaryContainer = ThemeColors.AccentSubtleDark,
-    onPrimaryContainer = ThemeColors.AccentDark,
-    secondary = ThemeColors.AccentDark,
-    onSecondary = ThemeColors.DarkBackground,
-    secondaryContainer = ThemeColors.AccentSubtleDark,
-    onSecondaryContainer = ThemeColors.AccentDark,
-    tertiary = ThemeColors.AccentDark,
-    onTertiary = ThemeColors.DarkBackground,
-    tertiaryContainer = ThemeColors.AccentSubtleDark,
-    onTertiaryContainer = ThemeColors.AccentDark,
-    error = ThemeColors.ErrorDark,
-    errorContainer = ThemeColors.Error.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-    onError = ThemeColors.DarkBackground,
-    onErrorContainer = ThemeColors.ErrorDark,
-    background = ThemeColors.DarkBackground,
-    onBackground = ThemeColors.DarkTextPrimary,
-    surface = ThemeColors.DarkSurface,
-    onSurface = ThemeColors.DarkTextPrimary,
-    surfaceVariant = ThemeColors.DarkSurface,
-    onSurfaceVariant = ThemeColors.DarkTextSecondary,
-    outline = ThemeColors.DarkTextTertiary,
-    inverseOnSurface = ThemeColors.DarkSurface,
-    inverseSurface = ThemeColors.LightSurface,
-    inversePrimary = ThemeColors.AccentLight,
-    surfaceTint = ThemeColors.AccentDark,
-    outlineVariant = ThemeColors.DarkTextTertiary,
-    scrim = Color(0xFF000000),
-    surfaceDim = ThemeColors.DarkBackground,
-    surfaceBright = ThemeColors.DarkSurfaceVariant,
-    surfaceContainerLowest = ThemeColors.DarkBackground,
-    surfaceContainerLow = ThemeColors.DarkSurface,
-    surfaceContainer = ThemeColors.DarkSurface,
-    surfaceContainerHigh = ThemeColors.DarkSurfaceVariant,
-    surfaceContainerHighest = ThemeColors.DarkSurfaceVariant,
+    primary = Palette.TealBright,
+    onPrimary = Palette.Gray990,
+    primaryContainer = Palette.AccentSubtleDark,
+    onPrimaryContainer = Palette.TealBright,
+    secondary = Palette.TealBright,
+    onSecondary = Palette.Gray990,
+    secondaryContainer = Palette.AccentSubtleDark,
+    onSecondaryContainer = Palette.TealBright,
+    tertiary = Palette.TealBright,
+    onTertiary = Palette.Gray990,
+    tertiaryContainer = Palette.AccentSubtleDark,
+    onTertiaryContainer = Palette.TealBright,
+    error = Palette.Red800,
+    errorContainer = Palette.Red600.copy(alpha = TokenAlpha.LIGHT),
+    onError = Palette.Gray990,
+    onErrorContainer = Palette.Red800,
+    background = Palette.Gray990,
+    onBackground = Palette.Gray50,
+    surface = Palette.Gray975,
+    onSurface = Palette.Gray50,
+    surfaceVariant = Palette.Gray975,
+    onSurfaceVariant = Palette.Gray500,
+    outline = Palette.Gray800,
+    inverseOnSurface = Palette.Gray975,
+    inverseSurface = Palette.Gray50,
+    inversePrimary = Palette.Teal600,
+    surfaceTint = Palette.TealBright,
+    outlineVariant = Palette.Gray800,
+    scrim = Palette.Black,
+    surfaceDim = Palette.Gray990,
+    surfaceBright = Palette.Gray925,
+    surfaceContainerLowest = Palette.Gray990,
+    surfaceContainerLow = Palette.Gray975,
+    surfaceContainer = Palette.Gray975,
+    surfaceContainerHigh = Palette.Gray925,
+    surfaceContainerHighest = Palette.Gray925,
 )
 
-/** Applies the WormaCeptor Material 3 theme with optional dynamic color support. */
+/**
+ * Applies the WormaCeptor Material 3 theme with optional dynamic color support.
+ *
+ * @param darkTheme Whether to use the dark color scheme. Defaults to the system setting.
+ * @param dynamicColor Whether to use Material You dynamic color on Android 12+.
+ * @param density Density preference for the subtree. Components that opt in
+ *                (via `Dp.scaled()`) will scale their spacing/sizing
+ *                accordingly. Defaults to [TokenDensity.Default].
+ * @param content Themed content slot.
+ */
 @Composable
 fun WormaCeptorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
+    density: TokenDensity = TokenDensity.Default,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
@@ -120,8 +133,11 @@ fun WormaCeptorTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        content = content,
-    )
+    CompositionLocalProvider(LocalWormaCeptorDensity provides density) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = WormaCeptorTypography,
+            content = content,
+        )
+    }
 }

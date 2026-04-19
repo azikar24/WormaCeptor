@@ -1,11 +1,7 @@
-public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageFeature {
+public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/securestorage/SecureStorageFeature;
-	public final fun createViewModelFactory (Lcom/azikar24/wormaceptor/core/engine/SecureStorageEngine;)Lcom/azikar24/wormaceptor/feature/securestorage/SecureStorageViewModelFactory;
-}
-
-public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageFeatureKt {
-	public static final fun SecureStorageViewer (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+	public fun <init> ()V
+	public fun contribute (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
 }
 
 public final class com/azikar24/wormaceptor/feature/securestorage/SecureStorageViewModelFactory : androidx/lifecycle/ViewModelProvider$Factory {
@@ -18,78 +14,123 @@ public final class com/azikar24/wormaceptor/feature/securestorage/ui/ComposableS
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/securestorage/ui/ComposableSingletons$SecureStorageScreenKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$securestorage_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$securestorage_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/feature/securestorage/ui/SecureStorageScreenKt {
+	public static final fun SecureStorageScreen (Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/azikar24/wormaceptor/feature/securestorage/ui/components/ComposableSingletons$EntryCardKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/securestorage/ui/components/ComposableSingletons$EntryCardKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
 	public final fun getLambda-1$securestorage_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-2$securestorage_release ()Lkotlin/jvm/functions/Function2;
 	public final fun getLambda-3$securestorage_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$securestorage_release ()Lkotlin/jvm/functions/Function2;
 }
 
-public final class com/azikar24/wormaceptor/feature/securestorage/ui/SecureStorageScreenKt {
-	public static final fun SecureStorageScreen (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;III)V
-}
-
-public final class com/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColors {
+public abstract class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEffect {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1-0d7_KjU ()J
-	public final fun component10-0d7_KjU ()J
-	public final fun component11-0d7_KjU ()J
-	public final fun component12-0d7_KjU ()J
-	public final fun component13-0d7_KjU ()J
-	public final fun component14-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-0d7_KjU ()J
-	public final fun component7-0d7_KjU ()J
-	public final fun component8-0d7_KjU ()J
-	public final fun component9-0d7_KjU ()J
-	public final fun copy-dVHXu7A (JJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColors;
-	public static synthetic fun copy-dVHXu7A$default (Lcom/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColors;JJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColors;
+}
+
+public abstract class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent {
+	public static final field $stable I
+}
+
+public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$DismissDetail : com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$DismissDetail;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getCardBackground-0d7_KjU ()J
-	public final fun getChipBackground-0d7_KjU ()J
-	public final fun getChipBackgroundSelected-0d7_KjU ()J
-	public final fun getDatastore-0d7_KjU ()J
-	public final fun getEncrypted-0d7_KjU ()J
-	public final fun getEncryptedPrefs-0d7_KjU ()J
-	public final fun getKeystore-0d7_KjU ()J
-	public final fun getLabelPrimary-0d7_KjU ()J
-	public final fun getLabelSecondary-0d7_KjU ()J
-	public final fun getPrimary-0d7_KjU ()J
-	public final fun getSearchBackground-0d7_KjU ()J
-	public final fun getUnencrypted-0d7_KjU ()J
-	public final fun getValuePrimary-0d7_KjU ()J
-	public final fun getValueSecondary-0d7_KjU ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColorsKt {
-	public static final fun secureStorageColors (Landroidx/compose/runtime/Composer;I)Lcom/azikar24/wormaceptor/feature/securestorage/ui/theme/SecureStorageColors;
+public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$Refresh : com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$Refresh;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewModel : androidx/lifecycle/ViewModel {
+public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$SelectEntry : com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$SelectEntry;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$SelectEntry;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$SelectEntry;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEntry ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$SelectType : com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent {
+	public static final field $stable I
+	public fun <init> (Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;)V
+	public final fun component1 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public final fun copy (Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$SelectType;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$SelectType;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$SelectType;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getType ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$UpdateSearchQuery : com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$UpdateSearchQuery;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$UpdateSearchQuery;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewEvent$UpdateSearchQuery;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/SecureStorageEngine;)V
-	public final fun dismissDetail ()V
-	public final fun getEncryptedPrefsAccessible ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getError ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getFilteredEntries ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getKeystoreAccessible ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getLastRefreshTime ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSearchQuery ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedEntry ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSelectedType ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun getSummary ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun isLoading ()Lkotlinx/coroutines/flow/StateFlow;
-	public final fun refresh ()V
-	public final fun selectEntry (Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;)V
-	public final fun setSearchQuery (Ljava/lang/String;)V
-	public final fun setSelectedType (Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;)V
+	public synthetic fun handleEvent (Ljava/lang/Object;)V
+}
+
+public final class com/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;)V
+	public synthetic fun <init> (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component10 ()Z
+	public final fun component11 ()Ljava/lang/Long;
+	public final fun component2 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
+	public final fun component9 ()Z
+	public final fun copy (Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;Lkotlinx/collections/immutable/ImmutableList;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;ZZLjava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;ZZLjava/lang/Long;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/securestorage/vm/SecureStorageViewState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEncryptedPrefsAccessible ()Z
+	public final fun getError ()Ljava/lang/String;
+	public final fun getFilteredEntries ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun getKeystoreAccessible ()Z
+	public final fun getLastRefreshTime ()Ljava/lang/Long;
+	public final fun getSearchQuery ()Ljava/lang/String;
+	public final fun getSelectedEntry ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry;
+	public final fun getSelectedType ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageEntry$StorageType;
+	public final fun getSummary ()Lcom/azikar24/wormaceptor/domain/entities/SecureStorageSummary;
+	public fun hashCode ()I
+	public final fun isEntriesLoading ()Z
+	public final fun isLoading ()Z
+	public fun toString ()Ljava/lang/String;
 }
 

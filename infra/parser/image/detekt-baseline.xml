@@ -18,5 +18,12 @@
     <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x52</ID>
     <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$0x57</ID>
     <ID>MagicNumber:MagicByteDetector.kt$MagicByteDetector$4</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$BMP : ImageFormat</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$GIF : ImageFormat</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$ICO : ImageFormat</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$JPEG : ImageFormat</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$PNG : ImageFormat</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$SVG : ImageFormat</ID>
+    <ID>UndocumentedPublicProperty:ImageFormat.kt$ImageFormat$WEBP : ImageFormat</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -1,0 +1,193 @@
+package com.azikar24.wormaceptor.feature.leakdetection.ui.components
+
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.detail.DetailItem
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailHeader
+import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailSection
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.util.formatBytes
+import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
+import com.azikar24.wormaceptor.domain.entities.LeakInfo
+import com.azikar24.wormaceptor.feature.leakdetection.R
+
+@Composable
+internal fun LeakDetailContent(
+    leak: LeakInfo,
+    modifier: Modifier = Modifier,
+) {
+    val color = severityColor(leak.severity)
+    val background = color.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
+
+    LazyColumn(
+        modifier = modifier.fillMaxWidth().padding(bottom = WormaCeptorTokens.Spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
+    ) {
+        item {
+            WormaCeptorDetailHeader(
+                icon = Icons.Default.Memory,
+                iconTint = color,
+                iconBackgroundColor = background,
+                title = leak.objectClass.substringAfterLast('.'),
+                iconContentDescription = stringResource(
+                    R.string.leakdetection_leak_icon_desc,
+                    leak.severity.name,
+                    leak.objectClass.substringAfterLast('.'),
+                ),
+                subtitle = {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Surface(
+                            shape = WormaCeptorTokens.Shapes.chip,
+                            color = background,
+                        ) {
+                            Text(
+                                text = leak.severity.name,
+                                modifier = Modifier.padding(
+                                    horizontal = WormaCeptorTokens.Spacing.sm,
+                                    vertical = WormaCeptorTokens.Spacing.xxs,
+                                ),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = color,
+                            )
+                        }
+                        Text(
+                            text = formatBytes(leak.retainedSize),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = FontFamily.Monospace,
+                            color = color,
+                        )
+                    }
+                },
+            )
+        }
+
+        item {
+            WormaCeptorDetailSection(
+                title = stringResource(R.string.leakdetection_section_details),
+                items = listOf(
+                    DetailItem(stringResource(R.string.leakdetection_detail_class), leak.objectClass),
+                    DetailItem(stringResource(R.string.leakdetection_detail_description), leak.leakDescription),
+                    DetailItem(
+                        stringResource(R.string.leakdetection_detail_retained_size),
+                        formatBytes(leak.retainedSize),
+                    ),
+                    DetailItem(
+                        stringResource(R.string.leakdetection_detail_detected),
+                        formatTimestampFull(leak.timestamp),
+                    ),
+                ),
+            )
+        }
+
+        if (leak.referencePath.isNotEmpty()) {
+            item {
+                ReferencePathSection(referencePath = leak.referencePath)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReferencePathSection(referencePath: List<String>) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+    ) {
+        Text(
+            text = stringResource(R.string.leakdetection_section_reference_path),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = WormaCeptorTokens.semantic().textSecondary,
+            modifier = Modifier.semantics { heading() },
+        )
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = WormaCeptorTokens.Shapes.card,
+            color = WormaCeptorTokens.semantic().surfaceVariant,
+        ) {
+            Column(
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
+                verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
+            ) {
+                referencePath.forEach { step ->
+                    Text(
+                        text = step,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = FontFamily.Monospace,
+                        color = WormaCeptorTokens.semantic().textPrimary.copy(
+                            alpha = WormaCeptorTokens.Alpha.PROMINENT,
+                        ),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Suppress("UnusedPrivateMember", "MagicNumber")
+@Preview(name = "LeakDetail - Light")
+@Composable
+private fun LeakDetailContentPreview() {
+    WormaCeptorTheme {
+        Surface {
+            LeakDetailContent(
+                leak = LeakInfo(
+                    timestamp = System.currentTimeMillis(),
+                    objectClass = "com.example.app.ui.HomeActivity",
+                    leakDescription = "Activity retained after onDestroy",
+                    retainedSize = 2 * 1_048_576L,
+                    referencePath = listOf(
+                        "GC Root -> static field",
+                        "AppManager.instance -> activity",
+                    ),
+                    severity = LeakInfo.LeakSeverity.CRITICAL,
+                ),
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
+            )
+        }
+    }
+}
+
+@Suppress("UnusedPrivateMember", "MagicNumber")
+@Preview(name = "LeakDetail - Dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun LeakDetailContentDarkPreview() {
+    WormaCeptorTheme(darkTheme = true) {
+        Surface {
+            LeakDetailContent(
+                leak = LeakInfo(
+                    timestamp = System.currentTimeMillis(),
+                    objectClass = "com.example.app.data.CacheManager",
+                    leakDescription = "Cache not cleared on low memory",
+                    retainedSize = 512 * 1024L,
+                    referencePath = emptyList(),
+                    severity = LeakInfo.LeakSeverity.HIGH,
+                ),
+                modifier = Modifier.padding(WormaCeptorTokens.Spacing.md),
+            )
+        }
+    }
+}

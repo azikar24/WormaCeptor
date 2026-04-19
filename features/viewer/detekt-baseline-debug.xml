@@ -1,0 +1,327 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:GridFilterCard.kt$@Composable internal fun GridFilterCard( label: String, count: Int, color: Color, isSelected: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, sublabel: String? = null, )</ID>
+    <ID>CyclomaticComplexMethod:HarExporter.kt$HarExporter$private fun buildHarResponse( tx: NetworkTransaction, body: String?, httpVersion: String, ): HarResponse</ID>
+    <ID>CyclomaticComplexMethod:MetricsCard.kt$@Composable fun MetricsCard( transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier, )</ID>
+    <ID>CyclomaticComplexMethod:MultipartView.kt$@Composable private fun MultipartPartCard( part: MultipartPart, index: Int, initiallyExpanded: Boolean, )</ID>
+    <ID>CyclomaticComplexMethod:PerformanceOverlayToggle.kt$@Composable internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
+    <ID>CyclomaticComplexMethod:XmlTreeView.kt$private fun highlightXmlLine( line: String, colors: ComposeSyntaxColors, )</ID>
+    <ID>Deprecation:HomeTopBar.kt$TabRow</ID>
+    <ID>Deprecation:TransactionDetailHeader.kt$TabRow</ID>
+    <ID>InjectDispatcher:CommonUtils.kt$IO</ID>
+    <ID>InjectDispatcher:CrashExport.kt$IO</ID>
+    <ID>InjectDispatcher:CrashListViewModel.kt$CrashListViewModel$Default</ID>
+    <ID>InjectDispatcher:ExportManager.kt$ExportManager$IO</ID>
+    <ID>InjectDispatcher:HomeViewModel.kt$HomeViewModel$IO</ID>
+    <ID>InjectDispatcher:ImagePreviewCard.kt$Default</ID>
+    <ID>InjectDispatcher:PdfPreviewCard.kt$IO</ID>
+    <ID>InjectDispatcher:PdfViewerViewModel.kt$PdfViewerViewModel$IO</ID>
+    <ID>InjectDispatcher:TransactionDetailViewModel.kt$TransactionDetailViewModel$Default</ID>
+    <ID>InjectDispatcher:TransactionDetailViewModel.kt$TransactionDetailViewModel$IO</ID>
+    <ID>InjectDispatcher:TransactionListViewModel.kt$TransactionListViewModel$Default</ID>
+    <ID>InjectDispatcher:TransactionPagerViewModel.kt$TransactionPagerViewModel$IO</ID>
+    <ID>InjectDispatcher:TransactionRequestSection.kt$Default</ID>
+    <ID>InjectDispatcher:TransactionResponseSection.kt$Default</ID>
+    <ID>KDocReferencesNonPublicProperty:TransactionListViewModel.kt$TransactionListViewModel$/** Filtered and search-aware transaction list with quick-filter support. Syncs into [TransactionListViewState]. */ private val transactions: StateFlow&lt;ImmutableList&lt;TransactionSummary&gt;&gt; = combine( uiState.map { it.searchQuery }.debounce(SearchDebounce.DEFAULT), uiState.map { it.filterMethods }, uiState.map { it.filterStatusRanges }, uiState.map { it.quickFilters }, allTransactions, ) { query, methods, statusRanges, quickFilters, list -&gt; list.filter { transaction -&gt; val matchesSearch = if (query.isBlank()) { true } else { transaction.host.contains(query, ignoreCase = true) || transaction.path.contains(query, ignoreCase = true) || transaction.method.contains(query, ignoreCase = true) || transaction.status.name.contains(query, ignoreCase = true) } val matchesMethod = methods.isEmpty() || methods.any { transaction.method.equals(it, ignoreCase = true) } val matchesStatus = statusRanges.isEmpty() || transaction.code?.let { code -&gt; statusRanges.any { code in it } } ?: false matchesSearch &amp;&amp; matchesMethod &amp;&amp; matchesStatus }.applyQuickFilters(quickFilters).toImmutableList() }.onEach { updateState { copy(transactions = it) } } .flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.Eagerly, persistentListOf())</ID>
+    <ID>KDocReferencesNonPublicProperty:TransactionListViewModel.kt$TransactionListViewModel$/** Unfiltered stream of every recorded transaction summary. Syncs into [TransactionListViewState]. */ private val allTransactions: StateFlow&lt;ImmutableList&lt;TransactionSummary&gt;&gt; = queryEngine.observeTransactions() .map { it.toImmutableList() } .onEach { updateState { copy(isInitialLoading = false, allTransactions = it) } } .flowOn(Dispatchers.Default) .stateIn(viewModelScope, SharingStarted.Eagerly, persistentListOf())</ID>
+    <ID>LambdaParameterInRestartableEffect:HomeTopBar.kt$onHomeEvent</ID>
+    <ID>LambdaParameterInRestartableEffect:PdfViewerScreen.kt$onEvent</ID>
+    <ID>LambdaParameterInRestartableEffect:TransactionDetailScreen.kt$onEvent</ID>
+    <ID>LongMethod:BulkActionBar.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun BulkActionBar( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onExportAsHar: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ContentTypeChip.kt$@Composable fun getContentTypeChipInfo(contentType: ContentType): ContentTypeChipInfo</ID>
+    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun ExceptionInfoCard( crash: Crash, dateFormat: SimpleDateFormat, )</ID>
+    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackFrameItem( frame: CrashUtils.StackFrame, isHighlighted: Boolean, )</ID>
+    <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackTraceSection( stackFrames: List&lt;CrashUtils.StackFrame&gt;, fullStackTrace: String, context: Context, )</ID>
+    <ID>LongMethod:CrashListScreen.kt$@Composable fun CrashItem( crash: Crash, onClick: () -&gt; Unit, )</ID>
+    <ID>LongMethod:CrashListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashListScreen( crashes: ImmutableList&lt;Crash&gt;, onCrashClick: (Crash) -&gt; Unit, modifier: Modifier = Modifier, isInitialLoading: Boolean = false, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, )</ID>
+    <ID>LongMethod:FilterBottomSheetContent.kt$@Composable fun FilterBottomSheetContent( state: TransactionListViewState, onEvent: (TransactionListViewEvent) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:FilterHeader.kt$@Composable internal fun FilterHeader( filteredCount: Int, totalCount: Int, filtersActive: Boolean, )</ID>
+    <ID>LongMethod:FormDataView.kt$@Composable fun FormDataView( formData: String, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:FullscreenBottomControlBar.kt$@Composable internal fun FullscreenBottomControlBar( metadata: ImageMetadata?, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
+    <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun FullscreenImageContent( imageData: ByteArray, metadata: ImageMetadata?, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
+    <ID>LongMethod:FullscreenImageViewer.kt$@Composable private fun ZoomableImageBox( imageData: ByteArray, scale: Float, offset: Offset, swipeOffset: Float, isZoomed: Boolean, isLoading: Boolean, gifImageLoader: coil.ImageLoader, onScaleChange: (Float) -&gt; Unit, onOffsetChange: (Offset) -&gt; Unit, onSwipeOffsetChange: (Float) -&gt; Unit, onBounceBack: () -&gt; Unit, onDismiss: () -&gt; Unit, onSwipeReset: () -&gt; Unit, onLoadingChanged: (Boolean) -&gt; Unit, )</ID>
+    <ID>LongMethod:FullscreenTopControlBar.kt$@Composable internal fun FullscreenTopControlBar( onClose: () -&gt; Unit, onZoomIn: () -&gt; Unit, onZoomOut: () -&gt; Unit, currentZoom: Float, )</ID>
+    <ID>LongMethod:GridFilterCard.kt$@Composable internal fun GridFilterCard( label: String, count: Int, color: Color, isSelected: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, sublabel: String? = null, )</ID>
+    <ID>LongMethod:HomeDialogs.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun HomeDialogs( transactionState: TransactionListViewState, crashState: CrashListViewState, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, )</ID>
+    <ID>LongMethod:HomeScreen.kt$@Composable private fun ActiveFiltersBanner( transactionState: TransactionListViewState, currentPage: Int, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, )</ID>
+    <ID>LongMethod:HomeScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun HomeScreen( homeState: HomeViewState, transactionState: TransactionListViewState, crashState: CrashListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, snackBarMessage: Flow&lt;String&gt;? = null, )</ID>
+    <ID>LongMethod:HomeTopBar.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun HomeTopBar( homeState: HomeViewState, transactionState: TransactionListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, pagerState: PagerState, titles: List&lt;String&gt;, )</ID>
+    <ID>LongMethod:ImagePreviewCard.kt$@Composable fun ImagePreviewCard( imageData: ByteArray, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:JsonTreeView.kt$@Composable private fun JsonArrayNode( array: JSONArray, depth: Int, maxDepth: Int, initiallyExpanded: Boolean, colors: ComposeSyntaxColors, keyName: String? = null, )</ID>
+    <ID>LongMethod:JsonTreeView.kt$@Composable private fun JsonObjectNode( obj: JSONObject, depth: Int, maxDepth: Int, initiallyExpanded: Boolean, colors: ComposeSyntaxColors, keyName: String? = null, )</ID>
+    <ID>LongMethod:MetricsCard.kt$@Composable fun MetricsCard( transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MultipartView.kt$@Composable fun MultipartView( multipartData: String, modifier: Modifier = Modifier, boundary: String? = null, )</ID>
+    <ID>LongMethod:MultipartView.kt$@Composable private fun MultipartPartCard( part: MultipartPart, index: Int, initiallyExpanded: Boolean, )</ID>
+    <ID>LongMethod:PdfPreviewCard.kt$@Composable fun PdfPreviewCard( pdfData: ByteArray, contentType: String?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, modifier: Modifier = Modifier, onShowMessage: (String) -&gt; Unit = {}, )</ID>
+    <ID>LongMethod:PdfPreviewStateContent.kt$@Composable internal fun PdfPreviewPasswordContent( metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
+    <ID>LongMethod:PdfPreviewSuccess.kt$@Composable internal fun PdfPreviewSuccessContent( thumbnail: Bitmap, metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
+    <ID>LongMethod:PerformanceOverlayToggle.kt$@Composable internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:ProtobufView.kt$@Composable fun ProtobufView( data: ByteArray, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ProtobufView.kt$@Composable private fun ProtobufFieldCard( field: ProtobufField, initiallyExpanded: Boolean, )</ID>
+    <ID>LongMethod:SelectableTransactionItem.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun SelectableTransactionItem( transaction: TransactionSummary, isSelected: Boolean, isSelectionMode: Boolean, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:SwipeBackContainer.kt$@Composable fun SwipeBackContainer( onBack: () -&gt; Unit, enabled: Boolean = true, edgeWidth: Float = 48f, thresholdFraction: Float = 0.35f, content: @Composable BoxScope.() -&gt; Unit, )</ID>
+    <ID>LongMethod:TransactionContextMenu.kt$@Composable fun TransactionContextMenu( expanded: Boolean, onDismiss: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, offset: DpOffset = DpOffset(0.dp, 0.dp), )</ID>
+    <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun TransactionDetailScaffold( transaction: NetworkTransaction, state: TransactionDetailViewState, snackBarHostState: SnackbarHostState, onEvent: (TransactionDetailViewEvent) -&gt; Unit, onBack: () -&gt; Unit, onNavigatePrev: () -&gt; Unit, onNavigateNext: () -&gt; Unit, canNavigatePrev: Boolean, canNavigateNext: Boolean, )</ID>
+    <ID>LongMethod:TransactionDetailViewModel.kt$TransactionDetailViewModel$private fun loadResponseBody(transaction: NetworkTransaction)</ID>
+    <ID>LongMethod:TransactionHeadersView.kt$@Composable internal fun CollapsibleSection( title: String, isExpanded: Boolean, onToggle: () -&gt; Unit, onCopy: (() -&gt; Unit)? = null, isCopyLoading: Boolean = false, trailingContent: @Composable (() -&gt; Unit)? = null, content: @Composable () -&gt; Unit, )</ID>
+    <ID>LongMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, selectionState: TransactionSelectionState = TransactionSelectionState(), itemActions: TransactionItemActions = TransactionItemActions(), isInitialLoading: Boolean = false, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, header: (@Composable () -&gt; Unit)? = null, )</ID>
+    <ID>LongMethod:TransactionOverviewSection.kt$@Composable internal fun OverviewTab( transaction: NetworkTransaction, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:TransactionOverviewSection.kt$@Composable private fun TransactionTimeline( durationMs: Long, hasResponse: Boolean, )</ID>
+    <ID>LongMethod:ViewerActivity.kt$ViewerActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
+    <ID>LongMethod:XmlTreeView.kt$private fun highlightXmlLine( line: String, colors: ComposeSyntaxColors, )</ID>
+    <ID>LongParameterList:BulkActionBar.kt$( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onExportAsHar: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:FilterBottomSheetContent.kt$( state: TransactionListViewState, onEvent: (TransactionListViewEvent) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:FullscreenImageViewer.kt$( imageData: ByteArray, scale: Float, offset: Offset, swipeOffset: Float, isZoomed: Boolean, isLoading: Boolean, gifImageLoader: coil.ImageLoader, onScaleChange: (Float) -&gt; Unit, onOffsetChange: (Offset) -&gt; Unit, onSwipeOffsetChange: (Float) -&gt; Unit, onBounceBack: () -&gt; Unit, onDismiss: () -&gt; Unit, onSwipeReset: () -&gt; Unit, onLoadingChanged: (Boolean) -&gt; Unit, )</ID>
+    <ID>LongParameterList:HomeScreen.kt$( homeState: HomeViewState, transactionState: TransactionListViewState, crashState: CrashListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, snackBarMessage: Flow&lt;String&gt;? = null, )</ID>
+    <ID>LongParameterList:HomeScreenEffects.kt$( pagerState: PagerState, homeState: HomeViewState, transactionState: TransactionListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, snackBarMessage: Flow&lt;String&gt;?, snackBarHostState: SnackbarHostState, )</ID>
+    <ID>LongParameterList:HomeTopBar.kt$( homeState: HomeViewState, transactionState: TransactionListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, pagerState: PagerState, titles: List&lt;String&gt;, )</ID>
+    <ID>LongParameterList:PdfPreviewSuccess.kt$( thumbnail: Bitmap, metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
+    <ID>LongParameterList:SelectableTransactionItem.kt$( transaction: TransactionSummary, isSelected: Boolean, isSelectionMode: Boolean, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:ToolCategorySection.kt$( categoryName: String, categoryColor: Color, categoryIcon: ImageVector, tools: List&lt;ToolItem&gt;, isCollapsed: Boolean, onToggleCollapse: () -&gt; Unit, onToolClick: (String) -&gt; Unit, onToolLongClick: (ToolItem) -&gt; Unit, favorites: Set&lt;Feature&gt;, modifier: Modifier = Modifier, headerContent: (@Composable () -&gt; Unit)? = null, )</ID>
+    <ID>LongParameterList:TransactionContextMenu.kt$( expanded: Boolean, onDismiss: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, offset: DpOffset = DpOffset(0.dp, 0.dp), )</ID>
+    <ID>LongParameterList:TransactionDetailHeader.kt$( title: String, showSearch: Boolean, showMenu: Boolean, currentTabHasContent: Boolean, tabs: List&lt;String&gt;, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, onEvent: (TransactionDetailViewEvent) -&gt; Unit, onBack: () -&gt; Unit, onNavigatePrev: () -&gt; Unit, onNavigateNext: () -&gt; Unit, canNavigatePrev: Boolean, canNavigateNext: Boolean, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:TransactionDetailScreen.kt$( transaction: NetworkTransaction, state: TransactionDetailViewState, snackBarHostState: SnackbarHostState, onEvent: (TransactionDetailViewEvent) -&gt; Unit, onBack: () -&gt; Unit, onNavigatePrev: () -&gt; Unit, onNavigateNext: () -&gt; Unit, canNavigatePrev: Boolean, canNavigateNext: Boolean, )</ID>
+    <ID>LongParameterList:TransactionRequestSection.kt$( transaction: NetworkTransaction, requestState: BodySectionState, searchQuery: String, currentMatchIndex: Int, isSearchActive: Boolean, onEvent: (TransactionDetailViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:TransactionResponseSection.kt$( transaction: NetworkTransaction, responseState: BodySectionState, searchQuery: String, currentMatchIndex: Int, isSearchActive: Boolean, onEvent: (TransactionDetailViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LoopWithTooManyJumpStatements:XmlTreeView.kt$while</ID>
+    <ID>MagicNumber:CommonUtils.kt$200</ID>
+    <ID>MagicNumber:CommonUtils.kt$299</ID>
+    <ID>MagicNumber:CommonUtils.kt$300</ID>
+    <ID>MagicNumber:CommonUtils.kt$399</ID>
+    <ID>MagicNumber:CommonUtils.kt$400</ID>
+    <ID>MagicNumber:CommonUtils.kt$499</ID>
+    <ID>MagicNumber:CommonUtils.kt$500</ID>
+    <ID>MagicNumber:CommonUtils.kt$599</ID>
+    <ID>MagicNumber:CrashDetailScreen.kt$100</ID>
+    <ID>MagicNumber:CrashListUtils.kt$7</ID>
+    <ID>MagicNumber:CrashUtils.kt$CrashUtils$3</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$10</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$15</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$200</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$25</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$299</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$3</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$30</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$300</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$399</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$400</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$499</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$5</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$50</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$500</ID>
+    <ID>MagicNumber:FilterBottomSheetContent.kt$599</ID>
+    <ID>MagicNumber:FormDataView.kt$0.4f</ID>
+    <ID>MagicNumber:FormDataView.kt$0.6f</ID>
+    <ID>MagicNumber:FullscreenImageViewer.kt$0.5f</ID>
+    <ID>MagicNumber:HomeDialogs.kt$200</ID>
+    <ID>MagicNumber:HomeDialogs.kt$299</ID>
+    <ID>MagicNumber:HomeDialogs.kt$300</ID>
+    <ID>MagicNumber:HomeDialogs.kt$399</ID>
+    <ID>MagicNumber:HomeDialogs.kt$400</ID>
+    <ID>MagicNumber:HomeDialogs.kt$499</ID>
+    <ID>MagicNumber:HomeDialogs.kt$500</ID>
+    <ID>MagicNumber:HomeDialogs.kt$599</ID>
+    <ID>MagicNumber:HomeScreen.kt$200</ID>
+    <ID>MagicNumber:HomeScreen.kt$299</ID>
+    <ID>MagicNumber:HomeScreen.kt$300</ID>
+    <ID>MagicNumber:HomeScreen.kt$399</ID>
+    <ID>MagicNumber:HomeScreen.kt$400</ID>
+    <ID>MagicNumber:HomeScreen.kt$499</ID>
+    <ID>MagicNumber:HomeScreen.kt$500</ID>
+    <ID>MagicNumber:HomeScreen.kt$599</ID>
+    <ID>MagicNumber:ImagePreviewCard.kt$0.5f</ID>
+    <ID>MagicNumber:ImagePreviewCard.kt$16f</ID>
+    <ID>MagicNumber:ImagePreviewCard.kt$2.5f</ID>
+    <ID>MagicNumber:ImagePreviewCard.kt$28</ID>
+    <ID>MagicNumber:ImagePreviewCard.kt$4</ID>
+    <ID>MagicNumber:ImagePreviewCard.kt$9f</ID>
+    <ID>MagicNumber:JsonTreeView.kt$14</ID>
+    <ID>MagicNumber:JsonTreeView.kt$16</ID>
+    <ID>MagicNumber:MetricsCard.kt$100</ID>
+    <ID>MagicNumber:MetricsCard.kt$200</ID>
+    <ID>MagicNumber:MetricsCard.kt$299</ID>
+    <ID>MagicNumber:MetricsCard.kt$300</ID>
+    <ID>MagicNumber:MetricsCard.kt$399</ID>
+    <ID>MagicNumber:MetricsCard.kt$400</ID>
+    <ID>MagicNumber:MetricsCard.kt$499</ID>
+    <ID>MagicNumber:MetricsCard.kt$500</ID>
+    <ID>MagicNumber:MetricsCard.kt$599</ID>
+    <ID>MagicNumber:MultipartView.kt$1000</ID>
+    <ID>MagicNumber:MultipartView.kt$20</ID>
+    <ID>MagicNumber:PdfPreviewDefaults.kt$PdfPreviewDefaults$0.75f</ID>
+    <ID>MagicNumber:PdfThumbnailStrip.kt$200</ID>
+    <ID>MagicNumber:PdfThumbnailStrip.kt$280</ID>
+    <ID>MagicNumber:PdfThumbnailStrip.kt$5</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x07</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x08</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x12</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x65</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x67</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x69</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x6E</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x73</ID>
+    <ID>MagicNumber:ProtobufView.kt$0x74</ID>
+    <ID>MagicNumber:QuickFilter.kt$QuickFilter$1000</ID>
+    <ID>MagicNumber:QuickFilter.kt$QuickFilter$400</ID>
+    <ID>MagicNumber:QuickFilter.kt$QuickFilter$599</ID>
+    <ID>MagicNumber:StatusFilterBars.kt$200</ID>
+    <ID>MagicNumber:StatusFilterBars.kt$299</ID>
+    <ID>MagicNumber:StatusFilterBars.kt$300</ID>
+    <ID>MagicNumber:StatusFilterBars.kt$399</ID>
+    <ID>MagicNumber:StatusFilterBars.kt$400</ID>
+    <ID>MagicNumber:StatusFilterBars.kt$499</ID>
+    <ID>MagicNumber:StatusFilterBars.kt$500</ID>
+    <ID>MagicNumber:StatusFilterBars.kt$599</ID>
+    <ID>MagicNumber:SwipeBackContainer.kt$16f</ID>
+    <ID>MagicNumber:TransactionBodyViewer.kt$64</ID>
+    <ID>MagicNumber:TransactionOverviewSection.kt$0.3f</ID>
+    <ID>MagicNumber:TransactionOverviewSection.kt$0.4f</ID>
+    <ID>MagicNumber:TransactionRequestSection.kt$100</ID>
+    <ID>MagicNumber:TransactionResponseSection.kt$100</ID>
+    <ID>MagicNumber:XmlTreeView.kt$3</ID>
+    <ID>MagicNumber:XmlTreeView.kt$9</ID>
+    <ID>MagicNumber:ZoomablePage.kt$400</ID>
+    <ID>MagicNumber:ZoomablePage.kt$600</ID>
+    <ID>MatchingDeclarationName:TransactionBodyViewer.kt$MatchInfo</ID>
+    <ID>MayBeConst:PdfPreviewDefaults.kt$PdfPreviewDefaults$val ThumbnailAspectRatio = 0.75f</ID>
+    <ID>ModifierMissing:CrashDetailScreen.kt$CrashDetailPagerScreen</ID>
+    <ID>ModifierMissing:CrashListScreen.kt$CrashItem</ID>
+    <ID>ModifierMissing:HomeScreen.kt$HomeScreen</ID>
+    <ID>ModifierMissing:HomeTopBar.kt$HomeTopBar</ID>
+    <ID>ModifierMissing:SwipeBackContainer.kt$SwipeBackContainer</ID>
+    <ID>MultipleEmitters:HomeTopBar.kt$CrashesOverflowMenu</ID>
+    <ID>MultipleEmitters:HomeTopBar.kt$TransactionsOverflowMenu</ID>
+    <ID>MultipleEmitters:TransactionDetailHeader.kt$MenuAction</ID>
+    <ID>NestedBlockDepth:TransactionExportUtils.kt$internal fun savePdfToDownloads( context: Context, pdfData: ByteArray, ): String</ID>
+    <ID>NullableToStringCall:CommonUtils.kt$${e.message}</ID>
+    <ID>NullableToStringCall:CrashExport.kt$${e.message}</ID>
+    <ID>NullableToStringCall:ExportManager.kt$ExportManager$${e.message}</ID>
+    <ID>NullableToStringCall:TransactionExportUtils.kt$${e.message}</ID>
+    <ID>OutdatedDocumentation:ToolsTab.kt$@Suppress("LongMethod") @Composable fun ToolsTab( state: HomeViewState, onEvent: (HomeViewEvent) -&gt; Unit, onNavigate: (String) -&gt; Unit, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>OutdatedDocumentation:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, selectionState: TransactionSelectionState = TransactionSelectionState(), itemActions: TransactionItemActions = TransactionItemActions(), isInitialLoading: Boolean = false, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, header: (@Composable () -&gt; Unit)? = null, )</ID>
+    <ID>ParameterNaming:FullscreenImageViewer.kt$onLoadingChanged</ID>
+    <ID>ParameterNaming:MethodFilterBars.kt$onMethodToggled</ID>
+    <ID>ParameterNaming:PdfPageJumpDialog.kt$onPageSelected</ID>
+    <ID>ParameterNaming:StatusFilterBars.kt$onStatusToggled</ID>
+    <ID>ParameterNaming:TransactionDetailHeader.kt$onTabSelected</ID>
+    <ID>SwallowedException:ImageShareUtils.kt$e: Exception</ID>
+    <ID>SwallowedException:JsonTreeView.kt$e: Exception</ID>
+    <ID>SwallowedException:PdfPreviewCard.kt$e: SecurityException</ID>
+    <ID>TooGenericExceptionCaught:CommonUtils.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CrashExport.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ExportManager.kt$ExportManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ImageShareUtils.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:JsonTreeView.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PdfPreviewCard.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TransactionExportUtils.kt$e: Exception</ID>
+    <ID>TooManyFunctions:HarExporter.kt$HarExporter</ID>
+    <ID>TooManyFunctions:TransactionDetailViewModel.kt$TransactionDetailViewModel : BaseViewModel</ID>
+    <ID>TopLevelPropertyNaming:ImageShareUtils.kt$private const val FILE_PREFIX = "WormaCeptor_"</ID>
+    <ID>TopLevelPropertyNaming:ImageShareUtils.kt$private const val PROVIDER_SUFFIX = ".wormaceptor.fileprovider"</ID>
+    <ID>TopLevelPropertyNaming:ImageShareUtils.kt$private const val WORMACEPTOR_DIR = "WormaCeptor"</ID>
+    <ID>TopLevelPropertyNaming:PdfUtils.kt$private const val PDF_MAGIC = "%PDF-"</ID>
+    <ID>TopLevelPropertyNaming:PdfUtils.kt$private const val PDF_MAGIC_SIZE = 5</ID>
+    <ID>TopLevelPropertyNaming:TransactionBodyViewer.kt$/** Maximum body size (in chars) for which syntax highlighting is attempted. */ internal const val MAX_SYNTAX_HIGHLIGHT_SIZE = 200_000</ID>
+    <ID>UndocumentedPublicClass:CrashListViewModel.kt$CrashListViewModel : BaseViewModel</ID>
+    <ID>UndocumentedPublicClass:CrashListViewModel.kt$CrashListViewModel$Companion</ID>
+    <ID>UndocumentedPublicClass:CrashListViewState.kt$CrashListViewState</ID>
+    <ID>UndocumentedPublicClass:HomeViewModel.kt$HomeViewModel$Companion</ID>
+    <ID>UndocumentedPublicClass:HomeViewState.kt$HomeViewState</ID>
+    <ID>UndocumentedPublicClass:ImageOperationResult.kt$ImageOperationResult</ID>
+    <ID>UndocumentedPublicClass:ImageOperationResult.kt$ImageOperationResult$Failure : ImageOperationResult</ID>
+    <ID>UndocumentedPublicClass:ImageOperationResult.kt$ImageOperationResult$Success : ImageOperationResult</ID>
+    <ID>UndocumentedPublicClass:PdfLoadState.kt$PdfLoadState</ID>
+    <ID>UndocumentedPublicClass:PdfLoadState.kt$PdfLoadState$Error : PdfLoadState</ID>
+    <ID>UndocumentedPublicClass:PdfLoadState.kt$PdfLoadState$Loading : PdfLoadState</ID>
+    <ID>UndocumentedPublicClass:PdfLoadState.kt$PdfLoadState$PasswordProtected : PdfLoadState</ID>
+    <ID>UndocumentedPublicClass:PdfLoadState.kt$PdfLoadState$Success : PdfLoadState</ID>
+    <ID>UndocumentedPublicClass:TransactionListViewModel.kt$TransactionListViewModel$Companion</ID>
+    <ID>UndocumentedPublicClass:TransactionListViewState.kt$TransactionListViewState</ID>
+    <ID>UndocumentedPublicClass:TransactionPagerViewState.kt$TransactionPagerViewState</ID>
+    <ID>UndocumentedPublicFunction:FullscreenImageViewer.kt$@Composable fun FullscreenImageViewer( imageData: ByteArray, metadata: ImageMetadata?, onDismiss: () -&gt; Unit, onDownload: () -&gt; Unit, onShare: () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:ImageShareUtils.kt$fun saveImageToGallery( context: Context, imageData: ByteArray, format: String, ): ImageOperationResult</ID>
+    <ID>UndocumentedPublicFunction:ImageShareUtils.kt$fun shareImage( context: Context, imageData: ByteArray, format: String, ): ImageOperationResult</ID>
+    <ID>UndocumentedPublicFunction:PdfPreviewCard.kt$@Composable fun PdfPreviewCard( pdfData: ByteArray, contentType: String?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, modifier: Modifier = Modifier, onShowMessage: (String) -&gt; Unit = {}, )</ID>
+    <ID>UndocumentedPublicFunction:TransactionListViewModel.kt$TransactionListViewModel.Companion$fun formatHeaders(headers: Map&lt;String, List&lt;String&gt;&gt;): String</ID>
+    <ID>UndocumentedPublicProperty:BinaryPayload.kt$BinaryPayload$val bytes: ByteArray</ID>
+    <ID>UndocumentedPublicProperty:BinaryPayload.kt$BinaryPayload$val format: String</ID>
+    <ID>UndocumentedPublicProperty:CrashListViewEffect.kt$CrashListViewEffect.ExportCrashes$val crashes: List&lt;Crash&gt;</ID>
+    <ID>UndocumentedPublicProperty:CrashListViewState.kt$CrashListViewState$val crashes: ImmutableList&lt;Crash&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:CrashListViewState.kt$CrashListViewState$val isCrashesLoading: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:CrashListViewState.kt$CrashListViewState$val isRefreshingCrashes: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:CrashListViewState.kt$CrashListViewState$val showClearCrashesDialog: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:HomeViewEffect.kt$HomeViewEffect.NavigateToCrash$val crash: Crash</ID>
+    <ID>UndocumentedPublicProperty:HomeViewEffect.kt$HomeViewEffect.NavigateToTool$val route: String</ID>
+    <ID>UndocumentedPublicProperty:HomeViewEffect.kt$HomeViewEffect.NavigateToTransaction$val summary: TransactionSummary</ID>
+    <ID>UndocumentedPublicProperty:HomeViewEvent.kt$HomeViewEvent.CrashClicked$val crash: Crash</ID>
+    <ID>UndocumentedPublicProperty:HomeViewEvent.kt$HomeViewEvent.ToolNavigated$val route: String</ID>
+    <ID>UndocumentedPublicProperty:HomeViewEvent.kt$HomeViewEvent.TransactionClicked$val summary: TransactionSummary</ID>
+    <ID>UndocumentedPublicProperty:HomeViewState.kt$HomeViewState$val collapsedToolCategories: Set&lt;String&gt; = emptySet()</ID>
+    <ID>UndocumentedPublicProperty:HomeViewState.kt$HomeViewState$val selectedTabIndex: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:HomeViewState.kt$HomeViewState$val showOverflowMenu: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:HomeViewState.kt$HomeViewState$val toolsSearchActive: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:HomeViewState.kt$HomeViewState$val toolsSearchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:ImageOperationResult.kt$ImageOperationResult$val message: String</ID>
+    <ID>UndocumentedPublicProperty:PdfLoadState.kt$PdfLoadState.Error$val message: String</ID>
+    <ID>UndocumentedPublicProperty:PdfLoadState.kt$PdfLoadState.PasswordProtected$val metadata: PdfMetadata</ID>
+    <ID>UndocumentedPublicProperty:PdfLoadState.kt$PdfLoadState.Success$val metadata: PdfMetadata</ID>
+    <ID>UndocumentedPublicProperty:PdfLoadState.kt$PdfLoadState.Success$val thumbnail: Bitmap</ID>
+    <ID>UndocumentedPublicProperty:TransactionItemActions.kt$TransactionItemActions$val onCopyAsCurl: (TransactionSummary) -&gt; Unit = {}</ID>
+    <ID>UndocumentedPublicProperty:TransactionItemActions.kt$TransactionItemActions$val onCopyUrl: (TransactionSummary) -&gt; Unit = {}</ID>
+    <ID>UndocumentedPublicProperty:TransactionItemActions.kt$TransactionItemActions$val onDelete: (TransactionSummary) -&gt; Unit = {}</ID>
+    <ID>UndocumentedPublicProperty:TransactionItemActions.kt$TransactionItemActions$val onShare: (TransactionSummary) -&gt; Unit = {}</ID>
+    <ID>UndocumentedPublicProperty:TransactionItemActions.kt$TransactionItemActions$val onShareAsHar: (TransactionSummary) -&gt; Unit = {}</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewEffect.kt$TransactionListViewEffect.CopyToClipboard$val content: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewEffect.kt$TransactionListViewEffect.CopyToClipboard$val label: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewEffect.kt$TransactionListViewEffect.ExportTransactions$val transactions: List&lt;NetworkTransaction&gt;</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewEffect.kt$TransactionListViewEffect.ShareText$val text: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewEffect.kt$TransactionListViewEffect.ShareText$val title: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewEvent.kt$TransactionListViewEvent.Filter.DraftMethodToggled$val method: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewEvent.kt$TransactionListViewEvent.Filter.DraftQueryChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewEvent.kt$TransactionListViewEvent.Filter.DraftStatusRangeToggled$val range: IntRange</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val allTransactions: ImmutableList&lt;TransactionSummary&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val draftFilterMethods: Set&lt;String&gt; = emptySet()</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val draftFilterQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val draftFilterStatusRanges: Set&lt;IntRange&gt; = emptySet()</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val filterMethods: Set&lt;String&gt; = emptySet()</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val filterStatusRanges: Set&lt;IntRange&gt; = emptySet()</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val hasActiveFilters: Boolean get() = filterMethods.isNotEmpty() || filterStatusRanges.isNotEmpty() || searchQuery.isNotBlank()</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val isInitialLoading: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val isRefreshingTransactions: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val quickFilters: Set&lt;QuickFilter&gt; = emptySet()</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val searchQuery: String = ""</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val selectedIds: Set&lt;UUID&gt; = emptySet()</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val showClearTransactionsDialog: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val showDeleteSelectedDialog: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val showFilterSheet: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val totalCount: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:TransactionListViewState.kt$TransactionListViewState$val transactions: ImmutableList&lt;TransactionSummary&gt; = persistentListOf()</ID>
+    <ID>UndocumentedPublicProperty:TransactionPagerViewState.kt$TransactionPagerViewState$val canNavigateNext: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:TransactionPagerViewState.kt$TransactionPagerViewState$val canNavigatePrev: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:TransactionPagerViewState.kt$TransactionPagerViewState$val currentIndex: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:TransactionPagerViewState.kt$TransactionPagerViewState$val isLoading: Boolean = true</ID>
+    <ID>UndocumentedPublicProperty:TransactionPagerViewState.kt$TransactionPagerViewState$val navigationDirection: Int = 0</ID>
+    <ID>UndocumentedPublicProperty:TransactionPagerViewState.kt$TransactionPagerViewState$val transaction: NetworkTransaction? = null</ID>
+    <ID>UndocumentedPublicProperty:TransactionSelectionState.kt$TransactionSelectionState$val isSelectionMode: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:TransactionSelectionState.kt$TransactionSelectionState$val onLongClick: (UUID) -&gt; Unit = {}</ID>
+    <ID>UndocumentedPublicProperty:TransactionSelectionState.kt$TransactionSelectionState$val onSelectionToggle: (UUID) -&gt; Unit = {}</ID>
+    <ID>UndocumentedPublicProperty:TransactionSelectionState.kt$TransactionSelectionState$val selectedIds: Set&lt;UUID&gt; = emptySet()</ID>
+    <ID>UnusedParameter:PdfPreviewCard.kt$contentType: String?</ID>
+    <ID>UseIfInsteadOfWhen:ExportManager.kt$ExportManager$when (format) { ExportFormat.HAR -&gt; ".har" else -&gt; ".json" }</ID>
+    <ID>UseOrEmpty:CrashExport.kt$crash.message ?: ""</ID>
+    <ID>UseOrEmpty:FavoritesRepository.kt$FavoritesRepository$savedNames?.mapNotNull { name -&gt; try { Feature.valueOf(name) } catch (_: IllegalArgumentException) { null } }?.toSet() ?: emptySet()</ID>
+    <ID>UseOrEmpty:HarExporter.kt$HarExporter$response?.headers?.redirectUrl() ?: ""</ID>
+    <ID>UseOrEmpty:HarExporter.kt$HarExporter$response?.let { extractSetCookies(it.headers) } ?: emptyList()</ID>
+    <ID>UseOrEmpty:HarExporter.kt$HarExporter$response?.let { flattenHeaders(it.headers) } ?: emptyList()</ID>
+    <ID>UseOrEmpty:HarExporter.kt$HarExporter$response?.message ?: ""</ID>
+    <ID>UseOrEmpty:HomeViewModel.kt$HomeViewModel$collapsePrefs.getStringSet(COLLAPSE_KEY, emptySet()) ?: emptySet()</ID>
+    <ID>ViewModelForwarding:TransactionDetailPagerScreen.kt$BaseScreen( viewModel = pagerViewModel, onEffect = { effect -&gt; when (effect) { is TransactionPagerEffect.HapticFeedback -&gt; view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY) } }, ) { pagerState, onPagerEvent -&gt; // Bridge: notify detail VM when pager loads a new transaction LaunchedEffect(pagerState.transaction) { pagerState.transaction?.let { detailViewModel.sendEvent(TransactionDetailViewEvent.Lifecycle.TransactionLoaded(it)) } } TransactionPagerContent( pagerState = pagerState, detailViewModel = detailViewModel, onBack = onBack, onNavigatePrev = { onPagerEvent(TransactionPagerEvent.NavigatePrev) }, onNavigateNext = { onPagerEvent(TransactionPagerEvent.NavigateNext) }, ) }</ID>
+    <ID>ViewModelForwarding:TransactionDetailPagerScreen.kt$TransactionDetailContent( transaction = currentTransaction, detailViewModel = detailViewModel, onBack = onBack, onNavigatePrevTransaction = onNavigatePrev, onNavigateNextTransaction = onNavigateNext, canNavigatePrev = pagerState.canNavigatePrev, canNavigateNext = pagerState.canNavigateNext, )</ID>
+    <ID>ViewModelForwarding:TransactionDetailPagerScreen.kt$TransactionPagerContent( pagerState = pagerState, detailViewModel = detailViewModel, onBack = onBack, onNavigatePrev = { onPagerEvent(TransactionPagerEvent.NavigatePrev) }, onNavigateNext = { onPagerEvent(TransactionPagerEvent.NavigateNext) }, )</ID>
+    <ID>ViewModelForwarding:TransactionDetailScreen.kt$BaseScreen( viewModel = detailViewModel, onEffect = { effect -&gt; handleTransactionDetailEffect(effect, context, scope, snackBarHostState) }, ) { state, onEvent -&gt; TransactionDetailScaffold( transaction = transaction, state = state, snackBarHostState = snackBarHostState, onEvent = onEvent, onBack = onBack, onNavigatePrev = onNavigatePrevTransaction, onNavigateNext = onNavigateNextTransaction, canNavigatePrev = canNavigatePrev, canNavigateNext = canNavigateNext, ) }</ID>
+    <ID>ViewModelForwarding:TransactionDetailScreen.kt$TransactionDetailContent( transaction = transaction, detailViewModel = detailViewModel, onBack = onBack, )</ID>
+    <ID>ViewModelInjection:PdfViewerScreen.kt$viewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

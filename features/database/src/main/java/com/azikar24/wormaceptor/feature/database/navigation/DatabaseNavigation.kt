@@ -3,8 +3,6 @@ package com.azikar24.wormaceptor.feature.database.navigation
 import android.app.Application
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
@@ -12,8 +10,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
-import com.azikar24.wormaceptor.feature.database.DatabaseFeature
+import com.azikar24.wormaceptor.feature.database.DatabaseViewModelFactory
+import com.azikar24.wormaceptor.feature.database.data.DatabaseDataSource
+import com.azikar24.wormaceptor.feature.database.data.DatabaseRepositoryImpl
+import com.azikar24.wormaceptor.feature.database.navigator.DatabaseNavigator
 import com.azikar24.wormaceptor.feature.database.ui.DatabaseListScreen
 import com.azikar24.wormaceptor.feature.database.ui.QueryScreen
 import com.azikar24.wormaceptor.feature.database.ui.TableDataScreen
@@ -21,30 +23,45 @@ import com.azikar24.wormaceptor.feature.database.ui.TableListScreen
 import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewEvent
 import com.azikar24.wormaceptor.feature.database.vm.DatabaseViewModel
 
-/**
- * Adds the Database Browser navigation graph to the [NavGraphBuilder].
- * Scopes the [DatabaseViewModel] to the graph so it is shared across screens.
- */
 fun NavGraphBuilder.databaseGraph(
     navController: NavHostController,
     context: Context,
     onNavigateBack: () -> Unit,
 ) {
+    val application = requireNotNull(context.applicationContext as? Application) {
+        "applicationContext must be an Application instance"
+    }
+    val repository by lazy { DatabaseRepositoryImpl(DatabaseDataSource(context.applicationContext)) }
+    val navigator by lazy {
+        object : DatabaseNavigator {
+            override fun navigateToTables() = navController.navigate(WormaCeptorNavKeys.DatabaseTables.route)
+
+            override fun navigateToTableData() = navController.navigate(WormaCeptorNavKeys.DatabaseTableData.route)
+
+            override fun navigateToQuery() = navController.navigate(WormaCeptorNavKeys.DatabaseQuery.route)
+
+            override fun navigateBack() {
+                navController.popBackStack()
+            }
+        }
+    }
+    val factory by lazy { DatabaseViewModelFactory(repository, application, navigator) }
+
     navigation(
         startDestination = WormaCeptorNavKeys.DatabaseList.route,
         route = WormaCeptorNavKeys.Database.route,
     ) {
         composable(WormaCeptorNavKeys.DatabaseList.route) { backStackEntry ->
-            DatabaseListDestination(backStackEntry, navController, context, onNavigateBack)
+            DatabaseListDestination(backStackEntry, navController, factory, onNavigateBack)
         }
         composable(WormaCeptorNavKeys.DatabaseTables.route) { backStackEntry ->
-            DatabaseTablesDestination(backStackEntry, navController, context)
+            DatabaseTablesDestination(backStackEntry, navController, factory)
         }
         composable(WormaCeptorNavKeys.DatabaseTableData.route) { backStackEntry ->
-            DatabaseTableDataDestination(backStackEntry, navController, context)
+            DatabaseTableDataDestination(backStackEntry, navController, factory)
         }
         composable(WormaCeptorNavKeys.DatabaseQuery.route) { backStackEntry ->
-            DatabaseQueryDestination(backStackEntry, navController, context)
+            DatabaseQueryDestination(backStackEntry, navController, factory)
         }
     }
 }
@@ -53,14 +70,11 @@ fun NavGraphBuilder.databaseGraph(
 private fun graphScopedViewModel(
     backStackEntry: NavBackStackEntry,
     navController: NavHostController,
-    context: Context,
+    factory: DatabaseViewModelFactory,
 ): DatabaseViewModel {
     val graphEntry = remember(backStackEntry) {
         navController.getBackStackEntry(WormaCeptorNavKeys.Database.route)
     }
-    val application = remember { context.applicationContext as Application }
-    val repository = remember { DatabaseFeature.createRepository(context) }
-    val factory = remember { DatabaseFeature.createViewModelFactory(repository, application) }
     return viewModel(viewModelStoreOwner = graphEntry, factory = factory)
 }
 
@@ -68,107 +82,70 @@ private fun graphScopedViewModel(
 private fun DatabaseListDestination(
     backStackEntry: NavBackStackEntry,
     navController: NavHostController,
-    context: Context,
+    factory: DatabaseViewModelFactory,
     onNavigateBack: () -> Unit,
 ) {
-    val viewModel = graphScopedViewModel(backStackEntry, navController, context)
-    val state by viewModel.uiState.collectAsState()
-    val databases by viewModel.databases.collectAsState()
+    val viewModel = graphScopedViewModel(backStackEntry, navController, factory)
 
-    DatabaseListScreen(
-        databases = databases,
-        searchQuery = state.databaseSearchQuery,
-        isLoading = state.isDatabasesLoading,
-        error = state.databasesError,
-        onSearchQueryChanged = { viewModel.sendEvent(DatabaseViewEvent.DatabaseSearchQueryChanged(it)) },
-        onDatabaseClick = { db ->
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelected(db.name))
-            navController.navigate(WormaCeptorNavKeys.DatabaseTables.route)
-        },
-        onRefresh = { viewModel.sendEvent(DatabaseViewEvent.LoadDatabases) },
-        onBack = onNavigateBack,
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        DatabaseListScreen(
+            state = state,
+            onEvent = onEvent,
+            onDatabaseClick = { db -> onEvent(DatabaseViewEvent.List.Selected(db.name)) },
+            onBack = onNavigateBack,
+        )
+    }
 }
 
 @Composable
 private fun DatabaseTablesDestination(
     backStackEntry: NavBackStackEntry,
     navController: NavHostController,
-    context: Context,
+    factory: DatabaseViewModelFactory,
 ) {
-    val viewModel = graphScopedViewModel(backStackEntry, navController, context)
-    val state by viewModel.uiState.collectAsState()
-    val tables by viewModel.tables.collectAsState()
+    val viewModel = graphScopedViewModel(backStackEntry, navController, factory)
 
-    TableListScreen(
-        databaseName = state.selectedDatabaseName ?: "",
-        tables = tables,
-        searchQuery = state.tableSearchQuery,
-        isLoading = state.isTablesLoading,
-        error = state.tablesError,
-        onSearchQueryChanged = { viewModel.sendEvent(DatabaseViewEvent.TableSearchQueryChanged(it)) },
-        onTableClick = { table ->
-            viewModel.sendEvent(DatabaseViewEvent.TableSelected(table.name))
-            navController.navigate(WormaCeptorNavKeys.DatabaseTableData.route)
-        },
-        onQueryClick = {
-            navController.navigate(WormaCeptorNavKeys.DatabaseQuery.route)
-        },
-        onBack = {
-            viewModel.sendEvent(DatabaseViewEvent.DatabaseSelectionCleared)
-            navController.popBackStack()
-        },
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        TableListScreen(
+            state = state,
+            onEvent = onEvent,
+            onTableClick = { table -> onEvent(DatabaseViewEvent.Tables.Selected(table.name)) },
+            onQueryClick = { onEvent(DatabaseViewEvent.Tables.NavigateToQuery) },
+            onBack = { onEvent(DatabaseViewEvent.Tables.BackPressed) },
+        )
+    }
 }
 
 @Composable
 private fun DatabaseTableDataDestination(
     backStackEntry: NavBackStackEntry,
     navController: NavHostController,
-    context: Context,
+    factory: DatabaseViewModelFactory,
 ) {
-    val viewModel = graphScopedViewModel(backStackEntry, navController, context)
-    val state by viewModel.uiState.collectAsState()
+    val viewModel = graphScopedViewModel(backStackEntry, navController, factory)
 
-    TableDataScreen(
-        tableName = state.selectedTableName ?: "",
-        queryResult = state.queryResult,
-        schema = state.tableSchema,
-        showSchema = state.showSchema,
-        currentPage = state.currentPage,
-        isLoading = state.isDataLoading,
-        onToggleSchema = { viewModel.sendEvent(DatabaseViewEvent.ToggleSchema) },
-        onPreviousPage = { viewModel.sendEvent(DatabaseViewEvent.PreviousPage) },
-        onNextPage = { viewModel.sendEvent(DatabaseViewEvent.NextPage) },
-        onBack = {
-            viewModel.sendEvent(DatabaseViewEvent.TableSelectionCleared)
-            navController.popBackStack()
-        },
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        TableDataScreen(
+            state = state,
+            onEvent = onEvent,
+            onBack = { onEvent(DatabaseViewEvent.Data.BackPressed) },
+        )
+    }
 }
 
 @Composable
 private fun DatabaseQueryDestination(
     backStackEntry: NavBackStackEntry,
     navController: NavHostController,
-    context: Context,
+    factory: DatabaseViewModelFactory,
 ) {
-    val viewModel = graphScopedViewModel(backStackEntry, navController, context)
-    val state by viewModel.uiState.collectAsState()
+    val viewModel = graphScopedViewModel(backStackEntry, navController, factory)
 
-    QueryScreen(
-        databaseName = state.selectedDatabaseName ?: "",
-        sqlQuery = state.sqlQuery,
-        queryResult = state.queryExecutionResult,
-        queryHistory = state.queryHistory,
-        isExecuting = state.isQueryExecuting,
-        onQueryChanged = { viewModel.sendEvent(DatabaseViewEvent.SqlQueryChanged(it)) },
-        onExecuteQuery = { viewModel.sendEvent(DatabaseViewEvent.ExecuteQuery) },
-        onClearQuery = { viewModel.sendEvent(DatabaseViewEvent.ClearQuery) },
-        onSelectFromHistory = { viewModel.sendEvent(DatabaseViewEvent.QuerySelectedFromHistory(it)) },
-        onBack = {
-            viewModel.sendEvent(DatabaseViewEvent.ClearQuery)
-            navController.popBackStack()
-        },
-    )
+    BaseScreen(viewModel) { state, onEvent ->
+        QueryScreen(
+            state = state,
+            onEvent = onEvent,
+            onBack = { onEvent(DatabaseViewEvent.Query.BackPressed) },
+        )
+    }
 }

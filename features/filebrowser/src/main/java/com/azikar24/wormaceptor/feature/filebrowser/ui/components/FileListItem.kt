@@ -14,20 +14,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDateOnly
 import com.azikar24.wormaceptor.domain.entities.FileEntry
 import com.azikar24.wormaceptor.feature.filebrowser.R
-import com.azikar24.wormaceptor.feature.filebrowser.ui.theme.FileBrowserDesignSystem
+import com.azikar24.wormaceptor.feature.filebrowser.ui.util.resolveFileAppearance
 
-/**
- * List item displaying a file or directory entry.
- */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FileListItem(
@@ -36,73 +36,127 @@ fun FileListItem(
     onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val haptic = LocalHapticFeedback.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .combinedClickable(
                 onClick = onClick,
-                onLongClick = onLongClick,
+                onLongClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onLongClick()
+                },
             )
             .padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                vertical = WormaCeptorDesignSystem.Spacing.md,
+                horizontal = WormaCeptorTokens.Spacing.lg,
+                vertical = WormaCeptorTokens.Spacing.md,
             ),
-        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // File icon
-        Icon(
-            imageVector = FileBrowserDesignSystem.FileTypes.getIcon(file.name, file.isDirectory),
-            contentDescription = null,
-            tint = FileBrowserDesignSystem.FileTypes.getColor(file.name, file.isDirectory),
-            modifier = Modifier.size(24.dp),
+        val ext = file.name.substringAfterLast('.', "").lowercase()
+        val appearance = resolveFileAppearance(
+            ext = ext,
+            isDirectory = file.isDirectory,
+            scheme = WormaCeptorTokens.Colors.FileBrowser.fileTypeScheme(),
         )
 
-        // File info
+        Icon(
+            imageVector = appearance.icon,
+            contentDescription = null,
+            tint = appearance.tint,
+            modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
+        )
+
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.xxs),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xxs),
         ) {
-            // File name
             Text(
                 text = file.name,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
 
-            // File details
             Row(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
                 if (!file.isDirectory) {
                     Text(
                         text = formatBytes(file.sizeBytes),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                     Text(
-                        text = "-",
+                        text = "·",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
                 Text(
                     text = formatDateOnly(file.lastModified),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }
 
-        // Permissions indicator
         if (!file.isReadable) {
             Text(
                 text = stringResource(R.string.filebrowser_locked),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error,
+                color = WormaCeptorTokens.semantic().error,
+            )
+        }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun FileListItemPreview() {
+    WormaCeptorTheme {
+        Column {
+            FileListItem(
+                file = FileEntry(
+                    name = "Documents",
+                    path = "/storage/Documents",
+                    isDirectory = true,
+                    sizeBytes = 0,
+                    lastModified = System.currentTimeMillis(),
+                    permissions = "rwx",
+                ),
+                onClick = {},
+                onLongClick = {},
+            )
+            FileListItem(
+                file = FileEntry(
+                    name = "report.json",
+                    path = "/storage/report.json",
+                    isDirectory = false,
+                    sizeBytes = 4096,
+                    lastModified = System.currentTimeMillis(),
+                    permissions = "rw-",
+                ),
+                onClick = {},
+                onLongClick = {},
+            )
+            FileListItem(
+                file = FileEntry(
+                    name = "secret.dat",
+                    path = "/storage/secret.dat",
+                    isDirectory = false,
+                    sizeBytes = 1024,
+                    lastModified = System.currentTimeMillis(),
+                    permissions = "---",
+                    isReadable = false,
+                ),
+                onClick = {},
+                onLongClick = {},
             )
         }
     }

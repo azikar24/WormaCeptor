@@ -17,6 +17,10 @@
     <string name="loadedlibraries_filter_jar">JAR</string>
     <string name="loadedlibraries_filter_other">Other</string>
     <string name="loadedlibraries_badge_system">System</string>
+    <string name="loadedlibraries_badge_native">.SO</string>
+    <string name="loadedlibraries_badge_dex">DEX</string>
+    <string name="loadedlibraries_badge_jar">JAR</string>
+    <string name="loadedlibraries_badge_aar">AAR</string>
     <string name="loadedlibraries_detail_title">Details</string>
     <string name="loadedlibraries_detail_path">Path</string>
     <string name="loadedlibraries_detail_size">Size</string>

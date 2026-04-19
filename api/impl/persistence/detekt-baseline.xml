@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>LongMethod:ServiceProviderImpl.kt$ServiceProviderImpl$private fun encryptDatabaseIfNeeded( context: Context, dbName: String, passphrase: ByteArray, )</ID>
+    <ID>MagicNumber:ServiceProviderImpl.kt$ServiceProviderImpl$15</ID>
+    <ID>MagicNumber:ServiceProviderImpl.kt$ServiceProviderImpl$16</ID>
+    <ID>TooGenericExceptionCaught:ServiceProviderImpl.kt$ServiceProviderImpl$e: Exception</ID>
+  </CurrentIssues>
+</SmellBaseline>

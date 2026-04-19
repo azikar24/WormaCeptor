@@ -1,0 +1,69 @@
+package com.azikar24.wormaceptor.feature.viewer.ui
+
+import android.content.Context
+import androidx.compose.material3.SnackbarHostState
+import com.azikar24.wormaceptor.core.engine.CoreHolder
+import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.feature.viewer.export.ExportManager
+import com.azikar24.wormaceptor.feature.viewer.ui.util.ImageOperationResult
+import com.azikar24.wormaceptor.feature.viewer.ui.util.saveImageToGallery
+import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
+import com.azikar24.wormaceptor.feature.viewer.ui.util.shareImage
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEffect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+
+/**
+ * Handles one-time side effects emitted by [com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewModel].
+ */
+internal fun handleTransactionDetailEffect(
+    effect: TransactionDetailViewEffect,
+    context: Context,
+    scope: CoroutineScope,
+    snackBarHostState: SnackbarHostState,
+) {
+    when (effect) {
+        // -- Clipboard --
+        is TransactionDetailViewEffect.Clipboard.CopyText -> {
+            val label = context.getString(effect.labelResId)
+            val message = copyToClipboard(context, label, effect.content)
+            scope.launch { snackBarHostState.showSnackbar(message) }
+        }
+
+        // -- Share --
+        is TransactionDetailViewEffect.Share.AsFile -> {
+            val title = context.getString(effect.titleResId)
+            scope.launch { shareAsFile(context, effect.content, effect.fileName, effect.mimeType, title) }
+        }
+
+        is TransactionDetailViewEffect.Share.Image -> {
+            val result = shareImage(context, effect.payload.bytes, effect.payload.format)
+            if (result is ImageOperationResult.Failure) {
+                scope.launch { snackBarHostState.showSnackbar(result.message) }
+            }
+        }
+
+        // -- Save --
+        is TransactionDetailViewEffect.Save.ExportTransactions -> {
+            val exportManager = ExportManager(context, CoreHolder.queryEngine) { msg ->
+                scope.launch { snackBarHostState.showSnackbar(msg) }
+            }
+            scope.launch { exportManager.exportTransactions(effect.transactions, effect.format) }
+        }
+
+        is TransactionDetailViewEffect.Save.ImageToGallery -> {
+            val result = saveImageToGallery(context, effect.payload.bytes, effect.payload.format)
+            scope.launch { snackBarHostState.showSnackbar(result.message) }
+        }
+
+        is TransactionDetailViewEffect.Save.PdfToDownloads -> {
+            val message = savePdfToDownloads(context, effect.bytes)
+            scope.launch { snackBarHostState.showSnackbar(message) }
+        }
+
+        // -- Message --
+        is TransactionDetailViewEffect.ShowSnackBar -> {
+            scope.launch { snackBarHostState.showSnackbar(effect.message) }
+        }
+    }
+}

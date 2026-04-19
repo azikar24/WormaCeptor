@@ -2,126 +2,56 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>CyclomaticComplexMethod:WormaCeptorButton.kt$@Composable fun WormaCeptorButton( text: String, onClick: () -&gt; Unit, modifier: Modifier = Modifier, variant: ButtonVariant = ButtonVariant.Primary, enabled: Boolean = true, loading: Boolean = false, containerColor: Color? = null, contentColor: Color? = null, leadingIcon: (@Composable () -&gt; Unit)? = null, )</ID>
+    <ID>Filename:BaseColors.kt$com.azikar24.wormaceptor.core.ui.theme.tokens.BaseColors.kt</ID>
+    <ID>Filename:FeatureColors.kt$com.azikar24.wormaceptor.core.ui.theme.tokens.FeatureColors.kt</ID>
+    <ID>Filename:Typography.kt$com.azikar24.wormaceptor.core.ui.theme.tokens.Typography.kt</ID>
+    <ID>FunctionOnlyReturningConstant:WormaCeptorNavKeys.kt$WormaCeptorNavKeys.MockRuleEditor$fun createNewRoute()</ID>
+    <ID>LongMethod:WormaCeptorButton.kt$@Composable fun WormaCeptorButton( text: String, onClick: () -&gt; Unit, modifier: Modifier = Modifier, variant: ButtonVariant = ButtonVariant.Primary, enabled: Boolean = true, loading: Boolean = false, containerColor: Color? = null, contentColor: Color? = null, leadingIcon: (@Composable () -&gt; Unit)? = null, )</ID>
+    <ID>LongParameterList:WormaCeptorAlertDialog.kt$( title: String, message: String, confirmLabel: String, onConfirm: () -&gt; Unit, dismissLabel: String, onDismiss: () -&gt; Unit, modifier: Modifier = Modifier, icon: ImageVector? = null, destructive: Boolean = false, )</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000</ID>
     <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
     <ID>MagicNumber:FormatUtils.kt$1024</ID>
     <ID>MagicNumber:FormatUtils.kt$1024.0</ID>
-    <ID>MagicNumber:Theme.kt$0xFF000000</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF10B981</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFF6B7280</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFFEF4444</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors$0xFFF59E0B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFF14B8A6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Accent$0xFFFBBF24</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFF10B981</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFF6366F1</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFF6B7280</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFF8B5CF6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Category$0xFFF59E0B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFF10B981</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFFEF4444</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Chart$0xFFF59E0B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFF10B981</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFF14B8A6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFF6366F1</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFF6B7280</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFF8B5CF6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFF9CA3AF</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFFDC2626</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFFEC4899</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFFEF4444</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ContentType$0xFFF59E0B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFF00BCD4</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFF2196F3</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFF4CAF50</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFF607D8B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFF795548</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFF9C27B0</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFFBBDEFB</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFFE91E63</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Cpu$0xFFFF9800</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFF4EC9B0</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFF4FC3F7</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFF569CD6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFF6A9955</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFF81C784</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFF90A4AE</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFB5CEA8</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFBA68C8</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFCE9178</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFD4D4D4</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFDCDCAA</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFFFB74D</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Database$0xFFFFD54F</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF10B981</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF14B8A6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF3B82F6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF6366F1</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF6B7280</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF8B5CF6</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFF9CA3AF</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFFEF4444</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.HttpMethod$0xFFF59E0B</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$0xFF00838F</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$0xFF4CAF50</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$0xFF9E9E9E</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$0xFFD32F2F</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$0xFFE65100</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.LeakDetection$0xFFF9A825</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Location$0xFF00BCD4</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Location$0xFF2196F3</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Location$0xFF4CAF50</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Location$0xFF9C27B0</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Location$0xFF9E9E9E</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Location$0xFFF44336</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Location$0xFFFF9800</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Memory$0xFF2196F3</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Memory$0xFF4CAF50</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Memory$0xFF81C784</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.Memory$0xFFC8E6C9</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF009688</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF2196F3</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF4CAF50</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF5C6BC0</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFF7C4DFF</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.SecureStorage$0xFFFF9800</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFF1565C0</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFF2196F3</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFF4CAF50</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFF9C27B0</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFF9E9E9E</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFFF44336</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.ThreadViolation$0xFFFF9800</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFF0097A7</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFF1976D2</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFF388E3C</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFF424242</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFF757575</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFF7B1FA2</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFFE65100</ID>
-    <ID>MagicNumber:WormaCeptorColors.kt$WormaCeptorColors.WebSocket$0xFFF57C00</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0x120D9488</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0x152DD4BF</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF0A0A0A</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF0D9488</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF141414</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF16A34A</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF1F1F1F</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF2DD4BF</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF525252</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF6B6B6B</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF8A8A8A</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFF9CA3AF</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFD97706</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFDC2626</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF0F0F0</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFF87171</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFAFAFA</ID>
-    <ID>MagicNumber:WormaCeptorDesignSystem.kt$WormaCeptorDesignSystem.ThemeColors$0xFFFFFFFF</ID>
+    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$0.001f</ID>
+    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$1000f</ID>
+    <ID>MatchingDeclarationName:BaseColors.kt$Palette</ID>
+    <ID>MatchingDeclarationName:FeatureColors.kt$Colors</ID>
+    <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
+    <ID>ModifierComposed:ClickableExtensions.kt$clickableWithoutRipple</ID>
+    <ID>ModifierComposed:TrackRecompositionModifier.kt$trackRecomposition</ID>
+    <ID>MultipleEmitters:WormaCeptorButton.kt$ButtonContent</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
+    <ID>UndocumentedPublicClass:DetailItem.kt$DetailItem</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDetailHeader.kt$@Composable fun WormaCeptorDetailHeader( icon: ImageVector, iconTint: Color, iconBackgroundColor: Color, title: String, modifier: Modifier = Modifier, iconContentDescription: String? = null, titleColor: Color = MaterialTheme.colorScheme.onSurface, subtitle: (@Composable () -&gt; Unit)? = null, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDetailSection.kt$@Composable fun WormaCeptorDetailSection( title: String, items: List&lt;DetailItem&gt;, modifier: Modifier = Modifier, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant, valueColor: Color = MaterialTheme.colorScheme.onSurface.copy( alpha = WormaCeptorTokens.Alpha.PROMINENT, ), surfaceColor: Color = MaterialTheme.colorScheme.surfaceVariant, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorDetailSection.kt$@Composable fun WormaCeptorDetailSection( title: String, value: String, modifier: Modifier = Modifier, labelColor: Color = MaterialTheme.colorScheme.onSurfaceVariant, valueColor: Color = MaterialTheme.colorScheme.onSurface.copy( alpha = WormaCeptorTokens.Alpha.PROMINENT, ), surfaceColor: Color = MaterialTheme.colorScheme.surfaceVariant, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorFilledTonalIconButton.kt$@Composable fun WormaCeptorFilledTonalIconButton( onClick: () -&gt; Unit, modifier: Modifier = Modifier, enabled: Boolean = true, colors: IconButtonColors = IconButtonDefaults.filledTonalIconButtonColors(), content: @Composable () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorFilledTonalIconButton.kt$@Suppress("LongParameterList") @Composable fun WormaCeptorFilledTonalIconButton( onClick: () -&gt; Unit, icon: ImageVector, contentDescription: String?, modifier: Modifier = Modifier, enabled: Boolean = true, colors: IconButtonColors = IconButtonDefaults.filledTonalIconButtonColors(), )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorIconButton.kt$@Composable fun WormaCeptorIconButton( onClick: () -&gt; Unit, modifier: Modifier = Modifier, enabled: Boolean = true, content: @Composable () -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorIconButton.kt$@Suppress("LongParameterList") @Composable fun WormaCeptorIconButton( onClick: () -&gt; Unit, icon: ImageVector, contentDescription: String?, modifier: Modifier = Modifier, enabled: Boolean = true, tint: Color? = null, iconSize: Dp? = null, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorToolTile.kt$@Suppress("LongParameterList") @Composable fun WormaCeptorToolTile( label: String, icon: ImageVector, accentColor: Color, onClick: () -&gt; Unit, modifier: Modifier = Modifier, onLongClick: (() -&gt; Unit)? = null, isFavorite: Boolean = false, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorTopBar.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun WormaCeptorTopBar( modifier: Modifier = Modifier, onBack: (() -&gt; Unit)? = null, backContentDescription: String? = null, actions: @Composable RowScope.() -&gt; Unit = {}, colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors( containerColor = MaterialTheme.colorScheme.surface, ), title: @Composable RowScope.() -&gt; Unit, )</ID>
+    <ID>UndocumentedPublicFunction:WormaCeptorTopBar.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun WormaCeptorTopBar( title: String, modifier: Modifier = Modifier, subtitle: String? = null, onBack: (() -&gt; Unit)? = null, backContentDescription: String? = null, navigationIcon: (@Composable () -&gt; Unit)? = null, titleLeading: (@Composable () -&gt; Unit)? = null, titleTrailing: (@Composable () -&gt; Unit)? = null, actions: @Composable RowScope.() -&gt; Unit = {}, colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors( containerColor = MaterialTheme.colorScheme.surface, ), )</ID>
+    <ID>UndocumentedPublicProperty:DetailItem.kt$DetailItem$val label: String</ID>
+    <ID>UndocumentedPublicProperty:DetailItem.kt$DetailItem$val value: String</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accent: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accentSecondary: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accentSubtle: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val accentTertiary: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val background: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val error: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val errorDark: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val success: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val surface: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val surfaceVariant: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textPrimary: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textSecondary: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val textTertiary: Color</ID>
+    <ID>UndocumentedPublicProperty:SemanticColors.kt$SemanticColors$val warning: Color</ID>
+    <ID>UndocumentedPublicProperty:WormaCeptorTokens.kt$WormaCeptorTokens.Colors$val FloatingButton = ToolColors.FloatingButton</ID>
+    <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorError = 0xFFF44336</ID>
+    <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorPending = 0xFFFFC107</ID>
+    <ID>UnusedPrivateProperty:WormaCeptorChartLegendItem.kt$private const val PreviewColorSuccess = 0xFF4CAF50</ID>
   </CurrentIssues>
 </SmellBaseline>

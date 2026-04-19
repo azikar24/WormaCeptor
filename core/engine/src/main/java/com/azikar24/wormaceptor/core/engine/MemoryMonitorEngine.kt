@@ -191,7 +191,10 @@ class MemoryMonitorEngine(
         /** Default history size: 60 samples (1 minute at 1-second intervals). */
         const val DEFAULT_HISTORY_SIZE = 60
 
-        /** Warning threshold for heap usage percentage. */
+        /** Caution threshold for heap usage percentage (amber). */
+        const val HEAP_CAUTION_THRESHOLD = 60f
+
+        /** Warning threshold for heap usage percentage (red). */
         const val HEAP_WARNING_THRESHOLD = 80f
     }
 }

@@ -120,8 +120,7 @@ class LogCaptureEngine(
                 line = reader.readLine()
                 if (line != null) {
                     parseLine(line)?.let { entry ->
-                        // Filter to current PID
-                        if (entry.pid == currentPid) {
+                        if (entry.pid == currentPid && !isNoise(entry)) {
                             addEntry(entry)
                         }
                     }
@@ -177,6 +176,11 @@ class LogCaptureEngine(
         )
     }
 
+    private fun isNoise(entry: LogEntry): Boolean {
+        if (entry.tag in NOISY_TAGS) return true
+        return NOISY_MESSAGE_SUBSTRINGS.any { entry.message.contains(it) }
+    }
+
     private fun addEntry(entry: LogEntry) {
         synchronized(bufferLock) {
             if (buffer.size >= bufferSize) {
@@ -193,5 +197,11 @@ class LogCaptureEngine(
 
         /** Default maximum number of log entries to retain in the buffer. */
         const val DEFAULT_BUFFER_SIZE = 1000
+
+        // Floor-level noise blocklist applied before any user filter. The user can never
+        // surface these from the Logs screen — they are pure framework spam (Compose
+        // setRequestedFrameRate calls land here at info level on Android 15+).
+        private val NOISY_TAGS = setOf("ViewRootImpl", "VRI")
+        private val NOISY_MESSAGE_SUBSTRINGS = setOf("setRequestedFrameRate")
     }
 }

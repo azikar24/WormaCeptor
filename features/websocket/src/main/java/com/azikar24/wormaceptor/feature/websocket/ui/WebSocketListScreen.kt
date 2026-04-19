@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.websocket.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,88 +17,93 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorEmptyState
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorSearchBar
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorStatusDot
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorSearchBar
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
+import com.azikar24.wormaceptor.core.ui.components.status.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketState
 import com.azikar24.wormaceptor.feature.websocket.R
-import com.azikar24.wormaceptor.feature.websocket.ui.theme.webSocketColors
+import com.azikar24.wormaceptor.feature.websocket.ui.components.StatsBar
+import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewEvent
+import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/**
- * Screen displaying a list of WebSocket connections.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WebSocketListScreen(
-    connections: ImmutableList<WebSocketConnection>,
-    searchQuery: String,
-    totalCount: Int,
-    onSearchQueryChanged: (String) -> Unit,
-    onConnectionClick: (WebSocketConnection) -> Unit,
-    onClearAll: () -> Unit,
+    state: WebSocketViewState,
+    onEvent: (WebSocketViewEvent) -> Unit,
     getMessageCount: (Long) -> Int,
+    onConnectionClick: (WebSocketConnection) -> Unit,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
 ) {
+    val haptic = LocalHapticFeedback.current
+
+    if (state.showClearAllConfirmation) {
+        WormaCeptorAlertDialog(
+            title = stringResource(R.string.websocket_clear_all_title),
+            message = stringResource(R.string.websocket_clear_all_message),
+            confirmLabel = stringResource(R.string.websocket_clear_all),
+            onConfirm = { onEvent(WebSocketViewEvent.ClearAllConfirmed) },
+            dismissLabel = stringResource(R.string.websocket_cancel),
+            onDismiss = { onEvent(WebSocketViewEvent.ClearAllDismissed) },
+            icon = Icons.Default.Delete,
+            destructive = true,
+        )
+    }
+
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
         topBar = {
             Column {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(R.string.websocket_title),
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    },
-                    navigationIcon = {
-                        onBack?.let { back ->
-                            IconButton(onClick = back) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = stringResource(R.string.websocket_back),
-                                )
-                            }
-                        }
-                    },
+                WormaCeptorTopBar(
+                    title = stringResource(R.string.websocket_title),
+                    onBack = onBack,
+                    backContentDescription = stringResource(R.string.websocket_back),
                     actions = {
-                        // Clear all connections
-                        IconButton(
-                            onClick = onClearAll,
-                            enabled = connections.isNotEmpty(),
+                        WormaCeptorIconButton(
+                            onClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                onEvent(WebSocketViewEvent.ClearAllRequested)
+                            },
+                            enabled = state.connections.isNotEmpty(),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
@@ -107,100 +111,75 @@ internal fun WebSocketListScreen(
                             )
                         }
                     },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                    ),
                 )
 
-                // Search bar
                 WormaCeptorSearchBar(
-                    query = searchQuery,
-                    onQueryChange = onSearchQueryChanged,
+                    query = state.connectionSearchQuery,
+                    onQueryChange = { onEvent(WebSocketViewEvent.ConnectionSearchQueryChanged(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                            vertical = WormaCeptorDesignSystem.Spacing.sm,
+                            horizontal = WormaCeptorTokens.Spacing.lg,
+                            vertical = WormaCeptorTokens.Spacing.sm,
                         ),
                     placeholder = stringResource(R.string.websocket_search_url_placeholder),
                 )
 
-                // Stats bar
                 StatsBar(
-                    totalCount = totalCount,
-                    filteredCount = connections.size,
+                    label = stringResource(R.string.websocket_connections_label),
+                    totalCount = state.totalConnectionCount,
+                    filteredCount = state.connections.size,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                            vertical = WormaCeptorDesignSystem.Spacing.xs,
+                            horizontal = WormaCeptorTokens.Spacing.lg,
+                            vertical = WormaCeptorTokens.Spacing.xs,
                         ),
                 )
             }
         },
     ) { paddingValues ->
-        Box(modifier = Modifier.imePadding()) {
-            if (connections.isEmpty()) {
-                WormaCeptorEmptyState(
-                    title = stringResource(
-                        if (searchQuery.isNotBlank()) {
-                            R.string.websocket_empty_no_matching_connections
-                        } else {
-                            R.string.websocket_empty_no_connections
-                        },
-                    ),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    subtitle = stringResource(
-                        if (searchQuery.isNotBlank()) {
-                            R.string.websocket_empty_search_hint
-                        } else {
-                            R.string.websocket_empty_connections_hint
-                        },
-                    ),
-                    icon = Icons.Default.Sync,
-                )
-            } else {
-                ConnectionList(
-                    connections = connections,
-                    onConnectionClick = onConnectionClick,
-                    getMessageCount = getMessageCount,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                )
-            }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .imePadding(),
+        ) {
+            WormaCeptorLoadableContent(
+                isLoading = state.isConnectionsLoading,
+                isEmpty = state.connections.isEmpty(),
+                loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
+                empty = {
+                    WormaCeptorEmptyState(
+                        title = stringResource(
+                            if (state.connectionSearchQuery.isNotBlank()) {
+                                R.string.websocket_empty_no_matching_connections
+                            } else {
+                                R.string.websocket_empty_no_connections
+                            },
+                        ),
+                        modifier = Modifier.fillMaxSize(),
+                        subtitle = stringResource(
+                            if (state.connectionSearchQuery.isNotBlank()) {
+                                R.string.websocket_empty_search_hint
+                            } else {
+                                R.string.websocket_empty_connections_hint
+                            },
+                        ),
+                        icon = Icons.Default.Sync,
+                    )
+                },
+                content = {
+                    ConnectionList(
+                        connections = state.connections,
+                        onConnectionClick = onConnectionClick,
+                        getMessageCount = getMessageCount,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
         }
-    }
-}
-
-@Composable
-private fun StatsBar(
-    totalCount: Int,
-    filteredCount: Int,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = stringResource(R.string.websocket_connections_label),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
-        Text(
-            text = if (filteredCount != totalCount) {
-                stringResource(R.string.websocket_stats_filtered, filteredCount, totalCount)
-            } else {
-                stringResource(R.string.websocket_stats_total, totalCount)
-            },
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
     }
 }
 
@@ -214,8 +193,8 @@ private fun ConnectionList(
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(
-            top = WormaCeptorDesignSystem.Spacing.sm,
-            bottom = WormaCeptorDesignSystem.Spacing.sm +
+            top = WormaCeptorTokens.Spacing.xs,
+            bottom = WormaCeptorTokens.Spacing.sm +
                 WindowInsets.navigationBars.asPaddingValues()
                     .calculateBottomPadding(),
         ),
@@ -241,9 +220,13 @@ private fun ConnectionItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val colors = webSocketColors()
-    val stateColor = colors.forState(connection.state)
-    val backgroundColor = colors.backgroundForState(connection.state)
+    val ws = WormaCeptorTokens.Colors.WebSocket
+    val stateColor = when (connection.state) {
+        WebSocketState.CONNECTING -> ws.connecting
+        WebSocketState.OPEN -> ws.open
+        WebSocketState.CLOSING -> ws.closing
+        WebSocketState.CLOSED -> ws.closed
+    }
 
     val timeFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.US) }
     val formattedTime = remember(connection.openedAt) {
@@ -254,92 +237,88 @@ private fun ConnectionItem(
         connection.duration?.let { formatDuration(it) } ?: "--"
     }
 
-    Surface(
-        modifier = modifier.clickable(onClick = onClick),
-        color = backgroundColor.copy(
-            alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
+    WormaCeptorCard(
+        modifier = modifier.padding(
+            horizontal = WormaCeptorTokens.Spacing.sm,
+            vertical = WormaCeptorTokens.Spacing.xxs,
         ),
+        onClick = onClick,
+        style = CardStyle.Outlined,
+        backgroundColor = stateColor.copy(alpha = TokenAlpha.SUBTLE),
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = WormaCeptorDesignSystem.Spacing.lg,
-                    vertical = WormaCeptorDesignSystem.Spacing.md,
+                    horizontal = WormaCeptorTokens.Spacing.md,
+                    vertical = WormaCeptorTokens.Spacing.sm,
                 ),
-            verticalAlignment = Alignment.CenterVertically,
         ) {
-            // State indicator dot
-            WormaCeptorStatusDot(
-                color = stateColor,
-                size = WormaCeptorDesignSystem.Spacing.md,
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                WormaCeptorStatusDot(
+                    color = stateColor,
+                    size = WormaCeptorTokens.Spacing.sm,
+                )
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.md))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
-            Column(modifier = Modifier.weight(1f)) {
-                // URL
                 Text(
                     text = connection.url,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
                 )
 
-                Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+                Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
-                // Stats row
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    // State badge
-                    Surface(
-                        shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.xs),
-                        color = stateColor.copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
-                    ) {
-                        Text(
-                            text = connection.state.name,
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            color = stateColor,
-                            modifier = Modifier.padding(
-                                horizontal = WormaCeptorDesignSystem.Spacing.xs,
-                                vertical = WormaCeptorDesignSystem.Spacing.xxs,
-                            ),
-                        )
-                    }
-
-                    // Message count
-                    Text(
-                        text = stringResource(R.string.websocket_message_count, messageCount),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-
-                    // Duration
-                    Text(
-                        text = duration,
-                        style = MaterialTheme.typography.labelSmall,
-                        fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                Text(
+                    text = formattedTime,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = FontFamily.Monospace,
+                    color = WormaCeptorTokens.semantic().textSecondary.copy(
+                        alpha = WormaCeptorTokens.Alpha.HEAVY,
+                    ),
+                )
             }
 
-            Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.sm))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
-            // Time
-            Text(
-                text = formattedTime,
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = FontFamily.Monospace,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                    alpha = WormaCeptorDesignSystem.Alpha.HEAVY,
-                ),
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Surface(
+                    shape = WormaCeptorTokens.Shapes.chip,
+                    color = stateColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                ) {
+                    Text(
+                        text = connection.state.name,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = stateColor,
+                        modifier = Modifier.padding(
+                            horizontal = WormaCeptorTokens.Spacing.xs,
+                            vertical = WormaCeptorTokens.Spacing.xxs,
+                        ),
+                    )
+                }
+
+                Text(
+                    text = stringResource(R.string.websocket_message_count, messageCount),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = WormaCeptorTokens.semantic().textSecondary,
+                )
+
+                Text(
+                    text = duration,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = FontFamily.Monospace,
+                    color = WormaCeptorTokens.semantic().textSecondary,
+                )
+            }
         }
     }
 }
@@ -349,29 +328,68 @@ private fun ConnectionItem(
 private fun WebSocketListScreenPreview() {
     WormaCeptorTheme {
         WebSocketListScreen(
-            connections = persistentListOf(
-                WebSocketConnection(
-                    id = 1L,
-                    url = "wss://echo.websocket.org",
-                    state = WebSocketState.OPEN,
-                    openedAt = System.currentTimeMillis() - 60_000L,
+            state = WebSocketViewState(
+                connections = persistentListOf(
+                    WebSocketConnection(
+                        id = 1L,
+                        url = "wss://echo.websocket.org",
+                        state = WebSocketState.OPEN,
+                        openedAt = System.currentTimeMillis() - 60_000L,
+                    ),
+                    WebSocketConnection(
+                        id = 2L,
+                        url = "wss://api.example.com/ws",
+                        state = WebSocketState.CLOSED,
+                        openedAt = System.currentTimeMillis() - 120_000L,
+                        closedAt = System.currentTimeMillis() - 30_000L,
+                        closeCode = 1000,
+                        closeReason = "Normal closure",
+                    ),
                 ),
-                WebSocketConnection(
-                    id = 2L,
-                    url = "wss://api.example.com/ws",
-                    state = WebSocketState.CLOSED,
-                    openedAt = System.currentTimeMillis() - 120_000L,
-                    closedAt = System.currentTimeMillis() - 30_000L,
-                    closeCode = 1000,
-                    closeReason = "Normal closure",
-                ),
+                totalConnectionCount = 2,
             ),
-            searchQuery = "",
-            totalCount = 2,
-            onSearchQueryChanged = {},
+            onEvent = {},
             onConnectionClick = {},
-            onClearAll = {},
             getMessageCount = { 5 },
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Clear All Confirmation")
+@Composable
+private fun WebSocketListScreenClearConfirmPreview() {
+    WormaCeptorTheme {
+        WebSocketListScreen(
+            state = WebSocketViewState(
+                connections = persistentListOf(
+                    WebSocketConnection(
+                        id = 1L,
+                        url = "wss://echo.websocket.org",
+                        state = WebSocketState.OPEN,
+                        openedAt = System.currentTimeMillis() - 60_000L,
+                    ),
+                ),
+                totalConnectionCount = 1,
+                showClearAllConfirmation = true,
+            ),
+            onEvent = {},
+            onConnectionClick = {},
+            getMessageCount = { 3 },
+            onBack = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Empty State")
+@Composable
+private fun WebSocketListScreenEmptyPreview() {
+    WormaCeptorTheme {
+        WebSocketListScreen(
+            state = WebSocketViewState(),
+            onEvent = {},
+            onConnectionClick = {},
+            getMessageCount = { 0 },
             onBack = {},
         )
     }

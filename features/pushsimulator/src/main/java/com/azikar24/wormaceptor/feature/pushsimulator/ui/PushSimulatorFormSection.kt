@@ -2,43 +2,41 @@ package com.azikar24.wormaceptor.feature.pushsimulator.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.TouchApp
-import androidx.compose.material.icons.outlined.Circle
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,35 +48,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import com.azikar24.wormaceptor.core.ui.components.DividerStyle
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorFlowRow
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
+import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
+import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
+import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.NotificationAction
 import com.azikar24.wormaceptor.domain.entities.NotificationChannelInfo
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.feature.pushsimulator.R
-import com.azikar24.wormaceptor.feature.pushsimulator.ui.theme.PushSimulatorDesignSystem
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewState
-
-internal const val TitleMaxChars = 50
-internal const val BodyMaxChars = 200
-
-// NotificationManager importance levels
-private const val ImportanceUrgent = 4
-private const val ImportanceHigh = 3
-private const val ImportanceDefault = 2
-private const val ImportanceLow = 1
 
 @Composable
 internal fun NotificationFormCard(
@@ -96,22 +85,16 @@ internal fun NotificationFormCard(
 ) {
     val selectedChannel = channels.find { it.id == state.selectedChannelId }
 
-    OutlinedCard(
+    WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = WormaCeptorDesignSystem.Shapes.card,
-        border = BorderStroke(
-            width = WormaCeptorDesignSystem.BorderWidth.regular,
-            color = MaterialTheme.colorScheme.outlineVariant
-                .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
-        ),
+        style = CardStyle.Outlined,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-            verticalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
+                .padding(WormaCeptorTokens.Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
         ) {
-            // Enhanced Preview Header
             NotificationPreview(
                 title = state.title.ifBlank { previewTitlePlaceholder },
                 body = state.body.ifBlank { previewBodyPlaceholder },
@@ -121,21 +104,19 @@ internal fun NotificationFormCard(
             )
 
             WormaCeptorDivider(
-                modifier = Modifier.padding(vertical = WormaCeptorDesignSystem.Spacing.sm),
+                modifier = Modifier.padding(vertical = WormaCeptorTokens.Spacing.sm),
                 style = DividerStyle.Subtle,
             )
 
-            // Title Input with character count
             OutlinedTextFieldWithCounter(
                 value = state.title,
                 onValueChange = onTitleChange,
                 label = stringResource(R.string.pushsimulator_field_title),
                 placeholder = stringResource(R.string.pushsimulator_field_title_placeholder),
                 singleLine = true,
-                maxChars = TitleMaxChars,
+                maxChars = PushSimulatorConstants.TITLE_MAX_CHARS,
             )
 
-            // Body Input with character count
             OutlinedTextFieldWithCounter(
                 value = state.body,
                 onValueChange = onBodyChange,
@@ -144,23 +125,20 @@ internal fun NotificationFormCard(
                 singleLine = false,
                 minLines = 2,
                 maxLines = 4,
-                maxChars = BodyMaxChars,
+                maxChars = PushSimulatorConstants.BODY_MAX_CHARS,
             )
 
-            // Channel Selector
             ChannelSelector(
                 selectedChannelId = state.selectedChannelId,
                 channels = channels,
                 onChannelSelected = onChannelChange,
             )
 
-            // Priority Selector
             PrioritySelector(
                 selectedPriority = state.priority,
                 onPrioritySelected = onPriorityChange,
             )
 
-            // Action Buttons Section
             ActionButtonsSection(
                 actions = state.actions,
                 newActionTitle = state.newActionTitle,
@@ -187,16 +165,16 @@ internal fun OutlinedTextFieldWithCounter(
     val isOverLimit = charCount > maxChars
     val charCountColor by animateColorAsState(
         targetValue = when {
-            isOverLimit -> MaterialTheme.colorScheme.error
-            charCount > maxChars * 0.8f -> MaterialTheme.colorScheme.tertiary
-            else -> MaterialTheme.colorScheme.onSurfaceVariant
+            isOverLimit -> WormaCeptorTokens.semantic().error
+            charCount > maxChars * 0.8f -> WormaCeptorTokens.semantic().accent
+            else -> WormaCeptorTokens.semantic().textSecondary
         },
-        animationSpec = tween(durationMillis = 150),
+        animationSpec = tween(durationMillis = WormaCeptorTokens.Animation.FAST),
         label = "charCountColor",
     )
 
     Column {
-        OutlinedTextField(
+        WormaCeptorTextField(
             value = value,
             onValueChange = onValueChange,
             label = { Text(label) },
@@ -205,31 +183,20 @@ internal fun OutlinedTextFieldWithCounter(
             minLines = if (singleLine) 1 else minLines,
             maxLines = if (singleLine) 1 else maxLines,
             modifier = Modifier.fillMaxWidth(),
-            shape = WormaCeptorDesignSystem.Shapes.button,
             isError = isOverLimit,
-            supportingText = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    Text(
-                        text = "$charCount / $maxChars",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = charCountColor,
-                    )
-                }
-            },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = if (isOverLimit) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MaterialTheme.colorScheme.primary
-                },
-            ),
+        )
+        Text(
+            text = "$charCount / $maxChars",
+            style = MaterialTheme.typography.labelSmall,
+            color = charCountColor,
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(top = WormaCeptorTokens.Spacing.xxs),
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ChannelSelector(
     selectedChannelId: String,
@@ -238,146 +205,92 @@ private fun ChannelSelector(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val selectedChannel = channels.find { it.id == selectedChannelId }
-    val dropdownRotation by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f,
-        animationSpec = tween(durationMillis = 200),
-        label = "dropdownRotation",
-    )
 
-    val channelContentDescription = stringResource(R.string.pushsimulator_channel_select)
-
-    Column {
-        Text(
-            text = stringResource(R.string.pushsimulator_channel_label),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        WormaCeptorTextField(
+            value = selectedChannel?.name.orEmpty(),
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(stringResource(R.string.pushsimulator_channel_label)) },
+            placeholder = { Text(stringResource(R.string.pushsimulator_channel_placeholder)) },
+            trailingIcon = {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                    modifier = Modifier.padding(end = WormaCeptorTokens.Spacing.sm),
+                ) {
+                    selectedChannel?.let { ImportanceBadge(importance = it.importance) }
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, enabled = true),
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
-
-        Box {
-            OutlinedCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { expanded = true }
-                    .semantics {
-                        role = Role.DropdownList
-                        contentDescription = channelContentDescription
-                    },
-                shape = WormaCeptorDesignSystem.Shapes.button,
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = if (expanded) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.outline
-                    },
-                ),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(WormaCeptorDesignSystem.Spacing.md),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Text(
-                            text = selectedChannel?.name ?: stringResource(R.string.pushsimulator_channel_placeholder),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = if (selectedChannel != null) {
-                                MaterialTheme.colorScheme.onSurface
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            channels.forEach { channel ->
+                val isSelected = channel.id == selectedChannelId
+                DropdownMenuItem(
+                    text = {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = stringResource(
+                                        R.string.pushsimulator_channel_selected,
+                                    ),
+                                    tint = WormaCeptorTokens.semantic().accent,
+                                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
+                                )
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                        )
-                        selectedChannel?.let { channel ->
-                            ImportanceBadge(importance = channel.importance)
-                        }
-                    }
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = if (expanded) {
-                            stringResource(R.string.pushsimulator_channel_collapse)
-                        } else {
-                            stringResource(R.string.pushsimulator_channel_expand)
-                        },
-                        modifier = Modifier.rotate(dropdownRotation),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                channels.forEach { channel ->
-                    val isSelected = channel.id == selectedChannelId
-                    DropdownMenuItem(
-                        text = {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(
-                                            WormaCeptorDesignSystem.Spacing.sm,
-                                        ),
-                                    ) {
-                                        Text(
-                                            text = channel.name,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            fontWeight = if (isSelected) {
-                                                FontWeight.SemiBold
-                                            } else {
-                                                FontWeight.Normal
-                                            },
-                                        )
-                                        ImportanceBadge(importance = channel.importance)
-                                    }
-                                    channel.description?.let { desc ->
-                                        Text(
-                                            text = desc,
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis,
-                                        )
-                                    }
-                                }
-                                if (isSelected) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.Circle,
-                                        contentDescription = stringResource(R.string.pushsimulator_channel_selected),
-                                        modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.sm),
-                                        tint = MaterialTheme.colorScheme.primary,
+                                Spacer(modifier = Modifier.size(WormaCeptorTokens.IconSize.sm))
+                            }
+                            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = channel.name,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = if (isSelected) {
+                                        FontWeight.SemiBold
+                                    } else {
+                                        FontWeight.Normal
+                                    },
+                                    color = if (isSelected) {
+                                        WormaCeptorTokens.semantic().accent
+                                    } else {
+                                        WormaCeptorTokens.semantic().textPrimary
+                                    },
+                                )
+                                channel.description?.let { desc ->
+                                    Text(
+                                        text = desc,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = WormaCeptorTokens.semantic().textSecondary,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
                                     )
                                 }
                             }
-                        },
-                        onClick = {
-                            onChannelSelected(channel.id)
-                            expanded = false
-                        },
-                        modifier = Modifier.background(
-                            if (isSelected) {
-                                MaterialTheme.colorScheme.primaryContainer.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.MODERATE,
-                                )
-                            } else {
-                                Color.Transparent
-                            },
-                        ),
-                    )
-                }
+                            Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
+                            ImportanceBadge(importance = channel.importance)
+                        }
+                    },
+                    onClick = {
+                        onChannelSelected(channel.id)
+                        expanded = false
+                    },
+                )
             }
         }
     }
@@ -392,30 +305,20 @@ private fun ImportanceBadge(importance: Int) {
     val minLabel = stringResource(R.string.pushsimulator_importance_min)
 
     val (label, color) = when (importance) {
-        ImportanceUrgent -> urgentLabel to PushSimulatorDesignSystem.PriorityColors.max
-        ImportanceHigh -> highLabel to PushSimulatorDesignSystem.PriorityColors.high
-        ImportanceDefault -> defaultLabel to PushSimulatorDesignSystem.PriorityColors.default
-        ImportanceLow -> lowLabel to PushSimulatorDesignSystem.PriorityColors.low
-        else -> minLabel to MaterialTheme.colorScheme.outline
+        PushSimulatorConstants.IMPORTANCE_URGENT -> urgentLabel to ToolColors.PushSimulator.Priority.max
+        PushSimulatorConstants.IMPORTANCE_HIGH -> highLabel to ToolColors.PushSimulator.Priority.high
+        PushSimulatorConstants.IMPORTANCE_DEFAULT -> defaultLabel to ToolColors.PushSimulator.Priority.default
+        PushSimulatorConstants.IMPORTANCE_LOW -> lowLabel to ToolColors.PushSimulator.Priority.low
+        else -> minLabel to WormaCeptorTokens.semantic().textTertiary
     }
 
-    Surface(
-        shape = WormaCeptorDesignSystem.Shapes.chip,
-        color = color.copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = color,
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorDesignSystem.Spacing.xs,
-                vertical = WormaCeptorDesignSystem.Spacing.xxs,
-            ),
-        )
-    }
+    WormaCeptorStatusBadge(
+        text = label,
+        containerColor = color.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
+        contentColor = color,
+    )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PrioritySelector(
     selectedPriority: NotificationPriority,
@@ -425,16 +328,16 @@ private fun PrioritySelector(
         Text(
             text = stringResource(R.string.pushsimulator_priority_label),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
-        WormaCeptorFlowRow(
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+        WormaCeptorScrollableRow(
+            contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
         ) {
             NotificationPriority.entries.forEach { priority ->
-                val priorityColor = PushSimulatorDesignSystem.PriorityColors.forPriority(priority.name)
+                val priorityColor = ToolColors.PushSimulator.Priority.forPriority(priority.name)
                 val isSelected = selectedPriority == priority
 
                 FilterChip(
@@ -449,7 +352,7 @@ private fun PrioritySelector(
                     leadingIcon = {
                         Box(
                             modifier = Modifier
-                                .size(WormaCeptorDesignSystem.Spacing.sm)
+                                .size(WormaCeptorTokens.Spacing.sm)
                                 .background(
                                     color = priorityColor,
                                     shape = CircleShape,
@@ -458,17 +361,17 @@ private fun PrioritySelector(
                     },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = priorityColor
-                            .copy(alpha = WormaCeptorDesignSystem.Alpha.LIGHT),
+                            .copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
                         selectedLabelColor = priorityColor,
                         selectedLeadingIconColor = priorityColor,
                     ),
                     border = FilterChipDefaults.filterChipBorder(
                         enabled = true,
                         selected = isSelected,
-                        borderColor = MaterialTheme.colorScheme.outline
-                            .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
+                        borderColor = WormaCeptorTokens.semantic().textTertiary
+                            .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                         selectedBorderColor = priorityColor
-                            .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
+                            .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                     ),
                 )
             }
@@ -476,7 +379,6 @@ private fun PrioritySelector(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ActionButtonsSection(
     actions: List<NotificationAction>,
@@ -496,30 +398,29 @@ private fun ActionButtonsSection(
             Text(
                 text = stringResource(R.string.pushsimulator_actions_label),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
             Text(
                 text = "${actions.size}/3",
                 style = MaterialTheme.typography.labelSmall,
                 color = if (remainingSlots == 0) {
-                    MaterialTheme.colorScheme.tertiary
+                    WormaCeptorTokens.semantic().accent
                 } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    WormaCeptorTokens.semantic().textSecondary
                 },
             )
         }
 
-        Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xs))
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
-        // Current actions with animation
         AnimatedVisibility(
             visible = actions.isNotEmpty(),
             enter = fadeIn() + scaleIn(initialScale = 0.95f),
             exit = fadeOut() + scaleOut(targetScale = 0.95f),
         ) {
-            WormaCeptorFlowRow(
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
-                modifier = Modifier.padding(bottom = WormaCeptorDesignSystem.Spacing.sm),
+            WormaCeptorScrollableRow(
+                modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.sm),
+                contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg),
             ) {
                 actions.forEach { action ->
                     InputChip(
@@ -535,7 +436,7 @@ private fun ActionButtonsSection(
                             Icon(
                                 imageVector = Icons.Default.TouchApp,
                                 contentDescription = null,
-                                modifier = Modifier.size(WormaCeptorDesignSystem.IconSize.sm),
+                                modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                             )
                         },
                         trailingIcon = {
@@ -549,30 +450,29 @@ private fun ActionButtonsSection(
                                     .size(InputChipDefaults.IconSize)
                                     .clip(CircleShape)
                                     .clickable { onRemoveAction(action.actionId) }
-                                    .padding(WormaCeptorDesignSystem.Spacing.xxs),
+                                    .padding(WormaCeptorTokens.Spacing.xxs),
                             )
                         },
                         colors = InputChipDefaults.inputChipColors(
-                            selectedContainerColor = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.SUBTLE),
-                            selectedLabelColor = PushSimulatorDesignSystem.TemplateColors.action,
-                            selectedLeadingIconColor = PushSimulatorDesignSystem.TemplateColors.action,
-                            selectedTrailingIconColor = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.STRONG),
+                            selectedContainerColor = ToolColors.PushSimulator.Template.action
+                                .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
+                            selectedLabelColor = ToolColors.PushSimulator.Template.action,
+                            selectedLeadingIconColor = ToolColors.PushSimulator.Template.action,
+                            selectedTrailingIconColor = ToolColors.PushSimulator.Template.action
+                                .copy(alpha = WormaCeptorTokens.Alpha.STRONG),
                         ),
                         border = InputChipDefaults.inputChipBorder(
                             enabled = true,
                             selected = true,
                             borderColor = Color.Transparent,
-                            selectedBorderColor = PushSimulatorDesignSystem.TemplateColors.action
-                                .copy(alpha = WormaCeptorDesignSystem.Alpha.MEDIUM),
+                            selectedBorderColor = ToolColors.PushSimulator.Template.action
+                                .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                         ),
                     )
                 }
             }
         }
 
-        // Add new action
         AnimatedVisibility(
             visible = remainingSlots > 0,
             enter = fadeIn(),
@@ -580,9 +480,9 @@ private fun ActionButtonsSection(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             ) {
-                OutlinedTextField(
+                WormaCeptorTextField(
                     value = newActionTitle,
                     onValueChange = onNewActionTitleChange,
                     placeholder = {
@@ -596,14 +496,6 @@ private fun ActionButtonsSection(
                     },
                     singleLine = true,
                     modifier = Modifier.weight(1f),
-                    shape = WormaCeptorDesignSystem.Shapes.button,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.TouchApp,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    },
                 )
 
                 val canAdd by remember(newActionTitle) {
@@ -619,21 +511,21 @@ private fun ActionButtonsSection(
                     enabled = canAdd,
                     shape = CircleShape,
                     color = if (canAdd) {
-                        MaterialTheme.colorScheme.primary
+                        WormaCeptorTokens.semantic().accent
                     } else {
-                        MaterialTheme.colorScheme.surfaceVariant
+                        WormaCeptorTokens.semantic().surfaceVariant
                     },
-                    modifier = Modifier.size(WormaCeptorDesignSystem.Spacing.xxxl),
+                    modifier = Modifier.size(WormaCeptorTokens.Spacing.xxxl),
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.pushsimulator_actions_add),
                             tint = if (canAdd) {
-                                MaterialTheme.colorScheme.onPrimary
+                                WormaCeptorTokens.semantic().background
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = WormaCeptorDesignSystem.Alpha.BOLD,
+                                WormaCeptorTokens.semantic().textSecondary.copy(
+                                    alpha = WormaCeptorTokens.Alpha.BOLD,
                                 )
                             },
                         )
@@ -641,5 +533,53 @@ private fun ActionButtonsSection(
                 }
             }
         }
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun NotificationFormCardPreview() {
+    WormaCeptorTheme {
+        NotificationFormCard(
+            state = PushSimulatorViewState(
+                title = "Test Notification",
+                body = "This is the notification body text",
+                priority = NotificationPriority.HIGH,
+            ),
+            channels = listOf(
+                NotificationChannelInfo(
+                    id = "general",
+                    name = "General",
+                    description = "General notifications",
+                    importance = 3,
+                ),
+            ),
+            previewTitlePlaceholder = "Title",
+            previewBodyPlaceholder = "Body",
+            onTitleChange = {},
+            onBodyChange = {},
+            onChannelChange = {},
+            onPriorityChange = {},
+            onNewActionTitleChange = {},
+            onAddAction = {},
+            onRemoveAction = {},
+        )
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun OutlinedTextFieldWithCounterPreview() {
+    WormaCeptorTheme {
+        OutlinedTextFieldWithCounter(
+            value = "Sample input text",
+            onValueChange = {},
+            label = "Title",
+            placeholder = "Enter title",
+            singleLine = true,
+            maxChars = PushSimulatorConstants.TITLE_MAX_CHARS,
+        )
     }
 }

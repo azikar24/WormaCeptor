@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>InjectDispatcher:PreferencesRepositoryImpl.kt$PreferencesRepositoryImpl$IO</ID>
+    <ID>InjectDispatcher:PreferencesViewModel.kt$PreferencesViewModel$Default</ID>
+    <ID>LongMethod:PreferenceDetailScreen.kt$@Composable private fun PreferenceDetailBody( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, typeColors: ToolColors.Preferences.TypeScheme, searchActive: Boolean, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun PreferenceDetailTopBar( fileName: String, totalItemCount: Int, searchActive: Boolean, onToggleSearch: () -&gt; Unit, onClearAll: () -&gt; Unit, onBack: () -&gt; Unit, )</ID>
+    <ID>LongParameterList:PreferenceDetailScreen.kt$( fileName: String, totalItemCount: Int, searchActive: Boolean, onToggleSearch: () -&gt; Unit, onClearAll: () -&gt; Unit, onBack: () -&gt; Unit, )</ID>
+    <ID>OutdatedDocumentation:PreferencesViewState.kt$PreferencesViewState</ID>
+    <ID>ParameterNaming:PreferenceEditSheet.kt$onTypeSelected</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent$Detail : PreferencesViewEvent</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent$List : PreferencesViewEvent</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$ClearConfirmDismissed : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$ClearConfirmShown : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$DeleteConfirmDismissed : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$DeleteConfirmShown : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$EditSheetDismissed : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$EditSheetOpened : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$FileCleared : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$FiltersCleared : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$PreferenceCreated : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$PreferenceDeleted : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$PreferenceSet : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$SearchQueryChanged : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.Detail$TypeFilterChanged : Detail</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SearchQueryChanged : List</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SearchToggled : List</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$Selected : List</ID>
+    <ID>UndocumentedPublicClass:PreferencesViewEvent.kt$PreferencesViewEvent.List$SelectionCleared : List</ID>
+    <ID>UndocumentedPublicFunction:PreferenceDetailScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun PreferenceDetailScreen( state: PreferencesViewState, onEvent: (PreferencesViewEvent) -&gt; Unit, onBack: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicFunction:PreferenceItemCard.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun PreferenceItemCard( item: PreferenceItem, typeColors: ToolColors.Preferences.TypeScheme, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.DeleteConfirmShown$val key: String</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.EditSheetOpened$val item: PreferenceItem?</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.PreferenceCreated$val key: String</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.PreferenceCreated$val value: PreferenceValue</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.PreferenceDeleted$val key: String</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.PreferenceSet$val key: String</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.PreferenceSet$val value: PreferenceValue</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.SearchQueryChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.Detail.TypeFilterChanged$val typeName: String?</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.List.SearchQueryChanged$val query: String</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewEvent.kt$PreferencesViewEvent.List.Selected$val fileName: String</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val editingItem: PreferenceItem? = null</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val isFileSearchActive: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showClearConfirmDialog: Boolean = false</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showDeleteConfirmKey: String? = null</ID>
+    <ID>UndocumentedPublicProperty:PreferencesViewState.kt$PreferencesViewState$val showEditSheet: Boolean = false</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$(item?.value as? PreferenceValue.FloatValue)?.value?.toString() ?: ""</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$(item?.value as? PreferenceValue.IntValue)?.value?.toString() ?: ""</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$(item?.value as? PreferenceValue.LongValue)?.value?.toString() ?: ""</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$(item?.value as? PreferenceValue.StringValue)?.value ?: ""</ID>
+    <ID>UseOrEmpty:PreferenceEditSheet.kt$item?.key ?: ""</ID>
+    <ID>UseOrEmpty:PreferencesDataSource.kt$PreferencesDataSource$prefsDir.listFiles() ?.filter { it.isFile &amp;&amp; it.extension == "xml" } ?.map { it.nameWithoutExtension } ?: emptyList()</ID>
+  </CurrentIssues>
+</SmellBaseline>

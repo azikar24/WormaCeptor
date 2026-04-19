@@ -7,7 +7,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -19,9 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.location.R
-import com.azikar24.wormaceptor.feature.location.ui.theme.LocationColors
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -50,14 +48,14 @@ fun LocationMapView(
     // Animate border based on mock active state
     val borderWidth by animateDpAsState(
         targetValue = if (isMockActive) {
-            WormaCeptorDesignSystem.BorderWidth.thick
+            WormaCeptorTokens.BorderWidth.thick
         } else {
-            WormaCeptorDesignSystem.BorderWidth.regular
+            WormaCeptorTokens.BorderWidth.regular
         },
         label = "borderWidth",
     )
     val borderColor by animateColorAsState(
-        targetValue = if (isMockActive) LocationColors.enabled else Color.Transparent,
+        targetValue = if (isMockActive) WormaCeptorTokens.Colors.Location.enabled else Color.Transparent,
         label = "borderColor",
     )
 
@@ -94,11 +92,11 @@ fun LocationMapView(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg))
+            .clip(WormaCeptorTokens.Shapes.cardLarge)
             .border(
                 width = borderWidth,
                 color = borderColor,
-                shape = RoundedCornerShape(WormaCeptorDesignSystem.CornerRadius.lg),
+                shape = WormaCeptorTokens.Shapes.cardLarge,
             ),
     ) {
         AndroidView(

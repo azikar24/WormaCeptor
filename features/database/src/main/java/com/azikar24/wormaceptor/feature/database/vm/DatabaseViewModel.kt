@@ -3,109 +3,159 @@ package com.azikar24.wormaceptor.feature.database.vm
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
+import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.domain.contracts.DatabaseRepository
 import com.azikar24.wormaceptor.domain.entities.DatabaseInfo
 import com.azikar24.wormaceptor.domain.entities.QueryResult
 import com.azikar24.wormaceptor.domain.entities.TableInfo
 import com.azikar24.wormaceptor.feature.database.R
-import kotlinx.collections.immutable.ImmutableList
+import com.azikar24.wormaceptor.feature.database.navigator.DatabaseNavigator
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val SearchDebounceMs = 300L
-private const val FlowTimeoutMs = 5000L
-private const val QueryHistoryLimit = 20
-private const val DefaultPageSize = 100
-
-/**
- * ViewModel for the Database Browser feature, using MVI via BaseViewModel.
- */
 class DatabaseViewModel(
     private val repository: DatabaseRepository,
     private val application: Application,
-) : BaseViewModel<DatabaseViewState, DatabaseViewEffect, DatabaseViewEvent>(DatabaseViewState()) {
+    navigator: DatabaseNavigator,
+) : BaseViewModel<DatabaseViewState, DatabaseViewEffect, DatabaseViewEvent, DatabaseNavigator>(
+    DatabaseViewState(),
+    navigator,
+) {
 
     private val _allDatabases = MutableStateFlow<List<DatabaseInfo>>(emptyList())
     private val _allTables = MutableStateFlow<List<TableInfo>>(emptyList())
 
-    /** Filtered database list, derived from the raw list and the search query. */
-    @OptIn(FlowPreview::class)
-    val databases: StateFlow<ImmutableList<DatabaseInfo>> = combine(
-        _allDatabases,
-        uiState.map { it.databaseSearchQuery }.debounce(SearchDebounceMs),
-    ) { databases, query ->
-        if (query.isBlank()) {
-            databases.toImmutableList()
-        } else {
-            databases.filter {
-                it.name.contains(query, ignoreCase = true) ||
-                    it.path.contains(query, ignoreCase = true)
-            }.toImmutableList()
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(FlowTimeoutMs), persistentListOf())
-
-    /** Filtered table list, derived from the raw list and the search query. */
-    @OptIn(FlowPreview::class)
-    val tables: StateFlow<ImmutableList<TableInfo>> = combine(
-        _allTables,
-        uiState.map { it.tableSearchQuery }.debounce(SearchDebounceMs),
-    ) { tables, query ->
-        if (query.isBlank()) {
-            tables.toImmutableList()
-        } else {
-            tables.filter {
-                it.name.contains(query, ignoreCase = true)
-            }.toImmutableList()
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(FlowTimeoutMs), persistentListOf())
-
     init {
+        observeFilteredLists()
         loadDatabases()
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun observeFilteredLists() {
+        combine(
+            _allDatabases,
+            uiState.map { it.databaseSearchQuery }.debounce { if (it.isBlank()) 0L else SearchDebounce.HEAVY },
+        ) { databases, query ->
+            if (query.isBlank()) {
+                databases.toImmutableList()
+            } else {
+                databases.filter {
+                    it.name.contains(query, ignoreCase = true) ||
+                        it.path.contains(query, ignoreCase = true)
+                }.toImmutableList()
+            }
+        }.onEach { filtered ->
+            updateState { copy(databases = filtered) }
+        }.launchIn(viewModelScope)
+
+        combine(
+            _allTables,
+            uiState.map { it.tableSearchQuery }.debounce { if (it.isBlank()) 0L else SearchDebounce.HEAVY },
+        ) { tables, query ->
+            if (query.isBlank()) {
+                tables.toImmutableList()
+            } else {
+                tables.filter {
+                    it.name.contains(query, ignoreCase = true)
+                }.toImmutableList()
+            }
+        }.onEach { filtered ->
+            updateState { copy(tables = filtered) }
+        }.launchIn(viewModelScope)
     }
 
     override fun handleEvent(event: DatabaseViewEvent) {
         when (event) {
-            DatabaseViewEvent.LoadDatabases -> loadDatabases()
-            is DatabaseViewEvent.DatabaseSearchQueryChanged -> {
+            is DatabaseViewEvent.List -> handleListEvent(event)
+            is DatabaseViewEvent.Tables -> handleTablesEvent(event)
+            is DatabaseViewEvent.Data -> handleDataEvent(event)
+            is DatabaseViewEvent.Query -> handleQueryEvent(event)
+        }
+    }
+
+    private fun handleListEvent(event: DatabaseViewEvent.List) {
+        when (event) {
+            DatabaseViewEvent.List.Load -> loadDatabases()
+            is DatabaseViewEvent.List.SearchQueryChanged -> {
                 updateState { copy(databaseSearchQuery = event.query) }
             }
-            is DatabaseViewEvent.DatabaseSelected -> selectDatabase(event.name)
-            DatabaseViewEvent.DatabaseSelectionCleared -> clearDatabaseSelection()
+            DatabaseViewEvent.List.ToggleSearch -> {
+                val wasActive = uiState.value.isDatabaseSearchActive
+                updateState {
+                    copy(
+                        isDatabaseSearchActive = !wasActive,
+                        databaseSearchQuery = if (wasActive) "" else databaseSearchQuery,
+                    )
+                }
+            }
+            is DatabaseViewEvent.List.Selected -> {
+                selectDatabase(event.name)
+                navigator.navigateToTables()
+            }
+            DatabaseViewEvent.List.SelectionCleared -> clearDatabaseSelection()
+        }
+    }
 
-            is DatabaseViewEvent.TableSearchQueryChanged -> {
+    private fun handleTablesEvent(event: DatabaseViewEvent.Tables) {
+        when (event) {
+            is DatabaseViewEvent.Tables.SearchQueryChanged -> {
                 updateState { copy(tableSearchQuery = event.query) }
             }
-            is DatabaseViewEvent.TableSelected -> selectTable(event.name)
-            DatabaseViewEvent.TableSelectionCleared -> clearTableSelection()
-
-            DatabaseViewEvent.ToggleSchema -> {
-                updateState { copy(showSchema = !showSchema) }
+            DatabaseViewEvent.Tables.ToggleSearch -> {
+                val wasActive = uiState.value.isTableSearchActive
+                updateState {
+                    copy(
+                        isTableSearchActive = !wasActive,
+                        tableSearchQuery = if (wasActive) "" else tableSearchQuery,
+                    )
+                }
             }
-            DatabaseViewEvent.NextPage -> nextPage()
-            DatabaseViewEvent.PreviousPage -> previousPage()
-
-            is DatabaseViewEvent.SqlQueryChanged -> {
-                updateState { copy(sqlQuery = event.query) }
+            is DatabaseViewEvent.Tables.Selected -> {
+                selectTable(event.name)
+                navigator.navigateToTableData()
             }
-            DatabaseViewEvent.ExecuteQuery -> executeQuery()
-            DatabaseViewEvent.ClearQuery -> {
+            DatabaseViewEvent.Tables.SelectionCleared -> clearTableSelection()
+            DatabaseViewEvent.Tables.NavigateToQuery -> navigator.navigateToQuery()
+            DatabaseViewEvent.Tables.BackPressed -> {
+                clearDatabaseSelection()
+                navigator.navigateBack()
+            }
+        }
+    }
+
+    private fun handleDataEvent(event: DatabaseViewEvent.Data) {
+        when (event) {
+            DatabaseViewEvent.Data.ToggleSchema -> updateState { copy(showSchema = !showSchema) }
+            DatabaseViewEvent.Data.NextPage -> nextPage()
+            DatabaseViewEvent.Data.PreviousPage -> previousPage()
+            DatabaseViewEvent.Data.BackPressed -> {
+                clearTableSelection()
+                navigator.navigateBack()
+            }
+        }
+    }
+
+    private fun handleQueryEvent(event: DatabaseViewEvent.Query) {
+        when (event) {
+            is DatabaseViewEvent.Query.SqlChanged -> updateState { copy(sqlQuery = event.query) }
+            DatabaseViewEvent.Query.Execute -> executeQuery()
+            DatabaseViewEvent.Query.Clear -> updateState { copy(sqlQuery = "", queryExecutionResult = null) }
+            DatabaseViewEvent.Query.BackPressed -> {
                 updateState { copy(sqlQuery = "", queryExecutionResult = null) }
+                navigator.navigateBack()
             }
-            is DatabaseViewEvent.QuerySelectedFromHistory -> {
-                updateState { copy(sqlQuery = event.query) }
-            }
-            is DatabaseViewEvent.PrefilledQueryRequested -> setPrefilledQuery(event.tableName, event.queryType)
+            is DatabaseViewEvent.Query.HistorySelected -> updateState { copy(sqlQuery = event.query) }
+            is DatabaseViewEvent.Query.PrefilledRequested -> setPrefilledQuery(event.tableName, event.queryType)
         }
     }
 
@@ -118,12 +168,21 @@ class DatabaseViewModel(
                     repository.getDatabases()
                 }
                 _allDatabases.value = databases
+                // Eagerly reflect the load so the UI transitions loading → content in one frame,
+                // without flashing the empty state while combine's query debounce is pending.
+                updateState {
+                    copy(
+                        databases = databases.toImmutableList(),
+                        isDatabasesLoading = false,
+                    )
+                }
             } catch (e: IllegalStateException) {
                 updateState {
-                    copy(databasesError = e.message ?: application.getString(R.string.database_error_load_databases))
+                    copy(
+                        databasesError = e.message ?: application.getString(R.string.database_error_load_databases),
+                        isDatabasesLoading = false,
+                    )
                 }
-            } finally {
-                updateState { copy(isDatabasesLoading = false) }
             }
         }
     }
@@ -150,12 +209,21 @@ class DatabaseViewModel(
                     repository.getTables(dbName)
                 }
                 _allTables.value = tables
+                // Eagerly reflect the load so the UI transitions loading → content in one frame,
+                // without flashing the empty state while combine's query debounce is pending.
+                updateState {
+                    copy(
+                        tables = tables.toImmutableList(),
+                        isTablesLoading = false,
+                    )
+                }
             } catch (e: IllegalStateException) {
                 updateState {
-                    copy(tablesError = e.message ?: application.getString(R.string.database_error_load_tables))
+                    copy(
+                        tablesError = e.message ?: application.getString(R.string.database_error_load_tables),
+                        isTablesLoading = false,
+                    )
                 }
-            } finally {
-                updateState { copy(isTablesLoading = false) }
             }
         }
     }
@@ -203,9 +271,9 @@ class DatabaseViewModel(
             updateState { copy(isDataLoading = true) }
 
             try {
-                val offset = state.currentPage * DefaultPageSize
+                val offset = state.currentPage * DEFAULT_PAGE_SIZE
                 val result = withContext(Dispatchers.IO) {
-                    repository.queryTable(dbName, tableName, DefaultPageSize, offset)
+                    repository.queryTable(dbName, tableName, DEFAULT_PAGE_SIZE, offset)
                 }
                 updateState { copy(queryResult = result) }
             } catch (e: IllegalStateException) {
@@ -227,7 +295,7 @@ class DatabaseViewModel(
 
     private fun nextPage() {
         val result = uiState.value.queryResult ?: return
-        if (result.rowCount == DefaultPageSize) {
+        if (result.rowCount == DEFAULT_PAGE_SIZE) {
             updateState { copy(currentPage = currentPage + 1) }
             loadTableData()
         }
@@ -268,7 +336,7 @@ class DatabaseViewModel(
                 }
                 updateState {
                     val updatedHistory = if (result.isSuccess && !queryHistory.contains(query)) {
-                        (queryHistory + query).takeLast(QueryHistoryLimit).toImmutableList()
+                        (queryHistory + query).takeLast(QUERY_HISTORY_LIMIT).toImmutableList()
                     } else {
                         queryHistory
                     }
@@ -302,5 +370,10 @@ class DatabaseViewModel(
             else -> ""
         }
         updateState { copy(sqlQuery = query) }
+    }
+
+    companion object {
+        private const val QUERY_HISTORY_LIMIT = 20
+        private const val DEFAULT_PAGE_SIZE = 100
     }
 }

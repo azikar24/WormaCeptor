@@ -7,172 +7,180 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.azikar24.wormaceptor.core.ui.components.WormaCeptorDivider
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorDesignSystem
-import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
+import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
+import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
+import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.FileInfo
 import com.azikar24.wormaceptor.feature.filebrowser.R
+import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEvent
 
-/**
- * Bottom sheet showing detailed file information.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FileInfoSheet(
     fileInfo: FileInfo,
-    onDismiss: () -> Unit,
-    onDelete: (String) -> Unit,
-    onShowMessage: (String) -> Unit,
+    onEvent: (FileBrowserViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
+    WormaCeptorBottomSheet(
+        onDismissRequest = { onEvent(FileBrowserViewEvent.HideFileInfo) },
         modifier = modifier,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WormaCeptorDesignSystem.Spacing.lg),
-        ) {
-            // Title
+        FileInfoSheetContent(
+            fileInfo = fileInfo,
+            onEvent = onEvent,
+        )
+    }
+}
+
+@Composable
+private fun FileInfoSheetContent(
+    fileInfo: FileInfo,
+    onEvent: (FileBrowserViewEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = stringResource(R.string.filebrowser_file_information),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = WormaCeptorTokens.semantic().textPrimary,
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
+
+        InfoRow(stringResource(R.string.filebrowser_label_name), fileInfo.name)
+
+        FilePathRow(
+            path = fileInfo.path,
+            onCopyPath = { onEvent(FileBrowserViewEvent.CopyFilePath(fileInfo.path)) },
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
+
+        InfoRow(stringResource(R.string.filebrowser_label_size), formatBytes(fileInfo.sizeBytes))
+
+        InfoRow(stringResource(R.string.filebrowser_label_modified), formatTimestampFull(fileInfo.lastModified))
+
+        fileInfo.mimeType?.let {
+            InfoRow(stringResource(R.string.filebrowser_label_type), it)
+        }
+
+        fileInfo.extension?.let {
+            InfoRow(stringResource(R.string.filebrowser_label_extension), it)
+        }
+
+        InfoRow(
+            stringResource(R.string.filebrowser_label_permissions),
+            formatPermissions(
+                isReadable = fileInfo.isReadable,
+                isWritable = fileInfo.isWritable,
+                readLabel = stringResource(R.string.filebrowser_permission_read),
+                writeLabel = stringResource(R.string.filebrowser_permission_write),
+                noneLabel = stringResource(R.string.filebrowser_permission_none),
+            ),
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
+        WormaCeptorDivider()
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
+
+        ActionButtons(
+            isWritable = fileInfo.isWritable,
+            onDismiss = { onEvent(FileBrowserViewEvent.HideFileInfo) },
+            onDelete = {
+                onEvent(FileBrowserViewEvent.DeleteFile(fileInfo.path))
+                onEvent(FileBrowserViewEvent.HideFileInfo)
+            },
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
+    }
+}
+
+@Composable
+private fun FilePathRow(
+    path: String,
+    onCopyPath: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = stringResource(R.string.filebrowser_file_information),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
+                text = stringResource(R.string.filebrowser_label_path),
+                style = MaterialTheme.typography.labelMedium,
+                color = WormaCeptorTokens.semantic().textSecondary,
             )
+            Text(
+                text = path,
+                style = MaterialTheme.typography.bodyMedium,
+                color = WormaCeptorTokens.semantic().textPrimary,
+            )
+        }
+        WormaCeptorIconButton(onClick = onCopyPath) {
+            Icon(
+                imageVector = Icons.Default.ContentCopy,
+                contentDescription = stringResource(R.string.filebrowser_copy_path),
+            )
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
+@Composable
+private fun ActionButtons(
+    isWritable: Boolean,
+    onDismiss: () -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
+    ) {
+        WormaCeptorButton(
+            text = stringResource(R.string.filebrowser_close),
+            onClick = onDismiss,
+            modifier = Modifier.weight(1f),
+            variant = ButtonVariant.Text,
+        )
 
-            // File name
-            InfoRow(stringResource(R.string.filebrowser_label_name), fileInfo.name)
-
-            // File path with copy button
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.filebrowser_label_path),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Text(
-                        text = fileInfo.path,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-                IconButton(
-                    onClick = {
-                        val message = copyToClipboard(context, "File Path", fileInfo.path)
-                        onShowMessage(message)
-                    },
-                ) {
+        if (isWritable) {
+            WormaCeptorButton(
+                text = stringResource(R.string.filebrowser_delete),
+                onClick = onDelete,
+                modifier = Modifier.weight(1f),
+                variant = ButtonVariant.Destructive,
+                leadingIcon = {
                     Icon(
-                        imageVector = Icons.Default.ContentCopy,
-                        contentDescription = stringResource(R.string.filebrowser_copy_path),
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
                     )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.sm))
-
-            // File size
-            InfoRow(stringResource(R.string.filebrowser_label_size), formatBytes(fileInfo.sizeBytes))
-
-            // Last modified
-            InfoRow(stringResource(R.string.filebrowser_label_modified), formatTimestampFull(fileInfo.lastModified))
-
-            // MIME type
-            val typeLabel = stringResource(R.string.filebrowser_label_type)
-            fileInfo.mimeType?.let {
-                InfoRow(typeLabel, it)
-            }
-
-            // Extension
-            val extensionLabel = stringResource(R.string.filebrowser_label_extension)
-            fileInfo.extension?.let {
-                InfoRow(extensionLabel, it)
-            }
-
-            // Permissions
-            val permissionRead = stringResource(R.string.filebrowser_permission_read)
-            val permissionWrite = stringResource(R.string.filebrowser_permission_write)
-            val permissionNone = stringResource(R.string.filebrowser_permission_none)
-            val permissions = buildString {
-                append(if (fileInfo.isReadable) permissionRead else "")
-                if (fileInfo.isWritable) {
-                    if (isNotEmpty()) append(", ")
-                    append(permissionWrite)
-                }
-                if (isEmpty()) append(permissionNone)
-            }
-            InfoRow(stringResource(R.string.filebrowser_label_permissions), permissions)
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-            WormaCeptorDivider()
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.lg))
-
-            // Actions
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(WormaCeptorDesignSystem.Spacing.md),
-            ) {
-                TextButton(
-                    onClick = onDismiss,
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Text(stringResource(R.string.filebrowser_close))
-                }
-
-                if (fileInfo.isWritable) {
-                    Button(
-                        onClick = {
-                            onDelete(fileInfo.path)
-                            onDismiss()
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error,
-                        ),
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = null,
-                        )
-                        Spacer(modifier = Modifier.width(WormaCeptorDesignSystem.Spacing.xs))
-                        Text(stringResource(R.string.filebrowser_delete))
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(WormaCeptorDesignSystem.Spacing.xl))
+                },
+            )
         }
     }
 }
@@ -185,17 +193,53 @@ private fun InfoRow(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = WormaCeptorDesignSystem.Spacing.xs),
+            .padding(vertical = WormaCeptorTokens.Spacing.xs),
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         Text(
             text = value,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = WormaCeptorTokens.semantic().textPrimary,
+        )
+    }
+}
+
+private fun formatPermissions(
+    isReadable: Boolean,
+    isWritable: Boolean,
+    readLabel: String,
+    writeLabel: String,
+    noneLabel: String,
+): String = buildString {
+    if (isReadable) append(readLabel)
+    if (isWritable) {
+        if (isNotEmpty()) append(", ")
+        append(writeLabel)
+    }
+    if (isEmpty()) append(noneLabel)
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FileInfoSheetContentPreview() {
+    WormaCeptorTheme {
+        FileInfoSheetContent(
+            fileInfo = FileInfo(
+                name = "example.json",
+                path = "/data/data/com.example/files/example.json",
+                sizeBytes = 4096,
+                lastModified = System.currentTimeMillis(),
+                mimeType = "application/json",
+                isReadable = true,
+                isWritable = true,
+                extension = "json",
+                parentPath = "/data/data/com.example/files",
+            ),
+            onEvent = {},
         )
     }
 }

@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.0"
+agp = "8.5.2"
 kotlin = "2.0.21"
 kotlinJvm = "2.0.21"
 detekt = "1.23.8"
@@ -17,7 +17,7 @@ pagingRuntime = "3.3.6"
 retrofit = "2.9.0"
 okhttp = "4.12.0"
 room = "2.6.1"
-composeBom = "2025.10.00"
+composeBom = "2024.10.01"
 accompanist = "0.36.0"
 multidex = "2.0.1"
 ksp = "2.0.21-1.0.27"
@@ -62,7 +62,7 @@ targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry
 compileSdk = "36"
 #noinspection UnusedVersionCatalogEntry
-versionCode = "42"
+versionCode = "43"
 #noinspection UnusedVersionCatalogEntry
 versionName = "2.3.0"
 

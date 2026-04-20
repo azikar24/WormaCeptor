@@ -121,6 +121,9 @@ object TokenComponentSize {
     val tableCellMaxWidth = 200.dp
     val treeIndent = 14.dp
     val iconButtonSmall = 36.dp
+    val pullRefreshThreshold = 80.dp
+    val pullRefreshIndicator = 40.dp
+    val pullRefreshStroke = 2.5.dp
 }
 
 /**

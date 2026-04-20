@@ -13,13 +13,10 @@
     <ID>MagicNumber:DurationFormatter.kt$1000.0</ID>
     <ID>MagicNumber:FormatUtils.kt$1024</ID>
     <ID>MagicNumber:FormatUtils.kt$1024.0</ID>
-    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$0.001f</ID>
-    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$1000f</ID>
     <ID>MatchingDeclarationName:BaseColors.kt$Palette</ID>
     <ID>MatchingDeclarationName:FeatureColors.kt$Colors</ID>
     <ID>MatchingDeclarationName:SyntaxColors.kt$ComposeSyntaxColors</ID>
     <ID>ModifierComposed:ClickableExtensions.kt$clickableWithoutRipple</ID>
-    <ID>ModifierComposed:TrackRecompositionModifier.kt$trackRecomposition</ID>
     <ID>MultipleEmitters:WormaCeptorButton.kt$ButtonContent</ID>
     <ID>TopLevelPropertyNaming:ClipboardUtils.kt$/** * Maximum size in bytes for clipboard copy operations. * Content larger than this should use shareAsFile instead. */ const val MAX_CLIPBOARD_SIZE = 100_000 // 100KB</ID>
     <ID>UndocumentedPublicClass:DetailItem.kt$DetailItem</ID>

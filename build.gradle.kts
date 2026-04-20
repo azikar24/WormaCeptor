@@ -15,6 +15,7 @@ plugins {
     alias(libs.plugins.binary.compatibility.validator)
     alias(libs.plugins.kover)
     alias(libs.plugins.gradle.doctor)
+    alias(libs.plugins.vanniktech.maven.publish) apply false
 }
 
 // Detekt configuration for root project

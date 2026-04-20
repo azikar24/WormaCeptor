@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptor.core.ui
+package com.azikar24.wormaceptor.feature.recomposition
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
@@ -6,20 +6,13 @@ import java.util.concurrent.atomic.AtomicLong
 /**
  * Tracks Jetpack Compose recomposition counts per composable in real-time.
  *
- * Thread-safe singleton that records recomposition events registered via
- * [Modifier.trackRecomposition][trackRecomposition] and exposes aggregated
- * data for the Recomposition Inspector dashboard.
+ * Thread-safe singleton. The public entry point is `Modifier.trackRecomposition(name)`
+ * in `api-client`, which reflectively invokes [record] when this class is on the
+ * classpath. In release builds this feature module is absent (it ships only through
+ * `debugImplementation`), so the reflection lookup fails and the modifier no-ops.
  */
 object RecompositionTracker {
 
-    /**
-     * Immutable snapshot of a single composable's recomposition data.
-     *
-     * @property name Identifier of the tracked composable.
-     * @property count Total recomposition count since tracking began.
-     * @property lastTimestamp Epoch millis of the most recent recomposition.
-     * @property ratePerSecond Computed recompositions per second over the session.
-     */
     data class RecompositionData(
         val name: String,
         val count: Long,
@@ -27,10 +20,6 @@ object RecompositionTracker {
         val ratePerSecond: Float = 0f,
     )
 
-    /**
-     * Internal mutable holder stored in the concurrent map.
-     * Mutations are confined to atomic operations so no external lock is needed.
-     */
     private class MutableEntry(
         val name: String,
         val count: AtomicLong = AtomicLong(0),
@@ -48,7 +37,7 @@ object RecompositionTracker {
 
     /**
      * Records a single recomposition event for the composable identified by [name].
-     * Creates a new entry if the composable has not been seen before.
+     * Invoked reflectively from `api-client`'s `trackRecomposition` modifier.
      */
     fun record(name: String) {
         val now = System.currentTimeMillis()
@@ -59,15 +48,8 @@ object RecompositionTracker {
         entry.lastTimestamp.set(now)
     }
 
-    /**
-     * Returns an immutable snapshot of all tracked composables.
-     */
     fun getAll(): Map<String, RecompositionData> = tracked.mapValues { (_, entry) -> entry.snapshot() }
 
-    /**
-     * Calculates the recomposition rate (per second) for [name] over the
-     * session duration. Returns `0f` when no data is available.
-     */
     fun getRate(name: String): Float {
         val entry = tracked[name] ?: return 0f
         val elapsed = getSessionDuration().coerceAtLeast(1)
@@ -75,9 +57,6 @@ object RecompositionTracker {
         return count / (elapsed / 1000f).coerceAtLeast(0.001f)
     }
 
-    /**
-     * Returns the top [limit] composables sorted by recomposition rate (descending).
-     */
     fun getTopRecomposers(limit: Int = 10): List<RecompositionData> {
         val sessionMs = getSessionDuration().coerceAtLeast(1)
         val sessionSeconds = (sessionMs / 1000f).coerceAtLeast(0.001f)
@@ -90,26 +69,16 @@ object RecompositionTracker {
             .take(limit)
     }
 
-    /**
-     * Clears all tracking data and resets the session start time.
-     */
     fun reset() {
         tracked.clear()
         sessionStart.set(0)
     }
 
-    /**
-     * Returns how long (in millis) since the first [record] call, or `0` if
-     * nothing has been recorded yet.
-     */
     fun getSessionDuration(): Long {
         val start = sessionStart.get()
         if (start == 0L) return 0L
         return System.currentTimeMillis() - start
     }
 
-    /**
-     * Returns the sum of all recomposition counts across every tracked composable.
-     */
     fun getTotalRecompositions(): Long = tracked.values.sumOf { it.count.get() }
 }

@@ -3,8 +3,8 @@ package com.azikar24.wormaceptor.feature.recomposition.vm
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
-import com.azikar24.wormaceptor.core.ui.RecompositionTracker
 import com.azikar24.wormaceptor.feature.recomposition.FormatRecompositionSummaryUseCase
+import com.azikar24.wormaceptor.feature.recomposition.RecompositionTracker
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

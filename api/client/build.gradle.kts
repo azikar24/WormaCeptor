@@ -24,4 +24,6 @@ dependencies {
     // who don't use Compose don't pull it transitively.
     compileOnly(platform(libs.androidx.compose.bom))
     compileOnly(libs.androidx.ui)
+    testCompileOnly(platform(libs.androidx.compose.bom))
+    testCompileOnly(libs.androidx.ui)
 }

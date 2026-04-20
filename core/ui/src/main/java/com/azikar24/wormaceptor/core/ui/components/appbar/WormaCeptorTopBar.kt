@@ -49,9 +49,9 @@ fun WormaCeptorTopBar(
         },
         navigationIcon = {
             TopBarNavigationIcon(
-                icon = navigationIcon,
                 onBack = onBack,
                 backContentDescription = backContentDescription,
+                icon = navigationIcon,
             )
         },
         actions = actions,
@@ -81,9 +81,9 @@ fun WormaCeptorTopBar(
         },
         navigationIcon = {
             TopBarNavigationIcon(
-                icon = null,
                 onBack = onBack,
                 backContentDescription = backContentDescription,
+                icon = null,
             )
         },
         actions = actions,
@@ -144,9 +144,9 @@ private fun TopBarTitle(
 
 @Composable
 private fun TopBarNavigationIcon(
-    icon: (@Composable () -> Unit)?,
     onBack: (() -> Unit)?,
     backContentDescription: String?,
+    icon: (@Composable () -> Unit)?,
 ) {
     when {
         icon != null -> icon()

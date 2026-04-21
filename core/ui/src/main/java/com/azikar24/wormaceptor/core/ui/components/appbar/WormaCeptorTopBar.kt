@@ -12,15 +12,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Unspecified
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
+/** Standard top app bar with optional subtitle, leading/trailing title slots, and back button. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WormaCeptorTopBar(
@@ -33,68 +35,31 @@ fun WormaCeptorTopBar(
     titleLeading: (@Composable () -> Unit)? = null,
     titleTrailing: (@Composable () -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
-        containerColor = MaterialTheme.colorScheme.surface,
-    ),
+    containerColor: Color = Unspecified,
 ) {
     TopAppBar(
         modifier = modifier,
         title = {
-            val titleContent: @Composable () -> Unit = {
-                if (titleLeading == null && titleTrailing == null) {
-                    Text(
-                        text = title,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                } else {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-                    ) {
-                        titleLeading?.invoke()
-                        Text(
-                            text = title,
-                            fontWeight = FontWeight.SemiBold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        titleTrailing?.invoke()
-                    }
-                }
-            }
-            if (subtitle == null) {
-                titleContent()
-            } else {
-                Column {
-                    titleContent()
-                    Text(
-                        text = subtitle,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-            }
+            TopBarTitle(
+                title = title,
+                subtitle = subtitle,
+                leading = titleLeading,
+                trailing = titleTrailing,
+            )
         },
         navigationIcon = {
-            when {
-                navigationIcon != null -> navigationIcon()
-                onBack != null -> IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = backContentDescription,
-                    )
-                }
-            }
+            TopBarNavigationIcon(
+                onBack = onBack,
+                backContentDescription = backContentDescription,
+                icon = navigationIcon,
+            )
         },
         actions = actions,
-        colors = colors,
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = resolveContainer(containerColor)),
     )
 }
 
+/** Slot-based top app bar that lets the caller render the title with full [RowScope] control. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WormaCeptorTopBar(
@@ -102,9 +67,7 @@ fun WormaCeptorTopBar(
     onBack: (() -> Unit)? = null,
     backContentDescription: String? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
-        containerColor = MaterialTheme.colorScheme.surface,
-    ),
+    containerColor: Color = Unspecified,
     title: @Composable RowScope.() -> Unit,
 ) {
     TopAppBar(
@@ -117,16 +80,81 @@ fun WormaCeptorTopBar(
             )
         },
         navigationIcon = {
-            onBack?.let { back ->
-                IconButton(onClick = back) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = backContentDescription,
-                    )
-                }
-            }
+            TopBarNavigationIcon(
+                onBack = onBack,
+                backContentDescription = backContentDescription,
+                icon = null,
+            )
         },
         actions = actions,
-        colors = colors,
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = resolveContainer(containerColor)),
     )
+}
+
+@Composable
+private fun resolveContainer(color: Color): Color =
+    if (color == Unspecified) WormaCeptorTokens.semantic().surface else color
+
+@Composable
+private fun TopBarTitle(
+    title: String,
+    subtitle: String?,
+    leading: (@Composable () -> Unit)?,
+    trailing: (@Composable () -> Unit)?,
+) {
+    val titleRow: @Composable () -> Unit = {
+        if (leading == null && trailing == null) {
+            Text(
+                text = title,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        } else {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+            ) {
+                leading?.invoke()
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                trailing?.invoke()
+            }
+        }
+    }
+    if (subtitle == null) {
+        titleRow()
+    } else {
+        Column {
+            titleRow()
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = WormaCeptorTokens.semantic().textSecondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun TopBarNavigationIcon(
+    onBack: (() -> Unit)?,
+    backContentDescription: String?,
+    icon: (@Composable () -> Unit)?,
+) {
+    when {
+        icon != null -> icon()
+        onBack != null -> IconButton(onClick = onBack) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = backContentDescription,
+            )
+        }
+    }
 }

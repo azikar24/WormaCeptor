@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.threadviolation.ui.components
 
-import android.content.ClipData
 import android.os.Build
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -20,13 +19,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ClipEntry
-import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
@@ -37,7 +35,6 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampCompact
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.feature.threadviolation.R
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun ViolationDetailContent(
@@ -89,10 +86,9 @@ internal fun ViolationDetailContent(
 
         if (violation.stackTrace.isNotEmpty()) {
             item {
-                val clipboard = LocalClipboard.current
+                val clipboard = LocalClipboardManager.current
                 val context = LocalContext.current
                 val copiedMessage = stringResource(R.string.threadviolation_stack_copied)
-                val scope = rememberCoroutineScope()
                 Column(verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -107,13 +103,9 @@ internal fun ViolationDetailContent(
                         )
                         WormaCeptorIconButton(
                             onClick = {
-                                val clipData = ClipData.newPlainText(
-                                    "Stack Trace",
-                                    violation.stackTrace.joinToString("\n"),
+                                clipboard.setText(
+                                    AnnotatedString(violation.stackTrace.joinToString("\n")),
                                 )
-                                scope.launch {
-                                    clipboard.setClipEntry(ClipEntry(clipData))
-                                }
                                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                                     Toast.makeText(context, copiedMessage, Toast.LENGTH_SHORT).show()
                                 }

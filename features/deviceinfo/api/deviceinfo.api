@@ -32,7 +32,7 @@ public final class com/azikar24/wormaceptor/feature/deviceinfo/ui/ComposableSing
 }
 
 public final class com/azikar24/wormaceptor/feature/deviceinfo/ui/DeviceInfoScreenKt {
-	public static final fun DeviceInfoScreenContent (Lcom/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState;Landroidx/compose/material3/SnackbarHostState;Landroidx/compose/material3/pulltorefresh/PullToRefreshState;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun DeviceInfoScreenContent (Lcom/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoViewState;Landroidx/compose/material3/SnackbarHostState;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/azikar24/wormaceptor/feature/deviceinfo/vm/DeviceInfoSection : java/lang/Enum {

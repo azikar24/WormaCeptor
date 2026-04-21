@@ -36,9 +36,6 @@ import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.body.ContentTypeChip
 
-/**
- * Data class holding information about a single search match.
- */
 internal data class MatchInfo(
     val globalPosition: Int,
     val lineIndex: Int,
@@ -125,13 +122,11 @@ private fun SegmentOption(
 }
 
 /**
- * Responsive row of body controls that wraps on small screens.
- * Uses FlowRow to allow badges to flow to multiple lines when space is constrained.
+ * Horizontal row of body controls: content-type chip + pretty/raw toggle.
  *
  * Layout priority (from most to least important):
  * 1. Pretty/Raw toggle - primary interaction for viewing mode
- * 2. Zoom button - quick access to fullscreen view
- * 3. Content type chip - informational, can wrap to next row
+ * 2. Content type chip - informational
  */
 @Composable
 internal fun BodyControlsRow(

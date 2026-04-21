@@ -23,10 +23,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.PullToRefreshState
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorPullToRefresh
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatDateFull
@@ -59,12 +56,12 @@ import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoSection
 import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoViewEvent
 import com.azikar24.wormaceptor.feature.deviceinfo.vm.DeviceInfoViewState
 
+/** Stateless Device Info screen: scaffolded content with pull-to-refresh and error states. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceInfoScreenContent(
     state: DeviceInfoViewState,
     snackBarHostState: SnackbarHostState,
-    pullToRefreshState: PullToRefreshState,
     onBack: () -> Unit,
     onEvent: (DeviceInfoViewEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -101,7 +98,6 @@ fun DeviceInfoScreenContent(
         } else {
             DeviceInfoPullToRefresh(
                 state = state,
-                pullToRefreshState = pullToRefreshState,
                 onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxSize()
@@ -141,28 +137,16 @@ private fun DeviceInfoTopBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DeviceInfoPullToRefresh(
     state: DeviceInfoViewState,
-    pullToRefreshState: PullToRefreshState,
     onEvent: (DeviceInfoViewEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    PullToRefreshBox(
+    WormaCeptorPullToRefresh(
         isRefreshing = state.isRefreshing,
         onRefresh = { onEvent(DeviceInfoViewEvent.Refresh) },
-        state = pullToRefreshState,
         modifier = modifier,
-        indicator = {
-            Indicator(
-                modifier = Modifier.align(Alignment.TopCenter),
-                isRefreshing = state.isRefreshing,
-                state = pullToRefreshState,
-                containerColor = WormaCeptorTokens.semantic().surfaceVariant,
-                color = WormaCeptorTokens.semantic().accent,
-            )
-        },
     ) {
         state.deviceInfo?.let { info ->
             DeviceInfoSectionList(info = info, onEvent = onEvent)
@@ -335,7 +319,6 @@ private fun DeviceInfoScreenContentPreview() {
                 isRefreshing = false,
             ),
             snackBarHostState = remember { SnackbarHostState() },
-            pullToRefreshState = rememberPullToRefreshState(),
             onBack = {},
             onEvent = {},
         )

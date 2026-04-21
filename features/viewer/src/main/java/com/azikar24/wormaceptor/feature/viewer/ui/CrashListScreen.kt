@@ -19,16 +19,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +38,7 @@ import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorEmptyState
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorListSkeleton
 import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableContent
-import com.azikar24.wormaceptor.core.ui.components.state.rememberHapticOnce
+import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorPullToRefresh
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash
@@ -52,17 +47,7 @@ import com.azikar24.wormaceptor.feature.viewer.IsSevereExceptionUseCase
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableList
 
-/**
- * CrashListScreen with pull-to-refresh support.
- *
- * @param crashes List of crashes to display
- * @param onCrashClick Callback when a crash is clicked
- * @param modifier Modifier for the screen
- * @param isInitialLoading Whether the initial data load is still in progress
- * @param isRefreshing Whether the list is currently refreshing
- * @param onRefresh Callback triggered on pull-to-refresh
- */
-@OptIn(ExperimentalMaterial3Api::class)
+/** Crash list with skeleton loading, empty state, and optional pull-to-refresh. */
 @Composable
 fun CrashListScreen(
     crashes: ImmutableList<Crash>,
@@ -72,25 +57,7 @@ fun CrashListScreen(
     isRefreshing: Boolean = false,
     onRefresh: (() -> Unit)? = null,
 ) {
-    val pullToRefreshState = rememberPullToRefreshState()
     val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-    val haptic = rememberHapticOnce()
-
-    // Trigger haptic feedback when pull threshold is reached
-    LaunchedEffect(pullToRefreshState.distanceFraction) {
-        if (pullToRefreshState.distanceFraction >= 1f && !haptic.isTriggered) {
-            haptic.triggerHaptic()
-        } else if (pullToRefreshState.distanceFraction < 1f) {
-            haptic.resetHaptic()
-        }
-    }
-
-    // Reset haptic state when refreshing ends
-    LaunchedEffect(isRefreshing) {
-        if (!isRefreshing) {
-            haptic.resetHaptic()
-        }
-    }
 
     val loadable: @Composable () -> Unit = {
         WormaCeptorLoadableContent(
@@ -129,20 +96,11 @@ fun CrashListScreen(
     }
 
     if (onRefresh != null) {
-        PullToRefreshBox(
+        WormaCeptorPullToRefresh(
             isRefreshing = isRefreshing,
             onRefresh = onRefresh,
-            state = pullToRefreshState,
             modifier = modifier.fillMaxSize(),
-            indicator = {
-                Indicator(
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    isRefreshing = isRefreshing,
-                    state = pullToRefreshState,
-                    containerColor = WormaCeptorTokens.semantic().surfaceVariant,
-                    color = WormaCeptorTokens.semantic().error,
-                )
-            },
+            indicatorColor = WormaCeptorTokens.semantic().error,
         ) {
             loadable()
         }

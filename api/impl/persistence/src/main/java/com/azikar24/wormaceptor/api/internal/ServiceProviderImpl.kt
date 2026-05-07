@@ -16,7 +16,8 @@ import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomPushSimulatorReposi
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomTransactionRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.RoomWebViewMonitorRepository
 import com.azikar24.wormaceptor.infra.persistence.sqlite.WormaCeptorDatabase
-import net.sqlcipher.database.SupportFactory
+import net.zetetic.database.sqlcipher.SQLiteDatabase
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import java.io.File
 
 internal class ServiceProviderImpl : BaseServiceProviderImpl() {
@@ -26,6 +27,9 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
         val dbName = "wormaceptor-v2.db"
         val passphrase = KeystoreKeyManager.getOrCreatePassphrase(context)
 
+        // sqlcipher-android no longer auto-loads its JNI; must call before any DB open.
+        System.loadLibrary("sqlcipher")
+
         // Encrypt existing unencrypted DB in-place, preserving all data
         encryptDatabaseIfNeeded(context, dbName, passphrase)
 
@@ -34,7 +38,7 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
             WormaCeptorDatabase::class.java,
             dbName,
         )
-            .openHelperFactory(SupportFactory(passphrase))
+            .openHelperFactory(SupportOpenHelperFactory(passphrase))
             .addMigrations(*AllMigrations)
             .fallbackToDestructiveMigrationFrom(*LegacyDestructiveVersions)
             .fallbackToDestructiveMigrationOnDowngrade()
@@ -57,24 +61,14 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
 
     override fun getNotificationTitle() = "WormaCeptor: Recording..."
 
-    /**
-     * Migrates an existing unencrypted database to SQLCipher encryption without data loss.
-     *
-     * Reads all schema and data from the plaintext DB using standard Android SQLite,
-     * writes it into a new SQLCipher-encrypted DB, then swaps the files.
-     * This avoids asking SQLCipher to open a plaintext file (which fails in 4.x).
-     */
     private fun encryptDatabaseIfNeeded(
         context: Context,
         dbName: String,
         passphrase: ByteArray,
     ) {
-        val appContext = context.applicationContext
-        val dbFile = appContext.getDatabasePath(dbName)
+        val dbFile = context.applicationContext.getDatabasePath(dbName)
         if (!dbFile.exists()) return
         if (!isUnencryptedSqlite(dbFile)) return
-
-        net.sqlcipher.database.SQLiteDatabase.loadLibs(appContext)
 
         val tempFile = File(dbFile.parent, "$dbName-encrypting")
         tempFile.delete()
@@ -88,9 +82,10 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
             )
 
             // Create new encrypted DB with SQLCipher
-            val encDb = net.sqlcipher.database.SQLiteDatabase.openOrCreateDatabase(
+            val encDb = SQLiteDatabase.openOrCreateDatabase(
                 tempFile,
-                String(passphrase, Charsets.UTF_8),
+                passphrase,
+                null,
                 null,
             )
 
@@ -183,7 +178,7 @@ internal class ServiceProviderImpl : BaseServiceProviderImpl() {
 
     private fun copyTableData(
         source: android.database.sqlite.SQLiteDatabase,
-        dest: net.sqlcipher.database.SQLiteDatabase,
+        dest: SQLiteDatabase,
         table: String,
     ) {
         val cursor = source.rawQuery("SELECT * FROM \"$table\"", null)

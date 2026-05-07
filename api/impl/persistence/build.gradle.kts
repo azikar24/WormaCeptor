@@ -5,6 +5,10 @@ plugins {
 
 android {
     namespace = "com.azikar24.wormaceptor.api.impl.persistence"
+
+    defaultConfig {
+        consumerProguardFiles("consumer-rules.pro")
+    }
 }
 
 dependencies {

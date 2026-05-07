@@ -45,8 +45,8 @@ Add the dependencies in your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.azikar24.wormaceptor:wormaceptor-client:2.3.0")
-    debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:2.3.0")
+    implementation("com.azikar24.wormaceptor:wormaceptor-client:2.3.1")
+    debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:2.3.1")
 }
 ```
 

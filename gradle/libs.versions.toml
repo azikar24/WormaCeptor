@@ -62,7 +62,7 @@ targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry
 compileSdk = "36"
 #noinspection UnusedVersionCatalogEntry
-versionCode = "43"
+versionCode = "44"
 #noinspection UnusedVersionCatalogEntry
 versionName = "2.3.1"
 

@@ -6,6 +6,18 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.play.publisher)
+}
+
+play {
+    val serviceAccountPath = providers.environmentVariable("PLAY_STORE_SERVICE_ACCOUNT_JSON").orNull
+    if (!serviceAccountPath.isNullOrBlank()) {
+        serviceAccountCredentials.set(file(serviceAccountPath))
+    }
+    track.set("internal")
+    defaultToAppBundles.set(true)
+    releaseStatus.set(com.github.triplet.gradle.androidpublisher.ReleaseStatus.DRAFT)
+    enabled.set(serviceAccountPath != null)
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -23,8 +35,14 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
+        val versionNameValue = libs.versions.versionName.get()
+        val (major, minor, patch) =
+            versionNameValue.split("-")
+                .first()
+                .split(".")
+                .map { it.toInt() }
+        versionCode = major * 1_000_000 + minor * 1_000 + patch
+        versionName = versionNameValue
         multiDexEnabled = true
     }
 

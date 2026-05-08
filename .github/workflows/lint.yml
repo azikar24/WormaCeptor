@@ -155,12 +155,11 @@ jobs:
         run: ./gradlew apiCheck
 
   # ==========================================================================
-  # Code Coverage
+  # Unit Tests
   # ==========================================================================
-  coverage:
-    name: Code Coverage (Kover)
+  unit-tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
-    continue-on-error: true # Don't block PRs initially
     steps:
       - uses: actions/checkout@v4
 
@@ -173,8 +172,38 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Run Tests with Coverage
-        run: ./gradlew koverXmlReport
+      - name: Run Unit Tests
+        run: ./gradlew test
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-test-results
+          path: |
+            **/build/test-results/test*/**/*.xml
+            **/build/reports/tests/
+
+  # ==========================================================================
+  # Code Coverage (gated at 50% via koverVerify)
+  # ==========================================================================
+  coverage:
+    name: Code Coverage (Kover)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Run Coverage Verification
+        run: ./gradlew koverVerify koverXmlReport koverHtmlReport
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v4
@@ -182,13 +211,6 @@ jobs:
         with:
           name: coverage-report
           path: build/reports/kover/
-
-      # Optional: Upload to Codecov
-      # - name: Upload to Codecov
-      #   uses: codecov/codecov-action@v4
-      #   with:
-      #     files: build/reports/kover/report.xml
-      #     token: ${{ secrets.CODECOV_TOKEN }}
 
   # ==========================================================================
   # Architecture Tests
@@ -231,39 +253,60 @@ jobs:
       - android-lint
       - api-compatibility
       - architecture
+      - unit-tests
+      - coverage
     if: always()
+    env:
+      SECRET_SCAN_RESULT: ${{ needs.secret-scan.result }}
+      SPOTLESS_RESULT: ${{ needs.spotless.result }}
+      DETEKT_RESULT: ${{ needs.detekt.result }}
+      LINT_RESULT: ${{ needs.android-lint.result }}
+      API_RESULT: ${{ needs.api-compatibility.result }}
+      ARCH_RESULT: ${{ needs.architecture.result }}
+      UNIT_TESTS_RESULT: ${{ needs.unit-tests.result }}
+      COVERAGE_RESULT: ${{ needs.coverage.result }}
     steps:
       - name: Check all required jobs
         run: |
           echo "Checking job results..."
 
-          if [[ "${{ needs.secret-scan.result }}" != "success" ]]; then
+          if [[ "$SECRET_SCAN_RESULT" != "success" ]]; then
             echo "Secret scanning failed!"
             exit 1
           fi
 
-          if [[ "${{ needs.spotless.result }}" != "success" ]]; then
+          if [[ "$SPOTLESS_RESULT" != "success" ]]; then
             echo "Formatting check failed!"
             exit 1
           fi
 
-          if [[ "${{ needs.detekt.result }}" != "success" ]]; then
+          if [[ "$DETEKT_RESULT" != "success" ]]; then
             echo "Static analysis failed!"
             exit 1
           fi
 
-          if [[ "${{ needs.android-lint.result }}" != "success" ]]; then
+          if [[ "$LINT_RESULT" != "success" ]]; then
             echo "Android Lint failed!"
             exit 1
           fi
 
-          if [[ "${{ needs.api-compatibility.result }}" != "success" ]]; then
+          if [[ "$API_RESULT" != "success" ]]; then
             echo "API compatibility check failed!"
             exit 1
           fi
 
-          if [[ "${{ needs.architecture.result }}" != "success" ]]; then
+          if [[ "$ARCH_RESULT" != "success" ]]; then
             echo "Architecture tests failed!"
+            exit 1
+          fi
+
+          if [[ "$UNIT_TESTS_RESULT" != "success" ]]; then
+            echo "Unit tests failed!"
+            exit 1
+          fi
+
+          if [[ "$COVERAGE_RESULT" != "success" ]]; then
+            echo "Coverage verification failed!"
             exit 1
           fi
 

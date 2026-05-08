@@ -197,12 +197,16 @@ class LogsViewModelTest {
     /**
      * Helper that keeps consuming items from the turbine until [predicate] returns true.
      * The debounce + flowOn(Dispatchers.Default) pipeline may emit intermediate states
-     * before the final filtered result arrives.
+     * before the final filtered result arrives. Cancels remaining events so the
+     * `.test {}` block exits cleanly even if combine emits again after the match.
      */
     private suspend fun <T> ReceiveTurbine<T>.awaitUntil(predicate: (T) -> Boolean): T {
         while (true) {
             val item = awaitItem()
-            if (predicate(item)) return item
+            if (predicate(item)) {
+                cancelAndIgnoreRemainingEvents()
+                return item
+            }
         }
     }
 

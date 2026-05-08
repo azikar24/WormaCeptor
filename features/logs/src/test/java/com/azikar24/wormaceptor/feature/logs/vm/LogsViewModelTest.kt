@@ -197,17 +197,26 @@ class LogsViewModelTest {
     /**
      * Helper that keeps consuming items from the turbine until [predicate] returns true.
      * The debounce + flowOn(Dispatchers.Default) pipeline may emit intermediate states
-     * before the final filtered result arrives. Cancels remaining events so the
-     * `.test {}` block exits cleanly even if combine emits again after the match.
+     * before the final filtered result arrives.
      */
     private suspend fun <T> ReceiveTurbine<T>.awaitUntil(predicate: (T) -> Boolean): T {
         while (true) {
             val item = awaitItem()
-            if (predicate(item)) {
-                cancelAndIgnoreRemainingEvents()
-                return item
-            }
+            if (predicate(item)) return item
         }
+    }
+
+    /**
+     * Wraps Turbine's [test] block with a trailing [cancelAndIgnoreRemainingEvents] so
+     * StateFlows backed by `combine(...)` don't fail with "Unconsumed events" when
+     * intermediate emissions slip in after the assertions. Use instead of `.test {}`
+     * when collecting a hot StateFlow.
+     */
+    private suspend fun <T> kotlinx.coroutines.flow.Flow<T>.testWithCleanup(
+        block: suspend ReceiveTurbine<T>.() -> Unit,
+    ) = test {
+        block()
+        cancelAndIgnoreRemainingEvents()
     }
 
     @Nested
@@ -218,7 +227,7 @@ class LogsViewModelTest {
             val debugLog = makeLogEntry(id = 1, level = LogLevel.DEBUG)
             val errorLog = makeLogEntry(id = 2, level = LogLevel.ERROR)
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 skipItems(1) // initial state
 
                 logsFlow.value = listOf(debugLog, errorLog)
@@ -236,7 +245,7 @@ class LogsViewModelTest {
             val matchingLog = makeLogEntry(id = 1, tag = "NetworkTag", message = "irrelevant")
             val nonMatchingLog = makeLogEntry(id = 2, tag = "OtherTag", message = "irrelevant")
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 skipItems(1)
 
                 logsFlow.value = listOf(matchingLog, nonMatchingLog)
@@ -254,7 +263,7 @@ class LogsViewModelTest {
             val matchingLog = makeLogEntry(id = 1, tag = "Tag", message = "Connection established")
             val nonMatchingLog = makeLogEntry(id = 2, tag = "Tag", message = "Something else")
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 skipItems(1)
 
                 logsFlow.value = listOf(matchingLog, nonMatchingLog)
@@ -273,7 +282,7 @@ class LogsViewModelTest {
             val errorMatch = makeLogEntry(id = 2, level = LogLevel.ERROR, tag = "NetworkTag")
             val errorNoMatch = makeLogEntry(id = 3, level = LogLevel.ERROR, tag = "OtherTag")
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 skipItems(1)
 
                 logsFlow.value = listOf(debugMatch, errorMatch, errorNoMatch)
@@ -295,7 +304,7 @@ class LogsViewModelTest {
         fun `reflects raw logs size`() = runTest {
             logsFlow.value = listOf(makeLogEntry(id = 1), makeLogEntry(id = 2), makeLogEntry(id = 3))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.totalCount == 3 }.totalCount shouldBe 3
             }
         }
@@ -312,7 +321,7 @@ class LogsViewModelTest {
                 makeLogEntry(id = 3, level = LogLevel.ERROR),
             )
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 val state = awaitUntil { it.levelCounts.isNotEmpty() }
                 state.levelCounts[LogLevel.DEBUG] shouldBe 2
                 state.levelCounts[LogLevel.ERROR] shouldBe 1

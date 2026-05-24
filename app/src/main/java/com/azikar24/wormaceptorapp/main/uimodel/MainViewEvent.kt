@@ -12,6 +12,17 @@ sealed class MainViewEvent {
     data object TriggerLeakClicked : MainViewEvent()
     data object ThreadViolationClicked : MainViewEvent()
 
+    data object SeedDatabaseClicked : MainViewEvent()
+    data object SeedPreferencesClicked : MainViewEvent()
+    data object WriteSampleFilesClicked : MainViewEvent()
+
+    data object EmitSampleLogsClicked : MainViewEvent()
+
+    data object BurnCpuClicked : MainViewEvent()
+    data object AllocateMemoryClicked : MainViewEvent()
+    data object DropFramesClicked : MainViewEvent()
+    data object RecompositionStormClicked : MainViewEvent()
+
     data object LocationClicked : MainViewEvent()
     data object WebViewClicked : MainViewEvent()
     data object SecureStorageClicked : MainViewEvent()

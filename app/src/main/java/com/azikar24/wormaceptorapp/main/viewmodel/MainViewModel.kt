@@ -22,11 +22,13 @@ import retrofit2.Response
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
+@Suppress("LargeClass", "TooManyFunctions")
 class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent, NoOpNavigator>(
     MainViewState(),
     NoOpNavigator,
 ) {
 
+    @Suppress("LongMethod", "CyclomaticComplexMethod")
     override fun handleEvent(event: MainViewEvent) {
         when (event) {
             MainViewEvent.LaunchWormaCeptorClicked -> emitEffect(MainViewEffect.OpenWormaCeptor)
@@ -44,6 +46,17 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
                 updateState { copy(leakStatus = ToolStatus.WaitingForAction) }
             }
             MainViewEvent.ThreadViolationClicked -> handleThreadViolation()
+
+            MainViewEvent.SeedDatabaseClicked -> handleSeedDatabase()
+            MainViewEvent.SeedPreferencesClicked -> handleSeedPreferences()
+            MainViewEvent.WriteSampleFilesClicked -> handleWriteSampleFiles()
+
+            MainViewEvent.EmitSampleLogsClicked -> handleEmitSampleLogs()
+
+            MainViewEvent.BurnCpuClicked -> handleBurnCpu()
+            MainViewEvent.AllocateMemoryClicked -> handleAllocateMemory()
+            MainViewEvent.DropFramesClicked -> handleDropFrames()
+            MainViewEvent.RecompositionStormClicked -> handleRecompositionStorm()
 
             MainViewEvent.LocationClicked -> {
                 updateState { copy(showTestToolsSheet = false) }
@@ -72,24 +85,12 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
     private fun handleRunApiTests() {
         doHttpActivity()
         doContentTypeTests()
-        viewModelScope.launch {
-            updateState { copy(apiTestStatus = ToolStatus.Running) }
-            delay(STATUS_RUNNING_DURATION)
-            updateState { copy(apiTestStatus = ToolStatus.Done) }
-            delay(STATUS_DONE_DURATION)
-            updateState { copy(apiTestStatus = ToolStatus.Idle) }
-        }
+        runWithStatus({ apiTestStatus }) { copy(apiTestStatus = it) }
     }
 
     private fun handleWebSocketTest() {
         SampleWebSocketService.connect()
-        viewModelScope.launch {
-            updateState { copy(webSocketStatus = ToolStatus.Running) }
-            delay(STATUS_RUNNING_DURATION)
-            updateState { copy(webSocketStatus = ToolStatus.Done) }
-            delay(STATUS_DONE_DURATION)
-            updateState { copy(webSocketStatus = ToolStatus.Idle) }
-        }
+        runWithStatus({ webSocketStatus }) { copy(webSocketStatus = it) }
     }
 
     private fun handleThreadViolation() {
@@ -98,6 +99,55 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
             updateState { copy(threadViolationStatus = ToolStatus.Done) }
             delay(STATUS_DONE_DURATION)
             updateState { copy(threadViolationStatus = ToolStatus.Idle) }
+        }
+    }
+
+    private fun handleSeedDatabase() {
+        emitEffect(MainViewEffect.SeedDatabase)
+        runWithStatus({ seedDatabaseStatus }) { copy(seedDatabaseStatus = it) }
+    }
+
+    private fun handleSeedPreferences() {
+        emitEffect(MainViewEffect.SeedPreferences)
+        runWithStatus({ seedPreferencesStatus }) { copy(seedPreferencesStatus = it) }
+    }
+
+    private fun handleWriteSampleFiles() {
+        emitEffect(MainViewEffect.WriteSampleFiles)
+        runWithStatus({ writeFilesStatus }) { copy(writeFilesStatus = it) }
+    }
+
+    private fun handleEmitSampleLogs() {
+        emitEffect(MainViewEffect.EmitSampleLogs)
+        runWithStatus({ logsStatus }) { copy(logsStatus = it) }
+    }
+
+    private fun handleBurnCpu() {
+        emitEffect(MainViewEffect.BurnCpu)
+        runWithStatus({ cpuStressStatus }, runningMs = STRESS_RUNNING_DURATION) {
+            copy(cpuStressStatus = it)
+        }
+    }
+
+    private fun handleAllocateMemory() {
+        emitEffect(MainViewEffect.AllocateMemory)
+        runWithStatus({ memoryStressStatus }, runningMs = STRESS_RUNNING_DURATION) {
+            copy(memoryStressStatus = it)
+        }
+    }
+
+    private fun handleDropFrames() {
+        emitEffect(MainViewEffect.DropFrames)
+        runWithStatus({ frameDropStatus }, runningMs = JANK_RUNNING_DURATION) {
+            copy(frameDropStatus = it)
+        }
+    }
+
+    private fun handleRecompositionStorm() {
+        viewModelScope.launch {
+            updateState { copy(recompositionStormActive = true) }
+            delay(STRESS_RUNNING_DURATION)
+            updateState { copy(recompositionStormActive = false) }
         }
     }
 
@@ -111,6 +161,21 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
         }
     }
 
+    private fun runWithStatus(
+        @Suppress("UnusedPrivateMember") current: MainViewState.() -> ToolStatus,
+        runningMs: Long = STATUS_RUNNING_DURATION,
+        update: MainViewState.(ToolStatus) -> MainViewState,
+    ) {
+        viewModelScope.launch {
+            updateState { update(ToolStatus.Running) }
+            delay(runningMs)
+            updateState { update(ToolStatus.Done) }
+            delay(STATUS_DONE_DURATION)
+            updateState { update(ToolStatus.Idle) }
+        }
+    }
+
+    @Suppress("LongMethod")
     private fun doHttpActivity() {
         val api = SampleApiService.getInstance()
 
@@ -186,6 +251,8 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
     companion object {
         private const val STATUS_RUNNING_DURATION = 800L
         private const val STATUS_DONE_DURATION = 1500L
+        private const val STRESS_RUNNING_DURATION = 3_000L
+        private const val JANK_RUNNING_DURATION = 1_500L
 
         private val _leakedActivities = mutableListOf<Any>()
         private val _leakAwaitingRotation = AtomicBoolean(false)

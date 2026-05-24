@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.services)
     alias(libs.plugins.play.publisher)
+    alias(libs.plugins.ksp)
 }
 
 play {
@@ -41,7 +42,7 @@ android {
                 .first()
                 .split(".")
                 .map { it.toInt() }
-        versionCode = major * 1_000_000 + minor * 1_000 + patch
+        versionCode = major * 100 + minor * 10 + patch
         versionName = versionNameValue
         multiDexEnabled = true
     }
@@ -136,4 +137,9 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
+
+    // Room — used by the demo to populate the database inspector
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }

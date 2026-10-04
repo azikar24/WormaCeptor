@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
@@ -44,6 +43,7 @@ import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorDropdownBox
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.components.toggle.WormaCeptorSwitch
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -148,66 +148,59 @@ private fun EditSheetTypeSelector(
     editor: PreferenceEditorState,
     onEvent: (PreferencesViewEvent) -> Unit,
 ) {
-    ExposedDropdownMenuBox(
+    WormaCeptorDropdownBox(
         expanded = editor.typeDropdownExpanded,
         onExpandedChange = {
             if (editor.isCreating) {
                 onEvent(PreferencesViewEvent.Editor.TypeDropdownExpandedChanged(it))
             }
         },
-    ) {
-        WormaCeptorTextField(
-            value = editor.selectedType,
-            onValueChange = {},
-            readOnly = true,
-            label = { Text(stringResource(R.string.preferences_label_type)) },
-            trailingIcon = {
-                if (editor.isCreating) {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = editor.typeDropdownExpanded)
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor(),
-            enabled = editor.isCreating,
-        )
-        if (editor.isCreating) {
-            ExposedDropdownMenu(
-                expanded = editor.typeDropdownExpanded,
-                onDismissRequest = {
-                    onEvent(PreferencesViewEvent.Editor.TypeDropdownExpandedChanged(false))
+        enabled = editor.isCreating,
+        anchor = {
+            WormaCeptorTextField(
+                value = editor.selectedType,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(stringResource(R.string.preferences_label_type)) },
+                trailingIcon = {
+                    if (editor.isCreating) {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = editor.typeDropdownExpanded)
+                    }
                 },
-            ) {
-                val typeColors = WormaCeptorTokens.Colors.Preferences.typeScheme()
-                PreferenceEditorState.AVAILABLE_TYPES.forEach { type ->
-                    val typeColor = typeColors.forTypeName(type)
-                    DropdownMenuItem(
-                        text = {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Surface(
-                                    color = typeColor.copy(
-                                        alpha = WormaCeptorTokens.Alpha.MEDIUM,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = editor.isCreating,
+            )
+        },
+        menu = {
+            val typeColors = WormaCeptorTokens.Colors.Preferences.typeScheme()
+            PreferenceEditorState.AVAILABLE_TYPES.forEach { type ->
+                val typeColor = typeColors.forTypeName(type)
+                DropdownMenuItem(
+                    text = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Surface(
+                                color = typeColor.copy(
+                                    alpha = WormaCeptorTokens.Alpha.MEDIUM,
+                                ),
+                                shape = WormaCeptorTokens.Shapes.chip,
+                            ) {
+                                Text(
+                                    text = type,
+                                    modifier = Modifier.padding(
+                                        horizontal = WormaCeptorTokens.Spacing.sm,
+                                        vertical = WormaCeptorTokens.Spacing.xs,
                                     ),
-                                    shape = WormaCeptorTokens.Shapes.chip,
-                                ) {
-                                    Text(
-                                        text = type,
-                                        modifier = Modifier.padding(
-                                            horizontal = WormaCeptorTokens.Spacing.sm,
-                                            vertical = WormaCeptorTokens.Spacing.xs,
-                                        ),
-                                        color = typeColor,
-                                        fontWeight = FontWeight.Medium,
-                                    )
-                                }
+                                    color = typeColor,
+                                    fontWeight = FontWeight.Medium,
+                                )
                             }
-                        },
-                        onClick = { onEvent(PreferencesViewEvent.Editor.TypeSelected(type)) },
-                    )
-                }
+                        }
+                    },
+                    onClick = { onEvent(PreferencesViewEvent.Editor.TypeSelected(type)) },
+                )
             }
-        }
-    }
+        },
+    )
 }
 
 @Composable

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -99,6 +100,7 @@ fun PreferenceDetailScreen(
             WormaCeptorFAB(
                 onClick = { onEvent(PreferencesViewEvent.Detail.EditSheetOpened(null)) },
                 contentDescription = stringResource(R.string.preferences_add_preference),
+                modifier = Modifier.navigationBarsPadding(),
             )
         },
     ) { padding ->

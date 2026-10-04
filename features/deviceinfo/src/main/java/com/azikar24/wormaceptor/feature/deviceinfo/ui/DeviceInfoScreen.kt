@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -69,7 +70,7 @@ fun DeviceInfoScreenContent(
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         modifier = modifier,
-        snackbarHost = { SnackbarHost(snackBarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState, modifier = Modifier.navigationBarsPadding()) },
         topBar = {
             DeviceInfoTopBar(
                 hasDeviceInfo = state.deviceInfo != null,

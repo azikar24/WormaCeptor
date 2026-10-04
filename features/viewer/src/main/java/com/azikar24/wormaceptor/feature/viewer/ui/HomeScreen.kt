@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -128,7 +129,7 @@ fun HomeScreen(
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
-        snackbarHost = { SnackbarHost(snackBarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState, modifier = Modifier.navigationBarsPadding()) },
         floatingActionButton = {
             val filterCount = transactionState.filterMethods.size +
                 transactionState.filterStatusRanges.size +
@@ -136,6 +137,7 @@ fun HomeScreen(
 
             AnimatedVisibility(
                 visible = pagerState.currentPage == 0 && !isSelectionMode,
+                modifier = Modifier.navigationBarsPadding(),
                 enter = fadeIn(),
                 exit = fadeOut(),
             ) {

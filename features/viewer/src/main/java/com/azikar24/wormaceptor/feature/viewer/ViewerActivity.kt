@@ -5,7 +5,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -224,9 +229,13 @@ class ViewerActivity : ComponentActivity() {
                 // Wrap NavHost in Surface to ensure proper background during navigation transitions
                 // This prevents white flash in dark mode when navigating back
                 Surface(modifier = Modifier.fillMaxSize()) {
+                    // Screens only pad for the bottom bar; side bars and cutouts in landscape are handled here
                     NavHost(
                         navController = navController,
                         startDestination = WormaCeptorNavKeys.Home.route,
+                        modifier = Modifier.windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+                        ),
                         enterTransition = WormaCeptorNavTransitions.enterTransition,
                         exitTransition = WormaCeptorNavTransitions.exitTransition,
                         popEnterTransition = WormaCeptorNavTransitions.popEnterTransition,

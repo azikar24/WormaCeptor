@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -45,7 +47,8 @@ internal fun MockRuleEditorContent(
 ) {
     Scaffold(
         modifier = modifier,
-        contentWindowInsets = WindowInsets(0),
+        // Keeps the save FAB and the form above the keyboard.
+        contentWindowInsets = WindowInsets.navigationBars.union(WindowInsets.ime),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             WormaCeptorTopBar(
@@ -88,7 +91,6 @@ private fun EditorFormBody(
 ) {
     Column(
         modifier = modifier
-            .imePadding()
             .verticalScroll(rememberScrollState())
             .padding(WormaCeptorTokens.Spacing.lg),
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),

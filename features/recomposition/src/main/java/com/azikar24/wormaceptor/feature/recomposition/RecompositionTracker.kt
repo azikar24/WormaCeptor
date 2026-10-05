@@ -24,13 +24,19 @@ object RecompositionTracker {
         val name: String,
         val count: AtomicLong = AtomicLong(0),
         val lastTimestamp: AtomicLong = AtomicLong(0),
+        val rate: SlidingWindowRate = SlidingWindowRate(RateWindowMs, RateWindowCapacity),
     ) {
-        fun snapshot(): RecompositionData = RecompositionData(
+        fun snapshot(nowMs: Long): RecompositionData = RecompositionData(
             name = name,
             count = count.get(),
             lastTimestamp = lastTimestamp.get(),
+            ratePerSecond = rate.ratePerSecond(nowMs),
         )
     }
+
+    // Rate reflects recent activity only, so idle composables fall off the top of the list
+    private const val RateWindowMs = 3_000L
+    private const val RateWindowCapacity = 256
 
     private val tracked = ConcurrentHashMap<String, MutableEntry>()
     private val sessionStart = AtomicLong(0)
@@ -46,26 +52,21 @@ object RecompositionTracker {
         val entry = tracked.getOrPut(name) { MutableEntry(name) }
         entry.count.incrementAndGet()
         entry.lastTimestamp.set(now)
+        entry.rate.record(now)
     }
 
-    fun getAll(): Map<String, RecompositionData> = tracked.mapValues { (_, entry) -> entry.snapshot() }
-
-    fun getRate(name: String): Float {
-        val entry = tracked[name] ?: return 0f
-        val elapsed = getSessionDuration().coerceAtLeast(1)
-        val count = entry.count.get().toFloat()
-        return count / (elapsed / 1000f).coerceAtLeast(0.001f)
+    fun getAll(): Map<String, RecompositionData> {
+        val now = System.currentTimeMillis()
+        return tracked.mapValues { (_, entry) -> entry.snapshot(now) }
     }
+
+    fun getRate(name: String): Float = tracked[name]?.rate?.ratePerSecond(System.currentTimeMillis()) ?: 0f
 
     fun getTopRecomposers(limit: Int = 10): List<RecompositionData> {
-        val sessionMs = getSessionDuration().coerceAtLeast(1)
-        val sessionSeconds = (sessionMs / 1000f).coerceAtLeast(0.001f)
+        val now = System.currentTimeMillis()
         return tracked.values
-            .map { entry ->
-                val snapshot = entry.snapshot()
-                snapshot.copy(ratePerSecond = snapshot.count.toFloat() / sessionSeconds)
-            }
-            .sortedByDescending { it.ratePerSecond }
+            .map { entry -> entry.snapshot(now) }
+            .sortedWith(compareByDescending<RecompositionData> { it.ratePerSecond }.thenByDescending { it.count })
             .take(limit)
     }
 

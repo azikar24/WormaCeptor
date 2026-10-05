@@ -164,7 +164,6 @@ internal fun CoordinateInputCard(
                 },
                 variant = ButtonVariant.Primary,
                 enabled = isMockLocationAvailable && isInputValid && !isLoading && !isMatchingCurrentMock,
-                containerColor = WormaCeptorTokens.Colors.Location.enabled,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Check,

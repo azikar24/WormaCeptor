@@ -147,6 +147,18 @@ class WebViewMonitorViewModelTest {
         }
 
         @Test
+        fun `selectedRequest follows live updates of the same request`() = runTest {
+            val request = makeSampleRequest()
+            requestsFlow.value = listOf(request)
+            viewModel.sendEvent(WebViewMonitorViewEvent.SelectRequest(request))
+
+            val completed = request.copy(statusCode = 200)
+            requestsFlow.value = listOf(completed)
+
+            viewModel.uiState.value.selectedRequest shouldBe completed
+        }
+
+        @Test
         fun `emits NavigateToDetail effect`() = runTest {
             val request = makeSampleRequest()
 

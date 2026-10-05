@@ -26,7 +26,6 @@ import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailHeade
 import com.azikar24.wormaceptor.core.ui.components.detail.WormaCeptorDetailSection
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatTimestampFull
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import com.azikar24.wormaceptor.feature.leakdetection.R
@@ -74,12 +73,6 @@ internal fun LeakDetailContent(
                                 color = color,
                             )
                         }
-                        Text(
-                            text = formatBytes(leak.retainedSize),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontFamily = FontFamily.Monospace,
-                            color = color,
-                        )
                     }
                 },
             )
@@ -91,10 +84,6 @@ internal fun LeakDetailContent(
                 items = listOf(
                     DetailItem(stringResource(R.string.leakdetection_detail_class), leak.objectClass),
                     DetailItem(stringResource(R.string.leakdetection_detail_description), leak.leakDescription),
-                    DetailItem(
-                        stringResource(R.string.leakdetection_detail_retained_size),
-                        formatBytes(leak.retainedSize),
-                    ),
                     DetailItem(
                         stringResource(R.string.leakdetection_detail_detected),
                         formatTimestampFull(leak.timestamp),

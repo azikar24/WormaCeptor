@@ -12,7 +12,6 @@
     <string name="leakdetection_section_details">Details</string>
     <string name="leakdetection_detail_class">Class</string>
     <string name="leakdetection_detail_description">Description</string>
-    <string name="leakdetection_detail_retained_size">Retained Size</string>
     <string name="leakdetection_detail_detected">Detected</string>
     <string name="leakdetection_section_reference_path">Reference Path</string>
     <string name="leakdetection_leak_icon_desc">%1$s severity leak in %2$s</string>

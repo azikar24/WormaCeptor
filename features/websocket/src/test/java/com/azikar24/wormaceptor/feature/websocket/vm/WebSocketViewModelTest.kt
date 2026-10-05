@@ -12,9 +12,12 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -511,13 +514,22 @@ class WebSocketViewModelTest {
     }
 
     @Nested
-    inner class `getMessageCountForConnection` {
+    inner class `messageCountsByConnection` {
 
         @Test
-        fun `delegates to engine`() {
-            every { engine.getMessageCountForConnection(1L) } returns 7
+        fun `counts messages per connection and updates on new messages`() {
+            messagesFlow.value = listOf(
+                makeMessage(id = 1, connectionId = 1L),
+                makeMessage(id = 2, connectionId = 1L),
+                makeMessage(id = 3, connectionId = 2L),
+            )
 
-            viewModel.getMessageCountForConnection(1L) shouldBe 7
+            viewModel.uiState.value.messageCountsByConnection.shouldBeInstanceOf<ImmutableMap<Long, Int>>()
+            viewModel.uiState.value.messageCountsByConnection shouldBe persistentMapOf(1L to 2, 2L to 1)
+
+            messagesFlow.value = messagesFlow.value + makeMessage(id = 4, connectionId = 2L)
+
+            viewModel.uiState.value.messageCountsByConnection shouldBe persistentMapOf(1L to 2, 2L to 2)
         }
     }
 

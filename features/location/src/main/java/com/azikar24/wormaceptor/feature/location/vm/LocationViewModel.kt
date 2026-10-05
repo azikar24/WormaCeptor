@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 import java.util.UUID
 
 /**
@@ -139,8 +140,8 @@ class LocationViewModel(
         if (lastUsed != null) {
             updateState {
                 copy(
-                    latitudeInput = "%.6f".format(lastUsed.latitude),
-                    longitudeInput = "%.6f".format(lastUsed.longitude),
+                    latitudeInput = "%.6f".format(Locale.US, lastUsed.latitude),
+                    longitudeInput = "%.6f".format(Locale.US, lastUsed.longitude),
                 )
             }
             handleSetMockLocation(lastUsed)
@@ -236,8 +237,8 @@ class LocationViewModel(
                     updateState {
                         copy(
                             isLoading = false,
-                            latitudeInput = "%.6f".format(location.latitude),
-                            longitudeInput = "%.6f".format(location.longitude),
+                            latitudeInput = "%.6f".format(Locale.US, location.latitude),
+                            longitudeInput = "%.6f".format(Locale.US, location.longitude),
                         )
                     }
                     emitEffect(LocationViewEffect.ShowSuccess("Current location retrieved"))
@@ -314,8 +315,8 @@ class LocationViewModel(
     ) {
         updateState {
             copy(
-                latitudeInput = "%.6f".format(latitude),
-                longitudeInput = "%.6f".format(longitude),
+                latitudeInput = "%.6f".format(Locale.US, latitude),
+                longitudeInput = "%.6f".format(Locale.US, longitude),
             )
         }
     }

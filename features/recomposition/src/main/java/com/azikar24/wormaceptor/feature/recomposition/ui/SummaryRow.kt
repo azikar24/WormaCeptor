@@ -24,14 +24,14 @@ internal fun SummaryRow(
         WormaCeptorSummaryCard(
             count = formattedDuration,
             label = stringResource(R.string.recomposition_session_duration),
-            color = WormaCeptorTokens.semantic().accent,
+            color = WormaCeptorTokens.semantic().textPrimary,
             modifier = Modifier.weight(1f),
         )
 
         WormaCeptorSummaryCard(
             count = formattedTotalRecompositions,
             label = stringResource(R.string.recomposition_total_recompositions),
-            color = WormaCeptorTokens.semantic().accent,
+            color = WormaCeptorTokens.semantic().textPrimary,
             modifier = Modifier.weight(1f),
         )
     }

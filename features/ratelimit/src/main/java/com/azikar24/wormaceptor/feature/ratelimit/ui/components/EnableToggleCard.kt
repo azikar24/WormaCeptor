@@ -28,42 +28,30 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
-import com.azikar24.wormaceptor.core.ui.components.toggle.SwitchVariant
 import com.azikar24.wormaceptor.core.ui.components.toggle.WormaCeptorSwitch
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.feature.ratelimit.R
 
 @Composable
 internal fun EnableToggleCard(
     enabled: Boolean,
     onToggle: () -> Unit,
-    colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
     val haptic = LocalHapticFeedback.current
+    val accent = MaterialTheme.colorScheme.primary
     val statusColor by animateColorAsState(
-        targetValue = if (enabled) colors.enabled else colors.disabled,
+        targetValue = if (enabled) accent else WormaCeptorTokens.semantic().textTertiary,
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "ratelimit_toggle_status",
-    )
-    val backgroundColor by animateColorAsState(
-        targetValue = if (enabled) {
-            colors.enabled.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-        } else {
-            WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-        },
-        animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
-        label = "ratelimit_toggle_bg",
     )
 
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
         style = CardStyle.Outlined,
         shape = WormaCeptorTokens.Shapes.cardLarge,
-        backgroundColor = backgroundColor,
         borderColor = if (enabled) {
-            colors.enabled.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+            accent.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
         } else {
             null
         },
@@ -108,7 +96,7 @@ internal fun EnableToggleCard(
                         text = stringResource(R.string.ratelimit_toggle_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = colors.labelPrimary,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                     Text(
                         text = if (enabled) {
@@ -117,7 +105,7 @@ internal fun EnableToggleCard(
                             stringResource(R.string.ratelimit_toggle_status_disabled)
                         },
                         style = MaterialTheme.typography.bodySmall,
-                        color = colors.labelSecondary,
+                        color = WormaCeptorTokens.semantic().textSecondary,
                     )
                 }
             }
@@ -125,7 +113,6 @@ internal fun EnableToggleCard(
             WormaCeptorSwitch(
                 checked = enabled,
                 onCheckedChange = null,
-                variant = SwitchVariant.Accent(color = colors.enabled),
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.database.vm
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import com.azikar24.wormaceptor.domain.contracts.DatabaseRepository
@@ -18,7 +19,10 @@ import io.mockk.verify
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.job
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -91,6 +95,9 @@ class DatabaseViewModelTest {
 
     @AfterEach
     fun tearDown() {
+        // IO work can outlive a test; if it resumes after resetMain it dispatches to the missing
+        // real Main and the failure surfaces in the next test as UncaughtExceptionsBeforeTest
+        runBlocking { viewModel.viewModelScope.coroutineContext.job.cancelAndJoin() }
         Dispatchers.resetMain()
     }
 
@@ -689,11 +696,16 @@ class DatabaseViewModelTest {
 
             val vm = DatabaseViewModel(repository, application, navigator)
 
-            vm.uiState.test {
-                val state = awaitUntil { it.databasesError != null }
-                state.databasesError shouldBe "Access denied"
-                state.isDatabasesLoading shouldBe false
-                cancelAndIgnoreRemainingEvents()
+            try {
+                vm.uiState.test {
+                    val state = awaitUntil { it.databasesError != null }
+                    state.databasesError shouldBe "Access denied"
+                    state.isDatabasesLoading shouldBe false
+                    cancelAndIgnoreRemainingEvents()
+                }
+            } finally {
+                // tearDown only cancels the class-level viewModel; this one would leak IO work into later tests
+                vm.viewModelScope.coroutineContext.job.cancelAndJoin()
             }
         }
 

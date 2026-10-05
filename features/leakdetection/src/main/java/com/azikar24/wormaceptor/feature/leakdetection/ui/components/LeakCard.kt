@@ -22,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +29,6 @@ import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatTimestamp
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 
@@ -63,7 +61,6 @@ internal fun LeakCard(
 
             LeakCardDetails(
                 leak = leak,
-                severityColor = severityColor,
                 modifier = Modifier.weight(1f),
             )
 
@@ -102,7 +99,6 @@ private fun SeverityIndicator(
 @Composable
 private fun LeakCardDetails(
     leak: LeakInfo,
-    severityColor: Color,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -121,22 +117,11 @@ private fun LeakCardDetails(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = formatTimestamp(leak.timestamp),
-                style = MaterialTheme.typography.labelSmall,
-                color = WormaCeptorTokens.semantic().textSecondary,
-            )
-            Text(
-                text = formatBytes(leak.retainedSize),
-                style = MaterialTheme.typography.labelSmall,
-                fontFamily = FontFamily.Monospace,
-                color = severityColor,
-            )
-        }
+        Text(
+            text = formatTimestamp(leak.timestamp),
+            style = MaterialTheme.typography.labelSmall,
+            color = WormaCeptorTokens.semantic().textSecondary,
+        )
     }
 }
 

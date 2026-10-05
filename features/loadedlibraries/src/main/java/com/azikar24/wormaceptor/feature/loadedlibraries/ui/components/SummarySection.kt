@@ -21,7 +21,7 @@ internal fun SummarySection(
         WormaCeptorSummaryCard(
             count = summary.nativeSoCount.toString(),
             label = stringResource(R.string.loadedlibraries_summary_native),
-            color = colors.nativeSo,
+            color = colors.labelPrimary,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.cardBackground,
             labelColor = colors.labelSecondary,
@@ -29,7 +29,7 @@ internal fun SummarySection(
         WormaCeptorSummaryCard(
             count = summary.dexCount.toString(),
             label = stringResource(R.string.loadedlibraries_summary_dex),
-            color = colors.dex,
+            color = colors.labelPrimary,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.cardBackground,
             labelColor = colors.labelSecondary,
@@ -37,7 +37,7 @@ internal fun SummarySection(
         WormaCeptorSummaryCard(
             count = summary.jarCount.toString(),
             label = stringResource(R.string.loadedlibraries_summary_jar),
-            color = colors.jar,
+            color = colors.labelPrimary,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.cardBackground,
             labelColor = colors.labelSecondary,
@@ -45,7 +45,7 @@ internal fun SummarySection(
         WormaCeptorSummaryCard(
             count = summary.totalLibraries.toString(),
             label = stringResource(R.string.loadedlibraries_summary_total),
-            color = colors.primary,
+            color = colors.labelPrimary,
             modifier = Modifier.weight(1f),
             backgroundColor = colors.cardBackground,
             labelColor = colors.labelSecondary,

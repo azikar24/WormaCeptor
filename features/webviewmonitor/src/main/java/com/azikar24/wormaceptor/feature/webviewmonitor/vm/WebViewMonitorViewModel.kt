@@ -75,6 +75,10 @@ class WebViewMonitorViewModel(
                     stats = stats,
                     resourceTypeFilter = typeFilter.toImmutableSet(),
                     isRequestsLoading = false,
+                    // Re-resolve by id so the detail screen reflects later status/timing updates.
+                    selectedRequest = selectedRequest?.let { selected ->
+                        requests.find { it.id == selected.id } ?: selected
+                    },
                 )
             }
         }.launchIn(viewModelScope)

@@ -20,7 +20,7 @@ internal fun AppSection(
     WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.Apps,
-        iconTint = WormaCeptorTokens.Colors.Accent.tertiary,
+        iconTint = WormaCeptorTokens.semantic().textSecondary,
         onAction = onCopy,
         actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {

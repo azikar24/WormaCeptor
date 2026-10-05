@@ -78,7 +78,7 @@ private fun SystemInfoMetrics(currentCpu: CpuInfo) {
             } else {
                 stringResource(R.string.cpu_not_available)
             },
-            iconTint = WormaCeptorTokens.Colors.Cpu.usage,
+            iconTint = WormaCeptorTokens.semantic().textSecondary,
         )
 
         val cpuTemp = currentCpu.cpuTemperature
@@ -89,7 +89,7 @@ private fun SystemInfoMetrics(currentCpu: CpuInfo) {
                 stringResource(R.string.cpu_temperature_value, it)
             } ?: stringResource(R.string.cpu_not_available),
             iconTint = when {
-                cpuTemp == null -> WormaCeptorTokens.Colors.Status.green
+                cpuTemp == null -> WormaCeptorTokens.semantic().textSecondary
                 cpuTemp > TempCriticalThreshold -> WormaCeptorTokens.Colors.Status.red
                 cpuTemp > TempWarningThreshold -> WormaCeptorTokens.Colors.Status.amber
                 else -> WormaCeptorTokens.Colors.Status.green
@@ -100,7 +100,7 @@ private fun SystemInfoMetrics(currentCpu: CpuInfo) {
             icon = Icons.Default.Memory,
             label = stringResource(R.string.cpu_cores_label),
             value = currentCpu.coreCount.toString(),
-            iconTint = WormaCeptorTokens.Colors.Cpu.usage,
+            iconTint = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }

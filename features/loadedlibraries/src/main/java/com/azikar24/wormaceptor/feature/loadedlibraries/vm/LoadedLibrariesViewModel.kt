@@ -16,6 +16,10 @@ class LoadedLibrariesViewModel(
     navigator = NoOpNavigator,
 ) {
 
+    // The engine starts its scan asynchronously, so the first emission can be "empty, not loading"
+    // before the scan begins; keep the skeleton until a scan has actually started.
+    private var hasScanStarted = false
+
     init {
         observeEngineState()
     }
@@ -61,13 +65,14 @@ class LoadedLibrariesViewModel(
             engine.error,
             engine.summary,
         ) { libs, loading, err, summary ->
+            if (loading) hasScanStarted = true
             updateState {
                 copy(
                     filteredLibraries = filterLibraries(libs, selectedType, showSystemLibs, searchQuery),
                     isLoading = loading,
                     error = err,
                     summary = summary,
-                    isLibrariesLoading = false,
+                    isLibrariesLoading = libs.isEmpty() && err == null && (loading || !hasScanStarted),
                 )
             }
         }.launchIn(viewModelScope)

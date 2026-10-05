@@ -33,7 +33,6 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
 import com.azikar24.wormaceptor.feature.dependenciesinspector.R
-import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util.categoryColor
 
 @Composable
 internal fun DependencyDetailContent(
@@ -41,7 +40,7 @@ internal fun DependencyDetailContent(
     colors: ToolColors.DependenciesInspector.Scheme,
     modifier: Modifier = Modifier,
 ) {
-    val depCategoryColor = dependency.category.categoryColor(colors)
+    val depCategoryColor = colors.labelSecondary
     val uriHandler = LocalUriHandler.current
 
     Column(modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg)) {
@@ -51,7 +50,7 @@ internal fun DependencyDetailContent(
         DetailDetectionSection(dependency, colors)
 
         dependency.website?.let { url ->
-            WebsiteLink(url, colors) { uriHandler.openUri(url) }
+            WebsiteLink(url) { uriHandler.openUri(url) }
         }
 
         Spacer(Modifier.height(WormaCeptorTokens.Spacing.lg))
@@ -85,7 +84,7 @@ private fun DetailHeader(
                     )
                     Surface(
                         shape = WormaCeptorTokens.Shapes.chip,
-                        color = colors.versionDetected.copy(WormaCeptorTokens.Alpha.MEDIUM),
+                        color = colors.labelSecondary.copy(WormaCeptorTokens.Alpha.MEDIUM),
                     ) {
                         Text(
                             stringResource(R.string.dependenciesinspector_detail_version_format, version),
@@ -96,7 +95,7 @@ private fun DetailHeader(
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             fontFamily = FontFamily.Monospace,
-                            color = colors.versionText,
+                            color = colors.valuePrimary,
                         )
                     }
                 }
@@ -174,7 +173,6 @@ private fun DetailDetectionSection(
 @Composable
 private fun WebsiteLink(
     url: String,
-    colors: ToolColors.DependenciesInspector.Scheme,
     onOpenUrl: () -> Unit,
 ) {
     Row(
@@ -188,13 +186,13 @@ private fun WebsiteLink(
         Icon(
             Icons.Default.Language,
             stringResource(R.string.dependenciesinspector_detail_section_details),
-            tint = colors.link,
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
         )
         Text(
             url,
             style = MaterialTheme.typography.bodyMedium,
-            color = colors.link,
+            color = MaterialTheme.colorScheme.primary,
             textDecoration = TextDecoration.Underline,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

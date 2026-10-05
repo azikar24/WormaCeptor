@@ -359,17 +359,16 @@ private fun PrioritySelector(
                         )
                     },
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = priorityColor
+                        selectedContainerColor = MaterialTheme.colorScheme.primary
                             .copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
-                        selectedLabelColor = priorityColor,
-                        selectedLeadingIconColor = priorityColor,
+                        selectedLabelColor = MaterialTheme.colorScheme.primary,
                     ),
                     border = FilterChipDefaults.filterChipBorder(
                         enabled = true,
                         selected = isSelected,
                         borderColor = WormaCeptorTokens.semantic().textTertiary
                             .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
-                        selectedBorderColor = priorityColor
+                        selectedBorderColor = MaterialTheme.colorScheme.primary
                             .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                     ),
                 )
@@ -453,18 +452,18 @@ private fun ActionButtonsSection(
                             )
                         },
                         colors = InputChipDefaults.inputChipColors(
-                            selectedContainerColor = ToolColors.PushSimulator.Template.action
+                            selectedContainerColor = MaterialTheme.colorScheme.primary
                                 .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
-                            selectedLabelColor = ToolColors.PushSimulator.Template.action,
-                            selectedLeadingIconColor = ToolColors.PushSimulator.Template.action,
-                            selectedTrailingIconColor = ToolColors.PushSimulator.Template.action
+                            selectedLabelColor = MaterialTheme.colorScheme.primary,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTrailingIconColor = MaterialTheme.colorScheme.primary
                                 .copy(alpha = WormaCeptorTokens.Alpha.STRONG),
                         ),
                         border = InputChipDefaults.inputChipBorder(
                             enabled = true,
                             selected = true,
                             borderColor = Color.Transparent,
-                            selectedBorderColor = ToolColors.PushSimulator.Template.action
+                            selectedBorderColor = MaterialTheme.colorScheme.primary
                                 .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                         ),
                     )

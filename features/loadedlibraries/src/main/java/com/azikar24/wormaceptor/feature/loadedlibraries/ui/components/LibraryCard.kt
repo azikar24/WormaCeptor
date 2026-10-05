@@ -35,7 +35,6 @@ import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import com.azikar24.wormaceptor.feature.loadedlibraries.R
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.util.badgeLabel
-import com.azikar24.wormaceptor.feature.loadedlibraries.ui.util.color
 import com.azikar24.wormaceptor.feature.loadedlibraries.ui.util.icon
 
 @Composable
@@ -45,7 +44,7 @@ internal fun LibraryCard(
     colors: ToolColors.LoadedLibraries.Scheme,
 ) {
     val icon = library.type.icon()
-    val color = library.type.color(colors)
+    val color = colors.labelSecondary
 
     WormaCeptorCard(
         onClick = onClick,

@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -20,6 +22,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.location.R
+import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -77,18 +80,9 @@ fun LocationMapView(
             mockLocation = mockLocation,
             isMockActive = isMockActive,
         )
-
-        // Auto-center on mock location if active, otherwise on real location
-        val centerPoint = when {
-            isMockActive && mockLocation != null -> mockLocation
-            mockLocation != null -> mockLocation
-            realLocation != null -> realLocation
-            else -> null
-        }
-        centerPoint?.let {
-            mapView.controller.animateTo(it)
-        }
     }
+
+    MapAutoCenterEffect(mapView = mapView, realLocation = realLocation, mockLocation = mockLocation)
 
     Box(
         modifier = modifier
@@ -112,6 +106,12 @@ fun LocationMapView(
 }
 
 private fun createMapView(context: Context): MapView {
+    // OSM tile servers reject the library's default user agent. osmdroid config is process-wide,
+    // so leave it alone if the host app already set its own.
+    val config = Configuration.getInstance()
+    if (config.userAgentValue == OsmdroidDefaultUserAgent) {
+        config.userAgentValue = context.packageName
+    }
     return MapView(context).apply {
         setTileSource(TileSourceFactory.MAPNIK)
         setMultiTouchControls(true)
@@ -183,6 +183,8 @@ private fun formatCoordinates(geoPoint: GeoPoint): String {
     return "%.6f, %.6f".format(geoPoint.latitude, geoPoint.longitude)
 }
 
+private const val OsmdroidDefaultUserAgent = "osmdroid"
+
 /**
  * Custom overlay to handle map tap events.
  */
@@ -221,5 +223,28 @@ fun formatDistance(meters: Double): String {
         "%.0f m".format(meters)
     } else {
         "%.2f km".format(meters / 1000)
+    }
+}
+
+// Center only when the mock location changes or on the first fix, so GPS updates
+// don't snap the map away while the user is panning.
+@Composable
+private fun MapAutoCenterEffect(
+    mapView: MapView,
+    realLocation: GeoPoint?,
+    mockLocation: GeoPoint?,
+) {
+    var hasCentered by remember { mutableStateOf(false) }
+    LaunchedEffect(mockLocation) {
+        mockLocation?.let {
+            mapView.controller.animateTo(it)
+            hasCentered = true
+        }
+    }
+    LaunchedEffect(realLocation) {
+        if (!hasCentered && realLocation != null) {
+            mapView.controller.animateTo(realLocation)
+            hasCentered = true
+        }
     }
 }

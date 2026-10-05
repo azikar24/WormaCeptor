@@ -33,7 +33,7 @@ internal fun StorageSection(
     WormaCeptorInfoCard(
         title = stringResource(R.string.deviceinfo_section_storage),
         icon = Icons.Default.Storage,
-        iconTint = WormaCeptorTokens.Colors.Category.simulation,
+        iconTint = WormaCeptorTokens.semantic().textSecondary,
         onAction = onCopy,
         actionContentDescription = stringResource(
             R.string.deviceinfo_copy_section,
@@ -60,7 +60,7 @@ private fun InternalStorageContent(storage: StorageDetails) {
             text = stringResource(R.string.deviceinfo_storage_internal),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
-            color = WormaCeptorTokens.semantic().accent,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
         WormaCeptorDetailRow(stringResource(R.string.deviceinfo_label_total), formatBytes(storage.internalTotal))
@@ -91,7 +91,7 @@ private fun ExternalStorageContent(storage: StorageDetails) {
             text = stringResource(R.string.deviceinfo_storage_external),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
-            color = WormaCeptorTokens.semantic().accent,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
         WormaCeptorDetailRow(stringResource(R.string.deviceinfo_label_total), formatBytes(extTotal))

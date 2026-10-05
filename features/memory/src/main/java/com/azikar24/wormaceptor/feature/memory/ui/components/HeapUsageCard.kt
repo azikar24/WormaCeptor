@@ -183,7 +183,7 @@ private fun HeapProgressSection(
 
 @Composable
 private fun HeapDetailsRow(currentMemory: MemoryInfo) {
-    val mem = WormaCeptorTokens.Colors.Memory
+    val valueColor = WormaCeptorTokens.semantic().textPrimary
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -191,17 +191,17 @@ private fun HeapDetailsRow(currentMemory: MemoryInfo) {
         MemoryStatItem(
             label = stringResource(R.string.memory_used),
             value = formatBytes(currentMemory.usedMemory),
-            color = mem.heapUsed,
+            color = valueColor,
         )
         MemoryStatItem(
             label = stringResource(R.string.memory_free),
             value = formatBytes(currentMemory.freeMemory),
-            color = mem.heapFree,
+            color = valueColor,
         )
         MemoryStatItem(
             label = stringResource(R.string.memory_total),
             value = formatBytes(currentMemory.totalMemory),
-            color = mem.heapTotal,
+            color = valueColor,
         )
         MemoryStatItem(
             label = stringResource(R.string.memory_max),

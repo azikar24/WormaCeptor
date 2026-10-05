@@ -154,12 +154,6 @@ internal fun TemplateCard(
         modifier = modifier.width(WormaCeptorTokens.ComponentSize.templateCardWidth),
         onClick = onLoad,
         style = CardStyle.Outlined,
-        borderColor = if (isPreset) {
-            ToolColors.PushSimulator.Template.preset
-                .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
-        } else {
-            null
-        },
     ) {
         Column(
             modifier = Modifier
@@ -201,8 +195,7 @@ internal fun TemplateCard(
                 if (actionCount > 0) {
                     Surface(
                         shape = WormaCeptorTokens.Shapes.chip,
-                        color = ToolColors.PushSimulator.Template.action
-                            .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
+                        color = WormaCeptorTokens.semantic().surfaceVariant,
                     ) {
                         Row(
                             modifier = Modifier.padding(
@@ -218,12 +211,12 @@ internal fun TemplateCard(
                                 imageVector = Icons.Default.TouchApp,
                                 contentDescription = null,
                                 modifier = Modifier.size(WormaCeptorTokens.IconSize.xxs),
-                                tint = ToolColors.PushSimulator.Template.action,
+                                tint = WormaCeptorTokens.semantic().textSecondary,
                             )
                             Text(
                                 text = actionCount.toString(),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = ToolColors.PushSimulator.Template.action,
+                                color = WormaCeptorTokens.semantic().textSecondary,
                             )
                         }
                     }
@@ -232,13 +225,12 @@ internal fun TemplateCard(
                 if (isPreset) {
                     Surface(
                         shape = WormaCeptorTokens.Shapes.chip,
-                        color = ToolColors.PushSimulator.Template.preset
-                            .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
+                        color = WormaCeptorTokens.semantic().surfaceVariant,
                     ) {
                         Text(
                             text = stringResource(R.string.pushsimulator_template_preset),
                             style = MaterialTheme.typography.labelSmall,
-                            color = ToolColors.PushSimulator.Template.preset,
+                            color = WormaCeptorTokens.semantic().textSecondary,
                             modifier = Modifier.padding(
                                 horizontal = WormaCeptorTokens.Spacing.sm,
                                 vertical = WormaCeptorTokens.Spacing.xxs,

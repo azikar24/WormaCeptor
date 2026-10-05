@@ -67,7 +67,9 @@ fun FileBrowserScreen(
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     var showSortMenu by remember { mutableStateOf(false) }
-    var searchActive by rememberSaveable { mutableStateOf(false) }
+    // This screen leaves composition while the viewer is open, dropping saved state; seed from
+    // the query that survives in the ViewModel so a filtered list never hides its search bar.
+    var searchActive by rememberSaveable { mutableStateOf(state.searchQuery.isNotEmpty()) }
     val currentOnEvent by rememberUpdatedState(onEvent)
 
     BackHandler {

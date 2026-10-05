@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
@@ -48,8 +47,6 @@ fun PreferenceItemCard(
     val typeColor = typeColors.forTypeName(item.value.typeName)
 
     WormaCeptorContainer(
-        backgroundColor = typeColor.copy(alpha = TokenAlpha.SUBTLE),
-        borderColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         modifier = modifier
             .fillMaxWidth()
             .combinedClickable(

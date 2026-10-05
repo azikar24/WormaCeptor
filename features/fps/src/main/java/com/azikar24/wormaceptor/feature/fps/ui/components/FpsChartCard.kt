@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
@@ -72,6 +73,10 @@ internal fun FpsChartCard(
                 horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
             ) {
                 WormaCeptorChartLegendItem(
+                    label = stringResource(R.string.fps_legend_series),
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                WormaCeptorChartLegendItem(
                     label = stringResource(R.string.fps_legend_good),
                     color = WormaCeptorTokens.Colors.Fps.good,
                 )
@@ -119,9 +124,9 @@ private fun FpsChart(
     data: ImmutableList<FpsInfo>,
     modifier: Modifier = Modifier,
 ) {
-    val lineColor = WormaCeptorTokens.Colors.Fps.chartLine()
-    val fillColor = WormaCeptorTokens.Colors.Fps.chartLine().copy(
-        alpha = WormaCeptorTokens.Alpha.MEDIUM,
+    val lineColor = MaterialTheme.colorScheme.onSurface
+    val fillColor = lineColor.copy(
+        alpha = WormaCeptorTokens.Alpha.SUBTLE,
     )
     val gridColor = WormaCeptorTokens.semantic().textTertiary.copy(
         alpha = WormaCeptorTokens.Alpha.MODERATE,
@@ -173,6 +178,9 @@ private fun DrawScope.drawFpsGridLines(
     warningThresholdColor: Color,
 ) {
     val gridLines = listOf(0f, FpsChartConstants.WARNING_THRESHOLD, FpsChartConstants.GOOD_THRESHOLD, maxFps)
+    val thresholdDash = PathEffect.dashPathEffect(
+        floatArrayOf(FpsChartConstants.THRESHOLD_DASH_LENGTH, FpsChartConstants.THRESHOLD_DASH_LENGTH),
+    )
     gridLines.forEach { fps ->
         val y = FpsChartConstants.CHART_PADDING + chartHeight * (1 - fps / maxFps)
         when (fps) {
@@ -181,12 +189,14 @@ private fun DrawScope.drawFpsGridLines(
                 start = Offset(FpsChartConstants.CHART_PADDING, y),
                 end = Offset(FpsChartConstants.CHART_PADDING + chartWidth, y),
                 strokeWidth = FpsChartConstants.THRESHOLD_STROKE_WIDTH,
+                pathEffect = thresholdDash,
             )
             FpsChartConstants.WARNING_THRESHOLD -> drawLine(
                 color = warningThresholdColor,
                 start = Offset(FpsChartConstants.CHART_PADDING, y),
                 end = Offset(FpsChartConstants.CHART_PADDING + chartWidth, y),
                 strokeWidth = FpsChartConstants.THRESHOLD_STROKE_WIDTH,
+                pathEffect = thresholdDash,
             )
             else -> drawLine(
                 color = gridColor,

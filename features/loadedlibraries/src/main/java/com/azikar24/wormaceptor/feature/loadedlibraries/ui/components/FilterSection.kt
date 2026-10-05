@@ -35,7 +35,7 @@ internal fun FilterSection(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm)) {
-        TypeChipRow(selectedType, onSelectType, colors)
+        TypeChipRow(selectedType, onSelectType)
         SystemLibsToggle(showSystemLibs, onToggleSystemLibs, colors)
     }
 }
@@ -44,7 +44,6 @@ internal fun FilterSection(
 private fun TypeChipRow(
     selectedType: LoadedLibrary.LibraryType?,
     onSelectType: (LoadedLibrary.LibraryType?) -> Unit,
-    colors: ToolColors.LoadedLibraries.Scheme,
 ) {
     val haptic = LocalHapticFeedback.current
     WormaCeptorScrollableRow(contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg)) {
@@ -55,26 +54,22 @@ private fun TypeChipRow(
                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 onSelectType(null)
             },
-            accentColor = colors.primary,
         )
         LoadedLibrary.LibraryType.entries.filter { it != LoadedLibrary.LibraryType.AAR_RESOURCE }.forEach { type ->
-            val (icon, labelRes, color) = when (type) {
+            val (icon, labelRes) = when (type) {
                 LoadedLibrary.LibraryType.NATIVE_SO -> ChipConfig(
                     icon = Icons.Default.Memory,
                     labelRes = R.string.loadedlibraries_filter_native,
-                    color = colors.nativeSo,
                 )
 
                 LoadedLibrary.LibraryType.DEX -> ChipConfig(
                     icon = Icons.Default.Android,
                     labelRes = R.string.loadedlibraries_filter_dex,
-                    color = colors.dex,
                 )
 
                 LoadedLibrary.LibraryType.JAR -> ChipConfig(
                     icon = Icons.Default.Code,
                     labelRes = R.string.loadedlibraries_filter_jar,
-                    color = colors.jar,
                 )
 
                 LoadedLibrary.LibraryType.AAR_RESOURCE -> error("AAR_RESOURCE is filtered out")
@@ -87,7 +82,6 @@ private fun TypeChipRow(
                     onSelectType(if (selectedType == type) null else type)
                 },
                 leadingIcon = icon,
-                accentColor = color,
             )
         }
     }

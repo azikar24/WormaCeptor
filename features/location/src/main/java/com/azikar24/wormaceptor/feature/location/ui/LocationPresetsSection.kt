@@ -56,7 +56,7 @@ internal fun PresetItem(
     modifier: Modifier = Modifier,
 ) {
     val haptic = LocalHapticFeedback.current
-    val selectedAccent = WormaCeptorTokens.Colors.Location.enabled
+    val selectedAccent = WormaCeptorTokens.semantic().accent
 
     WormaCeptorCard(
         modifier = modifier.fillMaxWidth(),
@@ -71,7 +71,7 @@ internal fun PresetItem(
                 .padding(WormaCeptorTokens.Spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            PresetIcon(isBuiltIn = preset.isBuiltIn, name = preset.name)
+            PresetIcon(name = preset.name)
 
             Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
 
@@ -100,7 +100,7 @@ internal fun PresetItem(
                 Text(
                     text = preset.location.formatCoordinates(),
                     style = MaterialTheme.typography.bodySmall,
-                    color = WormaCeptorTokens.Colors.Location.coordinate,
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
 
@@ -124,18 +124,10 @@ internal fun PresetItem(
 }
 
 @Composable
-private fun PresetIcon(
-    isBuiltIn: Boolean,
-    name: String,
-) {
-    val accent = if (isBuiltIn) {
-        WormaCeptorTokens.Colors.Location.builtInPreset
-    } else {
-        WormaCeptorTokens.Colors.Location.userPreset
-    }
+private fun PresetIcon(name: String) {
     Surface(
         shape = WormaCeptorTokens.Shapes.button,
-        color = accent.copy(alpha = TokenAlpha.SUBTLE),
+        color = WormaCeptorTokens.semantic().surfaceVariant,
         modifier = Modifier.size(WormaCeptorTokens.TouchTarget.minimum),
     ) {
         Box(
@@ -146,7 +138,7 @@ private fun PresetIcon(
                 imageVector = Icons.Default.Place,
                 contentDescription = name,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                tint = accent,
+                tint = WormaCeptorTokens.semantic().textSecondary,
             )
         }
     }

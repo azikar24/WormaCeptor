@@ -22,7 +22,6 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencySummary
 import com.azikar24.wormaceptor.feature.dependenciesinspector.R
-import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util.categoryColor
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util.shortLabel
 
 @Composable
@@ -37,7 +36,7 @@ internal fun FilterSection(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier, Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm)) {
-        CategoryChipRow(selectedCategory, summary, onSelectCategory, colors)
+        CategoryChipRow(selectedCategory, summary, onSelectCategory)
         VersionedOnlyToggle(showVersionedOnly, onToggleVersionedOnly, colors)
     }
 }
@@ -47,7 +46,6 @@ private fun CategoryChipRow(
     selectedCategory: DependencyCategory?,
     summary: DependencySummary,
     onSelectCategory: (DependencyCategory?) -> Unit,
-    colors: ToolColors.DependenciesInspector.Scheme,
 ) {
     val haptic = LocalHapticFeedback.current
     WormaCeptorScrollableRow(contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.lg)) {
@@ -60,14 +58,12 @@ private fun CategoryChipRow(
                     onSelectCategory(null)
                 }
             },
-            accentColor = colors.primary,
         )
 
         summary.byCategory.entries
             .sortedByDescending { it.value }
             .forEach { (category, count) ->
                 key(category) {
-                    val color = category.categoryColor(colors)
                     WormaCeptorChip(
                         label = "${category.shortLabel()} ($count)",
                         selected = selectedCategory == category,
@@ -75,7 +71,6 @@ private fun CategoryChipRow(
                             haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                             onSelectCategory(if (selectedCategory == category) null else category)
                         },
-                        accentColor = color,
                     )
                 }
             }

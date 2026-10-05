@@ -95,7 +95,7 @@ internal fun CpuChartCard(
 
             WormaCeptorChartLegendItem(
                 label = stringResource(R.string.cpu_usage_label),
-                color = WormaCeptorTokens.Colors.Cpu.usage,
+                color = MaterialTheme.colorScheme.primary,
             )
         }
     }
@@ -107,6 +107,7 @@ private fun CpuLineChart(
     modifier: Modifier = Modifier,
 ) {
     val gridColor = WormaCeptorTokens.semantic().textTertiary.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
+    val lineColor = MaterialTheme.colorScheme.primary
 
     Canvas(
         modifier = modifier
@@ -123,8 +124,8 @@ private fun CpuLineChart(
         if (history.size < 2) return@Canvas
 
         val points = computeChartPoints(history, padding, chartWidth, chartHeight)
-        drawCpuUsageLine(points)
-        drawCpuAreaFill(points, padding, chartWidth, chartHeight)
+        drawCpuUsageLine(points, lineColor)
+        drawCpuAreaFill(points, lineColor, padding, chartWidth, chartHeight)
     }
 }
 
@@ -179,14 +180,17 @@ private fun computeChartPoints(
     )
 }
 
-private fun DrawScope.drawCpuUsageLine(points: List<Offset>) {
+private fun DrawScope.drawCpuUsageLine(
+    points: List<Offset>,
+    lineColor: Color,
+) {
     val cpuPath = Path()
     points.forEachIndexed { index, point ->
         if (index == 0) cpuPath.moveTo(point.x, point.y) else cpuPath.lineTo(point.x, point.y)
     }
     drawPath(
         path = cpuPath,
-        color = WormaCeptorTokens.Colors.Cpu.usage,
+        color = lineColor,
         style = Stroke(
             width = WormaCeptorTokens.BorderWidth.thick.toPx(),
             cap = StrokeCap.Round,
@@ -196,6 +200,7 @@ private fun DrawScope.drawCpuUsageLine(points: List<Offset>) {
 
 private fun DrawScope.drawCpuAreaFill(
     points: List<Offset>,
+    lineColor: Color,
     padding: Float,
     chartWidth: Float,
     chartHeight: Float,
@@ -209,7 +214,7 @@ private fun DrawScope.drawCpuAreaFill(
     }
     drawPath(
         path = areaPath,
-        color = WormaCeptorTokens.Colors.Cpu.usage.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+        color = lineColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
     )
 }
 

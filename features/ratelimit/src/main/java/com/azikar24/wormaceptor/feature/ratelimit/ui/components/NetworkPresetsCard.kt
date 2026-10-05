@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
@@ -35,7 +34,6 @@ import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.feature.ratelimit.R
 
@@ -47,7 +45,6 @@ internal fun NetworkPresetsCard(
     formattedPresetUpload: String,
     enabled: Boolean,
     onSelectPreset: (RateLimitConfig.NetworkPreset?) -> Unit,
-    colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
     WormaCeptorCard(
@@ -62,7 +59,7 @@ internal fun NetworkPresetsCard(
                 text = stringResource(R.string.ratelimit_presets_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = colors.labelPrimary,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 modifier = Modifier.semantics { heading() },
             )
 
@@ -75,7 +72,6 @@ internal fun NetworkPresetsCard(
                         selected = selectedPreset == preset,
                         enabled = enabled,
                         onClick = { onSelectPreset(if (selectedPreset == preset) null else preset) },
-                        colors = colors,
                     )
                 }
             }
@@ -84,7 +80,7 @@ internal fun NetworkPresetsCard(
             selectedPreset?.let { preset ->
                 Surface(
                     shape = WormaCeptorTokens.Shapes.card,
-                    color = colors.primary.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                 ) {
                     Row(
                         modifier = Modifier
@@ -96,25 +92,21 @@ internal fun NetworkPresetsCard(
                             icon = Icons.Default.CloudDownload,
                             label = stringResource(R.string.ratelimit_preset_info_down),
                             value = formattedPresetDownload,
-                            color = colors.download,
                         )
                         PresetInfoItem(
                             icon = Icons.Default.CloudUpload,
                             label = stringResource(R.string.ratelimit_preset_info_up),
                             value = formattedPresetUpload,
-                            color = colors.upload,
                         )
                         PresetInfoItem(
                             icon = Icons.Default.Timer,
                             label = stringResource(R.string.ratelimit_preset_info_latency),
                             value = "${preset.latencyMs}ms",
-                            color = colors.latency,
                         )
                         PresetInfoItem(
                             icon = Icons.Default.Warning,
                             label = stringResource(R.string.ratelimit_preset_info_loss),
                             value = "${preset.packetLoss.toInt()}%",
-                            color = colors.packetLoss,
                         )
                     }
                 }
@@ -129,22 +121,8 @@ private fun PresetChip(
     selected: Boolean,
     enabled: Boolean,
     onClick: () -> Unit,
-    colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
-    val presetColor = when (preset) {
-        RateLimitConfig.NetworkPreset.WIFI -> colors.presetWifi
-        RateLimitConfig.NetworkPreset.GOOD_3G,
-        RateLimitConfig.NetworkPreset.REGULAR_3G,
-        RateLimitConfig.NetworkPreset.SLOW_3G,
-        -> colors.preset3G
-        RateLimitConfig.NetworkPreset.GOOD_2G,
-        RateLimitConfig.NetworkPreset.SLOW_2G,
-        -> colors.preset2G
-        RateLimitConfig.NetworkPreset.EDGE -> colors.presetEdge
-        RateLimitConfig.NetworkPreset.OFFLINE -> colors.presetOffline
-    }
-
     val presetIcon = when (preset) {
         RateLimitConfig.NetworkPreset.WIFI -> Icons.Default.Wifi
         RateLimitConfig.NetworkPreset.GOOD_3G -> Icons.Default.SignalCellular4Bar
@@ -164,7 +142,6 @@ private fun PresetChip(
         onClick = onClick,
         enabled = enabled,
         leadingIcon = presetIcon,
-        accentColor = presetColor,
         modifier = modifier,
     )
 }
@@ -174,7 +151,6 @@ private fun PresetInfoItem(
     icon: ImageVector,
     label: String,
     value: String,
-    color: Color,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -184,7 +160,7 @@ private fun PresetInfoItem(
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = color,
+            tint = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.size(WormaCeptorTokens.Spacing.lg),
         )
         Text(
@@ -197,7 +173,7 @@ private fun PresetInfoItem(
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.SemiBold,
             fontFamily = FontFamily.Monospace,
-            color = color,
+            color = WormaCeptorTokens.semantic().textPrimary,
         )
     }
 }

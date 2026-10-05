@@ -58,6 +58,37 @@ sealed class PreferenceValue {
         override val typeName: String = "StringSet"
     }
 
+    /** Wraps a [Double] value. Only Preferences DataStore stores these. */
+    data class DoubleValue(
+        /** The stored double. */
+        val value: Double,
+    ) : PreferenceValue() {
+        override val displayValue: String = value.toString()
+        override val typeName: String = "Double"
+    }
+
+    /** Wraps a [ByteArray] value, shown as hex. Only Preferences DataStore stores these. */
+    class BytesValue(
+        /** The stored bytes. */
+        val value: ByteArray,
+    ) : PreferenceValue() {
+        override val displayValue: String = toHex(value)
+        override val typeName: String = "Bytes"
+
+        override fun equals(other: Any?): Boolean = other is BytesValue && value.contentEquals(other.value)
+
+        override fun hashCode(): Int = value.contentHashCode()
+
+        private companion object {
+            const val MAX_DISPLAY_BYTES = 64
+
+            fun toHex(bytes: ByteArray): String {
+                val hex = bytes.take(MAX_DISPLAY_BYTES).joinToString("") { "%02x".format(it) }
+                return if (bytes.size > MAX_DISPLAY_BYTES) "$hex… (${bytes.size} bytes)" else hex
+            }
+        }
+    }
+
     /** Conversion helpers for creating [PreferenceValue] from untyped data. */
     companion object {
         /**
@@ -91,11 +122,22 @@ data class PreferenceItem(
 )
 
 /**
- * Represents a SharedPreferences file with its name and item count.
+ * Represents a preferences file with its name and item count.
  */
 data class PreferenceFile(
-    /** SharedPreferences file name (without the .xml extension). */
+    /** SharedPreferences file name without the .xml extension, or the full DataStore file name. */
     val name: String,
     /** Number of key-value pairs stored in this file. */
     val itemCount: Int,
+    /** Storage mechanism that owns this file. */
+    val source: PreferenceSource = PreferenceSource.SHARED_PREFERENCES,
 )
+
+/** Storage mechanism behind a [PreferenceFile]. */
+enum class PreferenceSource {
+    /** `shared_prefs/<name>.xml`, read and written through SharedPreferences. */
+    SHARED_PREFERENCES,
+
+    /** `files/datastore/<name>.preferences_pb`, read-only because the app's DataStore caches its contents. */
+    DATASTORE,
+}

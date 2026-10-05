@@ -34,14 +34,25 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 
+/**
+ * Card showing one preference key, its value and type.
+ *
+ * @param item Preference to show
+ * @param typeColors Colors keyed by value type
+ * @param onClick Called on tap
+ * @param onLongClick Called on long press; null disables it, used for read-only files
+ * @param modifier Modifier for the card
+ * @param expanded Shows the full value instead of two lines
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PreferenceItemCard(
     item: PreferenceItem,
     typeColors: ToolColors.Preferences.TypeScheme,
     onClick: () -> Unit,
-    onLongClick: () -> Unit,
+    onLongClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
+    expanded: Boolean = false,
 ) {
     val haptic = LocalHapticFeedback.current
     val typeColor = typeColors.forTypeName(item.value.typeName)
@@ -51,13 +62,15 @@ fun PreferenceItemCard(
             .fillMaxWidth()
             .combinedClickable(
                 onClick = onClick,
-                onLongClick = {
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    onLongClick()
+                onLongClick = onLongClick?.let { longClick ->
+                    {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        longClick()
+                    }
                 },
             ),
     ) {
-        PreferenceItemRow(item = item, typeColor = typeColor)
+        PreferenceItemRow(item = item, typeColor = typeColor, expanded = expanded)
     }
 }
 
@@ -65,6 +78,7 @@ fun PreferenceItemCard(
 private fun PreferenceItemRow(
     item: PreferenceItem,
     typeColor: Color,
+    expanded: Boolean,
 ) {
     Row(
         modifier = Modifier.padding(WormaCeptorTokens.Spacing.lg),
@@ -101,7 +115,7 @@ private fun PreferenceItemRow(
                     fontFamily = FontFamily.Monospace,
                 ),
                 color = WormaCeptorTokens.semantic().textSecondary,
-                maxLines = 2,
+                maxLines = if (expanded) Int.MAX_VALUE else 2,
                 overflow = TextOverflow.Ellipsis,
             )
         }

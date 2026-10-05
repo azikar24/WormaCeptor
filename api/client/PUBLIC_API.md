@@ -229,6 +229,7 @@ Enum of all available WormaCeptor features for selective enabling.
 | Value | Description |
 |-------|-------------|
 | `SHARED_PREFERENCES` | Browse and edit SharedPreferences |
+| `DATASTORE` | Browse Jetpack Preferences DataStore files (read-only) |
 | `DATABASE_BROWSER` | Browse SQLite databases |
 | `FILE_BROWSER` | Browse app files |
 | `LOADED_LIBRARIES` | View loaded native libraries |

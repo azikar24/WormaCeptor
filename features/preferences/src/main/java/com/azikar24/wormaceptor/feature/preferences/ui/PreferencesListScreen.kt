@@ -41,12 +41,23 @@ import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableCont
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
+import com.azikar24.wormaceptor.domain.entities.PreferenceSource
 import com.azikar24.wormaceptor.feature.preferences.R
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewEvent
 import com.azikar24.wormaceptor.feature.preferences.vm.PreferencesViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
+/**
+ * Lists preference files for one storage [source].
+ *
+ * @param state Current screen state
+ * @param onEvent Dispatches view events
+ * @param onFileClick Called when a file row is tapped
+ * @param onNavigateBack Called when the back button is pressed
+ * @param source Picks the title and empty-state copy
+ * @param modifier Modifier for the screen
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreferencesListScreen(
@@ -54,12 +65,17 @@ fun PreferencesListScreen(
     onEvent: (PreferencesViewEvent) -> Unit,
     onFileClick: (PreferenceFile) -> Unit,
     onNavigateBack: () -> Unit,
+    source: PreferenceSource,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
             PreferencesListTopBar(
+                title = when (source) {
+                    PreferenceSource.SHARED_PREFERENCES -> stringResource(R.string.preferences_list_title)
+                    PreferenceSource.DATASTORE -> stringResource(R.string.datastore_list_title)
+                },
                 searchActive = state.isFileSearchActive,
                 onToggleSearch = { onEvent(PreferencesViewEvent.List.SearchToggled) },
                 onNavigateBack = onNavigateBack,
@@ -72,6 +88,7 @@ fun PreferencesListScreen(
             onEvent = onEvent,
             onFileClick = onFileClick,
             searchActive = state.isFileSearchActive,
+            source = source,
             modifier = Modifier.fillMaxSize().padding(padding).imePadding(),
         )
     }
@@ -79,12 +96,13 @@ fun PreferencesListScreen(
 
 @Composable
 private fun PreferencesListTopBar(
+    title: String,
     searchActive: Boolean,
     onToggleSearch: () -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     WormaCeptorTopBar(
-        title = stringResource(R.string.preferences_list_title),
+        title = title,
         onBack = onNavigateBack,
         backContentDescription = stringResource(R.string.preferences_back),
         actions = {
@@ -108,6 +126,7 @@ private fun PreferencesListBody(
     onEvent: (PreferencesViewEvent) -> Unit,
     onFileClick: (PreferenceFile) -> Unit,
     searchActive: Boolean,
+    source: PreferenceSource,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -132,7 +151,7 @@ private fun PreferencesListBody(
             isLoading = state.isFilesLoading,
             isEmpty = state.preferenceFiles.isEmpty(),
             loading = { WormaCeptorListSkeleton(modifier = Modifier.fillMaxSize()) },
-            empty = { PreferencesEmptyState(state.fileSearchQuery) },
+            empty = { PreferencesEmptyState(state.fileSearchQuery, source) },
             modifier = Modifier.fillMaxSize(),
         ) {
             PreferencesFilesList(
@@ -144,7 +163,10 @@ private fun PreferencesListBody(
 }
 
 @Composable
-private fun PreferencesEmptyState(searchQuery: String) {
+private fun PreferencesEmptyState(
+    searchQuery: String,
+    source: PreferenceSource,
+) {
     WormaCeptorEmptyState(
         title = if (searchQuery.isNotBlank()) {
             stringResource(R.string.preferences_empty_no_matches)
@@ -152,10 +174,10 @@ private fun PreferencesEmptyState(searchQuery: String) {
             stringResource(R.string.preferences_empty_no_files)
         },
         modifier = Modifier.fillMaxSize(),
-        subtitle = if (searchQuery.isNotBlank()) {
-            stringResource(R.string.preferences_empty_try_different_search)
-        } else {
-            stringResource(R.string.preferences_empty_files_will_appear)
+        subtitle = when {
+            searchQuery.isNotBlank() -> stringResource(R.string.preferences_empty_try_different_search)
+            source == PreferenceSource.DATASTORE -> stringResource(R.string.datastore_empty_files_will_appear)
+            else -> stringResource(R.string.preferences_empty_files_will_appear)
         },
         icon = Icons.Default.Settings,
     )
@@ -258,6 +280,30 @@ private fun PreferencesListScreenPreview() {
             onEvent = {},
             onFileClick = {},
             onNavigateBack = {},
+            source = PreferenceSource.SHARED_PREFERENCES,
+        )
+    }
+}
+
+@Suppress("UnusedPrivateMember")
+@Preview(showBackground = true)
+@Composable
+private fun PreferencesListScreenDataStorePreview() {
+    WormaCeptorTheme {
+        PreferencesListScreen(
+            state = PreferencesViewState(
+                preferenceFiles = persistentListOf(
+                    PreferenceFile(
+                        name = "settings.preferences_pb",
+                        itemCount = 4,
+                        source = PreferenceSource.DATASTORE,
+                    ),
+                ),
+            ),
+            onEvent = {},
+            onFileClick = {},
+            onNavigateBack = {},
+            source = PreferenceSource.DATASTORE,
         )
     }
 }

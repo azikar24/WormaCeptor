@@ -22,6 +22,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -91,15 +92,18 @@ fun PreferenceDetailScreen(
                     searchActive = !searchActive
                     if (!searchActive) onEvent(PreferencesViewEvent.Detail.SearchQueryChanged(""))
                 },
-                onClearAll = { onEvent(PreferencesViewEvent.Detail.ClearConfirmShown) },
+                onClearAll = { onEvent(PreferencesViewEvent.Detail.ClearConfirmShown) }
+                    .takeUnless { state.isSelectedFileReadOnly },
                 onBack = onBack,
             )
         },
         floatingActionButton = {
-            WormaCeptorFAB(
-                onClick = { onEvent(PreferencesViewEvent.Detail.EditSheetOpened(null)) },
-                contentDescription = stringResource(R.string.preferences_add_preference),
-            )
+            if (!state.isSelectedFileReadOnly) {
+                WormaCeptorFAB(
+                    onClick = { onEvent(PreferencesViewEvent.Detail.EditSheetOpened(null)) },
+                    contentDescription = stringResource(R.string.preferences_add_preference),
+                )
+            }
         },
     ) { padding ->
         PreferenceDetailBody(
@@ -121,6 +125,7 @@ fun PreferenceDetailScreen(
     )
 }
 
+@Suppress("LongParameterList")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PreferenceDetailTopBar(
@@ -128,7 +133,7 @@ private fun PreferenceDetailTopBar(
     totalItemCount: Int,
     searchActive: Boolean,
     onToggleSearch: () -> Unit,
-    onClearAll: () -> Unit,
+    onClearAll: (() -> Unit)?,
     onBack: () -> Unit,
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -152,26 +157,28 @@ private fun PreferenceDetailTopBar(
                     ),
                 )
             }
-            WormaCeptorIconButton(onClick = { showMenu = true }) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = stringResource(R.string.preferences_more_options),
-                )
-            }
-            DropdownMenu(
-                expanded = showMenu,
-                onDismissRequest = { showMenu = false },
-            ) {
-                DropdownMenuItem(
-                    text = { Text(stringResource(R.string.preferences_menu_clear_all)) },
-                    onClick = {
-                        showMenu = false
-                        onClearAll()
-                    },
-                    leadingIcon = {
-                        Icon(Icons.Default.DeleteSweep, contentDescription = null)
-                    },
-                )
+            if (onClearAll != null) {
+                WormaCeptorIconButton(onClick = { showMenu = true }) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = stringResource(R.string.preferences_more_options),
+                    )
+                }
+                DropdownMenu(
+                    expanded = showMenu,
+                    onDismissRequest = { showMenu = false },
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.preferences_menu_clear_all)) },
+                        onClick = {
+                            showMenu = false
+                            onClearAll()
+                        },
+                        leadingIcon = {
+                            Icon(Icons.Default.DeleteSweep, contentDescription = null)
+                        },
+                    )
+                }
             }
         },
     )
@@ -185,7 +192,22 @@ private fun PreferenceDetailBody(
     searchActive: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    var expandedKeys by rememberSaveable { mutableStateOf(emptySet<String>()) }
+
     Column(modifier = modifier) {
+        if (state.isSelectedFileReadOnly) {
+            Text(
+                text = stringResource(R.string.preferences_datastore_read_only_notice),
+                style = MaterialTheme.typography.bodySmall,
+                color = WormaCeptorTokens.semantic().textSecondary,
+                modifier = Modifier.padding(
+                    start = WormaCeptorTokens.Spacing.md,
+                    end = WormaCeptorTokens.Spacing.md,
+                    top = WormaCeptorTokens.Spacing.sm,
+                ),
+            )
+        }
+
         AnimatedVisibility(
             visible = searchActive,
             enter = WormaCeptorTokens.Animations.expandFadeIn,
@@ -225,10 +247,11 @@ private fun PreferenceDetailBody(
                         stringResource(R.string.preferences_empty_no_preferences)
                     },
                     modifier = Modifier.fillMaxSize(),
-                    subtitle = if (state.itemSearchQuery.isNotBlank() || state.typeFilter != null) {
-                        stringResource(R.string.preferences_empty_try_adjusting_filters)
-                    } else {
-                        stringResource(R.string.preferences_empty_add_using_button)
+                    subtitle = when {
+                        state.itemSearchQuery.isNotBlank() || state.typeFilter != null ->
+                            stringResource(R.string.preferences_empty_try_adjusting_filters)
+                        state.isSelectedFileReadOnly -> null
+                        else -> stringResource(R.string.preferences_empty_add_using_button)
                     },
                     icon = Icons.Default.Key,
                 )
@@ -247,17 +270,34 @@ private fun PreferenceDetailBody(
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
                 ) {
                     items(state.preferenceItems, key = { it.key }) { item ->
-                        PreferenceItemCard(
-                            item = item,
-                            typeColors = typeColors,
-                            onClick = {
-                                onEvent(PreferencesViewEvent.Detail.EditSheetOpened(item))
-                            },
-                            onLongClick = {
-                                onEvent(PreferencesViewEvent.Detail.DeleteConfirmShown(item.key))
-                            },
-                            modifier = Modifier.animateItem(),
-                        )
+                        if (state.isSelectedFileReadOnly) {
+                            PreferenceItemCard(
+                                item = item,
+                                typeColors = typeColors,
+                                onClick = {
+                                    expandedKeys = if (item.key in expandedKeys) {
+                                        expandedKeys - item.key
+                                    } else {
+                                        expandedKeys + item.key
+                                    }
+                                },
+                                onLongClick = null,
+                                modifier = Modifier.animateItem(),
+                                expanded = item.key in expandedKeys,
+                            )
+                        } else {
+                            PreferenceItemCard(
+                                item = item,
+                                typeColors = typeColors,
+                                onClick = {
+                                    onEvent(PreferencesViewEvent.Detail.EditSheetOpened(item))
+                                },
+                                onLongClick = {
+                                    onEvent(PreferencesViewEvent.Detail.DeleteConfirmShown(item.key))
+                                },
+                                modifier = Modifier.animateItem(),
+                            )
+                        }
                     }
                 }
             },

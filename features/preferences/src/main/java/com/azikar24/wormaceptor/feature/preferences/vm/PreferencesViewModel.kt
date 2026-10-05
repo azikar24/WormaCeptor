@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
+import com.azikar24.wormaceptor.domain.entities.PreferenceSource
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
 import kotlinx.collections.immutable.persistentListOf
@@ -184,6 +185,9 @@ class PreferencesViewModel(
         updateState {
             copy(
                 selectedFileName = fileName,
+                isSelectedFileReadOnly = preferenceFiles
+                    .firstOrNull { it.name == fileName }
+                    ?.source == PreferenceSource.DATASTORE,
                 itemSearchQuery = "",
                 typeFilter = null,
                 isItemsLoading = true,
@@ -199,6 +203,7 @@ class PreferencesViewModel(
         updateState {
             copy(
                 selectedFileName = null,
+                isSelectedFileReadOnly = false,
                 itemSearchQuery = "",
                 typeFilter = null,
                 isItemsLoading = false,

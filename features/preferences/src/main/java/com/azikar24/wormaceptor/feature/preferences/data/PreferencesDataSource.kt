@@ -83,6 +83,8 @@ class PreferencesDataSource(private val context: Context) {
                 is PreferenceValue.FloatValue -> putFloat(key, value.value)
                 is PreferenceValue.BooleanValue -> putBoolean(key, value.value)
                 is PreferenceValue.StringSetValue -> putStringSet(key, value.value)
+                // SharedPreferences has no such types; only read-only DataStore files produce them
+                is PreferenceValue.DoubleValue, is PreferenceValue.BytesValue -> Unit
             }
         }.apply()
     }

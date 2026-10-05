@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.LibraryBooks
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Cable
+import androidx.compose.material.icons.filled.DataObject
 import androidx.compose.material.icons.filled.DeveloperBoard
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Folder
@@ -65,6 +66,12 @@ object ToolCategories {
             "Shared Preferences",
             Icons.Default.Settings,
             WormaCeptorNavKeys.Preferences.route,
+        ),
+        ToolItem(
+            Feature.DATASTORE,
+            "DataStore",
+            Icons.Default.DataObject,
+            WormaCeptorNavKeys.DataStore.route,
         ),
         ToolItem(
             Feature.DATABASE_BROWSER,

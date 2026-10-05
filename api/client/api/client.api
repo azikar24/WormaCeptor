@@ -5,6 +5,7 @@ public final class com/azikar24/wormaceptor/api/Feature : java/lang/Enum {
 	public static final field CRYPTO_TOOL Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field Companion Lcom/azikar24/wormaceptor/api/Feature$Companion;
 	public static final field DATABASE_BROWSER Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field DATASTORE Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field DEPENDENCIES_INSPECTOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field DEVICE_INFO Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field FILE_BROWSER Lcom/azikar24/wormaceptor/api/Feature;

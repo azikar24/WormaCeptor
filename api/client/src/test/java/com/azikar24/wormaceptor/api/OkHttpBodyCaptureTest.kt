@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.api
 import android.util.Log
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -286,6 +287,48 @@ class OkHttpBodyCaptureTest {
         }
 
         @Test
+        fun `close without reading leaves an http2 body undrained`() {
+            val source = Buffer().writeUtf8("abcdefghij")
+            val wrapped = capture(responseWith(FixedLengthBody(source, 10), Protocol.HTTP_2))
+
+            wrapped.close()
+
+            source.size shouldBe 10
+            captures.single().stream.shouldBeNull()
+            captures.single().size shouldBe 10
+        }
+
+        @Test
+        fun `close after partial http2 read reports only the bytes it stored`() {
+            val wrapped = capture(responseWith(TrickleBody("abcdefghij", bytesPerRead = 3), Protocol.HTTP_2))
+
+            val body = wrapped.body.shouldNotBeNull()
+            body.source().readUtf8(3) shouldBe "abc"
+            body.close()
+
+            captures.single().size shouldBe 3
+            captures.single().error.shouldBeNull()
+            captures.single().stream.shouldNotBeNull().readBytes().decodeToString() shouldBe "abc"
+        }
+
+        @Test
+        fun `drain on close stops at its budget even when reads sleep past the okio deadline`() {
+            val wrapped = capture(responseWith(SleepyBody(declaredLength = 100_000)))
+
+            val startedAt = System.nanoTime()
+            wrapped.close()
+            val elapsedMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedAt)
+
+            // Unbounded, 100 sleeping reads would take ~2s.
+            elapsedMs shouldBeLessThan 1_000
+            val captured = captures.single()
+            captured.error.shouldBeNull()
+            val stored = captured.stream.shouldNotBeNull().readBytes()
+            captured.size shouldBe stored.size.toLong()
+            captured.size shouldBeLessThan 100_000
+        }
+
+        @Test
         fun `completes on early close with bytes read and no blob when length is unknown`() {
             val source = Buffer().writeUtf8("abcdefghij")
             val wrapped = capture(responseWith(source.asResponseBody("text/plain".toMediaType())))
@@ -434,9 +477,12 @@ class OkHttpBodyCaptureTest {
         return buffer.readByteArray()
     }
 
-    private fun responseWith(body: ResponseBody) = Response.Builder()
+    private fun responseWith(
+        body: ResponseBody,
+        protocol: Protocol = Protocol.HTTP_1_1,
+    ) = Response.Builder()
         .request(Request.Builder().url("https://example.com").build())
-        .protocol(Protocol.HTTP_1_1)
+        .protocol(protocol)
         .code(200)
         .message("OK")
         .body(body)
@@ -506,6 +552,58 @@ class OkHttpBodyCaptureTest {
         override fun source(): BufferedSource = source
     }
 
+    /** Hands out [text] [bytesPerRead] bytes at a time, like a body still arriving. */
+    private class TrickleBody(
+        text: String,
+        private val bytesPerRead: Long,
+    ) : ResponseBody() {
+        private val data = Buffer().writeUtf8(text)
+        private val length = data.size
+
+        private val source = object : Source {
+            override fun read(
+                sink: Buffer,
+                byteCount: Long,
+            ): Long = data.read(sink, minOf(byteCount, bytesPerRead))
+
+            override fun timeout(): Timeout = Timeout.NONE
+
+            override fun close() = Unit
+        }.buffer()
+
+        override fun contentType(): MediaType = "text/plain".toMediaType()
+
+        override fun contentLength(): Long = length
+
+        override fun source(): BufferedSource = source
+    }
+
+    /** Each read sleeps like RateLimitEngine's throttling, which an okio deadline cannot interrupt. */
+    private class SleepyBody(private val declaredLength: Long) : ResponseBody() {
+        private val source = object : Source {
+            private val timeout = Timeout()
+
+            override fun read(
+                sink: Buffer,
+                byteCount: Long,
+            ): Long {
+                Thread.sleep(SLEEP_PER_READ_MS)
+                sink.write(ByteArray(BYTES_PER_READ) { 'a'.code.toByte() })
+                return BYTES_PER_READ.toLong()
+            }
+
+            override fun timeout(): Timeout = timeout
+
+            override fun close() = Unit
+        }.buffer()
+
+        override fun contentType(): MediaType = "text/plain".toMediaType()
+
+        override fun contentLength(): Long = declaredLength
+
+        override fun source(): BufferedSource = source
+    }
+
     /** A body whose first read blocks until [releaseRead], counting reads to detect a concurrent drain. */
     private class BlockingBody : ResponseBody() {
         val readEntered = CountDownLatch(1)
@@ -546,5 +644,7 @@ class OkHttpBodyCaptureTest {
 
     private companion object {
         const val MAX = 250_000L
+        const val SLEEP_PER_READ_MS = 20L
+        const val BYTES_PER_READ = 1_000
     }
 }

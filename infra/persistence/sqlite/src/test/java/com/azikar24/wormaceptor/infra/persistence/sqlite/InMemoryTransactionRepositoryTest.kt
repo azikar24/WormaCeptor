@@ -146,6 +146,29 @@ class InMemoryTransactionRepositoryTest {
     }
 
     @Nested
+    inner class `updateTransaction` {
+
+        @Test
+        fun `replaces an existing transaction`() = runTest {
+            val original = createTransaction(status = TransactionStatus.ACTIVE)
+            repository.saveTransaction(original)
+
+            repository.updateTransaction(original.copy(status = TransactionStatus.COMPLETED)) shouldBe true
+
+            repository.getTransactionById(original.id).shouldNotBeNull().status shouldBe TransactionStatus.COMPLETED
+        }
+
+        @Test
+        fun `writes nothing for a transaction that no longer exists`() = runTest {
+            val cleared = createTransaction()
+
+            repository.updateTransaction(cleared) shouldBe false
+
+            repository.getTransactionById(cleared.id).shouldBeNull()
+        }
+    }
+
+    @Nested
     inner class `getTransactionById` {
 
         @Test

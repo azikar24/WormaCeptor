@@ -21,6 +21,9 @@ interface TransactionRepository {
     /** Persists or updates a [NetworkTransaction]. */
     suspend fun saveTransaction(transaction: NetworkTransaction)
 
+    /** Replaces the stored transaction with the same id. Returns false, writing nothing, if it no longer exists. */
+    suspend fun updateTransaction(transaction: NetworkTransaction): Boolean
+
     /** Returns all stored transactions as a one-shot list. */
     suspend fun getAllTransactionsAsList(): List<NetworkTransaction>
 

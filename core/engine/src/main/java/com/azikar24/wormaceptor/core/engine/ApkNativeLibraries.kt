@@ -47,18 +47,23 @@ internal fun apkMappingOffsets(mapsLines: List<String>): Map<String, List<Long>>
     }
     .groupBy({ it.first }, { it.second })
 
-/** Entries of [entryRanges] whose data range contains at least one of [mappedOffsets], sorted by name. */
+/**
+ * Entries of [entryRanges] whose data starts at one of [mappedOffsets], sorted by name. A library loaded from
+ * the APK is stored page-aligned and its first segment maps at its data start; matching any offset inside the
+ * range would also count an entry whose page a neighbouring library's mapping rounds down into.
+ */
 internal fun mappedEntries(
     entryRanges: Map<String, LongRange>,
     mappedOffsets: List<Long>,
-): List<String> = entryRanges
-    .filterValues { range -> mappedOffsets.any { it in range } }
-    .keys
-    .sorted()
+): List<String> {
+    val offsets = mappedOffsets.toSet()
+    return entryRanges.filterValues { it.first in offsets }.keys.sorted()
+}
 
 /**
  * Reads the zip central directory of [file] and returns the file-offset range of the raw data of each
- * entry matching [include]. java.util.zip doesn't expose entry offsets. Zip64 archives yield nothing.
+ * entry matching [include]. java.util.zip doesn't expose entry offsets. Zip64 archives and malformed central
+ * directories yield nothing.
  */
 internal fun readZipEntryDataRanges(
     file: File,
@@ -77,20 +82,32 @@ internal fun readZipEntryDataRanges(
         val nameLength = cd.uint16(start + Zip.CD_NAME_LENGTH)
         val skipLength = cd.uint16(start + Zip.CD_EXTRA_LENGTH) + cd.uint16(start + Zip.CD_COMMENT_LENGTH)
         val localHeaderOffset = cd.uint32(start + Zip.CD_LOCAL_HEADER_OFFSET)
+        val next = start + Zip.CD_HEADER_SIZE + nameLength + skipLength
+        if (next > cd.limit()) return emptyMap()
         val nameBytes = ByteArray(nameLength)
         cd.position(start + Zip.CD_HEADER_SIZE)
         cd.get(nameBytes)
         val name = String(nameBytes, Charsets.UTF_8)
-        cd.position(start + Zip.CD_HEADER_SIZE + nameLength + skipLength)
+        cd.position(next)
 
         if (include(name) && compressedSize != Zip.ZIP64_MARKER && localHeaderOffset != Zip.ZIP64_MARKER) {
-            val local = readBuffer(raf, localHeaderOffset, Zip.LOCAL_HEADER_SIZE)
-            val dataStart = localHeaderOffset + Zip.LOCAL_HEADER_SIZE +
-                local.uint16(Zip.LOCAL_NAME_LENGTH) + local.uint16(Zip.LOCAL_EXTRA_LENGTH)
-            result[name] = dataStart..<dataStart + compressedSize
+            result[name] = entryDataRange(raf, localHeaderOffset, compressedSize) ?: return emptyMap()
         }
     }
     result
+}
+
+/** File-offset range of an entry's raw data, or null if its local header or data lies past the end of the file. */
+private fun entryDataRange(
+    raf: RandomAccessFile,
+    localHeaderOffset: Long,
+    compressedSize: Long,
+): LongRange? {
+    if (localHeaderOffset + Zip.LOCAL_HEADER_SIZE > raf.length()) return null
+    val local = readBuffer(raf, localHeaderOffset, Zip.LOCAL_HEADER_SIZE)
+    val dataStart = localHeaderOffset + Zip.LOCAL_HEADER_SIZE +
+        local.uint16(Zip.LOCAL_NAME_LENGTH) + local.uint16(Zip.LOCAL_EXTRA_LENGTH)
+    return (dataStart..<dataStart + compressedSize).takeIf { it.last < raf.length() }
 }
 
 private fun ByteBuffer.uint16(index: Int): Int = getShort(index).toInt() and Zip.UINT16_MASK

@@ -37,6 +37,10 @@ class RoomTransactionRepository(
         dao.insert(TransactionEntity.fromDomain(transaction))
     }
 
+    override suspend fun updateTransaction(transaction: NetworkTransaction): Boolean {
+        return dao.update(TransactionEntity.fromDomain(transaction)) > 0
+    }
+
     override suspend fun clearAll() {
         dao.deleteAll()
     }

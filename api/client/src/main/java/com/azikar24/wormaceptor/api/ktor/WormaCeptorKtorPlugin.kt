@@ -61,6 +61,8 @@ val WormaCeptorKtorPlugin = createClientPlugin("WormaCeptor", ::WormaCeptorKtorC
         loadRateLimitDelay()
     }
 
+    val mockEngine: Any? by lazy { loadMockEngine() }
+
     on(Send) { request ->
         val provider = WormaCeptorApi.capturingProvider ?: return@on proceed(request)
         val redaction = WormaCeptorApi.redactionConfig
@@ -75,15 +77,20 @@ val WormaCeptorKtorPlugin = createClientPlugin("WormaCeptor", ::WormaCeptorKtorC
             Log.w(TAG, "Failed to capture request for ${request.url}", e)
         }
 
-        // 2. Apply rate limiting (coroutine-friendly delay)
-        try {
-            rateLimitDelay?.invoke()
-        } catch (e: Exception) {
-            Log.d(TAG, "Rate limit delay failed: ${e.message}")
+        // 2. Serve a matching mock rule instead of the network, skipping rate limiting like WormaCeptorInterceptor
+        val mocked = mockEngine?.let { mockedCallOrNull(it, client, request, startedAt) }
+
+        // 3. Apply rate limiting (coroutine-friendly delay)
+        if (mocked == null) {
+            try {
+                rateLimitDelay?.invoke()
+            } catch (e: Exception) {
+                Log.d(TAG, "Rate limit delay failed: ${e.message}")
+            }
         }
 
-        // 3. Network Call
-        val call = try {
+        // 4. Network Call
+        val call = mocked ?: try {
             proceed(request)
         } catch (e: Exception) {
             if (transactionId != null) {
@@ -104,10 +111,10 @@ val WormaCeptorKtorPlugin = createClientPlugin("WormaCeptor", ::WormaCeptorKtorC
             throw e
         }
 
-        // 4. Save call so body can be consumed by both us and downstream
+        // 5. Save call so body can be consumed by both us and downstream
         val savedCall = call.save()
 
-        // 5. Capture Response
+        // 6. Capture Response
         if (transactionId != null) {
             captureResponse(savedCall.response, transactionId, provider, maxContentLength, startedAt)
         }
@@ -204,8 +211,10 @@ private suspend fun captureResponse(
         tlsVersion = null,
         error = body.error,
         showNotification = true,
-        // Header arrival, so time spent buffering the body in save() is not counted.
-        durationMs = (response.responseTime.timestamp - startedAt).coerceAtLeast(0),
+        // Header arrival, so time spent buffering the body in save() is not counted. A cached response
+        // keeps its original receive time, from before this call started.
+        durationMs = (response.responseTime.timestamp.takeIf { it >= startedAt } ?: System.currentTimeMillis()) -
+            startedAt,
     )
 }
 

@@ -32,7 +32,7 @@ class ApkNativeLibrariesTest {
     }
 
     @Test
-    fun `mappedEntries keeps only entries containing a mapped offset`() {
+    fun `mappedEntries keeps only entries whose data start is mapped`() {
         val ranges = mapOf(
             "lib/arm64-v8a/libsqlcipher.so" to 0x17ac000L..<0x19a8df0L,
             "lib/arm64-v8a/libgraphics.so" to 0x17a8000L..<0x17aa770L,
@@ -40,6 +40,17 @@ class ApkNativeLibrariesTest {
 
         mappedEntries(ranges, listOf(0x17ac000L, 0x199c000L, 0x19a4000L)) shouldBe
             listOf("lib/arm64-v8a/libsqlcipher.so")
+    }
+
+    @Test
+    fun `mappedEntries ignores an offset inside an entry that is not its data start`() {
+        val ranges = mapOf(
+            "lib/arm64-v8a/libunused.so" to 0x17a8770L..<0x17ab000L,
+            "lib/arm64-v8a/libloaded.so" to 0x17ac000L..<0x17b0000L,
+        )
+
+        // A mapping of libunused's last page, rounded down from a neighbour, lands inside it but not at its start.
+        mappedEntries(ranges, listOf(0x17aa000L, 0x17ac000L)) shouldBe listOf("lib/arm64-v8a/libloaded.so")
     }
 
     @Test
@@ -76,6 +87,54 @@ class ApkNativeLibrariesTest {
         readZipEntryDataRanges(file) { true }.shouldBeEmpty()
     }
 
+    @Test
+    fun `readZipEntryDataRanges returns nothing when a name length overruns the central directory`(
+        @TempDir dir: File,
+    ) {
+        val zip = libZip(dir)
+        RandomAccessFile(zip, "rw").use { raf ->
+            raf.writeUInt16(raf.centralDirectoryOffset() + CD_NAME_LENGTH, 0xFFFF)
+        }
+
+        readZipEntryDataRanges(zip) { true }.shouldBeEmpty()
+    }
+
+    @Test
+    fun `readZipEntryDataRanges returns nothing when a local header offset is past the end`(@TempDir dir: File) {
+        val zip = libZip(dir)
+        RandomAccessFile(zip, "rw").use { raf ->
+            raf.writeUInt32(raf.centralDirectoryOffset() + CD_LOCAL_HEADER_OFFSET, raf.length())
+        }
+
+        readZipEntryDataRanges(zip) { true }.shouldBeEmpty()
+    }
+
+    private fun libZip(dir: File): File = File(dir, "base.apk").also { zip ->
+        ZipOutputStream(zip.outputStream()).use { it.putStored("lib/arm64-v8a/libfoo.so", ByteArray(64), false) }
+    }
+
+    /** Central directory offset from an EOCD without a comment, i.e. in the last 22 bytes. */
+    private fun RandomAccessFile.centralDirectoryOffset(): Long {
+        seek(length() - EOCD_SIZE + EOCD_CD_OFFSET)
+        return (0..3).sumOf { read().toLong() shl it * 8 }
+    }
+
+    private fun RandomAccessFile.writeUInt16(
+        position: Long,
+        value: Int,
+    ) {
+        seek(position)
+        write(byteArrayOf(value.toByte(), (value shr 8).toByte()))
+    }
+
+    private fun RandomAccessFile.writeUInt32(
+        position: Long,
+        value: Long,
+    ) {
+        seek(position)
+        write(ByteArray(4) { (value shr it * 8).toByte() })
+    }
+
     private fun ZipOutputStream.putStored(
         name: String,
         data: ByteArray,
@@ -99,5 +158,12 @@ class ApkNativeLibrariesTest {
         raf.seek(range.first)
         raf.readFully(bytes)
         bytes.toList()
+    }
+
+    private companion object {
+        const val EOCD_SIZE = 22
+        const val EOCD_CD_OFFSET = 16
+        const val CD_NAME_LENGTH = 28
+        const val CD_LOCAL_HEADER_OFFSET = 42
     }
 }

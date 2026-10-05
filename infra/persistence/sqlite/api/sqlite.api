@@ -135,6 +135,7 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryTra
 	public fun observeTransaction (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun updateTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryWebViewMonitorRepository : com/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository {
@@ -486,6 +487,7 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomTransac
 	public fun observeTransaction (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun updateTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomWebViewMonitorRepository : com/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository {
@@ -512,6 +514,7 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 	public abstract fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun observeById (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun search (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun update (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao {
@@ -530,6 +533,7 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/Transaction
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun observeById (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public fun search (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun update (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity {

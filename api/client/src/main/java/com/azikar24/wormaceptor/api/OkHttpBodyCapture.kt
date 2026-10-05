@@ -93,13 +93,13 @@ internal object OkHttpBodyCapture {
 
         val declaredLength = body.contentLength()
         val contentEncoding = response.header("Content-Encoding")
-        val tee = CapturingResponseBody(body, maxContentLength) { result ->
-            // A caller that stops early still knows the full size; a failed read only got bytesRead.
-            val size = if (result.failure != null || result.exhausted || declaredLength < 0) {
-                result.bytesRead
-            } else {
-                declaredLength
-            }
+        val tee = CapturingResponseBody(body, response.protocol, maxContentLength) { result ->
+            // Closing early without storing anything still reports the declared size. A stored body cut short
+            // below the cap (failed read, early close, drain out of time) reports only the bytes it holds.
+            val partiallyStored = result.captured.isNotEmpty() &&
+                result.captured.size < minOf(declaredLength, maxContentLength)
+            val stoppedEarly = result.failure == null && !result.exhausted
+            val size = if (stoppedEarly && declaredLength >= 0 && !partiallyStored) declaredLength else result.bytesRead
             val stream = result.captured.takeIf { it.isNotEmpty() }?.let { bytes ->
                 LazyInputStream { encodeForStorage(bytes, contentType, contentEncoding, redaction, maxContentLength) }
             }

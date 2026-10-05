@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
@@ -37,6 +38,10 @@ interface TransactionDao {
     /** Inserts or replaces a transaction record. */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(transaction: TransactionEntity)
+
+    /** Updates an existing transaction record; returns the number of rows updated. */
+    @Update
+    suspend fun update(transaction: TransactionEntity): Int
 
     /** Deletes all transaction records. */
     @Query("DELETE FROM transactions")

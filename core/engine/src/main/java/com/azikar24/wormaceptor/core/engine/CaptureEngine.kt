@@ -38,7 +38,8 @@ class CaptureEngine(
 
     /**
      * Records the response for a previously started transaction. [durationMs] is the caller's measured
-     * request time; when null it falls back to now minus the transaction's start timestamp.
+     * request time; when null it falls back to now minus the transaction's start timestamp. Does nothing if the
+     * transaction was deleted (e.g. cleared) while in flight.
      */
     suspend fun completeTransaction(
         id: UUID,
@@ -77,7 +78,8 @@ class CaptureEngine(
             durationMs = duration,
             extensions = extensions,
         )
-        repository.saveTransaction(updated)
+        // Update-only: re-inserting a cleared transaction would resurrect it with a deleted request blob.
+        if (!repository.updateTransaction(updated)) blobId?.let { blobStorage.deleteBlob(it) }
     }
 
     /** Deletes transactions older than the given timestamp threshold, along with their body blobs. */

@@ -87,6 +87,28 @@ class WormaCeptorInterceptorTest {
     }
 
     @Test
+    fun `a cached response stored before the call started ends its duration at completion`() {
+        val storedLongAgo = System.currentTimeMillis() - HEADER_DELAY
+        val chain = mockk<Interceptor.Chain> {
+            every { request() } returns request
+            every { proceed(any()) } answers {
+                Thread.sleep(CACHE_LOOKUP_MS)
+                response("abc".toResponseBody("text/plain".toMediaType()), storedLongAgo)
+            }
+        }
+        val duration = slot<Long?>()
+
+        WormaCeptorInterceptor().intercept(chain).body.shouldNotBeNull().string()
+
+        verify {
+            provider.completeTransaction(
+                id, 200, "OK", any(), any(), 3, any(), any(), null, true, captureNullable(duration),
+            )
+        }
+        duration.captured.shouldNotBeNull().shouldBeBetween(CACHE_LOOKUP_MS, TOLERANCE)
+    }
+
+    @Test
     fun `completes with an error when wrapping the response throws`() {
         val error = slot<String?>()
 
@@ -112,5 +134,6 @@ class WormaCeptorInterceptorTest {
     private companion object {
         const val HEADER_DELAY = 5_000L
         const val TOLERANCE = 1_000L
+        const val CACHE_LOOKUP_MS = 50L
     }
 }

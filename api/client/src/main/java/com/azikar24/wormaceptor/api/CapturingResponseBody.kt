@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.api
 
 import android.util.Log
 import okhttp3.MediaType
+import okhttp3.Protocol
 import okhttp3.ResponseBody
 import okio.Buffer
 import okio.BufferedSource
@@ -14,7 +15,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 private const val TAG = "WormaCeptorInterceptor"
 
-// Matches OkHttp's own discard-on-close budget, which it spends anyway to reuse the connection.
+// OkHttp's HTTP/1 discard-on-close budget (ExchangeCodec.DISCARD_STREAM_TIMEOUT_MILLIS), which it spends anyway
+// to reuse the connection. Unlike OkHttp's discard, the drain also stops at maxContentLength.
 private const val DrainTimeoutMillis = 100L
 
 /** What a [CapturingResponseBody] saw by the time it completed. Not a data class: it holds a ByteArray. */
@@ -28,18 +30,23 @@ internal class BodyCaptureResult(
 
 /**
  * Passes [delegate] through unchanged while copying the first [maxContentLength] bytes the caller reads.
- * [onComplete] runs once, on EOF, read failure or close. Closing a fixed-length body that fits the cap
- * before reading it drains the rest first, so `response.close()` without reading still captures the body.
- * A body the caller never reads or closes never completes.
+ * [onComplete] runs once, on EOF, read failure or close. On HTTP/1, closing a fixed-length body that fits the
+ * cap before reading it drains the rest first, as OkHttp would to reuse the connection, so `response.close()`
+ * without reading still captures the body. HTTP/2 is not drained: OkHttp resets the stream on close instead,
+ * and draining would download a body the caller discarded. A body the caller never reads or closes never completes.
  */
 internal class CapturingResponseBody(
     private val delegate: ResponseBody,
+    protocol: Protocol,
     maxContentLength: Long,
     onComplete: (BodyCaptureResult) -> Unit,
 ) : ResponseBody() {
 
+    private val drainOnClose = protocol == Protocol.HTTP_1_0 || protocol == Protocol.HTTP_1_1
+
     private val source by lazy {
-        CapturingSource(delegate.source(), delegate.contentLength(), maxContentLength, onComplete).buffer()
+        val drainLimit = if (drainOnClose) maxContentLength else 0
+        CapturingSource(delegate.source(), delegate.contentLength(), maxContentLength, drainLimit, onComplete).buffer()
     }
 
     override fun contentType(): MediaType? = delegate.contentType()
@@ -52,6 +59,7 @@ internal class CapturingResponseBody(
         delegate: Source,
         private val declaredLength: Long,
         private val maxContentLength: Long,
+        private val drainLimit: Long,
         private val onComplete: (BodyCaptureResult) -> Unit,
     ) : ForwardingSource(delegate) {
         private val lock = Any()
@@ -106,10 +114,10 @@ internal class CapturingResponseBody(
             }
         }
 
-        /** Reads the rest of a body that fits the cap within [DrainTimeoutMillis]. Returns true on EOF. */
+        /** Reads the rest of a body of at most [drainLimit] bytes within [DrainTimeoutMillis]. Returns true on EOF. */
         private fun drainIfSmall(): Boolean {
             val eligible = synchronized(lock) { !completed } &&
-                declaredLength in 1..maxContentLength &&
+                declaredLength in 1..drainLimit &&
                 reading.compareAndSet(false, true)
             if (!eligible) return false
             val timeout = delegate.timeout()
@@ -118,13 +126,15 @@ internal class CapturingResponseBody(
             timeout.deadlineNanoTime(minOf(originalDeadline ?: drainDeadline, drainDeadline))
             val sink = Buffer()
             return try {
-                while (true) {
+                // The okio deadline only interrupts socket reads; a source that sleeps (rate limit throttling)
+                // ignores it, so the budget is also checked between reads.
+                while (System.nanoTime() < drainDeadline) {
                     val read = delegate.read(sink, declaredLength)
-                    if (read == -1L) break
+                    if (read == -1L) return true
                     record(sink, read)
                     sink.clear()
                 }
-                true
+                false
             } catch (e: IOException) {
                 Log.d(TAG, "Response body drain on close stopped early", e)
                 false

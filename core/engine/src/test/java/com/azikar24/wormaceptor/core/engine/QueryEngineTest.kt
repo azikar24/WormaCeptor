@@ -239,10 +239,7 @@ class QueryEngineTest {
 
         @Test
         fun `should delete request and response blobs of all transactions`() = runTest {
-            coEvery { repository.getAllTransactionsAsList() } returns listOf(
-                createTransactionWithBlobs(requestBlob = "req-1", responseBlob = "res-1"),
-                createTransactionWithBlobs(requestBlob = null, responseBlob = "res-2"),
-            )
+            coEvery { repository.getAllBodyRefs() } returns setOf("req-1", "res-1", "res-2")
 
             engine.clear()
 

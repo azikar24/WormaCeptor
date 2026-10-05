@@ -13,6 +13,7 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import java.util.UUID
@@ -37,6 +38,13 @@ class InMemoryTransactionRepository : TransactionRepository {
 
     override suspend fun saveTransaction(transaction: NetworkTransaction) {
         _transactionsFlow.update { current -> current + (transaction.id to transaction) }
+    }
+
+    override suspend fun updateTransaction(transaction: NetworkTransaction): Boolean {
+        val previous = _transactionsFlow.getAndUpdate { current ->
+            if (transaction.id in current) current + (transaction.id to transaction) else current
+        }
+        return transaction.id in previous
     }
 
     override suspend fun getAllTransactionsAsList(): List<NetworkTransaction> {

@@ -91,7 +91,7 @@ class QueryEngine(
 
     /** Deletes all stored transactions and their body blobs. */
     suspend fun clear() {
-        val blobIds = repository.getAllTransactionsAsList().flatMap { it.blobIds() }
+        val blobIds = repository.getAllBodyRefs()
         repository.clearAll()
         blobIds.forEach { blobStorage.deleteBlob(it) }
     }

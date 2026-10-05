@@ -163,7 +163,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -185,7 +185,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -204,7 +204,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -224,7 +224,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -243,7 +243,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -262,7 +262,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -283,7 +283,7 @@ class CaptureEngineTest {
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
 
             val bodyStream = ByteArrayInputStream("response body".toByteArray())
             engine.completeTransaction(
@@ -312,6 +312,25 @@ class CaptureEngineTest {
             )
 
             coVerify(exactly = 0) { repository.saveTransaction(any()) }
+            coVerify(exactly = 0) { repository.updateTransaction(any()) }
+        }
+
+        @Test
+        fun `does not resurrect a transaction cleared while in flight and drops its response blob`() = runTest {
+            coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
+            coEvery { repository.updateTransaction(any()) } returns false
+            coEvery { blobStorage.saveBlob(any()) } returns "response-blob"
+
+            engine.completeTransaction(
+                id = transactionId,
+                code = 200,
+                message = "OK",
+                headers = emptyMap(),
+                bodyStream = ByteArrayInputStream("body".toByteArray()),
+            )
+
+            coVerify(exactly = 0) { repository.saveTransaction(any()) }
+            coVerify { blobStorage.deleteBlob("response-blob") }
         }
 
         @Test
@@ -319,7 +338,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -342,7 +361,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -362,7 +381,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -386,7 +405,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
             every { extensionRegistry.extractAll(any()) } returns emptyMap()
 
             engine.completeTransaction(
@@ -411,7 +430,7 @@ class CaptureEngineTest {
             every { extensionRegistry.extractAll(any()) } returns extensionData
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
 
             engine.completeTransaction(
                 id = transactionId,
@@ -432,7 +451,7 @@ class CaptureEngineTest {
             every { extensionRegistry.extractAll(capture(contextSlot)) } returns emptyMap()
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
 
             engine.completeTransaction(
                 id = transactionId,
@@ -464,7 +483,7 @@ class CaptureEngineTest {
             coEvery { repository.getTransactionById(txId) } returns original
 
             val updatedSlot = slot<NetworkTransaction>()
-            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            coEvery { repository.updateTransaction(capture(updatedSlot)) } returns true
 
             engineWithoutRegistry.completeTransaction(
                 id = txId,

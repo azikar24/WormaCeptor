@@ -177,7 +177,8 @@ class WormaCeptorInterceptor : Interceptor {
         headers: Map<String, List<String>>,
         message: String = response.message,
     ): Response {
-        val receivedAt = response.receivedResponseAtMillis.takeIf { it > 0 } ?: System.currentTimeMillis()
+        // A cache hit carries the stored response's original receive time, from before this call started.
+        val receivedAt = response.receivedResponseAtMillis.takeIf { it >= startedAt } ?: System.currentTimeMillis()
         val complete = { body: CapturedBody ->
             provider.completeTransaction(
                 id = id,

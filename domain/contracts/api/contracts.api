@@ -284,6 +284,7 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Transa
 	public abstract fun observeTransaction (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun updateTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/domain/contracts/TransactionRepository$DefaultImpls {

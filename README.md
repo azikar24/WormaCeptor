@@ -143,7 +143,7 @@ Full docs at **[wormaceptor.com](https://wormaceptor.com)** — [Getting Started
 
 ## Contributing
 
-PRs welcome. To get started:
+PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, architecture rules and the PR process. To get started:
 
 ```bash
 ./gradlew build              # Build everything

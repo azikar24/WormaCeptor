@@ -265,7 +265,7 @@ class PreferencesViewModel(
         viewModelScope.launch {
             combine(
                 repository.observePreferenceFiles(),
-                _fileSearchQuery.debounce(SearchDebounce.DEFAULT),
+                _fileSearchQuery.debounce(::searchDebounceMillis),
             ) { files, query ->
                 files.filter { file ->
                     query.isBlank() || file.name.contains(query, ignoreCase = true)
@@ -286,7 +286,7 @@ class PreferencesViewModel(
                     } else {
                         combine(
                             repository.observePreferenceItems(fileName),
-                            _itemSearchQuery.debounce(SearchDebounce.DEFAULT),
+                            _itemSearchQuery.debounce(::searchDebounceMillis),
                             _typeFilter,
                         ) { items, query, typeFilter ->
                             items.filter { item ->
@@ -346,3 +346,7 @@ class PreferencesViewModel(
         }
     }
 }
+
+// A blank query (initial load, cleared search) must not wait out the debounce, or the list
+// shows its loading state through the whole navigation transition.
+internal fun searchDebounceMillis(query: String): Long = if (query.isBlank()) 0L else SearchDebounce.DEFAULT

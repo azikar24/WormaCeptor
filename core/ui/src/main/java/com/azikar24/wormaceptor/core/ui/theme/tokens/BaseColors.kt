@@ -34,6 +34,7 @@ internal object Palette {
     val Gray550 = Color(0xFF808080)
     val Gray575 = Color(0xFF78909C) // Blue Grey 400
     val Gray600 = Color(0xFF757575)
+    val Gray610 = Color(0xFF737373)
     val Gray625 = Color(0xFF6B7280) // Gray-500 (Tailwind)
     val Gray650 = Color(0xFF6B6B6B)
     val Gray675 = Color(0xFF616161)
@@ -127,7 +128,7 @@ internal object Palette {
     // TEAL
     // ============================================================
     val Teal500 = Color(0xFF14B8A6)
-    val Teal600 = Color(0xFF0D9488) // Accent light
+    val Teal800 = Color(0xFF0F766E) // Accent light, 5.47:1 on white
     val Teal300 = Color(0xFF4DB6AC) // Teal 300
     val Teal700 = Color(0xFF009688) // Teal 500 material
     val TealBright = Color(0xFF2DD4BF) // Accent dark
@@ -224,6 +225,6 @@ internal object Palette {
     // ============================================================
     // ACCENT TINTS (with alpha encoded in ARGB)
     // ============================================================
-    val AccentSubtleLight = Color(0x120D9488)
+    val AccentSubtleLight = Color(0x120F766E)
     val AccentSubtleDark = Color(0x152DD4BF)
 }

@@ -784,6 +784,19 @@ public final class com/azikar24/wormaceptor/core/ui/components/status/WormaCepto
 	public static final fun WormaCeptorStatusDot-DxzAY5Q (JLandroidx/compose/ui/Modifier;FLandroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/azikar24/wormaceptor/core/ui/components/tab/ComposableSingletons$WormaCeptorTabRowKt {
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/tab/ComposableSingletons$WormaCeptorTabRowKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/components/tab/WormaCeptorTabRowKt {
+	public static final fun WormaCeptorTabRow (ILjava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/azikar24/wormaceptor/core/ui/components/toggle/ComposableSingletons$WormaCeptorSwitchKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/toggle/ComposableSingletons$WormaCeptorSwitchKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
@@ -837,6 +850,8 @@ public final class com/azikar24/wormaceptor/core/ui/navigation/FeatureRegistry {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/FeatureRegistry;
 	public final fun contributeAll (Landroidx/navigation/NavGraphBuilder;Landroidx/navigation/NavHostController;Landroid/content/Context;Lkotlin/jvm/functions/Function0;)V
+	public final fun getContributors ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun preload ()V
 }
 
 public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys {
@@ -956,7 +971,9 @@ public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKey
 public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$MockRuleEditor {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$MockRuleEditor;
+	public static final field fromTransactionRoute Ljava/lang/String;
 	public static final field route Ljava/lang/String;
+	public final fun createFromTransactionRoute (Ljava/lang/String;)Ljava/lang/String;
 	public final fun createNewRoute ()Ljava/lang/String;
 	public final fun createRoute (Ljava/lang/String;)Ljava/lang/String;
 }
@@ -1099,8 +1116,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorTokens$Colo
 	public final fun getCategory ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/Colors$Category;
 	public final fun getChart ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/Colors$Chart;
 	public final fun getContentType ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/Colors$ContentType;
-	public final fun getCpu ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Cpu;
-	public final fun getCrypto ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Crypto;
 	public final fun getDatabase ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Database;
 	public final fun getDependenciesInspector ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector;
 	public final fun getDismissZone ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DismissZone;
@@ -1112,10 +1127,8 @@ public final class com/azikar24/wormaceptor/core/ui/theme/WormaCeptorTokens$Colo
 	public final fun getLoadedLibraries ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LoadedLibraries;
 	public final fun getLocation ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Location;
 	public final fun getLogLevel ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LogLevel;
-	public final fun getMemory ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Memory;
 	public final fun getOverlay ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Overlay;
 	public final fun getPreferences ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Preferences;
-	public final fun getRateLimit ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit;
 	public final fun getRecomposition ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Recomposition;
 	public final fun getSecureStorage ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$SecureStorage;
 	public final fun getStatus ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/Colors$Status;
@@ -1493,22 +1506,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors;
 }
 
-public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Cpu {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Cpu;
-	public final fun forCore-vNxB06k (I)J
-	public final fun getCoreColors ()Ljava/util/List;
-	public final fun getUsage-0d7_KjU ()J
-	public final fun getUsageLight-0d7_KjU ()J
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Crypto {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Crypto;
-	public final fun getDecrypt-0d7_KjU ()J
-	public final fun getEncrypt-0d7_KjU ()J
-}
-
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Database {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Database;
@@ -1538,72 +1535,34 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Depe
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector$Scheme {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component10-0d7_KjU ()J
 	public final fun component11-0d7_KjU ()J
 	public final fun component12-0d7_KjU ()J
-	public final fun component13-0d7_KjU ()J
-	public final fun component14-0d7_KjU ()J
-	public final fun component15-0d7_KjU ()J
-	public final fun component16-0d7_KjU ()J
-	public final fun component17-0d7_KjU ()J
-	public final fun component18-0d7_KjU ()J
-	public final fun component19-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
-	public final fun component20-0d7_KjU ()J
-	public final fun component21-0d7_KjU ()J
-	public final fun component22-0d7_KjU ()J
-	public final fun component23-0d7_KjU ()J
-	public final fun component24-0d7_KjU ()J
-	public final fun component25-0d7_KjU ()J
-	public final fun component26-0d7_KjU ()J
-	public final fun component27-0d7_KjU ()J
-	public final fun component28-0d7_KjU ()J
-	public final fun component29-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
-	public final fun component30-0d7_KjU ()J
-	public final fun component31-0d7_KjU ()J
 	public final fun component4-0d7_KjU ()J
 	public final fun component5-0d7_KjU ()J
 	public final fun component6-0d7_KjU ()J
 	public final fun component7-0d7_KjU ()J
 	public final fun component8-0d7_KjU ()J
 	public final fun component9-0d7_KjU ()J
-	public final fun copy-Y2hkOno (JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector$Scheme;
-	public static synthetic fun copy-Y2hkOno$default (Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector$Scheme;JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector$Scheme;
+	public final fun copy-2qZNXz8 (JJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector$Scheme;
+	public static synthetic fun copy-2qZNXz8$default (Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector$Scheme;JJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$DependenciesInspector$Scheme;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAnalytics-0d7_KjU ()J
-	public final fun getAndroidx-0d7_KjU ()J
 	public final fun getCardBackground-0d7_KjU ()J
 	public final fun getChipBackground-0d7_KjU ()J
-	public final fun getDatabase-0d7_KjU ()J
-	public final fun getDependencyInjection-0d7_KjU ()J
 	public final fun getDivider-0d7_KjU ()J
 	public final fun getHighConfidence-0d7_KjU ()J
-	public final fun getImageLoading-0d7_KjU ()J
-	public final fun getKotlin-0d7_KjU ()J
 	public final fun getLabelPrimary-0d7_KjU ()J
 	public final fun getLabelSecondary-0d7_KjU ()J
-	public final fun getLink-0d7_KjU ()J
-	public final fun getLogging-0d7_KjU ()J
 	public final fun getLowConfidence-0d7_KjU ()J
 	public final fun getMediumConfidence-0d7_KjU ()J
-	public final fun getNetworking-0d7_KjU ()J
-	public final fun getOther-0d7_KjU ()J
-	public final fun getPrimary-0d7_KjU ()J
-	public final fun getReactive-0d7_KjU ()J
 	public final fun getSearchBackground-0d7_KjU ()J
-	public final fun getSecurity-0d7_KjU ()J
 	public final fun getSelectedChipBackground-0d7_KjU ()J
-	public final fun getSerialization-0d7_KjU ()J
-	public final fun getTesting-0d7_KjU ()J
-	public final fun getUiFramework-0d7_KjU ()J
-	public final fun getUtility-0d7_KjU ()J
 	public final fun getValuePrimary-0d7_KjU ()J
 	public final fun getVersionDetected-0d7_KjU ()J
-	public final fun getVersionText-0d7_KjU ()J
-	public final fun getVersionUnknown-0d7_KjU ()J
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -1619,32 +1578,9 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Dism
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser;
-	public final fun fileTypeScheme (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$FileTypeScheme;
-	public final fun getDarkFileType ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$FileTypeScheme;
 	public final fun getDarkSyntax ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$SyntaxScheme;
-	public final fun getLightFileType ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$FileTypeScheme;
 	public final fun getLightSyntax ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$SyntaxScheme;
 	public final fun syntaxScheme (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$SyntaxScheme;
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$FileTypeScheme {
-	public static final field $stable I
-	public synthetic fun <init> (JJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun copy-t635Npw (JJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$FileTypeScheme;
-	public static synthetic fun copy-t635Npw$default (Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$FileTypeScheme;JJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$FileTypeScheme;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDatabase-0d7_KjU ()J
-	public final fun getFolder-0d7_KjU ()J
-	public final fun getImage-0d7_KjU ()J
-	public final fun getOther-0d7_KjU ()J
-	public final fun getText-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$FileBrowser$SyntaxScheme {
@@ -1687,11 +1623,9 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Floa
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Fps {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Fps;
-	public final fun chartLine-wmQWz5c (ZLandroidx/compose/runtime/Composer;II)J
 	public final fun getCritical-0d7_KjU ()J
 	public final fun getGood-0d7_KjU ()J
 	public final fun getWarning-0d7_KjU ()J
-	public final fun jankIndicator-wmQWz5c (ZLandroidx/compose/runtime/Composer;II)J
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LeakDetection {
@@ -1715,17 +1649,12 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Load
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LoadedLibraries$Scheme {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component10-0d7_KjU ()J
 	public final fun component11-0d7_KjU ()J
 	public final fun component12-0d7_KjU ()J
 	public final fun component13-0d7_KjU ()J
-	public final fun component14-0d7_KjU ()J
-	public final fun component15-0d7_KjU ()J
-	public final fun component16-0d7_KjU ()J
-	public final fun component17-0d7_KjU ()J
-	public final fun component18-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
 	public final fun component4-0d7_KjU ()J
@@ -1734,21 +1663,16 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Load
 	public final fun component7-0d7_KjU ()J
 	public final fun component8-0d7_KjU ()J
 	public final fun component9-0d7_KjU ()J
-	public final fun copy-58FyvDQ (JJJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LoadedLibraries$Scheme;
-	public static synthetic fun copy-58FyvDQ$default (Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LoadedLibraries$Scheme;JJJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LoadedLibraries$Scheme;
+	public final fun copy-daRQuJA (JJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LoadedLibraries$Scheme;
+	public static synthetic fun copy-daRQuJA$default (Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LoadedLibraries$Scheme;JJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LoadedLibraries$Scheme;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAarResource-0d7_KjU ()J
 	public final fun getAppLibrary-0d7_KjU ()J
 	public final fun getCardBackground-0d7_KjU ()J
 	public final fun getChipBackground-0d7_KjU ()J
-	public final fun getDex-0d7_KjU ()J
 	public final fun getDivider-0d7_KjU ()J
-	public final fun getJar-0d7_KjU ()J
 	public final fun getLabelPrimary-0d7_KjU ()J
 	public final fun getLabelSecondary-0d7_KjU ()J
-	public final fun getNativeSo-0d7_KjU ()J
 	public final fun getPathText-0d7_KjU ()J
-	public final fun getPrimary-0d7_KjU ()J
 	public final fun getSearchBackground-0d7_KjU ()J
 	public final fun getSearchHighlight-0d7_KjU ()J
 	public final fun getSelectedChipBackground-0d7_KjU ()J
@@ -1763,11 +1687,9 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Loca
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Location;
 	public final fun getBuiltInPreset-0d7_KjU ()J
-	public final fun getCoordinate-0d7_KjU ()J
 	public final fun getDisabled-0d7_KjU ()J
 	public final fun getEnabled-0d7_KjU ()J
 	public final fun getError-0d7_KjU ()J
-	public final fun getUserPreset-0d7_KjU ()J
 	public final fun getWarning-0d7_KjU ()J
 }
 
@@ -1780,15 +1702,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$LogL
 	public final fun getInfo-0d7_KjU ()J
 	public final fun getVerbose-0d7_KjU ()J
 	public final fun getWarn-0d7_KjU ()J
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Memory {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Memory;
-	public final fun getHeapFree-0d7_KjU ()J
-	public final fun getHeapTotal-0d7_KjU ()J
-	public final fun getHeapUsed-0d7_KjU ()J
-	public final fun getNativeHeap-0d7_KjU ()J
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Overlay {
@@ -1849,66 +1762,6 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Push
 	public final fun getMax-0d7_KjU ()J
 }
 
-public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$PushSimulator$Template {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$PushSimulator$Template;
-	public final fun getAction-0d7_KjU ()J
-	public final fun getPreset-0d7_KjU ()J
-	public final fun getUser-0d7_KjU ()J
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit;
-	public final fun getDark ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit$Scheme;
-	public final fun getLight ()Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit$Scheme;
-	public final fun scheme (ZLandroidx/compose/runtime/Composer;II)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit$Scheme;
-}
-
-public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit$Scheme {
-	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJJJJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1-0d7_KjU ()J
-	public final fun component10-0d7_KjU ()J
-	public final fun component11-0d7_KjU ()J
-	public final fun component12-0d7_KjU ()J
-	public final fun component13-0d7_KjU ()J
-	public final fun component14-0d7_KjU ()J
-	public final fun component15-0d7_KjU ()J
-	public final fun component16-0d7_KjU ()J
-	public final fun component17-0d7_KjU ()J
-	public final fun component2-0d7_KjU ()J
-	public final fun component3-0d7_KjU ()J
-	public final fun component4-0d7_KjU ()J
-	public final fun component5-0d7_KjU ()J
-	public final fun component6-0d7_KjU ()J
-	public final fun component7-0d7_KjU ()J
-	public final fun component8-0d7_KjU ()J
-	public final fun component9-0d7_KjU ()J
-	public final fun copy-OG5zQOY (JJJJJJJJJJJJJJJJJ)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit$Scheme;
-	public static synthetic fun copy-OG5zQOY$default (Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit$Scheme;JJJJJJJJJJJJJJJJJILjava/lang/Object;)Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$RateLimit$Scheme;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDisabled-0d7_KjU ()J
-	public final fun getDownload-0d7_KjU ()J
-	public final fun getEnabled-0d7_KjU ()J
-	public final fun getLabelPrimary-0d7_KjU ()J
-	public final fun getLabelSecondary-0d7_KjU ()J
-	public final fun getLatency-0d7_KjU ()J
-	public final fun getPacketLoss-0d7_KjU ()J
-	public final fun getPreset2G-0d7_KjU ()J
-	public final fun getPreset3G-0d7_KjU ()J
-	public final fun getPresetEdge-0d7_KjU ()J
-	public final fun getPresetOffline-0d7_KjU ()J
-	public final fun getPresetWifi-0d7_KjU ()J
-	public final fun getPrimary-0d7_KjU ()J
-	public final fun getSliderThumb-0d7_KjU ()J
-	public final fun getSliderTrack-0d7_KjU ()J
-	public final fun getUpload-0d7_KjU ()J
-	public final fun getValuePrimary-0d7_KjU ()J
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Recomposition {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Recomposition;
@@ -1921,10 +1774,7 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Reco
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$SecureStorage {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$SecureStorage;
-	public final fun getDatastore-0d7_KjU ()J
 	public final fun getEncrypted-0d7_KjU ()J
-	public final fun getEncryptedPrefs-0d7_KjU ()J
-	public final fun getKeystore-0d7_KjU ()J
 	public final fun getPrimary-0d7_KjU ()J
 	public final fun getUnencrypted-0d7_KjU ()J
 }
@@ -1932,13 +1782,8 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Secu
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$ThreadViolation {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$ThreadViolation;
-	public final fun getCustomSlowCode-0d7_KjU ()J
-	public final fun getDiskRead-0d7_KjU ()J
-	public final fun getDiskWrite-0d7_KjU ()J
 	public final fun getIdle-0d7_KjU ()J
 	public final fun getMonitoring-0d7_KjU ()J
-	public final fun getNetwork-0d7_KjU ()J
-	public final fun getSlowCall-0d7_KjU ()J
 }
 
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$Viewer {
@@ -1951,15 +1796,10 @@ public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$View
 public final class com/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$WebSocket {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/theme/tokens/ToolColors$WebSocket;
-	public final fun getBinaryMessage-0d7_KjU ()J
 	public final fun getClosed-0d7_KjU ()J
 	public final fun getClosing-0d7_KjU ()J
 	public final fun getConnecting-0d7_KjU ()J
 	public final fun getOpen-0d7_KjU ()J
-	public final fun getPingPong-0d7_KjU ()J
-	public final fun getReceived-0d7_KjU ()J
-	public final fun getSent-0d7_KjU ()J
-	public final fun getTextMessage-0d7_KjU ()J
 }
 
 public final class com/azikar24/wormaceptor/core/ui/util/ClickableExtensionsKt {

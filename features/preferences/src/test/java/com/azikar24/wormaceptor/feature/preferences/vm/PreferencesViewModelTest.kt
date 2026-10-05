@@ -82,6 +82,18 @@ class PreferencesViewModelTest {
         }
     }
 
+    /**
+     * Wraps Turbine's [test] block with a trailing [cancelAndIgnoreRemainingEvents] so
+     * StateFlows backed by `combine(...)` don't fail with "Unconsumed events" when
+     * intermediate emissions slip in after the assertions.
+     */
+    private suspend fun <T> kotlinx.coroutines.flow.Flow<T>.testWithCleanup(
+        block: suspend ReceiveTurbine<T>.() -> Unit,
+    ) = test {
+        block()
+        cancelAndIgnoreRemainingEvents()
+    }
+
     @Nested
     inner class `initial state` {
 
@@ -116,7 +128,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `emits sorted files`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 val state = awaitUntil { it.preferenceFiles.size == 3 }
                 state.preferenceFiles.map { it.name } shouldContainExactly listOf(
                     "app_settings",
@@ -129,7 +141,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `filters files by search query`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.preferenceFiles.size == 3 }
 
                 viewModel.sendEvent(PreferencesViewEvent.List.SearchQueryChanged("user"))
@@ -142,7 +154,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `blank query shows all files`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.preferenceFiles.size == 3 }
 
                 viewModel.sendEvent(PreferencesViewEvent.List.SearchQueryChanged("user"))
@@ -212,7 +224,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `emits empty list when no file selected`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitItem().preferenceItems.shouldBeEmpty()
                 cancelAndIgnoreRemainingEvents()
             }
@@ -220,7 +232,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `emits items when file is selected`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
                 cancelAndIgnoreRemainingEvents()
@@ -229,7 +241,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `filters items by search query matching key`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
 
@@ -242,7 +254,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `filters items by search query matching value`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
 
@@ -255,7 +267,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `filters items by type filter`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
 
@@ -268,7 +280,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `combines search query and type filter`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.preferenceItems.size == 5 }
 
@@ -286,7 +298,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `emits empty when no file selected`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitItem().availableTypes.shouldBeEmpty()
                 cancelAndIgnoreRemainingEvents()
             }
@@ -294,7 +306,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `emits sorted distinct type names`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 val state = awaitUntil { it.availableTypes.size == 5 }
                 state.availableTypes shouldContainExactly listOf("Boolean", "Float", "Int", "Long", "String")
@@ -308,7 +320,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `is 0 when no file selected`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitItem().totalItemCount shouldBe 0
                 cancelAndIgnoreRemainingEvents()
             }
@@ -316,7 +328,7 @@ class PreferencesViewModelTest {
 
         @Test
         fun `reflects raw item count for selected file`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
                 awaitUntil { it.totalItemCount == 5 }
                 cancelAndIgnoreRemainingEvents()
@@ -350,7 +362,7 @@ class PreferencesViewModelTest {
                 PreferencesViewEvent.Detail.PreferenceSet("theme", PreferenceValue.StringValue("light")),
             )
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isLoading }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -378,7 +390,7 @@ class PreferencesViewModelTest {
                 PreferencesViewEvent.Detail.PreferenceSet("theme", PreferenceValue.StringValue("light")),
             )
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isLoading }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -396,7 +408,7 @@ class PreferencesViewModelTest {
 
             viewModel.sendEvent(PreferencesViewEvent.Detail.PreferenceDeleted("theme"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isLoading }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -421,7 +433,7 @@ class PreferencesViewModelTest {
 
             viewModel.sendEvent(PreferencesViewEvent.Detail.FileCleared)
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isLoading }
                 cancelAndIgnoreRemainingEvents()
             }

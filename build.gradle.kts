@@ -16,6 +16,7 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.gradle.doctor)
     alias(libs.plugins.vanniktech.maven.publish) apply false
+    alias(libs.plugins.play.publisher) apply false
 }
 
 // Detekt configuration for root project

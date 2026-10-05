@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,10 +22,14 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
@@ -35,6 +40,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.azikar24.wormaceptor.api.WormaCeptorApi
+import com.azikar24.wormaceptor.api.compose.trackRecomposition
 import com.azikar24.wormaceptor.common.presentation.BaseScreen
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
@@ -47,6 +53,11 @@ import com.azikar24.wormaceptorapp.main.uimodel.MainViewEvent
 import com.azikar24.wormaceptorapp.main.uimodel.MainViewState
 import com.azikar24.wormaceptorapp.main.viewmodel.MainViewModel
 import com.azikar24.wormaceptorapp.navigation.TestToolsRoutes
+import com.azikar24.wormaceptorapp.sampleservice.SampleDatabaseService
+import com.azikar24.wormaceptorapp.sampleservice.SampleFileService
+import com.azikar24.wormaceptorapp.sampleservice.SampleLogger
+import com.azikar24.wormaceptorapp.sampleservice.SamplePreferencesService
+import com.azikar24.wormaceptorapp.sampleservice.StressService
 import com.azikar24.wormaceptorapp.screens.LocationTestScreen
 import com.azikar24.wormaceptorapp.screens.SecureStorageTestScreen
 import com.azikar24.wormaceptorapp.screens.WebViewTestScreen
@@ -57,6 +68,7 @@ import com.azikar24.wormaceptorapp.wormaceptorui.components.TestToolsSheetConten
 import com.azikar24.wormaceptorapp.wormaceptorui.components.WelcomeScreen
 import com.azikar24.wormaceptorapp.wormaceptorui.effects.GlitchEffect
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
@@ -107,6 +119,8 @@ class MainActivity : ComponentActivity() {
 
             WormaCeptorTheme {
                 MainNavHost(state, onEvent, navController, glitchProgress.value)
+
+                RecompositionStorm(active = state.recompositionStormActive)
 
                 TestToolsSheet(state, onEvent, sheetState)
 
@@ -259,11 +273,27 @@ class MainActivity : ComponentActivity() {
                     webSocketStatus = state.webSocketStatus,
                     leakStatus = state.leakStatus,
                     threadViolationStatus = state.threadViolationStatus,
+                    seedDatabaseStatus = state.seedDatabaseStatus,
+                    seedPreferencesStatus = state.seedPreferencesStatus,
+                    writeFilesStatus = state.writeFilesStatus,
+                    logsStatus = state.logsStatus,
+                    cpuStressStatus = state.cpuStressStatus,
+                    memoryStressStatus = state.memoryStressStatus,
+                    frameDropStatus = state.frameDropStatus,
+                    recompositionStormActive = state.recompositionStormActive,
                     onRunApiTests = { onEvent(MainViewEvent.RunApiTestsClicked) },
                     onWebSocketTest = { onEvent(MainViewEvent.WebSocketTestClicked) },
                     onTriggerCrash = { onEvent(MainViewEvent.TriggerCrashClicked) },
                     onTriggerLeak = { onEvent(MainViewEvent.TriggerLeakClicked) },
                     onThreadViolation = { onEvent(MainViewEvent.ThreadViolationClicked) },
+                    onSeedDatabase = { onEvent(MainViewEvent.SeedDatabaseClicked) },
+                    onSeedPreferences = { onEvent(MainViewEvent.SeedPreferencesClicked) },
+                    onWriteSampleFiles = { onEvent(MainViewEvent.WriteSampleFilesClicked) },
+                    onEmitSampleLogs = { onEvent(MainViewEvent.EmitSampleLogsClicked) },
+                    onBurnCpu = { onEvent(MainViewEvent.BurnCpuClicked) },
+                    onAllocateMemory = { onEvent(MainViewEvent.AllocateMemoryClicked) },
+                    onDropFrames = { onEvent(MainViewEvent.DropFramesClicked) },
+                    onRecompositionStorm = { onEvent(MainViewEvent.RecompositionStormClicked) },
                     onLocationClick = { onEvent(MainViewEvent.LocationClicked) },
                     onWebViewClick = { onEvent(MainViewEvent.WebViewClicked) },
                     onSecureStorageClick = { onEvent(MainViewEvent.SecureStorageClicked) },
@@ -273,6 +303,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
+    @Suppress("LongMethod", "CyclomaticComplexMethod")
     private fun handleEffect(
         effect: MainViewEffect,
         navController: NavHostController,
@@ -289,39 +320,60 @@ class MainActivity : ComponentActivity() {
                 }
                 startActivity(intent)
             }
-            MainViewEffect.NavigateToLocation -> {
-                scope.launch {
-                    sheetState.hide()
-                }
-                scope.launch {
-                    delay(SHEET_DISMISS_DELAY)
-                    navController.navigate(TestToolsRoutes.LOCATION)
-                }
-            }
-            MainViewEffect.NavigateToWebView -> {
-                scope.launch {
-                    sheetState.hide()
-                }
-                scope.launch {
-                    delay(SHEET_DISMISS_DELAY)
-                    navController.navigate(TestToolsRoutes.WEBVIEW)
-                }
-            }
-            MainViewEffect.NavigateToSecureStorage -> {
-                scope.launch {
-                    sheetState.hide()
-                }
-                scope.launch {
-                    delay(SHEET_DISMISS_DELAY)
-                    navController.navigate(TestToolsRoutes.SECURE_STORAGE)
-                }
-            }
+            MainViewEffect.NavigateToLocation -> hideSheetAndNavigate(
+                scope,
+                sheetState,
+                navController,
+                TestToolsRoutes.LOCATION,
+            )
+            MainViewEffect.NavigateToWebView -> hideSheetAndNavigate(
+                scope,
+                sheetState,
+                navController,
+                TestToolsRoutes.WEBVIEW,
+            )
+            MainViewEffect.NavigateToSecureStorage -> hideSheetAndNavigate(
+                scope,
+                sheetState,
+                navController,
+                TestToolsRoutes.SECURE_STORAGE,
+            )
             MainViewEffect.SimulateCrash -> {
                 @Suppress("MagicNumber")
                 arrayOf("")[4]
             }
             MainViewEffect.TriggerMemoryLeak -> triggerMemoryLeak()
             MainViewEffect.TriggerThreadViolation -> triggerThreadViolation()
+
+            MainViewEffect.SeedDatabase -> scope.launch(
+                Dispatchers.IO,
+            ) { SampleDatabaseService.seed(this@MainActivity) }
+            MainViewEffect.SeedPreferences -> scope.launch(
+                Dispatchers.IO,
+            ) { SamplePreferencesService.seed(this@MainActivity) }
+            MainViewEffect.WriteSampleFiles -> scope.launch(
+                Dispatchers.IO,
+            ) { SampleFileService.seed(this@MainActivity) }
+
+            MainViewEffect.EmitSampleLogs -> SampleLogger.emitSamples()
+
+            MainViewEffect.BurnCpu -> StressService.burnCpu()
+            MainViewEffect.AllocateMemory -> StressService.allocateMemory()
+            MainViewEffect.DropFrames -> StressService.jankMainThread()
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    private fun hideSheetAndNavigate(
+        scope: CoroutineScope,
+        sheetState: SheetState,
+        navController: NavHostController,
+        route: String,
+    ) {
+        scope.launch { sheetState.hide() }
+        scope.launch {
+            delay(SHEET_DISMISS_DELAY)
+            navController.navigate(route)
         }
     }
 
@@ -329,5 +381,28 @@ class MainActivity : ComponentActivity() {
         private const val SHEET_DISMISS_DELAY = 100L
         private const val GLITCH_ANIMATION_DURATION = 1500
         private const val GLITCH_CRASH_THRESHOLD = 0.96f
+    }
+}
+
+private object RecompositionStormConfig {
+    const val INTERVAL_MS = 16L
+}
+
+@Composable
+private fun RecompositionStorm(active: Boolean) {
+    var ticker by remember { mutableIntStateOf(0) }
+    LaunchedEffect(active) {
+        while (active) {
+            ticker++
+            delay(RecompositionStormConfig.INTERVAL_MS)
+        }
+    }
+    Box(
+        modifier = Modifier
+            .size(0.dp)
+            .trackRecomposition("DemoRecompositionStorm"),
+    ) {
+        @Suppress("UnusedPrivateMember")
+        val read = ticker
     }
 }

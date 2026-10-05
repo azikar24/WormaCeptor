@@ -54,6 +54,7 @@ turbine = "1.2.0"
 gradleDoctor = "0.9.1"
 sortDependencies = "0.6"
 vanniktechMavenPublish = "0.30.0"
+playPublisher = "3.10.1"
 
 #noinspection UnusedVersionCatalogEntry
 minSdk = "23"
@@ -62,9 +63,7 @@ targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry
 compileSdk = "36"
 #noinspection UnusedVersionCatalogEntry
-versionCode = "44"
-#noinspection UnusedVersionCatalogEntry
-versionName = "2.3.1"
+versionName = "2.3.1" # x-release-please-version
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -160,3 +159,4 @@ gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
 sort-dependencies = { id = "com.squareup.sort-dependencies", version.ref = "sortDependencies" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5-plugin" }
 vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
+play-publisher = { id = "com.github.triplet.play", version.ref = "playPublisher" }

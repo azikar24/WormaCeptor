@@ -119,7 +119,7 @@ class WebSocketViewModelTest {
             )
             advanceUntilIdle()
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 val state = awaitUntil { it.connections.size == 3 }
                 state.connections.map { it.id } shouldBe listOf(2L, 3L, 1L)
                 cancelAndIgnoreRemainingEvents()
@@ -128,7 +128,7 @@ class WebSocketViewModelTest {
 
         @Test
         fun `filters connections by search query matching url`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 connectionsFlow.value = listOf(
                     makeConnection(id = 1, url = "wss://api.example.com/chat"),
                     makeConnection(id = 2, url = "wss://other.service.com/feed"),
@@ -149,7 +149,7 @@ class WebSocketViewModelTest {
             )
             advanceUntilIdle()
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.connections.size == 2 }.connections shouldHaveSize 2
                 cancelAndIgnoreRemainingEvents()
             }
@@ -182,7 +182,7 @@ class WebSocketViewModelTest {
             viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(2L))
             advanceUntilIdle()
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 val state = awaitUntil { it.selectedConnection != null }
                 state.selectedConnection?.id shouldBe 2L
                 state.selectedConnection?.url shouldBe "wss://second.com"
@@ -225,7 +225,7 @@ class WebSocketViewModelTest {
             messagesFlow.value = listOf(makeMessage())
             advanceUntilIdle()
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.messages.isEmpty() }.messages.shouldBeEmpty()
                 cancelAndIgnoreRemainingEvents()
             }
@@ -233,7 +233,7 @@ class WebSocketViewModelTest {
 
         @Test
         fun `filters messages by selected connection`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L),
                     makeMessage(id = 2, connectionId = 2L),
@@ -248,7 +248,7 @@ class WebSocketViewModelTest {
 
         @Test
         fun `filters messages by search query in payload`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, payload = "Hello World"),
                     makeMessage(id = 2, connectionId = 1L, payload = "Goodbye"),
@@ -265,7 +265,7 @@ class WebSocketViewModelTest {
 
         @Test
         fun `filters messages by direction`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, direction = WebSocketMessageDirection.SENT),
                     makeMessage(id = 2, connectionId = 1L, direction = WebSocketMessageDirection.RECEIVED),
@@ -284,7 +284,7 @@ class WebSocketViewModelTest {
 
         @Test
         fun `combines all filters`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 messagesFlow.value = listOf(
                     makeMessage(
                         id = 1,
@@ -324,7 +324,7 @@ class WebSocketViewModelTest {
 
         @Test
         fun `search is case insensitive`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, payload = "Hello World"),
                     makeMessage(id = 2, connectionId = 1L, payload = "Goodbye"),
@@ -341,7 +341,7 @@ class WebSocketViewModelTest {
 
         @Test
         fun `reacts to new messages from engine`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 messagesFlow.value = listOf(
                     makeMessage(id = 1, connectionId = 1L, payload = "first"),
                 )
@@ -425,14 +425,14 @@ class WebSocketViewModelTest {
             viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
             advanceUntilIdle()
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.totalMessageCount == 2 }.totalMessageCount shouldBe 2
             }
         }
 
         @Test
         fun `is 0 when no connection selected`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitItem().totalMessageCount shouldBe 0
             }
         }
@@ -451,7 +451,7 @@ class WebSocketViewModelTest {
             viewModel.sendEvent(WebSocketViewEvent.ConnectionSelected(1L))
             advanceUntilIdle()
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 val state = awaitUntil { it.directionCounts.isNotEmpty() }
                 state.directionCounts shouldContainKey WebSocketMessageDirection.SENT
                 state.directionCounts[WebSocketMessageDirection.SENT] shouldBe 2
@@ -468,7 +468,7 @@ class WebSocketViewModelTest {
             connectionsFlow.value = listOf(makeConnection(id = 1), makeConnection(id = 2))
             advanceUntilIdle()
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.totalConnectionCount == 2 }.totalConnectionCount shouldBe 2
             }
         }
@@ -552,5 +552,17 @@ class WebSocketViewModelTest {
             val item = awaitItem()
             if (predicate(item)) return item
         }
+    }
+
+    /**
+     * Wraps Turbine's [test] block with a trailing [cancelAndIgnoreRemainingEvents] so
+     * StateFlows backed by `combine(...)` don't fail with "Unconsumed events" when
+     * intermediate emissions slip in after the assertions.
+     */
+    private suspend fun <T> kotlinx.coroutines.flow.Flow<T>.testWithCleanup(
+        block: suspend app.cash.turbine.ReceiveTurbine<T>.() -> Unit,
+    ) = test {
+        block()
+        cancelAndIgnoreRemainingEvents()
     }
 }

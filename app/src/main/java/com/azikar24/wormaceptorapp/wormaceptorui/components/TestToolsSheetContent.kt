@@ -21,16 +21,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Security
+import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material.icons.outlined.Sync
+import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material.icons.outlined.Whatshot
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +53,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 
+@Suppress("LongParameterList", "LongMethod", "ParameterNaming")
 @Composable
 fun TestToolsSheetContent(
     onRunApiTests: () -> Unit,
@@ -54,6 +61,14 @@ fun TestToolsSheetContent(
     onTriggerCrash: () -> Unit,
     onTriggerLeak: () -> Unit,
     onThreadViolation: () -> Unit,
+    onSeedDatabase: () -> Unit,
+    onSeedPreferences: () -> Unit,
+    onWriteSampleFiles: () -> Unit,
+    onEmitSampleLogs: () -> Unit,
+    onBurnCpu: () -> Unit,
+    onAllocateMemory: () -> Unit,
+    onDropFrames: () -> Unit,
+    onRecompositionStorm: () -> Unit,
     onLocationClick: () -> Unit,
     onWebViewClick: () -> Unit,
     onSecureStorageClick: () -> Unit,
@@ -62,6 +77,14 @@ fun TestToolsSheetContent(
     webSocketStatus: ToolStatus = ToolStatus.Idle,
     leakStatus: ToolStatus = ToolStatus.Idle,
     threadViolationStatus: ToolStatus = ToolStatus.Idle,
+    seedDatabaseStatus: ToolStatus = ToolStatus.Idle,
+    seedPreferencesStatus: ToolStatus = ToolStatus.Idle,
+    writeFilesStatus: ToolStatus = ToolStatus.Idle,
+    logsStatus: ToolStatus = ToolStatus.Idle,
+    cpuStressStatus: ToolStatus = ToolStatus.Idle,
+    memoryStressStatus: ToolStatus = ToolStatus.Idle,
+    frameDropStatus: ToolStatus = ToolStatus.Idle,
+    recompositionStormActive: Boolean = false,
 ) {
     Column(
         modifier = modifier
@@ -78,12 +101,56 @@ fun TestToolsSheetContent(
             onClick = onRunApiTests,
             status = apiTestStatus,
         )
-
         ToolListItem(
             icon = Icons.Outlined.Sync,
             label = "WebSocket Test",
             onClick = onWebSocketTest,
             status = webSocketStatus,
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
+
+        SectionHeader(title = "STORAGE")
+
+        ToolListItem(
+            icon = Icons.Outlined.Storage,
+            label = "Seed Database",
+            onClick = onSeedDatabase,
+            status = seedDatabaseStatus,
+        )
+        ToolListItem(
+            icon = Icons.Outlined.Tune,
+            label = "Seed Preferences",
+            onClick = onSeedPreferences,
+            status = seedPreferencesStatus,
+        )
+        ToolListItem(
+            icon = Icons.Outlined.Folder,
+            label = "Write Sample Files",
+            onClick = onWriteSampleFiles,
+            status = writeFilesStatus,
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
+
+        SectionHeader(title = "SECURITY")
+
+        ToolListItem(
+            icon = Icons.Outlined.Security,
+            label = "Secure Storage",
+            onClick = onSecureStorageClick,
+            showChevron = true,
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
+
+        SectionHeader(title = "OBSERVABILITY")
+
+        ToolListItem(
+            icon = Icons.AutoMirrored.Outlined.Article,
+            label = "Emit Sample Logs",
+            onClick = onEmitSampleLogs,
+            status = logsStatus,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
@@ -96,7 +163,6 @@ fun TestToolsSheetContent(
             onClick = onTriggerCrash,
             isDestructive = true,
         )
-
         ToolListItem(
             icon = Icons.Outlined.Memory,
             label = "Trigger Memory Leak",
@@ -105,13 +171,41 @@ fun TestToolsSheetContent(
             isDestructive = true,
             status = leakStatus,
         )
-
         ToolListItem(
             icon = Icons.Outlined.Storage,
             label = "Thread Violation",
             onClick = onThreadViolation,
             isDestructive = true,
             status = threadViolationStatus,
+        )
+
+        Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
+
+        SectionHeader(title = "PERFORMANCE STRESS")
+
+        ToolListItem(
+            icon = Icons.Outlined.Whatshot,
+            label = "Burn CPU (3s)",
+            onClick = onBurnCpu,
+            status = cpuStressStatus,
+        )
+        ToolListItem(
+            icon = Icons.Outlined.Memory,
+            label = "Allocate 50 MB (3s)",
+            onClick = onAllocateMemory,
+            status = memoryStressStatus,
+        )
+        ToolListItem(
+            icon = Icons.Outlined.Speed,
+            label = "Drop Frames (1.5s burst)",
+            onClick = onDropFrames,
+            status = frameDropStatus,
+        )
+        ToolListItem(
+            icon = Icons.Outlined.Refresh,
+            label = "Recomposition Storm (3s)",
+            onClick = onRecompositionStorm,
+            status = if (recompositionStormActive) ToolStatus.Running else ToolStatus.Idle,
         )
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
@@ -124,18 +218,10 @@ fun TestToolsSheetContent(
             onClick = onLocationClick,
             showChevron = true,
         )
-
         ToolListItem(
             icon = Icons.Outlined.Language,
             label = "WebView Monitor",
             onClick = onWebViewClick,
-            showChevron = true,
-        )
-
-        ToolListItem(
-            icon = Icons.Outlined.Security,
-            label = "Secure Storage",
-            onClick = onSecureStorageClick,
             showChevron = true,
         )
 
@@ -161,6 +247,7 @@ private fun SectionHeader(
     )
 }
 
+@Suppress("LongParameterList")
 @Composable
 private fun ToolListItem(
     icon: ImageVector,
@@ -293,6 +380,14 @@ private fun TestToolsSheetContentPreview() {
             onTriggerCrash = {},
             onTriggerLeak = {},
             onThreadViolation = {},
+            onSeedDatabase = {},
+            onSeedPreferences = {},
+            onWriteSampleFiles = {},
+            onEmitSampleLogs = {},
+            onBurnCpu = {},
+            onAllocateMemory = {},
+            onDropFrames = {},
+            onRecompositionStorm = {},
             onLocationClick = {},
             onWebViewClick = {},
             onSecureStorageClick = {},
@@ -300,6 +395,7 @@ private fun TestToolsSheetContentPreview() {
             webSocketStatus = ToolStatus.Running,
             leakStatus = ToolStatus.WaitingForAction,
             threadViolationStatus = ToolStatus.Idle,
+            recompositionStormActive = true,
         )
     }
 }

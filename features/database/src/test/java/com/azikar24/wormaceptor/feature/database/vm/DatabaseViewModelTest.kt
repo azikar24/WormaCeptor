@@ -83,6 +83,18 @@ class DatabaseViewModelTest {
         }
     }
 
+    /**
+     * Wraps Turbine's [test] block with a trailing [cancelAndIgnoreRemainingEvents] so
+     * StateFlows backed by `combine(...)` don't fail with "Unconsumed events" when
+     * intermediate emissions slip in after the assertions.
+     */
+    private suspend fun <T> kotlinx.coroutines.flow.Flow<T>.testWithCleanup(
+        block: suspend ReceiveTurbine<T>.() -> Unit,
+    ) = test {
+        block()
+        cancelAndIgnoreRemainingEvents()
+    }
+
     @BeforeEach
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
@@ -112,7 +124,7 @@ class DatabaseViewModelTest {
 
         @Test
         fun `state is not loading after init completes`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -262,7 +274,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.selectedTableName == "users" }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -273,7 +285,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.currentPage == 0 && it.selectedTableName == "users" }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -285,7 +297,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.Data.ToggleSchema)
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.selectedTableName == "users" && !it.showSchema }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -296,7 +308,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.tableSchema.size == 2 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -307,7 +319,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 val state = awaitUntil { it.queryResult != null }
                 state.queryResult shouldBe sampleQueryResult
                 cancelAndIgnoreRemainingEvents()
@@ -330,7 +342,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.queryResult != null }
 
                 viewModel.sendEvent(DatabaseViewEvent.Tables.SelectionCleared)
@@ -414,7 +426,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.queryResult != null && !it.isDataLoading }
 
                 viewModel.sendEvent(DatabaseViewEvent.Data.NextPage)
@@ -429,7 +441,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             // Wait for table data to load
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.queryResult != null && !it.isDataLoading }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -447,7 +459,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.queryResult != null && !it.isDataLoading }
 
                 viewModel.sendEvent(DatabaseViewEvent.Data.NextPage)
@@ -465,7 +477,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
             // Wait for table data to load
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.queryResult != null && !it.isDataLoading }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -494,7 +506,7 @@ class DatabaseViewModelTest {
         fun `executes query via repository`() = runTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
 
                 viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT * FROM users"))
@@ -512,7 +524,7 @@ class DatabaseViewModelTest {
         fun `sets error for empty query`() = runTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
 
                 viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged(""))
@@ -528,7 +540,7 @@ class DatabaseViewModelTest {
         fun `sets error for whitespace-only query`() = runTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
 
                 viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("   "))
@@ -552,7 +564,7 @@ class DatabaseViewModelTest {
         fun `adds successful query to history`() = runTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
 
                 viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT * FROM users"))
@@ -570,7 +582,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
             // Wait for init
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -578,14 +590,14 @@ class DatabaseViewModelTest {
             // First query
             viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT * FROM users"))
             viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { it.queryHistory.isNotEmpty() && !it.isQueryExecuting }
                 cancelAndIgnoreRemainingEvents()
             }
 
             // Second duplicate query
             viewModel.sendEvent(DatabaseViewEvent.Query.Execute)
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isQueryExecuting }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -599,7 +611,7 @@ class DatabaseViewModelTest {
 
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
 
                 viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("BAD QUERY"))
@@ -620,7 +632,7 @@ class DatabaseViewModelTest {
         fun `clears sql query and execution result`() = runTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
 
                 viewModel.sendEvent(DatabaseViewEvent.Query.SqlChanged("SELECT 1"))
@@ -703,7 +715,7 @@ class DatabaseViewModelTest {
 
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 val state = awaitUntil { it.tablesError != null }
                 state.tablesError shouldBe "Table error"
                 state.isTablesLoading shouldBe false
@@ -718,7 +730,7 @@ class DatabaseViewModelTest {
             viewModel.sendEvent(DatabaseViewEvent.List.Selected("app.db"))
             viewModel.sendEvent(DatabaseViewEvent.Tables.Selected("users"))
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 val state = awaitUntil { it.queryResult != null && !it.isDataLoading }
                 state.queryResult?.isSuccess shouldBe false
                 state.queryResult?.error shouldBe "Data error"
@@ -770,14 +782,14 @@ class DatabaseViewModelTest {
 
         @Test
         fun `reloads databases from repository`() = runTest {
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
                 cancelAndIgnoreRemainingEvents()
             }
 
             viewModel.sendEvent(DatabaseViewEvent.List.Load)
 
-            viewModel.uiState.test {
+            viewModel.uiState.testWithCleanup {
                 awaitUntil { !it.isDatabasesLoading }
                 cancelAndIgnoreRemainingEvents()
             }

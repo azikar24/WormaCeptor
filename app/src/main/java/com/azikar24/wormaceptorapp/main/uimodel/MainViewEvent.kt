@@ -14,6 +14,7 @@ sealed class MainViewEvent {
 
     data object SeedDatabaseClicked : MainViewEvent()
     data object SeedPreferencesClicked : MainViewEvent()
+    data object SeedDataStoreClicked : MainViewEvent()
     data object WriteSampleFilesClicked : MainViewEvent()
 
     data object EmitSampleLogsClicked : MainViewEvent()

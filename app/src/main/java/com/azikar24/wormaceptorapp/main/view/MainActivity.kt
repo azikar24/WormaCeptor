@@ -61,6 +61,7 @@ import com.azikar24.wormaceptorapp.main.uimodel.MainViewEvent
 import com.azikar24.wormaceptorapp.main.uimodel.MainViewState
 import com.azikar24.wormaceptorapp.main.viewmodel.MainViewModel
 import com.azikar24.wormaceptorapp.navigation.TestToolsRoutes
+import com.azikar24.wormaceptorapp.sampleservice.SampleDataStoreService
 import com.azikar24.wormaceptorapp.sampleservice.SampleDatabaseService
 import com.azikar24.wormaceptorapp.sampleservice.SampleFileService
 import com.azikar24.wormaceptorapp.sampleservice.SampleLogger
@@ -298,6 +299,7 @@ class MainActivity : ComponentActivity() {
                     threadViolationStatus = state.threadViolationStatus,
                     seedDatabaseStatus = state.seedDatabaseStatus,
                     seedPreferencesStatus = state.seedPreferencesStatus,
+                    seedDataStoreStatus = state.seedDataStoreStatus,
                     writeFilesStatus = state.writeFilesStatus,
                     logsStatus = state.logsStatus,
                     cpuStressStatus = state.cpuStressStatus,
@@ -311,6 +313,7 @@ class MainActivity : ComponentActivity() {
                     onThreadViolation = { onEvent(MainViewEvent.ThreadViolationClicked) },
                     onSeedDatabase = { onEvent(MainViewEvent.SeedDatabaseClicked) },
                     onSeedPreferences = { onEvent(MainViewEvent.SeedPreferencesClicked) },
+                    onSeedDataStore = { onEvent(MainViewEvent.SeedDataStoreClicked) },
                     onWriteSampleFiles = { onEvent(MainViewEvent.WriteSampleFilesClicked) },
                     onEmitSampleLogs = { onEvent(MainViewEvent.EmitSampleLogsClicked) },
                     onBurnCpu = { onEvent(MainViewEvent.BurnCpuClicked) },
@@ -378,6 +381,9 @@ class MainActivity : ComponentActivity() {
             MainViewEffect.SeedPreferences -> scope.launch(
                 Dispatchers.IO,
             ) { SamplePreferencesService.seed(this@MainActivity) }
+            MainViewEffect.SeedDataStore -> scope.launch(
+                Dispatchers.IO,
+            ) { SampleDataStoreService.seed(this@MainActivity) }
             MainViewEffect.WriteSampleFiles -> scope.launch(
                 Dispatchers.IO,
             ) { SampleFileService.seed(this@MainActivity) }

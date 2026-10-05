@@ -49,6 +49,7 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
 
             MainViewEvent.SeedDatabaseClicked -> handleSeedDatabase()
             MainViewEvent.SeedPreferencesClicked -> handleSeedPreferences()
+            MainViewEvent.SeedDataStoreClicked -> handleSeedDataStore()
             MainViewEvent.WriteSampleFilesClicked -> handleWriteSampleFiles()
 
             MainViewEvent.EmitSampleLogsClicked -> handleEmitSampleLogs()
@@ -110,6 +111,11 @@ class MainViewModel : BaseViewModel<MainViewState, MainViewEffect, MainViewEvent
     private fun handleSeedPreferences() {
         emitEffect(MainViewEffect.SeedPreferences)
         runWithStatus({ seedPreferencesStatus }) { copy(seedPreferencesStatus = it) }
+    }
+
+    private fun handleSeedDataStore() {
+        emitEffect(MainViewEffect.SeedDataStore)
+        runWithStatus({ seedDataStoreStatus }) { copy(seedDataStoreStatus = it) }
     }
 
     private fun handleWriteSampleFiles() {

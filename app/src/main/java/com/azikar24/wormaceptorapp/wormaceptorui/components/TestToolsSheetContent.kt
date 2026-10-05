@@ -25,6 +25,7 @@ import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material.icons.outlined.DataObject
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOn
@@ -63,6 +64,7 @@ fun TestToolsSheetContent(
     onThreadViolation: () -> Unit,
     onSeedDatabase: () -> Unit,
     onSeedPreferences: () -> Unit,
+    onSeedDataStore: () -> Unit,
     onWriteSampleFiles: () -> Unit,
     onEmitSampleLogs: () -> Unit,
     onBurnCpu: () -> Unit,
@@ -79,6 +81,7 @@ fun TestToolsSheetContent(
     threadViolationStatus: ToolStatus = ToolStatus.Idle,
     seedDatabaseStatus: ToolStatus = ToolStatus.Idle,
     seedPreferencesStatus: ToolStatus = ToolStatus.Idle,
+    seedDataStoreStatus: ToolStatus = ToolStatus.Idle,
     writeFilesStatus: ToolStatus = ToolStatus.Idle,
     logsStatus: ToolStatus = ToolStatus.Idle,
     cpuStressStatus: ToolStatus = ToolStatus.Idle,
@@ -123,6 +126,12 @@ fun TestToolsSheetContent(
             label = "Seed Preferences",
             onClick = onSeedPreferences,
             status = seedPreferencesStatus,
+        )
+        ToolListItem(
+            icon = Icons.Outlined.DataObject,
+            label = "Seed DataStore",
+            onClick = onSeedDataStore,
+            status = seedDataStoreStatus,
         )
         ToolListItem(
             icon = Icons.Outlined.Folder,
@@ -382,6 +391,7 @@ private fun TestToolsSheetContentPreview() {
             onThreadViolation = {},
             onSeedDatabase = {},
             onSeedPreferences = {},
+            onSeedDataStore = {},
             onWriteSampleFiles = {},
             onEmitSampleLogs = {},
             onBurnCpu = {},

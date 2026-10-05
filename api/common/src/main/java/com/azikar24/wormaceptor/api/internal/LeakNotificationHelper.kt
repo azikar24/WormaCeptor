@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
-import java.util.Locale
 
 /** Displays Android notifications when memory leaks are detected. */
 class LeakNotificationHelper(
@@ -50,29 +49,20 @@ class LeakNotificationHelper(
         )
 
         val className = leak.objectClass.substringAfterLast('.')
-        val retainedSizeFormatted = formatBytes(leak.retainedSize)
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.stat_notify_error)
             .setContentTitle("Memory Leak Detected [${leak.severity}]")
-            .setContentText("$className - $retainedSizeFormatted retained")
+            .setContentText(className)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("${leak.leakDescription}\n\nClass: ${leak.objectClass}\nRetained: $retainedSizeFormatted"),
+                    .bigText("${leak.leakDescription}\n\nClass: ${leak.objectClass}"),
             )
 
         notificationManager.notify(NOTIFICATION_ID, builder.build())
-    }
-
-    private fun formatBytes(bytes: Long): String {
-        return when {
-            bytes >= 1_048_576 -> String.format(Locale.US, "%.1f MB", bytes / 1_048_576.0)
-            bytes >= 1024 -> String.format(Locale.US, "%.1f KB", bytes / 1024.0)
-            else -> "$bytes B"
-        }
     }
 
     /** Notification channel and identifier constants. */

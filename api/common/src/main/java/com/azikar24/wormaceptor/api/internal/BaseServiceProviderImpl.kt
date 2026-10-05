@@ -12,6 +12,7 @@ import com.azikar24.wormaceptor.core.engine.DefaultExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.ExtensionRegistry
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
+import com.azikar24.wormaceptor.core.engine.MockEngine
 import com.azikar24.wormaceptor.core.engine.ParserRegistry
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.engine.ThreadViolationEngine
@@ -47,11 +48,11 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.dsl.module
-import org.koin.java.KoinJavaComponent.get
 import java.io.InputStream
 import java.util.UUID
 
 /** Base implementation of [ServiceProvider] that wires up core engines, notifications, and DI. */
+@Suppress("TooManyFunctions") // implements the wide ServiceProvider interface
 abstract class BaseServiceProviderImpl : ServiceProvider {
 
     protected var captureEngine: CaptureEngine? = null
@@ -64,6 +65,8 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
             Log.w(TAG, "Background operation failed", throwable)
         },
     )
+
+    private val writeSequencer = TransactionWriteSequencer(scope)
 
     protected data class StorageDependencies(
         val transactionRepository: TransactionRepository,
@@ -85,6 +88,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         leakNotifications: Boolean,
     ) {
         if (captureEngine != null) return
+        val initStartedAt = System.currentTimeMillis()
 
         // Initialize Koin for engine dependencies (WebSocketMonitorEngine, etc.)
         WormaCeptorKoin.init(context)
@@ -102,6 +106,8 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         captureEngine = capture
         queryEngine = query
         extensionRegistry = extensions
+
+        deleteOrphanedBlobs(context, deps, createdBeforeMillis = initStartedAt)
 
         if (logCrashes) {
             val crashReporter = CrashReporter(deps.crashRepository)
@@ -131,6 +137,9 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         // Configure WebView monitor engine with persistence
         configureWebViewMonitor(deps.webViewMonitorRepository)
 
+        // Sync saved mock rules into MockEngine for the process lifetime, not only while the rules screen is open
+        configureMockEngine(deps.mockRuleRepository)
+
         // Register syntax highlighters
         configureHighlighters()
 
@@ -140,13 +149,31 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         // Feature navigation contributors are discovered automatically via ServiceLoader
     }
 
+    /**
+     * Older versions deleted rows without their body blobs. Only blobs written before this init are
+     * candidates, so bodies captured by this process while the sweep runs are never touched.
+     * Runs in the main process only: another process may have saved a blob whose row isn't inserted yet.
+     */
+    private fun deleteOrphanedBlobs(
+        context: Context,
+        deps: StorageDependencies,
+        createdBeforeMillis: Long,
+    ) {
+        scope.launch {
+            if (!isMainProcess(context)) return@launch
+            val referenced = deps.transactionRepository.getAllBodyRefs()
+            val deleted = deps.blobStorage.deleteUnreferenced(referenced, createdBeforeMillis)
+            if (deleted > 0) Log.i(TAG, "Deleted $deleted orphaned body blobs")
+        }
+    }
+
     private fun configureLeakDetection(
         context: Context,
         leakRepository: LeakRepository,
         leakNotifications: Boolean,
     ) {
         try {
-            val leakEngine: LeakDetectionEngine = get(LeakDetectionEngine::class.java)
+            val leakEngine: LeakDetectionEngine = WormaCeptorKoin.get(LeakDetectionEngine::class.java)
             val notificationHelper = if (leakNotifications) {
                 LeakNotificationHelper(context)
             } else {
@@ -164,16 +191,27 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
     private fun configureWebViewMonitor(webViewMonitorRepository: WebViewMonitorRepository) {
         try {
-            val webViewMonitorEngine: WebViewMonitorEngine = get(WebViewMonitorEngine::class.java)
+            val webViewMonitorEngine: WebViewMonitorEngine = WormaCeptorKoin.get(WebViewMonitorEngine::class.java)
             webViewMonitorEngine.configure(repository = webViewMonitorRepository)
         } catch (e: RuntimeException) {
             Log.d(TAG, "WebViewMonitorEngine not available in Koin", e)
         }
     }
 
+    private fun configureMockEngine(mockRuleRepository: MockRuleRepository) {
+        try {
+            val mockEngine: MockEngine = WormaCeptorKoin.get(MockEngine::class.java)
+            scope.launch {
+                mockRuleRepository.getAll().collect { rules -> mockEngine.setRules(rules) }
+            }
+        } catch (e: RuntimeException) {
+            Log.d(TAG, "MockEngine not available in Koin", e)
+        }
+    }
+
     private fun configureHighlighters() {
         try {
-            val registry: HighlighterRegistry = get(HighlighterRegistry::class.java)
+            val registry: HighlighterRegistry = WormaCeptorKoin.get(HighlighterRegistry::class.java)
             registry.register(JsonHighlighter())
             registry.register(XmlHighlighter())
         } catch (e: RuntimeException) {
@@ -183,7 +221,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
     private fun configureParsers(context: Context) {
         try {
-            val registry: ParserRegistry = get(ParserRegistry::class.java)
+            val registry: ParserRegistry = WormaCeptorKoin.get(ParserRegistry::class.java)
             val protobufParser = ProtobufBodyParser()
             val multipartParser = MultipartBodyParser()
             val formParser = FormBodyParser()
@@ -222,7 +260,7 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
 
     private fun configureThreadViolation(context: Context) {
         try {
-            val threadViolationEngine: ThreadViolationEngine = get(ThreadViolationEngine::class.java)
+            val threadViolationEngine: ThreadViolationEngine = WormaCeptorKoin.get(ThreadViolationEngine::class.java)
             val notificationHelper = ThreadViolationNotificationHelper(context)
 
             threadViolationEngine.configure(
@@ -240,8 +278,20 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         headers: Map<String, List<String>>,
         bodyStream: InputStream?,
         bodySize: Long,
-    ): UUID? = runBlocking(Dispatchers.IO) {
-        captureEngine?.startTransaction(url, method, headers, bodyStream, bodySize)
+    ): UUID? = startTransaction(url, method, headers, bodyStream, bodySize, System.currentTimeMillis())
+
+    override fun startTransaction(
+        url: String,
+        method: String,
+        headers: Map<String, List<String>>,
+        bodyStream: InputStream?,
+        bodySize: Long,
+        startedAtMillis: Long,
+    ): UUID? {
+        val capture = captureEngine ?: return null
+        return writeSequencer.start { id ->
+            capture.startTransaction(url, method, headers, bodyStream, bodySize, id, startedAtMillis)
+        }
     }
 
     override fun completeTransaction(
@@ -255,10 +305,30 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         tlsVersion: String?,
         error: String?,
     ) {
-        scope.launch {
+        completeTransaction(
+            id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error,
+            showNotification = true,
+        )
+    }
+
+    override fun completeTransaction(
+        id: UUID,
+        code: Int,
+        message: String,
+        headers: Map<String, List<String>>,
+        bodyStream: InputStream?,
+        bodySize: Long,
+        protocol: String?,
+        tlsVersion: String?,
+        error: String?,
+        showNotification: Boolean,
+        durationMs: Long?,
+    ) {
+        writeSequencer.complete(id) {
             captureEngine?.completeTransaction(
-                id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error,
+                id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error, durationMs,
             )
+            if (!showNotification) return@complete
             val transaction = queryEngine?.getDetails(id)
             if (transaction != null) {
                 notificationHelper?.show(transaction)
@@ -276,6 +346,8 @@ abstract class BaseServiceProviderImpl : ServiceProvider {
         return Intent(context, com.azikar24.wormaceptor.feature.viewer.ViewerActivity::class.java)
     }
 
+    // The getters below back WormaCeptorContentProvider, whose query() runs on binder threads and must
+    // return synchronously, so blocking is acceptable there. Never call them from the main thread.
     override fun getAllTransactions(): List<Any> = runBlocking(Dispatchers.IO) {
         queryEngine?.getAllTransactionsForExport() ?: emptyList()
     }

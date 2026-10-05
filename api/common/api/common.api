@@ -3,6 +3,7 @@ public abstract class com/azikar24/wormaceptor/api/internal/BaseServiceProviderI
 	public fun cleanup (J)V
 	public fun clearTransactions ()V
 	public fun completeTransaction (Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun completeTransaction (Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Long;)V
 	protected abstract fun createDependencies (Landroid/content/Context;)Lcom/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies;
 	public fun getAllTransactions ()Ljava/util/List;
 	protected final fun getCaptureEngine ()Lcom/azikar24/wormaceptor/core/engine/CaptureEngine;
@@ -20,6 +21,7 @@ public abstract class com/azikar24/wormaceptor/api/internal/BaseServiceProviderI
 	protected final fun setNotificationHelper (Lcom/azikar24/wormaceptor/api/internal/WormaCeptorNotificationHelper;)V
 	protected final fun setQueryEngine (Lcom/azikar24/wormaceptor/core/engine/QueryEngine;)V
 	public fun startTransaction (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;J)Ljava/util/UUID;
+	public fun startTransaction (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JJ)Ljava/util/UUID;
 }
 
 protected final class com/azikar24/wormaceptor/api/internal/BaseServiceProviderImpl$StorageDependencies {

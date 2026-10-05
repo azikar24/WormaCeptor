@@ -3,7 +3,6 @@ package com.azikar24.wormaceptor.api
 import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.util.UUID
 
@@ -62,7 +61,7 @@ class WormaCeptorInterceptor : Interceptor {
             val engineClass = Class.forName(
                 "com.azikar24.wormaceptor.core.engine.RateLimitEngine",
             )
-            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val koinClass = Class.forName("com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin")
             val getMethod = koinClass.getMethod("get", Class::class.java)
             val engine = getMethod.invoke(null, engineClass)
             val getInterceptorMethod = engineClass.getMethod("getInterceptor")
@@ -79,7 +78,7 @@ class WormaCeptorInterceptor : Interceptor {
             val engineClass = Class.forName(
                 "com.azikar24.wormaceptor.core.engine.MockEngine",
             )
-            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val koinClass = Class.forName("com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin")
             val getMethod = koinClass.getMethod("get", Class::class.java)
             getMethod.invoke(null, engineClass)
         } catch (e: Exception) {
@@ -90,40 +89,28 @@ class WormaCeptorInterceptor : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val provider = WormaCeptorApi.provider ?: return chain.proceed(chain.request())
+        val provider = WormaCeptorApi.capturingProvider ?: return chain.proceed(chain.request())
         val redaction = WormaCeptorApi.redactionConfig
+        val startedAt = System.currentTimeMillis()
 
         val request = chain.request()
         var transactionId: UUID? = null
 
         // 1. Capture Request
         try {
-            val buffer = okio.Buffer()
-            request.body?.writeTo(buffer)
-            val bodySize = buffer.size
-
-            val cleanHeaders = request.headers.toMultimap().mapValues { (key, values) ->
-                if (redaction.headersToRedact.contains(key.lowercase())) {
-                    listOf(redaction.replacementText)
-                } else {
-                    values
-                }
-            }
-
-            val bodyStream = if (bodySize > 0) {
-                val bodyText = buffer.clone().readUtf8()
-                val redactedBody = redaction.applyRedactions(bodyText)
-                redactedBody.byteInputStream()
-            } else {
-                null
-            }
-
+            val body = OkHttpBodyCapture.captureRequest(
+                request.body,
+                request.header("Content-Encoding"),
+                maxContentLength,
+                redaction,
+            )
             transactionId = provider.startTransaction(
                 url = request.url.toString(),
                 method = request.method,
-                headers = cleanHeaders,
-                bodyStream = bodyStream,
-                bodySize = bodySize,
+                headers = redactHeaders(OkHttpBodyCapture.requestHeaders(request), redaction),
+                bodyStream = body.stream,
+                bodySize = body.size,
+                startedAtMillis = startedAt,
             )
         } catch (e: Exception) {
             Log.w(TAG, "Failed to capture request for ${request.url}", e)
@@ -132,28 +119,15 @@ class WormaCeptorInterceptor : Interceptor {
         // 2. Check mock rules BEFORE making the network call
         val mockResponse = tryMockRequest(request)
         if (mockResponse != null) {
-            // Capture the mocked response
-            if (transactionId != null) {
-                try {
-                    val mockBody = mockResponse.peekBody(maxContentLength)
-                    val mockHeaders = mockResponse.headers.toMultimap()
-                    val bodyText = mockBody.string()
-                    provider.completeTransaction(
-                        id = transactionId,
-                        code = mockResponse.code,
-                        message = mockResponse.message.ifEmpty { "MOCKED" },
-                        headers = mockHeaders,
-                        bodyStream = bodyText.byteInputStream(),
-                        bodySize = bodyText.length.toLong(),
-                        protocol = mockResponse.protocol.toString(),
-                        tlsVersion = null,
-                        error = null,
-                    )
-                } catch (e: Exception) {
-                    Log.w(TAG, "Failed to capture mocked response for ${request.url}", e)
-                }
-            }
-            return mockResponse
+            val id = transactionId ?: return mockResponse
+            return captureResponse(
+                provider,
+                id,
+                mockResponse,
+                startedAt,
+                headers = mockResponse.headers.toMultimap(),
+                message = mockResponse.message.ifEmpty { "MOCKED" },
+            )
         }
 
         // 3. Network Call (with rate limiting if enabled)
@@ -173,68 +147,70 @@ class WormaCeptorInterceptor : Interceptor {
                     protocol = null,
                     tlsVersion = null,
                     error = e.toString(),
+                    showNotification = showNotification,
+                    durationMs = System.currentTimeMillis() - startedAt,
                 )
             }
             throw e
         }
 
-        // 4. Capture Response
-        if (transactionId != null) {
-            try {
-                val responseBody = response.peekBody(maxContentLength)
-                val cleanHeaders = response.headers.toMultimap().mapValues { (key, values) ->
-                    if (redaction.headersToRedact.contains(key.lowercase())) {
-                        listOf(redaction.replacementText)
-                    } else {
-                        values
-                    }
-                }
+        // 4. Capture Response as the caller reads it
+        val id = transactionId ?: return response
+        return captureResponse(
+            provider,
+            id,
+            response,
+            startedAt,
+            headers = redactHeaders(response.headers.toMultimap(), redaction),
+        )
+    }
 
-                val protocol = response.protocol.toString()
-                val tlsVersion = response.handshake?.tlsVersion?.javaName
-
-                // Check if the response is binary content (images, PDFs, etc.)
-                // First check Content-Type header, then fall back to magic byte detection
-                val contentType = response.header("Content-Type")
-                val isBinaryByHeader = BinaryContentDetector.isBinaryContentType(contentType)
-
-                // Always read as bytes first to enable magic byte detection as fallback
-                val rawBytes = responseBody.bytes()
-                val isBinary = isBinaryByHeader || BinaryContentDetector.isBinaryByMagicBytes(rawBytes)
-
-                val bodyStream: java.io.InputStream?
-                val bodySize: Long
-
-                if (isBinary) {
-                    // For binary content, store raw bytes without converting to string
-                    // Converting binary data to UTF-8 string corrupts the data
-                    bodyStream = ByteArrayInputStream(rawBytes)
-                    bodySize = rawBytes.size.toLong()
-                } else {
-                    // For text content, apply redaction patterns
-                    val bodyText = String(rawBytes, Charsets.UTF_8)
-                    val redactedBody = redaction.applyRedactions(bodyText)
-                    bodyStream = redactedBody.byteInputStream()
-                    bodySize = redactedBody.length.toLong()
-                }
-
-                provider.completeTransaction(
-                    id = transactionId,
-                    code = response.code,
-                    message = response.message,
-                    headers = cleanHeaders,
-                    bodyStream = bodyStream,
-                    bodySize = bodySize,
-                    protocol = protocol,
-                    tlsVersion = tlsVersion,
-                    error = null,
-                )
-            } catch (e: Exception) {
-                Log.w(TAG, "Failed to capture response for ${request.url}", e)
-            }
+    /**
+     * Tees [response] so the transaction completes once the caller is done with the body. Duration ends when
+     * the headers arrived, so time the host spends holding or reading the body is not counted.
+     */
+    private fun captureResponse(
+        provider: ServiceProvider,
+        id: UUID,
+        response: Response,
+        startedAt: Long,
+        headers: Map<String, List<String>>,
+        message: String = response.message,
+    ): Response {
+        val receivedAt = response.receivedResponseAtMillis.takeIf { it > 0 } ?: System.currentTimeMillis()
+        val complete = { body: CapturedBody ->
+            provider.completeTransaction(
+                id = id,
+                code = response.code,
+                message = message,
+                headers = headers,
+                bodyStream = body.stream,
+                bodySize = body.size,
+                protocol = response.protocol.toString(),
+                tlsVersion = response.handshake?.tlsVersion?.javaName,
+                error = body.error,
+                showNotification = showNotification,
+                durationMs = (receivedAt - startedAt).coerceAtLeast(0),
+            )
         }
+        return try {
+            OkHttpBodyCapture.captureResponse(response, maxContentLength, WormaCeptorApi.redactionConfig, complete)
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to capture response for ${response.request.url}", e)
+            complete(CapturedBody(null, 0, "WormaCeptor failed to capture the response: $e"))
+            response
+        }
+    }
 
-        return response
+    private fun redactHeaders(
+        headers: Map<String, List<String>>,
+        redaction: RedactionConfig,
+    ): Map<String, List<String>> = headers.mapValues { (key, values) ->
+        if (redaction.headersToRedact.contains(key.lowercase())) {
+            listOf(redaction.replacementText)
+        } else {
+            values
+        }
     }
 
     /**

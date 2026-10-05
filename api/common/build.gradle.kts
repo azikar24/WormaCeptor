@@ -14,6 +14,8 @@ dependencies {
     implementation(project(":core:engine"))
     implementation(project(":features:viewer"))
     implementation(project(":core:ui"))
+    // Declares FloatingButtonService in this module's manifest
+    implementation(project(":platform:android"))
 
     // Feature modules + infra (syntax/parsers) assembled via :wiring
     implementation(project(":wiring"))

@@ -8,6 +8,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.core.net.toUri
 import com.azikar24.wormaceptor.core.engine.CoreHolder
+import com.azikar24.wormaceptor.core.engine.McpConfig
+import com.azikar24.wormaceptor.core.engine.McpHolder
 import com.azikar24.wormaceptor.platform.android.ShakeDetector
 
 private const val TAG = "WormaCeptorApi"
@@ -261,6 +263,51 @@ object WormaCeptorApi {
         } catch (_: Exception) {
             false
         }
+    }
+
+    // ========== MCP Server API ==========
+
+    /**
+     * Configures the MCP (Model Context Protocol) debug server.
+     * Call before [init] to apply settings before the server auto-starts,
+     * or call after to restart the server with new settings.
+     *
+     * The MCP server runs on the device and exposes debugging data
+     * (network transactions, crashes, performance metrics, etc.) via REST API
+     * for AI agents and development tools.
+     *
+     * @param config Server configuration (port, auth, body size limits)
+     */
+    fun configureMcpServer(config: McpConfig) {
+        McpHolder.configure(config)
+        if (McpHolder.isRunning()) {
+            McpHolder.restart()
+        }
+    }
+
+    /**
+     * Check if the MCP debug server is currently running.
+     * The server auto-starts when the `mcp-device-server` module is included
+     * as a `debugImplementation` dependency.
+     *
+     * @return true if the server is running
+     */
+    fun isMcpServerRunning(): Boolean = McpHolder.isRunning()
+
+    /**
+     * Start the MCP debug server manually.
+     * Only needed if the server was previously stopped or if auto-start is disabled
+     * via `McpConfig(enabled = false)`.
+     */
+    fun startMcpServer() {
+        McpHolder.start()
+    }
+
+    /**
+     * Stop the MCP debug server.
+     */
+    fun stopMcpServer() {
+        McpHolder.stop()
     }
 
     // ========== Extension Provider API ==========

@@ -1,0 +1,137 @@
+package com.azikar24.wormaceptor.mcp.bridge.mcp
+
+import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
+import com.azikar24.wormaceptor.mcp.bridge.mcp.tools.McpTool
+import com.azikar24.wormaceptor.mcp.bridge.util.JsonRpcError
+import com.azikar24.wormaceptor.mcp.bridge.util.JsonRpcRequest
+import com.azikar24.wormaceptor.mcp.bridge.util.JsonRpcResponse
+import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.addJsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonArray
+
+internal class McpServer(
+    private val connection: DeviceConnection,
+    private val tools: List<McpTool>,
+    private val verbose: Boolean = false,
+) {
+    private val json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = false
+    }
+
+    suspend fun run() {
+        val reader = System.`in`.bufferedReader()
+        val writer = System.out.bufferedWriter()
+
+        while (true) {
+            val line = reader.readLine() ?: break
+            if (line.isBlank()) continue
+
+            if (verbose) System.err.println("<-- $line")
+
+            val response = try {
+                val request = json.decodeFromString<JsonRpcRequest>(line)
+                handleRequest(request)
+            } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                JsonRpcResponse(
+                    error = JsonRpcError(-32700, "Parse error: ${e.message}"),
+                )
+            }
+
+            if (response != null) {
+                val encoded = json.encodeToString(response)
+                if (verbose) System.err.println("--> $encoded")
+                writer.write(encoded)
+                writer.newLine()
+                writer.flush()
+            }
+        }
+    }
+
+    private suspend fun handleRequest(request: JsonRpcRequest): JsonRpcResponse? {
+        return when (request.method) {
+            "initialize" -> JsonRpcResponse(
+                id = request.id,
+                result = McpCapabilities.initializeResponse(request.id),
+            )
+            "notifications/initialized" -> null
+            "tools/list" -> handleToolsList(request)
+            "tools/call" -> handleToolCall(request)
+            "ping" -> JsonRpcResponse(id = request.id, result = buildJsonObject {})
+            else -> JsonRpcResponse(
+                id = request.id,
+                error = JsonRpcError(-32601, "Method not found: ${request.method}"),
+            )
+        }
+    }
+
+    private fun handleToolsList(request: JsonRpcRequest): JsonRpcResponse {
+        return JsonRpcResponse(
+            id = request.id,
+            result = buildJsonObject {
+                putJsonArray("tools") {
+                    tools.forEach { add(it.toSchema()) }
+                }
+            },
+        )
+    }
+
+    private suspend fun handleToolCall(request: JsonRpcRequest): JsonRpcResponse {
+        val params = request.params?.jsonObject
+            ?: return errorResponse(request.id, "Missing params")
+
+        val toolName = params["name"]?.jsonPrimitive?.contentOrNull
+            ?: return errorResponse(request.id, "Missing tool name")
+
+        val arguments = params["arguments"]?.jsonObject ?: buildJsonObject {}
+
+        val tool = tools.find { it.name == toolName }
+            ?: return errorResponse(request.id, "Unknown tool: $toolName")
+
+        return try {
+            val result = tool.execute(arguments, connection)
+            JsonRpcResponse(
+                id = request.id,
+                result = buildJsonObject {
+                    putJsonArray("content") {
+                        addJsonObject {
+                            put("type", "text")
+                            put("text", result)
+                        }
+                    }
+                },
+            )
+        } catch (e: Exception) {
+            if (e is CancellationException) throw e
+            JsonRpcResponse(
+                id = request.id,
+                result = buildJsonObject {
+                    putJsonArray("content") {
+                        addJsonObject {
+                            put("type", "text")
+                            put("text", "Error: ${e.message}")
+                        }
+                    }
+                    put("isError", true)
+                },
+            )
+        }
+    }
+
+    private fun errorResponse(
+        id: JsonElement?,
+        message: String,
+    ) = JsonRpcResponse(
+        id = id,
+        error = JsonRpcError(-32602, message),
+    )
+}

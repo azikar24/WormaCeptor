@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>FunctionNaming:StorageTools.kt$QueryDatabaseTool.Companion$private fun KEYWORD_BOUNDARY_REGEX(keyword: String)</ID>
+    <ID>InstanceOfCheckForException:DeviceApiClient.kt$DeviceApiClient$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:DeviceConnection.kt$DeviceConnection$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:Main.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:McpServer.kt$McpServer$e is CancellationException</ID>
+    <ID>LoopWithTooManyJumpStatements:McpServer.kt$McpServer$while</ID>
+    <ID>MagicNumber:ActionTools.kt$SimulateLocationTool$180.0</ID>
+    <ID>MagicNumber:ActionTools.kt$SimulateLocationTool$90.0</ID>
+    <ID>MagicNumber:BridgeConfig.kt$BridgeConfig.Companion$8999</ID>
+    <ID>MagicNumber:DiagnosticTools.kt$TailLogsTool$100</ID>
+    <ID>MagicNumber:McpServer.kt$McpServer$32601</ID>
+    <ID>MagicNumber:McpServer.kt$McpServer$32602</ID>
+    <ID>MagicNumber:McpServer.kt$McpServer$32700</ID>
+    <ID>MagicNumber:NetworkTools.kt$ListTransactionsTool$50</ID>
+    <ID>MagicNumber:NetworkTools.kt$ListWebSocketMessagesTool$50</ID>
+    <ID>MaxLineLength:ActionTools.kt$SendPushNotificationTool$override</ID>
+    <ID>MaxLineLength:DiagnosticTools.kt$GetDeviceInfoTool$override</ID>
+    <ID>MaxLineLength:DiagnosticTools.kt$ListLeaksTool$override</ID>
+    <ID>MaxLineLength:StorageTools.kt$BrowseSecureStorageTool$override</ID>
+    <ID>MaxLineLength:StorageTools.kt$ListDatabasesTool$override</ID>
+    <ID>MaxLineLength:StorageTools.kt$ListLoadedLibrariesTool$override</ID>
+    <ID>MaximumLineLength:ActionTools.kt$SendPushNotificationTool$ </ID>
+    <ID>MaximumLineLength:DiagnosticTools.kt$GetDeviceInfoTool$ </ID>
+    <ID>MaximumLineLength:DiagnosticTools.kt$ListLeaksTool$ </ID>
+    <ID>MaximumLineLength:StorageTools.kt$BrowseSecureStorageTool$ </ID>
+    <ID>MaximumLineLength:StorageTools.kt$ListDatabasesTool$ </ID>
+    <ID>MaximumLineLength:StorageTools.kt$ListLoadedLibrariesTool$ </ID>
+    <ID>ThrowsCount:DeviceDiscovery.kt$DeviceDiscovery$fun findDevice(requestedSerial: String?): DeviceInfo</ID>
+    <ID>TooGenericExceptionCaught:AdbClient.kt$AdbClient$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DeviceApiClient.kt$DeviceApiClient$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DeviceConnection.kt$DeviceConnection$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Main.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:McpServer.kt$McpServer$e: Exception</ID>
+    <ID>TooManyFunctions:TextFormatter.kt$TextFormatter</ID>
+    <ID>UnderscoresInNumericLiterals:McpServer.kt$McpServer$32601</ID>
+    <ID>UnderscoresInNumericLiterals:McpServer.kt$McpServer$32602</ID>
+    <ID>UnderscoresInNumericLiterals:McpServer.kt$McpServer$32700</ID>
+    <ID>UndocumentedPublicFunction:Main.kt$fun main(args: Array&lt;String&gt;)</ID>
+    <ID>UseCheckOrError:DeviceDiscovery.kt$DeviceDiscovery$throw IllegalStateException( "Device '$requestedSerial' not found. Available: ${devices.map { it.serial }}", )</ID>
+    <ID>UseCheckOrError:DeviceDiscovery.kt$DeviceDiscovery$throw IllegalStateException( "Multiple devices connected. Use --device to select one:\n$deviceList", )</ID>
+    <ID>UseCheckOrError:DeviceDiscovery.kt$DeviceDiscovery$throw IllegalStateException( "No Android devices found. Connect a device or start an emulator.", )</ID>
+  </CurrentIssues>
+</SmellBaseline>

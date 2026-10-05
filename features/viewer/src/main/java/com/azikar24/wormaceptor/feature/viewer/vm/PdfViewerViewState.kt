@@ -14,6 +14,8 @@ internal data class PdfViewerViewState(
     val thumbnails: ImmutableMap<Int, Bitmap> = persistentMapOf(),
     /** Pages whose render threw; shown as an error placeholder and never re-requested. */
     val failedPages: ImmutableSet<Int> = persistentSetOf(),
+    /** Same as [failedPages] for thumbnails, tracked separately since either can fail alone. */
+    val failedThumbnails: ImmutableSet<Int> = persistentSetOf(),
     val pageCount: Int = 0,
     val isLoading: Boolean = true,
     val error: PdfViewerError? = null,

@@ -17,6 +17,7 @@ import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
 import com.azikar24.wormaceptor.feature.mockrules.ui.MockRuleEditorContent
 import com.azikar24.wormaceptor.feature.mockrules.ui.MockRulesScreen
+import com.azikar24.wormaceptor.feature.mockrules.vm.EditorNotice
 import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesEffect
 import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewEvent
 import com.azikar24.wormaceptor.feature.mockrules.vm.MockRulesViewModel
@@ -80,11 +81,13 @@ internal fun MockRuleEditorDestination(
     val transactionNotFoundMessage = stringResource(R.string.mock_editor_transaction_not_found)
     val bodyOmittedMessage = stringResource(R.string.mock_editor_body_omitted)
 
+    // The back stack entry id is stable across Activity recreation and unique per visit, so the VM
+    // reloads when the editor is reopened but keeps edits on rotation.
     LaunchedEffect(ruleId, transactionId) {
         val event = if (transactionId != null) {
-            MockRulesViewEvent.Editor.LoadFromTransaction(transactionId)
+            MockRulesViewEvent.Editor.LoadFromTransaction(transactionId, backStackEntry.id)
         } else {
-            MockRulesViewEvent.Editor.LoadRule(ruleId)
+            MockRulesViewEvent.Editor.LoadRule(ruleId, backStackEntry.id)
         }
         viewModel.sendEvent(event)
     }
@@ -95,13 +98,19 @@ internal fun MockRuleEditorDestination(
             when (effect) {
                 is MockRulesEffect.NavigateBack -> navController.popBackStack()
                 is MockRulesEffect.SaveFailed -> scope.launch { snackbarHostState.showSnackbar(saveFailedMessage) }
-                is MockRulesEffect.TransactionNotFound ->
-                    scope.launch { snackbarHostState.showSnackbar(transactionNotFoundMessage) }
-                is MockRulesEffect.ResponseBodyOmitted ->
-                    scope.launch { snackbarHostState.showSnackbar(bodyOmittedMessage) }
             }
         },
     ) { state, onEvent ->
+        val notice = state.editor.notice
+        LaunchedEffect(notice) {
+            val message = when (notice) {
+                EditorNotice.TransactionNotFound -> transactionNotFoundMessage
+                EditorNotice.ResponseBodyOmitted -> bodyOmittedMessage
+                null -> return@LaunchedEffect
+            }
+            snackbarHostState.showSnackbar(message)
+            onEvent(MockRulesViewEvent.Editor.NoticeShown)
+        }
         if (state.editor.isLoaded) {
             MockRuleEditorContent(
                 state = state.editor,

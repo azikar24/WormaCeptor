@@ -11,8 +11,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.azikar24.wormaceptor.api.Feature
+import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
@@ -112,6 +115,7 @@ private fun MenuAction(
     showMenu: Boolean,
     onEvent: (TransactionDetailViewEvent) -> Unit,
 ) {
+    val mockRulesEnabled = remember { WormaCeptorApi.isFeatureEnabled(Feature.MOCK_RULES) }
     WormaCeptorIconButton(
         onClick = { onEvent(TransactionDetailViewEvent.Menu.VisibilityChanged(true)) },
     ) {
@@ -142,10 +146,12 @@ private fun MenuAction(
             text = { Text(stringResource(R.string.viewer_transaction_detail_share_as_har)) },
             onClick = { onEvent(TransactionDetailViewEvent.Menu.ShareAsHar) },
         )
-        WormaCeptorDivider()
-        DropdownMenuItem(
-            text = { Text(stringResource(R.string.viewer_transaction_detail_add_to_mock)) },
-            onClick = { onEvent(TransactionDetailViewEvent.Menu.AddToMockRules) },
-        )
+        if (mockRulesEnabled) {
+            WormaCeptorDivider()
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.viewer_transaction_detail_add_to_mock)) },
+                onClick = { onEvent(TransactionDetailViewEvent.Menu.AddToMockRules) },
+            )
+        }
     }
 }

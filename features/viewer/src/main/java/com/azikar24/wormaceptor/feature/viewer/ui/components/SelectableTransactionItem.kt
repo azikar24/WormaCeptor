@@ -58,7 +58,7 @@ fun SelectableTransactionItem(
     onShareAsHar: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
-    onAddToMock: () -> Unit,
+    onAddToMock: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val hapticFeedback = LocalHapticFeedback.current

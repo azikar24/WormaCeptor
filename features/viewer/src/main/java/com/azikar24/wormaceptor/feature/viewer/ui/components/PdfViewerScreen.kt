@@ -182,8 +182,9 @@ private fun PdfViewerContent(
                         val bitmap = state.pages[pageIndex]
                         // Re-requests if the page is evicted from the VM's bounded cache while composed.
                         val isFailed = pageIndex in state.failedPages
-                        LaunchedEffect(pageIndex, bitmap == null, isFailed) {
+                        DisposableEffect(pageIndex, bitmap == null, isFailed) {
                             if (bitmap == null && !isFailed) onEvent(PdfViewerViewEvent.RequestPage(pageIndex))
+                            onDispose { onEvent(PdfViewerViewEvent.CancelPage(pageIndex)) }
                         }
                         ZoomablePage(
                             bitmap = bitmap,
@@ -242,13 +243,14 @@ private fun PdfViewerContent(
                         PdfThumbnailStrip(
                             pageCount = state.pageCount,
                             thumbnails = state.thumbnails,
-                            failedPages = state.failedPages,
+                            failedPages = state.failedThumbnails,
                             currentPage = state.currentPage,
                             listState = thumbnailListState,
                             onPageSelect = { index ->
                                 scope.launch { pagerState.animateScrollToPage(index) }
                             },
                             onRequestThumbnail = { index -> onEvent(PdfViewerViewEvent.RequestThumbnail(index)) },
+                            onCancelThumbnail = { index -> onEvent(PdfViewerViewEvent.CancelThumbnail(index)) },
                         )
                     }
                 }

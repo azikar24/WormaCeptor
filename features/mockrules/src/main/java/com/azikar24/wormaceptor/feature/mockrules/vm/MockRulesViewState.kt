@@ -33,6 +33,11 @@ data class EditorState(
     val methodDropdownExpanded: Boolean = false,
     /** True while a save is in flight; further save requests are ignored. */
     val isSaving: Boolean = false,
+    /**
+     * Message raised while loading, held in state until the UI reports it shown. An effect would be
+     * lost when the load finishes before the effect collector subscribes.
+     */
+    val notice: EditorNotice? = null,
 ) {
     /** Whether [statusCodeText] is an HTTP status code in the 100..599 range. */
     val isStatusCodeValid: Boolean
@@ -40,6 +45,15 @@ data class EditorState(
 
     /** Whether the editor holds enough valid input to save the rule. */
     val isValid: Boolean get() = name.isNotBlank() && urlPattern.isNotBlank() && isStatusCodeValid
+}
+
+/** One-shot editor messages raised while loading a draft. */
+enum class EditorNotice {
+    /** The source transaction no longer exists; the editor opened empty. */
+    TransactionNotFound,
+
+    /** The source response body was binary or too large and was not copied into the draft. */
+    ResponseBodyOmitted,
 }
 
 private const val MinStatusCode = 100

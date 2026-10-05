@@ -25,7 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
@@ -55,9 +55,11 @@ internal fun PdfThumbnailStrip(
     listState: LazyListState,
     onPageSelect: (Int) -> Unit,
     onRequestThumbnail: (Int) -> Unit,
+    onCancelThumbnail: (Int) -> Unit,
 ) {
     val darkColors = WormaCeptorTokens.semantic(darkTheme = true)
     val currentOnRequestThumbnail by rememberUpdatedState(onRequestThumbnail)
+    val currentOnCancelThumbnail by rememberUpdatedState(onCancelThumbnail)
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
@@ -78,8 +80,10 @@ internal fun PdfThumbnailStrip(
                 val bitmap = thumbnails[index]
                 val isFailed = index in failedPages
                 // Composed items are the visible ones; re-requests if evicted from the VM's bounded cache.
-                LaunchedEffect(index, bitmap == null, isFailed) {
+                // Cancels on dispose so a fling doesn't queue renders for items already scrolled past.
+                DisposableEffect(index, bitmap == null, isFailed) {
                     if (bitmap == null && !isFailed) currentOnRequestThumbnail(index)
+                    onDispose { currentOnCancelThumbnail(index) }
                 }
                 ThumbnailItem(
                     bitmap = bitmap,
@@ -180,6 +184,7 @@ private fun PdfThumbnailStripPreview() {
             listState = LazyListState(),
             onPageSelect = {},
             onRequestThumbnail = {},
+            onCancelThumbnail = {},
         )
     }
 }

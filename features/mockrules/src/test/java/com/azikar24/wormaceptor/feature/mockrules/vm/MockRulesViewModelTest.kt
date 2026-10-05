@@ -4,7 +4,9 @@ import android.util.Log
 import app.cash.turbine.test
 import com.azikar24.wormaceptor.core.engine.MockEngine
 import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
+import com.azikar24.wormaceptor.domain.entities.mock.MockResponse
 import com.azikar24.wormaceptor.domain.entities.mock.MockRule
+import com.azikar24.wormaceptor.domain.entities.mock.RequestMatcher
 import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -45,7 +47,7 @@ class MockRulesViewModelTest {
         mockkStatic(Log::class)
         every { Log.w(any(), any<String>(), any()) } returns 0
         viewModel = MockRulesViewModel(repository, engine, queryEngine = null)
-        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadRule(null))
+        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadRule(null, loadKey = "visit-1"))
         viewModel.sendEvent(MockRulesViewEvent.Editor.NameChanged("Login error"))
         viewModel.sendEvent(MockRulesViewEvent.Editor.UrlPatternChanged("https://api.example.com/login"))
     }
@@ -81,5 +83,36 @@ class MockRulesViewModelTest {
             awaitItem() shouldBe MockRulesEffect.NavigateBack
         }
         coVerify(exactly = 2) { repository.insert(any()) }
+    }
+
+    @Test
+    fun `repeated load with the same key keeps edits`() = runTest {
+        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadRule(null, loadKey = "visit-1"))
+
+        viewModel.uiState.value.editor.name shouldBe "Login error"
+    }
+
+    @Test
+    fun `load with a new key resets the editor`() = runTest {
+        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadRule(null, loadKey = "visit-2"))
+
+        viewModel.uiState.value.editor shouldBe EditorState(isLoaded = true)
+    }
+
+    @Test
+    fun `reloading an existing rule with the same key does not refetch it`() = runTest {
+        val rule = MockRule(
+            name = "Stored",
+            matcher = RequestMatcher(urlPattern = "https://api.example.com"),
+            response = MockResponse(statusCode = 200),
+        )
+        coEvery { repository.getById(rule.id) } returns rule
+
+        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadRule(rule.id, loadKey = "visit-2"))
+        viewModel.sendEvent(MockRulesViewEvent.Editor.NameChanged("Edited"))
+        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadRule(rule.id, loadKey = "visit-2"))
+
+        viewModel.uiState.value.editor.name shouldBe "Edited"
+        coVerify(exactly = 1) { repository.getById(rule.id) }
     }
 }

@@ -17,14 +17,25 @@ sealed class MockRulesViewEvent {
     }
 
     sealed class Editor : MockRulesViewEvent() {
-        data class LoadRule(val ruleId: String?) : Editor()
+        /**
+         * Loads [ruleId] into the editor, or a blank draft when null.
+         *
+         * @property ruleId Id of the rule to edit, or null (or "new") for a blank draft.
+         * @property loadKey Identifies one visit to the editor; a repeat with the same key (Activity
+         *   recreation) is ignored so in-progress edits survive.
+         */
+        data class LoadRule(val ruleId: String?, val loadKey: String) : Editor()
 
         /**
          * Starts a new, unsaved rule pre-filled from a captured transaction.
          *
          * @property transactionId String form of the transaction UUID taken from the route.
+         * @property loadKey Same contract as [LoadRule.loadKey].
          */
-        data class LoadFromTransaction(val transactionId: String) : Editor()
+        data class LoadFromTransaction(val transactionId: String, val loadKey: String) : Editor()
+
+        /** The UI displayed [EditorState.notice]; clears it. */
+        data object NoticeShown : Editor()
 
         data object SaveRule : Editor()
 

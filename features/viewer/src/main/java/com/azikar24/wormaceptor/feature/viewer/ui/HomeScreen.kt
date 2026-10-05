@@ -44,6 +44,7 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.api.Feature
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.components.badge.BadgeVariant
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorBadge
@@ -226,12 +227,18 @@ fun HomeScreen(
                                     TransactionListViewEvent.CopyTransactionAsCurl(it.id),
                                 )
                             },
-                            onAddToMock = {
-                                onHomeEvent(
-                                    HomeViewEvent.ToolNavigated(
-                                        WormaCeptorNavKeys.MockRuleEditor.createFromTransactionRoute(it.id.toString()),
-                                    ),
-                                )
+                            onAddToMock = if (Feature.MOCK_RULES in enabledFeatures) {
+                                {
+                                    onHomeEvent(
+                                        HomeViewEvent.ToolNavigated(
+                                            WormaCeptorNavKeys.MockRuleEditor.createFromTransactionRoute(
+                                                it.id.toString(),
+                                            ),
+                                        ),
+                                    )
+                                }
+                            } else {
+                                null
                             },
                         ),
                         isInitialLoading = transactionState.isInitialLoading,

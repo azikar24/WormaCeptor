@@ -36,7 +36,7 @@ fun TransactionContextMenu(
     onShareAsHar: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
-    onAddToMock: () -> Unit,
+    onAddToMock: (() -> Unit)?,
     onSelect: () -> Unit,
     modifier: Modifier = Modifier,
     offset: DpOffset = DpOffset(0.dp, 0.dp),
@@ -123,20 +123,22 @@ fun TransactionContextMenu(
             },
         )
 
-        DropdownMenuItem(
-            text = { Text(stringResource(R.string.viewer_context_menu_add_to_mock)) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Science,
-                    contentDescription = null,
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
-                )
-            },
-            onClick = {
-                onAddToMock()
-                onDismiss()
-            },
-        )
+        if (onAddToMock != null) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.viewer_context_menu_add_to_mock)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Science,
+                        contentDescription = null,
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+                    )
+                },
+                onClick = {
+                    onAddToMock()
+                    onDismiss()
+                },
+            )
+        }
 
         WormaCeptorDivider()
 

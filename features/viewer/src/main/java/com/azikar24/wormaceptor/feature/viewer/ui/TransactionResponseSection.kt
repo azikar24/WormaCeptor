@@ -11,13 +11,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -138,13 +140,10 @@ internal fun ResponseTab(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .onGloballyPositioned { scrollAnchor.column = it }
-                .padding(
-                    start = WormaCeptorTokens.Spacing.lg,
-                    top = WormaCeptorTokens.Spacing.lg,
-                    end = WormaCeptorTokens.Spacing.lg,
-                    bottom = WormaCeptorTokens.Spacing.lg +
-                        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
-                ),
+                .padding(WormaCeptorTokens.Spacing.lg)
+                // Inset-aware: the parent already consumed the IME, so this adds only what the
+                // navigation bar exceeds it by, i.e. max(navBars, ime) overall.
+                .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)),
         ) {
             if (transaction.response != null) {
                 val hasHeaders = transaction.response?.headers?.isNotEmpty() == true

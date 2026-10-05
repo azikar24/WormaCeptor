@@ -6,6 +6,12 @@ internal sealed class PdfViewerViewEvent {
     class LoadPdf(val pdfData: ByteArray, val initialPage: Int, val cacheDir: File) : PdfViewerViewEvent()
     data class RequestPage(val page: Int) : PdfViewerViewEvent()
     data class RequestThumbnail(val page: Int) : PdfViewerViewEvent()
+
+    /** The page left composition; drop its render if still queued or running. */
+    data class CancelPage(val page: Int) : PdfViewerViewEvent()
+
+    /** The thumbnail left composition; drop its render if still queued or running. */
+    data class CancelThumbnail(val page: Int) : PdfViewerViewEvent()
     data class PageChanged(val page: Int) : PdfViewerViewEvent()
     data object ToggleControls : PdfViewerViewEvent()
     data object ToggleThumbnails : PdfViewerViewEvent()

@@ -46,6 +46,26 @@ internal object AndroidPdfDocumentOpener : PdfDocumentOpener {
     }
 }
 
+/** Upper bound on rendered page pixels (~32 MB as ARGB_8888), so very tall pages can't OOM. */
+internal const val MaxRenderedPixels = 8_388_608L
+
+/**
+ * Bitmap size for a [pageWidth] x [pageHeight] page at [scale], shrunk to at most [maxWidthPx] wide
+ * and [MaxRenderedPixels] in total.
+ * Each side is at least 1px: a very wide, short page would otherwise round to 0, which createBitmap rejects.
+ */
+internal fun renderedSize(
+    pageWidth: Int,
+    pageHeight: Int,
+    scale: Float,
+    maxWidthPx: Int,
+): Pair<Int, Int> {
+    val pixelCapScale = kotlin.math.sqrt(MaxRenderedPixels.toDouble() / (pageWidth.toLong() * pageHeight)).toFloat()
+    val effectiveScale = minOf(scale, maxWidthPx.toFloat() / pageWidth, pixelCapScale)
+    return (pageWidth * effectiveScale).toInt().coerceAtLeast(1) to
+        (pageHeight * effectiveScale).toInt().coerceAtLeast(1)
+}
+
 /**
  * The renderer allows one open page at a time and is not thread-safe, so every access holds
  * the mutex. [close] never blocks: if a render holds the lock, that render closes the renderer
@@ -98,8 +118,8 @@ private class AndroidPdfDocument(
     ): Bitmap {
         val page = renderer.openPage(index)
         try {
-            val effectiveScale = minOf(scale, maxWidthPx.toFloat() / page.width)
-            val bitmap = createBitmap((page.width * effectiveScale).toInt(), (page.height * effectiveScale).toInt())
+            val (width, height) = renderedSize(page.width, page.height, scale, maxWidthPx)
+            val bitmap = createBitmap(width, height)
             bitmap.eraseColor(android.graphics.Color.WHITE)
             page.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
             return bitmap

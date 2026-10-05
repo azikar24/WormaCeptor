@@ -8,13 +8,15 @@ import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.domain.entities.PdfMetadata
 import com.azikar24.wormaceptor.feature.viewer.ui.components.extractPdfTitle
 import com.azikar24.wormaceptor.feature.viewer.ui.components.extractPdfVersion
-import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -34,17 +36,20 @@ internal class PdfViewerViewModel(
     private var document: PdfDocument? = null
 
     // Main-thread only.
-    private val pageCache = RenderCache(MAX_CACHED_PAGES, maxWidthPx = Int.MAX_VALUE)
-    private val thumbnailCache = RenderCache(MAX_CACHED_THUMBNAILS, maxWidthPx = THUMBNAIL_WIDTH_PX)
-    private val failedPages = mutableSetOf<Int>()
+    private val pageCache = RenderCache(MAX_CACHED_PAGES, maxWidthPx = MAX_PAGE_WIDTH_PX) {
+        copy(pages = it.bitmaps.toImmutableMap(), failedPages = it.failed.toImmutableSet())
+    }
+    private val thumbnailCache = RenderCache(MAX_CACHED_THUMBNAILS, maxWidthPx = THUMBNAIL_WIDTH_PX) {
+        copy(thumbnails = it.bitmaps.toImmutableMap(), failedThumbnails = it.failed.toImmutableSet())
+    }
 
     override fun handleEvent(event: PdfViewerViewEvent) {
         when (event) {
             is PdfViewerViewEvent.LoadPdf -> loadPdf(event.pdfData, event.initialPage, event.cacheDir)
-            is PdfViewerViewEvent.RequestPage -> requestRender(event.page, pageCache) { copy(pages = it) }
-            is PdfViewerViewEvent.RequestThumbnail -> {
-                requestRender(event.page, thumbnailCache) { copy(thumbnails = it) }
-            }
+            is PdfViewerViewEvent.RequestPage -> requestRender(event.page, pageCache)
+            is PdfViewerViewEvent.RequestThumbnail -> requestRender(event.page, thumbnailCache)
+            is PdfViewerViewEvent.CancelPage -> pageCache.cancel(event.page)
+            is PdfViewerViewEvent.CancelThumbnail -> thumbnailCache.cancel(event.page)
             is PdfViewerViewEvent.PageChanged -> updateState { copy(currentPage = event.page) }
             is PdfViewerViewEvent.ToggleControls -> {
                 val newValue = !uiState.value.showControls
@@ -165,24 +170,28 @@ internal class PdfViewerViewModel(
     private fun requestRender(
         index: Int,
         cache: RenderCache,
-        publish: PdfViewerViewState.(ImmutableMap<Int, Bitmap>) -> PdfViewerViewState,
     ) {
         val doc = document ?: return
-        if (index !in 0 until doc.pageCount || index in failedPages) return
-        if (cache.bitmaps[index] != null || !cache.pending.add(index)) return
+        if (index !in 0 until doc.pageCount || index in cache.failed) return
+        if (cache.bitmaps[index] != null || index in cache.jobs) return
 
-        viewModelScope.launch {
+        // Lazy so the job is tracked before it runs; an immediate dispatcher could otherwise finish
+        // (and untrack itself) before being recorded.
+        val job = viewModelScope.launch(start = CoroutineStart.LAZY) {
             val bitmap = try {
                 withContext(ioDispatcher) { doc.render(index, RENDER_SCALE, cache.maxWidthPx) }
+            } catch (e: CancellationException) {
+                // CancellationException is an IllegalStateException; a cancelled render is not a failure.
+                throw e
             } catch (e: IllegalStateException) {
-                onRenderFailed(doc, index, e)
+                onRenderFailed(doc, index, cache, e)
                 return@launch
             } catch (e: IllegalArgumentException) {
-                onRenderFailed(doc, index, e)
+                onRenderFailed(doc, index, cache, e)
                 return@launch
             } finally {
-                // A replaced document's pending set was already cleared and may now track the new one.
-                if (document === doc) cache.pending.remove(index)
+                // A cancelled job may already be replaced by a new request for the same index.
+                if (cache.jobs[index] === coroutineContext.job) cache.jobs.remove(index)
             }
             if (document !== doc) {
                 // Rendered for a document that has since been replaced; it was never shown.
@@ -191,19 +200,22 @@ internal class PdfViewerViewModel(
             }
             if (bitmap == null) return@launch
             cache.put(index, bitmap)
-            updateState { publish(cache.bitmaps.toImmutableMap()) }
+            updateState { cache.publish(this, cache) }
         }
+        cache.jobs[index] = job
+        job.start()
     }
 
     private fun onRenderFailed(
         doc: PdfDocument,
         index: Int,
+        cache: RenderCache,
         error: RuntimeException,
     ) {
         Log.w(TAG, "Failed to render PDF page $index", error)
         if (document !== doc) return
-        failedPages.add(index)
-        updateState { copy(failedPages = this@PdfViewerViewModel.failedPages.toImmutableSet()) }
+        cache.failed.add(index)
+        updateState { cache.publish(this, cache) }
     }
 
     private fun release() {
@@ -221,7 +233,6 @@ internal class PdfViewerViewModel(
         tempFile = null
         pageCache.clear()
         thumbnailCache.clear()
-        failedPages.clear()
     }
 
     private fun startControlsAutoHide() {
@@ -242,13 +253,23 @@ internal class PdfViewerViewModel(
         class Failed(val error: PdfViewerError) : PdfOpenResult()
     }
 
-    /** LRU bitmap cache; access order makes iteration start at the least recently requested page. */
+    /**
+     * LRU bitmap cache; access order makes iteration start at the least recently requested page.
+     * Failures are tracked per cache: a page that cannot render as a thumbnail may still render full size.
+     */
     private class RenderCache(
         private val capacity: Int,
         val maxWidthPx: Int,
+        val publish: PdfViewerViewState.(RenderCache) -> PdfViewerViewState,
     ) {
         val bitmaps = LinkedHashMap<Int, Bitmap>(capacity, LRU_LOAD_FACTOR, true)
-        val pending = mutableSetOf<Int>()
+        val jobs = mutableMapOf<Int, Job>()
+        val failed = mutableSetOf<Int>()
+
+        /** Drops a queued or running render whose item left composition. */
+        fun cancel(index: Int) {
+            jobs.remove(index)?.cancel()
+        }
 
         // Evicted bitmaps are dropped, not recycled: a frame already recorded may still draw them,
         // and recycling would crash with "trying to use a recycled bitmap". The cap bounds live references.
@@ -268,7 +289,9 @@ internal class PdfViewerViewModel(
         fun clear() {
             bitmaps.values.forEach { it.recycle() }
             bitmaps.clear()
-            pending.clear()
+            jobs.values.forEach { it.cancel() }
+            jobs.clear()
+            failed.clear()
         }
     }
 
@@ -277,6 +300,9 @@ internal class PdfViewerViewModel(
         private const val MAX_CACHED_PAGES = 6
         private const val MAX_CACHED_THUMBNAILS = 30
         private const val THUMBNAIL_WIDTH_PX = 180
+
+        // Bounds a large-format page (A0 at 2x is ~4800px wide) to a few tens of MB per bitmap.
+        private const val MAX_PAGE_WIDTH_PX = 2048
         private const val LRU_LOAD_FACTOR = 0.75f
         private const val RENDER_SCALE = 2f
         private const val CONTROLS_AUTO_HIDE_MS = 4000L

@@ -9,7 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.layout.Layout
@@ -24,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.TextUnit
+import java.text.BreakIterator
 
 private const val Ellipsis = "..."
 
@@ -77,12 +77,37 @@ private fun measureStartEllipsized(
     val available = constraints.maxWidth - ellipsisWidth
     if (available <= 0) return textMeasurer.measure(Ellipsis, style, maxLines = 1, softWrap = false)
 
-    // The suffix that fits starts where the full text's remaining width equals the available space.
-    var start = full.getOffsetForPosition(Offset((full.size.width - available).toFloat(), full.size.height / 2f))
-    var candidate = textMeasurer.measure(Ellipsis + text.substring(start), style, maxLines = 1, softWrap = false)
-    while (candidate.size.width > constraints.maxWidth && start < text.length) {
-        start++
-        candidate = textMeasurer.measure(Ellipsis + text.substring(start), style, maxLines = 1, softWrap = false)
+    // Offset-from-position lookups assume LTR; a width search over suffixes works for any direction.
+    val start = smallestFittingStart(graphemeStarts(text)) { offset ->
+        val width = textMeasurer.measure(Ellipsis + text.substring(offset), style, maxLines = 1, softWrap = false)
+            .size.width
+        width <= constraints.maxWidth
     }
-    return candidate
+    return textMeasurer.measure(Ellipsis + text.substring(start), style, maxLines = 1, softWrap = false)
+}
+
+/** Grapheme cluster start offsets of [text], followed by `text.length`, so a cut never splits a character. */
+internal fun graphemeStarts(text: String): IntArray {
+    val iterator = BreakIterator.getCharacterInstance()
+    iterator.setText(text)
+    return generateSequence(iterator.first()) { iterator.next().takeIf { it != BreakIterator.DONE } }
+        .toList()
+        .toIntArray()
+}
+
+/**
+ * Binary search for the smallest offset in [starts] whose suffix [fits]. Suffix width shrinks as the
+ * start moves right, so the predicate is monotonic. The last entry (empty suffix) is assumed to fit.
+ */
+internal fun smallestFittingStart(
+    starts: IntArray,
+    fits: (Int) -> Boolean,
+): Int {
+    var low = 0
+    var high = starts.lastIndex
+    while (low < high) {
+        val mid = low + high ushr 1
+        if (fits(starts[mid])) high = mid else low = mid + 1
+    }
+    return starts[low]
 }

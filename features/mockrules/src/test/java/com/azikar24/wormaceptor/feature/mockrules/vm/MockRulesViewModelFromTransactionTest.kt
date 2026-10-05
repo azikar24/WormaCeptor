@@ -1,6 +1,5 @@
 package com.azikar24.wormaceptor.feature.mockrules.vm
 
-import app.cash.turbine.test
 import com.azikar24.wormaceptor.core.engine.MockEngine
 import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
@@ -60,7 +59,7 @@ class MockRulesViewModelFromTransactionTest {
         coEvery { queryEngine.getDetails(tx.id) } returns tx
         coEvery { queryEngine.getBodyBytes("res") } returns """{"ok":true}""".toByteArray()
 
-        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadFromTransaction(tx.id.toString()))
+        viewModel.sendEvent(load(tx.id.toString()))
 
         with(viewModel.uiState.value.editor) {
             isLoaded shouldBe true
@@ -80,34 +79,59 @@ class MockRulesViewModelFromTransactionTest {
         val id = UUID.randomUUID()
         coEvery { queryEngine.getDetails(id) } returns null
 
-        viewModel.effects.test {
-            viewModel.sendEvent(MockRulesViewEvent.Editor.LoadFromTransaction(id.toString()))
+        viewModel.sendEvent(load(id.toString()))
 
-            awaitItem() shouldBe MockRulesEffect.TransactionNotFound
-        }
-        viewModel.uiState.value.editor shouldBe EditorState(isLoaded = true)
+        viewModel.uiState.value.editor shouldBe
+            EditorState(isLoaded = true, notice = EditorNotice.TransactionNotFound)
     }
 
     @Test
-    fun `malformed transaction id reports not found`() = runTest {
-        viewModel.effects.test {
-            viewModel.sendEvent(MockRulesViewEvent.Editor.LoadFromTransaction("not-a-uuid"))
+    fun `malformed transaction id reports not found without any collector`() = runTest {
+        viewModel.sendEvent(load("not-a-uuid"))
 
-            awaitItem() shouldBe MockRulesEffect.TransactionNotFound
-        }
+        viewModel.uiState.value.editor.notice shouldBe EditorNotice.TransactionNotFound
     }
 
     @Test
-    fun `binary response body emits ResponseBodyOmitted`() = runTest {
+    fun `missing query engine reports not found`() = runTest {
+        val vm = MockRulesViewModel(repository, engine, queryEngine = null)
+
+        vm.sendEvent(load(UUID.randomUUID().toString()))
+
+        vm.uiState.value.editor.notice shouldBe EditorNotice.TransactionNotFound
+    }
+
+    @Test
+    fun `NoticeShown clears the notice`() = runTest {
+        viewModel.sendEvent(load("not-a-uuid"))
+        viewModel.sendEvent(MockRulesViewEvent.Editor.NoticeShown)
+
+        viewModel.uiState.value.editor.notice shouldBe null
+    }
+
+    @Test
+    fun `recreation with the same key keeps edits and does not refetch`() = runTest {
+        val tx = transaction()
+        coEvery { queryEngine.getDetails(tx.id) } returns tx
+        coEvery { queryEngine.getBodyBytes("res") } returns null
+
+        viewModel.sendEvent(load(tx.id.toString()))
+        viewModel.sendEvent(MockRulesViewEvent.Editor.NameChanged("Edited"))
+        viewModel.sendEvent(load(tx.id.toString()))
+
+        viewModel.uiState.value.editor.name shouldBe "Edited"
+        coVerify(exactly = 1) { queryEngine.getDetails(tx.id) }
+    }
+
+    @Test
+    fun `binary response body raises ResponseBodyOmitted`() = runTest {
         val tx = transaction(contentType = "application/octet-stream")
         coEvery { queryEngine.getDetails(tx.id) } returns tx
         coEvery { queryEngine.getBodyBytes("res") } returns byteArrayOf(1, 2, 3)
 
-        viewModel.effects.test {
-            viewModel.sendEvent(MockRulesViewEvent.Editor.LoadFromTransaction(tx.id.toString()))
+        viewModel.sendEvent(load(tx.id.toString()))
 
-            awaitItem() shouldBe MockRulesEffect.ResponseBodyOmitted
-        }
+        viewModel.uiState.value.editor.notice shouldBe EditorNotice.ResponseBodyOmitted
         viewModel.uiState.value.editor.responseBody shouldBe ""
     }
 
@@ -118,7 +142,7 @@ class MockRulesViewModelFromTransactionTest {
         coEvery { queryEngine.getBodyBytes("res") } returns null
         coEvery { repository.getById(any()) } returns null
 
-        viewModel.sendEvent(MockRulesViewEvent.Editor.LoadFromTransaction(tx.id.toString()))
+        viewModel.sendEvent(load(tx.id.toString()))
         viewModel.sendEvent(MockRulesViewEvent.Editor.SaveRule)
 
         coVerify {
@@ -133,6 +157,9 @@ class MockRulesViewModelFromTransactionTest {
             )
         }
     }
+
+    private fun load(transactionId: String) =
+        MockRulesViewEvent.Editor.LoadFromTransaction(transactionId, loadKey = "visit-1")
 
     private fun transaction(contentType: String = "application/json") = NetworkTransaction(
         request = Request(

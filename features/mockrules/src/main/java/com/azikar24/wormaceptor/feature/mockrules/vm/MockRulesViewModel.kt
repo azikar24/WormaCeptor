@@ -30,6 +30,7 @@ internal class MockRulesViewModel(
 ) {
 
     private var existingRule: MockRule? = null
+    private var loadedKey: String? = null
 
     init {
         repository.getAll()
@@ -90,8 +91,12 @@ internal class MockRulesViewModel(
 
     private fun handleEditorEvent(event: MockRulesViewEvent.Editor) {
         when (event) {
-            is MockRulesViewEvent.Editor.LoadRule -> loadRule(event.ruleId)
-            is MockRulesViewEvent.Editor.LoadFromTransaction -> loadFromTransaction(event.transactionId)
+            is MockRulesViewEvent.Editor.LoadRule ->
+                if (claimLoad(event.loadKey)) loadRule(event.ruleId)
+            is MockRulesViewEvent.Editor.LoadFromTransaction ->
+                if (claimLoad(event.loadKey)) loadFromTransaction(event.transactionId)
+            is MockRulesViewEvent.Editor.NoticeShown ->
+                updateEditor { copy(notice = null) }
 
             is MockRulesViewEvent.Editor.SaveRule -> saveRule()
 
@@ -124,12 +129,20 @@ internal class MockRulesViewModel(
         }
     }
 
+    /** Returns false when [loadKey] was already loaded, i.e. the editor was recreated, not reopened. */
+    private fun claimLoad(loadKey: String): Boolean {
+        if (loadKey == loadedKey) return false
+        loadedKey = loadKey
+        return true
+    }
+
     private fun loadRule(ruleId: String?) {
         if (ruleId == null || ruleId == "new") {
             existingRule = null
             updateState { copy(editor = EditorState(isLoaded = true)) }
             return
         }
+        updateState { copy(editor = EditorState()) }
         viewModelScope.launch {
             val rule = repository.getById(ruleId)
             existingRule = rule
@@ -184,14 +197,15 @@ internal class MockRulesViewModel(
             }
             val transaction = id?.let { queryEngine?.getDetails(it) }
             if (transaction == null) {
-                updateState { copy(editor = EditorState(isLoaded = true)) }
-                emitEffect(MockRulesEffect.TransactionNotFound)
+                updateState {
+                    copy(editor = EditorState(isLoaded = true, notice = EditorNotice.TransactionNotFound))
+                }
                 return@launch
             }
             val body = transaction.response?.bodyRef?.let { queryEngine?.getBodyBytes(it) }
             val prefill = buildTransactionPrefill(transaction, body)
-            updateState { copy(editor = prefill.editor) }
-            if (prefill.bodyOmitted) emitEffect(MockRulesEffect.ResponseBodyOmitted)
+            val notice = EditorNotice.ResponseBodyOmitted.takeIf { prefill.bodyOmitted }
+            updateState { copy(editor = prefill.editor.copy(notice = notice)) }
         }
     }
 

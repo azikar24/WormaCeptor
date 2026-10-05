@@ -206,6 +206,16 @@ class InMemoryTransactionRepositoryTest {
         }
 
         @Test
+        fun `summary url keeps scheme, port and query`() = runTest {
+            repository.saveTransaction(createTransaction(url = "http://10.0.2.2:8080/api/users?page=2"))
+
+            repository.getAllTransactions().test {
+                awaitItem().first().url shouldBe "http://10.0.2.2:8080/api/users?page=2"
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+        @Test
         fun `summary contains response code when available`() = runTest {
             repository.saveTransaction(createTransaction(responseCode = 404, responseMessage = "Not Found"))
 
@@ -284,6 +294,80 @@ class InMemoryTransactionRepositoryTest {
             val result = repository.getAllTransactionsAsList()
 
             result shouldHaveSize 3
+        }
+    }
+
+    @Nested
+    inner class `observeTransaction` {
+
+        @Test
+        fun `emits null then the transaction once saved`() = runTest {
+            val tx = createTransaction()
+
+            repository.observeTransaction(tx.id).test {
+                awaitItem().shouldBeNull()
+                repository.saveTransaction(tx)
+                awaitItem() shouldBe tx
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+        @Test
+        fun `re-emits when the transaction is updated`() = runTest {
+            val tx = createTransaction(status = TransactionStatus.ACTIVE, responseCode = null)
+            repository.saveTransaction(tx)
+
+            repository.observeTransaction(tx.id).test {
+                awaitItem()?.status shouldBe TransactionStatus.ACTIVE
+                repository.saveTransaction(tx.copy(status = TransactionStatus.COMPLETED))
+                awaitItem()?.status shouldBe TransactionStatus.COMPLETED
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+        @Test
+        fun `does not emit when other transactions change`() = runTest {
+            val tx = createTransaction()
+            repository.saveTransaction(tx)
+
+            repository.observeTransaction(tx.id).test {
+                awaitItem() shouldBe tx
+                repository.saveTransaction(createTransaction())
+                expectNoEvents()
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+        @Test
+        fun `emits null after the transaction is deleted`() = runTest {
+            val tx = createTransaction()
+            repository.saveTransaction(tx)
+
+            repository.observeTransaction(tx.id).test {
+                awaitItem() shouldBe tx
+                repository.deleteTransactions(listOf(tx.id))
+                awaitItem().shouldBeNull()
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+    }
+
+    @Nested
+    inner class `getAllBodyRefs` {
+
+        @Test
+        fun `returns empty set initially`() = runTest {
+            repository.getAllBodyRefs().shouldBeEmpty()
+        }
+
+        @Test
+        fun `returns request and response refs and skips nulls`() = runTest {
+            repository.saveTransaction(createTransaction(bodyRef = "req-1", responseBodyRef = "res-1"))
+            repository.saveTransaction(createTransaction(bodyRef = null, responseBodyRef = "res-2"))
+            repository.saveTransaction(createTransaction(bodyRef = null, responseBodyRef = null))
+            repository.saveTransaction(createTransaction(bodyRef = "req-3", responseCode = null))
+
+            repository.getAllBodyRefs() shouldBe setOf("req-1", "res-1", "res-2", "req-3")
         }
     }
 

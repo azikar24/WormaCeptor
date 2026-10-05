@@ -19,6 +19,7 @@ import java.util.UUID
  * @property status Current lifecycle status of the transaction.
  * @property timestamp Epoch millis when the transaction was initiated.
  * @property isMocked Whether this transaction was served from a mock rule.
+ * @property url Full request URL including scheme, port, and query.
  */
 data class TransactionSummary(
     val id: UUID,
@@ -32,4 +33,5 @@ data class TransactionSummary(
     val status: TransactionStatus,
     val timestamp: EpochMillis,
     val isMocked: Boolean = false,
+    val url: String = "",
 )

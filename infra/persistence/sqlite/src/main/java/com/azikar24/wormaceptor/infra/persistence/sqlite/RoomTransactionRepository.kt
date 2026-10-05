@@ -5,9 +5,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
+import com.azikar24.wormaceptor.domain.entities.BlobID
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import java.util.UUID
 
@@ -26,6 +28,11 @@ class RoomTransactionRepository(
         return dao.getById(id)?.toDomain()
     }
 
+    override fun observeTransaction(id: UUID): Flow<NetworkTransaction?> {
+        // Room re-queries on every write to the table; only pass on changes to this row.
+        return dao.observeById(id).distinctUntilChanged().map { it?.toDomain() }
+    }
+
     override suspend fun saveTransaction(transaction: NetworkTransaction) {
         dao.insert(TransactionEntity.fromDomain(transaction))
     }
@@ -36,6 +43,10 @@ class RoomTransactionRepository(
 
     override suspend fun getAllTransactionsAsList(): List<NetworkTransaction> {
         return dao.getAllAsList().map { it.toDomain() }
+    }
+
+    override suspend fun getAllBodyRefs(): Set<BlobID> {
+        return dao.getAllBodyRefs().flatMap { listOfNotNull(it.reqBodyRef, it.resBodyRef) }.toSet()
     }
 
     override suspend fun deleteTransactionsBefore(timestamp: Long) {
@@ -91,6 +102,7 @@ class RoomTransactionRepository(
             hasResponseBody = entity.resBodyRef != null,
             status = entity.status,
             timestamp = entity.timestamp,
+            url = entity.reqUrl,
         )
     }
 

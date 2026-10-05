@@ -25,6 +25,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.engine.ui.DismissZoneContent
 import com.azikar24.wormaceptor.core.engine.ui.PerformanceOverlayContent
 import com.azikar24.wormaceptor.domain.entities.CpuInfo
@@ -40,6 +41,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.Koin
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.lang.ref.WeakReference
@@ -65,6 +67,22 @@ class PerformanceOverlayEngine(
     private val fpsMonitorEngine: FpsMonitorEngine by inject()
     private val memoryMonitorEngine: MemoryMonitorEngine by inject()
     private val cpuMonitorEngine: CpuMonitorEngine by inject()
+
+    private val fpsOwnership = OverlayMonitorOwnership(
+        isRunning = { fpsMonitorEngine.isRunning.value },
+        start = { fpsMonitorEngine.start() },
+        stop = { fpsMonitorEngine.stop() },
+    )
+    private val memoryOwnership = OverlayMonitorOwnership(
+        isRunning = { memoryMonitorEngine.isMonitoring.value },
+        start = { memoryMonitorEngine.start() },
+        stop = { memoryMonitorEngine.stop() },
+    )
+    private val cpuOwnership = OverlayMonitorOwnership(
+        isRunning = { cpuMonitorEngine.isMonitoring.value },
+        start = { cpuMonitorEngine.start() },
+        stop = { cpuMonitorEngine.stop() },
+    )
 
     // WindowManager for overlay
     private var windowManager: WindowManager? = null
@@ -132,6 +150,9 @@ class PerformanceOverlayEngine(
 
     private val _isVisible = MutableStateFlow(false)
 
+    /** Whether the overlay window is currently shown. */
+    val isVisible: StateFlow<Boolean> = _isVisible.asStateFlow()
+
     // SharedPreferences for position persistence
     private val prefs: SharedPreferences by lazy {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -160,6 +181,8 @@ class PerformanceOverlayEngine(
         val onRemoveMemory: () -> Unit,
         val onRemoveCpu: () -> Unit,
     )
+
+    override fun getKoin(): Koin = WormaCeptorKoin.getKoin()
 
     /**
      * Shows the performance overlay for the given activity.
@@ -291,13 +314,10 @@ class PerformanceOverlayEngine(
         saveFpsEnabled(newEnabled)
 
         if (newEnabled) {
-            if (!fpsMonitorEngine.isRunning.value) {
-                fpsMonitorEngine.start()
-            }
+            fpsOwnership.acquire()
             ensureOverlayVisible(activity)
         } else {
-            // Stop FPS monitor if not needed
-            fpsMonitorEngine.stop()
+            fpsOwnership.release()
             hideOverlayIfNoMetrics()
         }
     }
@@ -315,13 +335,10 @@ class PerformanceOverlayEngine(
         saveMemoryEnabled(newEnabled)
 
         if (newEnabled) {
-            if (!memoryMonitorEngine.isMonitoring.value) {
-                memoryMonitorEngine.start()
-            }
+            memoryOwnership.acquire()
             ensureOverlayVisible(activity)
         } else {
-            // Stop Memory monitor if not needed
-            memoryMonitorEngine.stop()
+            memoryOwnership.release()
             hideOverlayIfNoMetrics()
         }
     }
@@ -339,13 +356,10 @@ class PerformanceOverlayEngine(
         saveCpuEnabled(newEnabled)
 
         if (newEnabled) {
-            if (!cpuMonitorEngine.isMonitoring.value) {
-                cpuMonitorEngine.start()
-            }
+            cpuOwnership.acquire()
             ensureOverlayVisible(activity)
         } else {
-            // Stop CPU monitor if not needed
-            cpuMonitorEngine.stop()
+            cpuOwnership.release()
             hideOverlayIfNoMetrics()
         }
     }
@@ -429,10 +443,9 @@ class PerformanceOverlayEngine(
             saveMemoryEnabled(true)
             saveCpuEnabled(true)
 
-            // Start all monitoring engines
-            if (!fpsMonitorEngine.isRunning.value) fpsMonitorEngine.start()
-            if (!memoryMonitorEngine.isMonitoring.value) memoryMonitorEngine.start()
-            if (!cpuMonitorEngine.isMonitoring.value) cpuMonitorEngine.start()
+            fpsOwnership.acquire()
+            memoryOwnership.acquire()
+            cpuOwnership.acquire()
 
             val targetActivity = activity ?: activityRef?.get()
             targetActivity?.let { show(it) }
@@ -449,10 +462,10 @@ class PerformanceOverlayEngine(
             saveMemoryEnabled(false)
             saveCpuEnabled(false)
 
-            // Stop all monitoring engines
-            fpsMonitorEngine.stop()
-            memoryMonitorEngine.stop()
-            cpuMonitorEngine.stop()
+            // Only stop engines the overlay started; feature screens may still be monitoring
+            fpsOwnership.release()
+            memoryOwnership.release()
+            cpuOwnership.release()
 
             hide()
         }
@@ -499,25 +512,19 @@ class PerformanceOverlayEngine(
         if (fps && !_state.value.fpsEnabled) {
             _state.value = _state.value.copy(fpsEnabled = true)
             saveFpsEnabled(true)
-            if (!fpsMonitorEngine.isRunning.value) {
-                fpsMonitorEngine.start()
-            }
+            fpsOwnership.acquire()
         }
 
         if (memory && !_state.value.memoryEnabled) {
             _state.value = _state.value.copy(memoryEnabled = true)
             saveMemoryEnabled(true)
-            if (!memoryMonitorEngine.isMonitoring.value) {
-                memoryMonitorEngine.start()
-            }
+            memoryOwnership.acquire()
         }
 
         if (cpu && !_state.value.cpuEnabled) {
             _state.value = _state.value.copy(cpuEnabled = true)
             saveCpuEnabled(true)
-            if (!cpuMonitorEngine.isMonitoring.value) {
-                cpuMonitorEngine.start()
-            }
+            cpuOwnership.acquire()
         }
     }
 
@@ -539,19 +546,17 @@ class PerformanceOverlayEngine(
 
     private fun startMonitoringEngines() {
         // Only start engines for enabled metrics
-        if (_state.value.fpsEnabled && !fpsMonitorEngine.isRunning.value) {
-            fpsMonitorEngine.start()
-        }
-        if (_state.value.memoryEnabled && !memoryMonitorEngine.isMonitoring.value) {
-            memoryMonitorEngine.start()
-        }
-        if (_state.value.cpuEnabled && !cpuMonitorEngine.isMonitoring.value) {
-            cpuMonitorEngine.start()
-        }
+        if (_state.value.fpsEnabled) fpsOwnership.acquire()
+        if (_state.value.memoryEnabled) memoryOwnership.acquire()
+        if (_state.value.cpuEnabled) cpuOwnership.acquire()
     }
 
     private fun startMetricsCollection() {
         scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+        scope?.launch { fpsMonitorEngine.isRunning.collect { if (!it) fpsOwnership.onEngineStopped() } }
+        scope?.launch { memoryMonitorEngine.isMonitoring.collect { if (!it) memoryOwnership.onEngineStopped() } }
+        scope?.launch { cpuMonitorEngine.isMonitoring.collect { if (!it) cpuOwnership.onEngineStopped() } }
 
         // Combine all metric flows into unified state
         scope?.launch {

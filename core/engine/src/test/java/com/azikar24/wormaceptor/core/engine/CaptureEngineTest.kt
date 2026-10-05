@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.domain.contracts.ExtensionContext
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.Request
+import com.azikar24.wormaceptor.domain.entities.Response
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -106,6 +107,22 @@ class CaptureEngineTest {
 
             coVerify(exactly = 0) { blobStorage.saveBlob(any()) }
             transactionSlot.captured.request.bodyRef shouldBe null
+        }
+
+        @Test
+        fun `should store the caller's start timestamp`() = runTest {
+            val transactionSlot = slot<NetworkTransaction>()
+            coEvery { repository.saveTransaction(capture(transactionSlot)) } returns Unit
+
+            engine.startTransaction(
+                url = "https://example.com",
+                method = "GET",
+                headers = emptyMap(),
+                bodyStream = null,
+                timestamp = 1234L,
+            )
+
+            transactionSlot.captured.timestamp shouldBe 1234L
         }
 
         @Test
@@ -321,6 +338,50 @@ class CaptureEngineTest {
         }
 
         @Test
+        fun `should use the caller's measured duration when given`() = runTest {
+            coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
+
+            val updatedSlot = slot<NetworkTransaction>()
+            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            every { extensionRegistry.extractAll(any()) } returns emptyMap()
+
+            engine.completeTransaction(
+                id = transactionId,
+                code = 200,
+                message = "OK",
+                headers = emptyMap(),
+                bodyStream = null,
+                durationMs = 42,
+            )
+
+            updatedSlot.captured.durationMs shouldBe 42
+        }
+
+        @Test
+        fun `should mark a body read failure as FAILED with the captured size`() = runTest {
+            coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
+
+            val updatedSlot = slot<NetworkTransaction>()
+            coEvery { repository.saveTransaction(capture(updatedSlot)) } returns Unit
+            every { extensionRegistry.extractAll(any()) } returns emptyMap()
+
+            engine.completeTransaction(
+                id = transactionId,
+                code = 200,
+                message = "OK",
+                headers = emptyMap(),
+                bodyStream = null,
+                bodySize = 4,
+                error = "java.io.IOException: connection reset",
+            )
+
+            updatedSlot.captured.status shouldBe TransactionStatus.FAILED
+            updatedSlot.captured.response!!.code shouldBe 200
+            updatedSlot.captured.response!!.bodySize shouldBe 4
+            updatedSlot.captured.response!!.error shouldBe "java.io.IOException: connection reset"
+        }
+
+        @Test
         fun `should store protocol and tls version in response`() = runTest {
             coEvery { repository.getTransactionById(transactionId) } returns originalTransaction
 
@@ -427,6 +488,28 @@ class CaptureEngineTest {
             engine.cleanup(threshold)
 
             coVerify { repository.deleteTransactionsBefore(threshold) }
+        }
+
+        @Test
+        fun `should delete blobs only for transactions older than threshold`() = runTest {
+            val threshold = 1_000L
+            coEvery { repository.getAllTransactionsAsList() } returns listOf(
+                NetworkTransaction(
+                    timestamp = 999L,
+                    request = Request("https://example.com/old", "POST", emptyMap(), "old-req"),
+                    response = Response(200, "OK", emptyMap(), "old-res", null, null, null),
+                ),
+                NetworkTransaction(
+                    timestamp = 1_000L,
+                    request = Request("https://example.com/new", "POST", emptyMap(), "new-req"),
+                ),
+            )
+
+            engine.cleanup(threshold)
+
+            coVerify { blobStorage.deleteBlob("old-req") }
+            coVerify { blobStorage.deleteBlob("old-res") }
+            coVerify(exactly = 0) { blobStorage.deleteBlob("new-req") }
         }
     }
 }

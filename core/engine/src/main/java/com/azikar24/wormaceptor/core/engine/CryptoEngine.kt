@@ -7,6 +7,7 @@ import com.azikar24.wormaceptor.domain.entities.CryptoConfig
 import com.azikar24.wormaceptor.domain.entities.CryptoOperation
 import com.azikar24.wormaceptor.domain.entities.CryptoResult
 import com.azikar24.wormaceptor.domain.entities.KeyFormat
+import com.azikar24.wormaceptor.domain.entities.PaddingScheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +17,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import kotlin.random.asKotlinRandom
 
 /**
  * Engine for performing cryptographic operations on data.
@@ -143,7 +145,7 @@ class CryptoEngine {
                 null
             }
 
-            val cipher = Cipher.getInstance(config.getTransformation())
+            val cipher = Cipher.getInstance(transformationFor(config))
             val secretKey = SecretKeySpec(keyBytes, config.algorithm.algorithmName)
 
             when {
@@ -218,7 +220,7 @@ class CryptoEngine {
 
             val encryptedBytes = Base64.decode(ciphertext, Base64.NO_WRAP)
 
-            val cipher = Cipher.getInstance(config.getTransformation())
+            val cipher = Cipher.getInstance(transformationFor(config))
             val secretKey = SecretKeySpec(keyBytes, config.algorithm.algorithmName)
 
             when {
@@ -283,9 +285,7 @@ class CryptoEngine {
      */
     fun generateKey(): String {
         val keyLengthBytes = _config.value.algorithm.keyLengthBits / 8
-        val keyBytes = ByteArray(keyLengthBytes)
-        SecureRandom().nextBytes(keyBytes)
-        return formatBytes(keyBytes, _config.value.keyFormat)
+        return generateRandom(keyLengthBytes, _config.value.keyFormat)
     }
 
     /**
@@ -294,23 +294,23 @@ class CryptoEngine {
      * @return The generated IV in the current key format
      */
     fun generateIv(): String {
-        val ivLengthBytes = if (_config.value.mode == CipherMode.GCM) GCM_IV_LENGTH_BYTES else IV_LENGTH_BYTES
-        val ivBytes = ByteArray(ivLengthBytes)
-        SecureRandom().nextBytes(ivBytes)
-        return formatBytes(ivBytes, _config.value.keyFormat)
+        val config = _config.value
+        return generateRandom(ivLengthFor(config.algorithm, config.mode), config.keyFormat)
     }
 
     /**
-     * Formats bytes to string based on the key format.
+     * Generates [lengthBytes] random bytes encoded in [format]. UTF-8 output uses
+     * printable ASCII so the text round-trips to exactly [lengthBytes] bytes.
      */
-    private fun formatBytes(
-        bytes: ByteArray,
+    private fun generateRandom(
+        lengthBytes: Int,
         format: KeyFormat,
     ): String {
+        val random = SecureRandom().asKotlinRandom()
         return when (format) {
-            KeyFormat.BASE64 -> Base64.encodeToString(bytes, Base64.NO_WRAP)
-            KeyFormat.HEX -> bytes.joinToString("") { "%02x".format(it) }
-            KeyFormat.UTF8 -> String(bytes, Charsets.UTF_8)
+            KeyFormat.BASE64 -> Base64.encodeToString(random.nextBytes(lengthBytes), Base64.NO_WRAP)
+            KeyFormat.HEX -> random.nextBytes(lengthBytes).joinToString("") { "%02x".format(it) }
+            KeyFormat.UTF8 -> String(CharArray(lengthBytes) { PRINTABLE_ASCII_RANGE.random(random) })
         }
     }
 
@@ -392,5 +392,30 @@ class CryptoEngine {
 
         /** GCM IV length in bytes (12 is recommended). */
         private const val GCM_IV_LENGTH_BYTES = 12
+
+        /** DES and 3DES block size in bytes. */
+        private const val DES_BLOCK_SIZE_BYTES = 8
+
+        /** Printable ASCII without space, one UTF-8 byte per char. */
+        private val PRINTABLE_ASCII_RANGE = '!'..'~'
+
+        /** Modes that operate as stream ciphers or AEAD and reject block padding. */
+        private val NO_PADDING_MODES = setOf(CipherMode.GCM, CipherMode.CTR, CipherMode.CFB, CipherMode.OFB)
+
+        /** Builds the Cipher transformation, forcing NoPadding for stream and AEAD modes. */
+        internal fun transformationFor(config: CryptoConfig): String {
+            val padding = if (config.mode in NO_PADDING_MODES) PaddingScheme.NO_PADDING else config.padding
+            return config.copy(padding = padding).getTransformation()
+        }
+
+        /** IV length: 12 bytes for GCM, otherwise the algorithm's block size. */
+        internal fun ivLengthFor(
+            algorithm: CryptoAlgorithm,
+            mode: CipherMode,
+        ): Int = when {
+            mode == CipherMode.GCM -> GCM_IV_LENGTH_BYTES
+            algorithm == CryptoAlgorithm.DES || algorithm == CryptoAlgorithm.TRIPLE_DES -> DES_BLOCK_SIZE_BYTES
+            else -> IV_LENGTH_BYTES
+        }
     }
 }

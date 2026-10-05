@@ -135,6 +135,15 @@ class RateLimitEngine {
     fun getInterceptor(): Interceptor = interceptor
 
     /**
+     * Returns the configured latency in milliseconds, or 0 when rate limiting is disabled.
+     * Called reflectively by the Ktor plugin, so keep it public and argument-free.
+     */
+    fun getDelayMillis(): Long {
+        val currentConfig = _config.value
+        return if (currentConfig.enabled) currentConfig.latencyMs else 0L
+    }
+
+    /**
      * Updates the stats StateFlow with current values.
      */
     private fun updateStats() {
@@ -160,11 +169,19 @@ class RateLimitEngine {
                 return chain.proceed(chain.request())
             }
 
+            // Count each request once, however many throttled reads it takes
+            val throttlesRequest = currentConfig.latencyMs > 0 ||
+                currentConfig.uploadSpeedKbps > 0 ||
+                currentConfig.downloadSpeedKbps > 0
+            if (throttlesRequest) {
+                requestsThrottled.incrementAndGet()
+                updateStats()
+            }
+
             // Apply artificial latency
             if (currentConfig.latencyMs > 0) {
                 Thread.sleep(currentConfig.latencyMs)
                 totalDelayMs.addAndGet(currentConfig.latencyMs)
-                requestsThrottled.incrementAndGet()
                 updateStats()
             }
 
@@ -285,10 +302,9 @@ class RateLimitEngine {
                     if (sleepTime > 0) {
                         Thread.sleep(sleepTime)
                         totalDelayMs.addAndGet(sleepTime)
-                        requestsThrottled.incrementAndGet()
-                        updateStats()
                     }
                 }
+                updateStats()
             }
 
             return bytesReadNow

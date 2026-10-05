@@ -3,71 +3,70 @@ package com.azikar24.wormaceptor.core.engine.di
 import android.content.Context
 import com.azikar24.wormaceptor.core.engine.LeakDetectionEngine
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.GlobalContext
-import org.koin.core.context.startKoin
+import org.koin.core.Koin
+import org.koin.core.KoinApplication
+import org.koin.core.module.Module
+import org.koin.dsl.koinApplication
 
 /**
- * Helper object for managing Koin initialization in WormaCeptor library.
+ * Owns WormaCeptor's private Koin container.
  *
- * Handles the case where the host app may or may not have Koin already initialized.
- * If Koin is already running, it loads the engine module into the existing instance.
- * If not, it starts Koin with the engine module.
+ * Never touches the global Koin context: a host that calls `startKoin {}` after
+ * `WormaCeptorApi.init()` would otherwise crash with KoinApplicationAlreadyStartedException,
+ * and a host Koin started without `androidContext()` would break engine resolution.
+ *
+ * All WormaCeptor resolution must go through [getKoin] / [get], and Compose roots must be
+ * wrapped in `KoinIsolatedContext(WormaCeptorKoin.application)` so `koinInject()` works.
  */
 object WormaCeptorKoin {
-    private var initialized = false
-    private var ownKoinInstance = false
+    @Volatile
+    private var koinApp: KoinApplication? = null
+
+    /** The isolated application, for `KoinIsolatedContext`. Throws if [init] hasn't run. */
+    val application: KoinApplication
+        get() = checkNotNull(koinApp) { "WormaCeptor Koin not initialized. Call WormaCeptor.init() first" }
 
     /**
-     * Initializes Koin with WormaCeptor's engine module.
+     * Creates the isolated container. Safe to call multiple times - only the first call has effect.
      *
-     * Safe to call multiple times - will only initialize once.
-     * If host app already has Koin running, modules are loaded into existing instance.
-     *
-     * @param context Application context
+     * @param context Any context; the application context is retained
      */
     @Synchronized
     fun init(context: Context) {
-        if (initialized) return
-
-        val koin = GlobalContext.getOrNull()
-        if (koin != null) {
-            // Koin already running (host app initialized it)
-            // Load our modules into existing instance
-            koin.loadModules(listOf(engineModule))
-        } else {
-            // Koin not running, start it ourselves
-            startKoin {
-                androidContext(context.applicationContext)
-                modules(engineModule)
-            }
-            ownKoinInstance = true
-        }
-        initialized = true
+        if (koinApp != null) return
+        start(context, listOf(engineModule))
 
         // Eagerly create LeakDetectionEngine to start monitoring immediately
-        GlobalContext.get().get<LeakDetectionEngine>()
+        getKoin().get<LeakDetectionEngine>()
     }
 
-    /**
-     * Gets the Koin instance, initializing if needed.
-     */
-    fun getKoin() = GlobalContext.get()
+    @Synchronized
+    internal fun start(
+        context: Context,
+        modules: List<Module>,
+    ) {
+        if (koinApp != null) return
+        koinApp = koinApplication {
+            androidContext(context.applicationContext)
+            modules(modules)
+        }
+    }
+
+    /** The isolated container. Throws if [init] hasn't run. */
+    fun getKoin(): Koin = application.koin
 
     /**
-     * Cleans up Koin if we own it.
-     * Call this only when completely done with WormaCeptor.
+     * Resolves [clazz] from the isolated container.
+     *
+     * Static so `api:client` can call it by reflection without depending on Koin.
      */
+    @JvmStatic
+    fun <T : Any> get(clazz: Class<T>): T = getKoin().get(clazz.kotlin)
+
+    /** Closes the isolated container. Call only when completely done with WormaCeptor. */
     @Synchronized
     fun cleanup() {
-        if (!initialized) return
-
-        if (ownKoinInstance) {
-            GlobalContext.stopKoin()
-        } else {
-            // Just unload our modules from host app's Koin
-            GlobalContext.getOrNull()?.unloadModules(listOf(engineModule))
-        }
-        initialized = false
-        ownKoinInstance = false
+        koinApp?.close()
+        koinApp = null
     }
 }

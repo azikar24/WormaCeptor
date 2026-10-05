@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.crypto
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.SnackbarHost
@@ -24,6 +25,7 @@ import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
 import com.azikar24.wormaceptor.feature.crypto.ui.CryptoHistoryContent
 import com.azikar24.wormaceptor.feature.crypto.ui.CryptoToolContent
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEffect
+import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewEvent
 import com.azikar24.wormaceptor.feature.crypto.vm.CryptoViewModel
 import com.google.auto.service.AutoService
 import kotlinx.coroutines.launch
@@ -80,6 +82,9 @@ private fun CryptoDestination(onBack: () -> Unit) {
             }
         },
     ) { state, onEvent ->
+        BackHandler(enabled = state.showHistory) {
+            onEvent(CryptoViewEvent.Navigation.HideHistory)
+        }
         Box(modifier = Modifier.fillMaxSize()) {
             if (state.showHistory) {
                 CryptoHistoryContent(state = state, onEvent = onEvent)

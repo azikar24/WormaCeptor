@@ -5,11 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Extension
-import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +18,7 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import com.azikar24.wormaceptor.feature.loadedlibraries.R
+import com.azikar24.wormaceptor.feature.loadedlibraries.ui.util.icon
 
 @Composable
 internal fun LibraryDetailContent(
@@ -30,12 +26,8 @@ internal fun LibraryDetailContent(
     colors: ToolColors.LoadedLibraries.Scheme,
     modifier: Modifier = Modifier,
 ) {
-    val (icon, color) = when (library.type) {
-        LoadedLibrary.LibraryType.NATIVE_SO -> Icons.Default.Memory to colors.nativeSo
-        LoadedLibrary.LibraryType.DEX -> Icons.Default.Android to colors.dex
-        LoadedLibrary.LibraryType.JAR -> Icons.Default.Code to colors.jar
-        LoadedLibrary.LibraryType.AAR_RESOURCE -> Icons.Default.Extension to colors.primary
-    }
+    val icon = library.type.icon()
+    val color = colors.labelSecondary
 
     Column(modifier.fillMaxWidth(), Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg)) {
         WormaCeptorDetailHeader(

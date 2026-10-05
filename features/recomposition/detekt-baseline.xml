@@ -4,8 +4,6 @@
   <CurrentIssues>
     <ID>LongMethod:RecomposerRow.kt$@Composable internal fun RecomposerRow( index: Int, item: RecompositionItem, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:RecompositionSummaryScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun RecompositionSummaryScreen( state: RecompositionViewState, onEvent: (RecompositionViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$0.001f</ID>
-    <ID>MagicNumber:RecompositionTracker.kt$RecompositionTracker$1000f</ID>
     <ID>UndocumentedPublicClass:RecompositionEffect.kt$RecompositionEffect</ID>
     <ID>UndocumentedPublicClass:RecompositionTracker.kt$RecompositionTracker$RecompositionData</ID>
     <ID>UndocumentedPublicClass:RecompositionEffect.kt$RecompositionEffect$NavigateBack : RecompositionEffect</ID>

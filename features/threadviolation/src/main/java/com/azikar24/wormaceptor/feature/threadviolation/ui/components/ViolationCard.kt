@@ -32,7 +32,7 @@ internal fun ViolationCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val typeColor = violation.violationType.color
+    val typeColor = WormaCeptorTokens.semantic().textSecondary
     val icon = violation.violationType.icon
 
     WormaCeptorCard(
@@ -48,7 +48,7 @@ internal fun ViolationCard(
                 modifier = Modifier
                     .size(WormaCeptorTokens.TouchTarget.minimum)
                     .clip(WormaCeptorTokens.Shapes.card)
-                    .background(typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT)),
+                    .background(WormaCeptorTokens.semantic().surfaceVariant),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -86,7 +86,7 @@ internal fun ViolationCard(
             }
             WormaCeptorStatusBadge(
                 text = violation.violationType.abbreviation,
-                containerColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                containerColor = WormaCeptorTokens.semantic().surfaceVariant,
                 contentColor = typeColor,
             )
         }

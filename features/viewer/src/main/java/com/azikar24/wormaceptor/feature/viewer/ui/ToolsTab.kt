@@ -123,7 +123,7 @@ fun ToolsTab(
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(
-                top = WormaCeptorTokens.Spacing.sm,
+                top = WormaCeptorTokens.Spacing.lg,
                 bottom = WormaCeptorTokens.Spacing.xxl + navigationBarPadding,
             ),
         ) {
@@ -179,7 +179,7 @@ fun ToolsTab(
                     },
                     modifier = Modifier.padding(
                         horizontal = WormaCeptorTokens.Spacing.lg,
-                        vertical = WormaCeptorTokens.Spacing.xs,
+                        vertical = WormaCeptorTokens.Spacing.sm,
                     ),
                 )
             }

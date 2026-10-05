@@ -1,24 +1,29 @@
 package com.azikar24.wormaceptor.feature.mockrules.vm
 
+import android.database.sqlite.SQLiteException
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.MockEngine
+import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.domain.contracts.MockRuleRepository
 import com.azikar24.wormaceptor.domain.entities.mock.MockDelay
 import com.azikar24.wormaceptor.domain.entities.mock.MockResponse
 import com.azikar24.wormaceptor.domain.entities.mock.MockRule
 import com.azikar24.wormaceptor.domain.entities.mock.RequestMatcher
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 internal class MockRulesViewModel(
     private val repository: MockRuleRepository,
     private val engine: MockEngine,
+    private val queryEngine: QueryEngine?,
 ) : BaseViewModel<MockRulesViewState, MockRulesEffect, MockRulesViewEvent, NoOpNavigator>(
     initialState = MockRulesViewState(),
     navigator = NoOpNavigator,
@@ -29,7 +34,6 @@ internal class MockRulesViewModel(
     init {
         repository.getAll()
             .distinctUntilChanged()
-            .onEach { rules -> engine.setRules(rules) }
             .combine(engine.mockingEnabled) { rules, mockingEnabled ->
                 updateState {
                     copy(
@@ -87,19 +91,9 @@ internal class MockRulesViewModel(
     private fun handleEditorEvent(event: MockRulesViewEvent.Editor) {
         when (event) {
             is MockRulesViewEvent.Editor.LoadRule -> loadRule(event.ruleId)
+            is MockRulesViewEvent.Editor.LoadFromTransaction -> loadFromTransaction(event.transactionId)
 
-            is MockRulesViewEvent.Editor.SaveRule -> viewModelScope.launch {
-                val rule = buildRule()
-                val existing = repository.getById(rule.id)
-                if (existing != null) {
-                    repository.update(rule)
-                } else {
-                    repository.insert(rule)
-                }
-                existingRule = null
-                updateState { copy(editor = EditorState()) }
-                emitEffect(MockRulesEffect.NavigateBack)
-            }
+            is MockRulesViewEvent.Editor.SaveRule -> saveRule()
 
             is MockRulesViewEvent.Editor.NameChanged ->
                 updateEditor { copy(name = event.value) }
@@ -112,7 +106,7 @@ internal class MockRulesViewModel(
             is MockRulesViewEvent.Editor.MethodDropdownExpandedChanged ->
                 updateEditor { copy(methodDropdownExpanded = event.expanded) }
             is MockRulesViewEvent.Editor.StatusCodeChanged ->
-                updateEditor { copy(statusCode = event.value.toIntOrNull() ?: statusCode) }
+                updateEditor { copy(statusCodeText = event.value.filter(Char::isDigit)) }
             is MockRulesViewEvent.Editor.StatusMessageChanged ->
                 updateEditor { copy(statusMessage = event.value) }
             is MockRulesViewEvent.Editor.ContentTypeChanged ->
@@ -147,7 +141,7 @@ internal class MockRulesViewModel(
                             urlPattern = rule.matcher.urlPattern,
                             matchType = rule.matcher.matchType,
                             method = rule.matcher.method.orEmpty(),
-                            statusCode = rule.response.statusCode,
+                            statusCodeText = rule.response.statusCode.toString(),
                             statusMessage = rule.response.statusMessage,
                             contentType = rule.response.contentType,
                             responseBody = rule.response.body.orEmpty(),
@@ -179,6 +173,65 @@ internal class MockRulesViewModel(
         }
     }
 
+    private fun loadFromTransaction(transactionId: String) {
+        existingRule = null
+        updateState { copy(editor = EditorState()) }
+        viewModelScope.launch {
+            val id = try {
+                UUID.fromString(transactionId)
+            } catch (_: IllegalArgumentException) {
+                null
+            }
+            val transaction = id?.let { queryEngine?.getDetails(it) }
+            if (transaction == null) {
+                updateState { copy(editor = EditorState(isLoaded = true)) }
+                emitEffect(MockRulesEffect.TransactionNotFound)
+                return@launch
+            }
+            val body = transaction.response?.bodyRef?.let { queryEngine?.getBodyBytes(it) }
+            val prefill = buildTransactionPrefill(transaction, body)
+            updateState { copy(editor = prefill.editor) }
+            if (prefill.bodyOmitted) emitEffect(MockRulesEffect.ResponseBodyOmitted)
+        }
+    }
+
+    private fun saveRule() {
+        val editor = uiState.value.editor
+        // Guards double taps: a second save would insert a duplicate and pop the back stack twice.
+        if (editor.isSaving || !editor.isValid) return
+        updateEditor { copy(isSaving = true) }
+        viewModelScope.launch {
+            try {
+                persistRule(buildRule())
+                existingRule = null
+                updateState { copy(editor = EditorState()) }
+                emitEffect(MockRulesEffect.NavigateBack)
+            } catch (e: SQLiteException) {
+                onSaveFailed(e)
+            } catch (e: CancellationException) {
+                // CancellationException is an IllegalStateException; it must not be reported as a save failure.
+                throw e
+            } catch (e: IllegalStateException) {
+                onSaveFailed(e)
+            } finally {
+                updateEditor { copy(isSaving = false) }
+            }
+        }
+    }
+
+    private suspend fun persistRule(rule: MockRule) {
+        if (repository.getById(rule.id) != null) {
+            repository.update(rule)
+        } else {
+            repository.insert(rule)
+        }
+    }
+
+    private fun onSaveFailed(error: Exception) {
+        Log.w(TAG, "Failed to save mock rule", error)
+        emitEffect(MockRulesEffect.SaveFailed)
+    }
+
     private fun updateEditor(reducer: EditorState.() -> EditorState) {
         updateState { copy(editor = editor.reducer()) }
     }
@@ -199,7 +252,7 @@ internal class MockRulesViewModel(
             method = s.method.takeIf { it.isNotBlank() },
         )
         val response = MockResponse(
-            statusCode = s.statusCode,
+            statusCode = s.statusCodeText.toInt(),
             statusMessage = s.statusMessage,
             contentType = s.contentType,
             body = s.responseBody.takeIf { it.isNotBlank() },
@@ -217,3 +270,5 @@ internal class MockRulesViewModel(
         )
     }
 }
+
+private const val TAG = "MockRulesViewModel"

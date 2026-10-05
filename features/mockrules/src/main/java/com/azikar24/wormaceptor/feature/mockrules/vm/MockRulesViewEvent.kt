@@ -18,6 +18,14 @@ sealed class MockRulesViewEvent {
 
     sealed class Editor : MockRulesViewEvent() {
         data class LoadRule(val ruleId: String?) : Editor()
+
+        /**
+         * Starts a new, unsaved rule pre-filled from a captured transaction.
+         *
+         * @property transactionId String form of the transaction UUID taken from the route.
+         */
+        data class LoadFromTransaction(val transactionId: String) : Editor()
+
         data object SaveRule : Editor()
 
         // Basic info

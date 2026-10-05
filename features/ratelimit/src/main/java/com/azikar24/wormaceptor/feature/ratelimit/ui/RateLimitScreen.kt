@@ -45,7 +45,6 @@ fun RateLimitScreen(
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val colors = WormaCeptorTokens.Colors.RateLimit.scheme()
     val haptic = LocalHapticFeedback.current
     val scrollState = rememberScrollState()
 
@@ -96,7 +95,6 @@ fun RateLimitScreen(
             EnableToggleCard(
                 enabled = state.config.enabled,
                 onToggle = { onEvent(RateLimitViewEvent.ToggleEnabled) },
-                colors = colors,
             )
 
             AnimatedVisibility(visible = state.config.enabled) {
@@ -106,7 +104,6 @@ fun RateLimitScreen(
                     // Statistics
                     StatisticsCard(
                         stats = state.stats,
-                        colors = colors,
                     )
 
                     // Network presets
@@ -116,7 +113,6 @@ fun RateLimitScreen(
                         formattedPresetUpload = state.formattedPresetUpload,
                         enabled = state.config.enabled,
                         onSelectPreset = { onEvent(RateLimitViewEvent.SelectPreset(it)) },
-                        colors = colors,
                     )
 
                     // Custom configuration
@@ -129,7 +125,6 @@ fun RateLimitScreen(
                         onChangeUploadSpeed = { onEvent(RateLimitViewEvent.SetUploadSpeed(it)) },
                         onChangeLatency = { onEvent(RateLimitViewEvent.SetLatency(it)) },
                         onChangePacketLoss = { onEvent(RateLimitViewEvent.SetPacketLoss(it)) },
-                        colors = colors,
                     )
                 }
             }

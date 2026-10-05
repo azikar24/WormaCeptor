@@ -32,7 +32,7 @@ internal fun MemorySection(
     WormaCeptorInfoCard(
         title = stringResource(R.string.deviceinfo_section_memory),
         icon = Icons.Default.Memory,
-        iconTint = WormaCeptorTokens.Colors.Status.amber,
+        iconTint = WormaCeptorTokens.semantic().textSecondary,
         onAction = onCopy,
         actionContentDescription = stringResource(
             R.string.deviceinfo_copy_section,

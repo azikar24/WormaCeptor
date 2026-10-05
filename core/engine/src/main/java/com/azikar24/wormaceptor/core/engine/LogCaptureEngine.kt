@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,6 +36,8 @@ class LogCaptureEngine(
 ) {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var captureJob: Job? = null
+
+    @Volatile
     private var process: Process? = null
 
     private val idGenerator = AtomicLong(0)
@@ -102,7 +105,9 @@ class LogCaptureEngine(
      */
     fun getCurrentPid(): Int = currentPid
 
-    private fun captureLogcat() {
+    private suspend fun captureLogcat() {
+        // Owned by this coroutine only, so a stale capture can't destroy a newer one's process
+        var logcatProcess: Process? = null
         try {
             // Clear logcat before starting to avoid old logs
             Runtime.getRuntime().exec("logcat -c").waitFor()
@@ -110,27 +115,29 @@ class LogCaptureEngine(
             // Start logcat with threadtime format
             val processBuilder = ProcessBuilder("logcat", "-v", "threadtime")
             processBuilder.redirectErrorStream(true)
-            val logcatProcess = processBuilder.start()
-            process = logcatProcess
+            val startedProcess = processBuilder.start()
+            logcatProcess = startedProcess
+            // Stopped while starting: don't publish over a newer capture's process
+            if (!currentCoroutineContext().isActive) return
+            process = startedProcess
 
-            val reader = BufferedReader(InputStreamReader(logcatProcess.inputStream))
-            var line: String?
+            val reader = BufferedReader(InputStreamReader(startedProcess.inputStream))
 
-            while (scope.isActive && _isCapturing.value) {
-                line = reader.readLine()
-                if (line != null) {
-                    parseLine(line)?.let { entry ->
-                        if (entry.pid == currentPid && !isNoise(entry)) {
-                            addEntry(entry)
-                        }
+            while (currentCoroutineContext().isActive) {
+                val line = reader.readLine() ?: break
+                parseLine(line)?.let { entry ->
+                    if (entry.pid == currentPid && !isNoise(entry)) {
+                        addEntry(entry)
                     }
                 }
             }
         } catch (e: Exception) {
             Log.w(TAG, "Log capture stopped or error occurred", e)
         } finally {
-            process?.destroy()
-            process = null
+            logcatProcess?.destroy()
+            if (process === logcatProcess) process = null
+            // Ended on its own (EOF or error) rather than via stop(): allow start() again
+            if (currentCoroutineContext().isActive) _isCapturing.value = false
         }
     }
 

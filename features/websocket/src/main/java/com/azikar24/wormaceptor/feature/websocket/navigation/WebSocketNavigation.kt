@@ -70,7 +70,6 @@ private fun WebSocketConnectionsDestination(
         WebSocketListScreen(
             state = state,
             onEvent = onEvent,
-            getMessageCount = viewModel::getMessageCountForConnection,
             onConnectionClick = { connection -> onEvent(WebSocketViewEvent.ConnectionSelected(connection.id)) },
             onBack = onNavigateBack,
         )

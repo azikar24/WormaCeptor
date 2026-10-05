@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
 import android.os.Build
 import android.os.ParcelFileDescriptor
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
@@ -61,9 +62,10 @@ import com.azikar24.wormaceptor.feature.filebrowser.ui.util.highlightJson
 import com.azikar24.wormaceptor.feature.filebrowser.ui.util.highlightXml
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewEvent
 import com.azikar24.wormaceptor.feature.filebrowser.vm.FileBrowserViewState
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
@@ -385,8 +387,10 @@ private fun PdfFileContent(content: FileContent.Pdf) {
     DisposableEffect(pdfState) {
         onDispose {
             if (pdfState is PdfState.Ready) {
-                pdfState.renderer.close()
-                pdfState.fileDescriptor.close()
+                // Composition scopes are already cancelled here; close on a standalone scope once
+                // any in-flight page render releases the lock.
+                @Suppress("InjectDispatcher")
+                CoroutineScope(Dispatchers.IO + closeExceptionHandler).launch { pdfState.close() }
             }
         }
     }
@@ -414,7 +418,7 @@ private fun PdfFileContent(content: FileContent.Pdf) {
                     verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.md),
                 ) {
                     items(pdfState.renderer.pageCount) { index ->
-                        PdfPageCard(pdfState.renderer, pdfState.mutex, index)
+                        PdfPageCard(pdfState, index)
                     }
                     item {
                         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
@@ -430,25 +434,17 @@ private fun PdfFileContent(content: FileContent.Pdf) {
 
 @Composable
 private fun PdfPageCard(
-    renderer: PdfRenderer,
-    mutex: Mutex,
+    pdfState: PdfState.Ready,
     pageIndex: Int,
 ) {
     val pageNumber = pageIndex + 1
 
     @Suppress("InjectDispatcher")
-    val bitmap by produceState<Bitmap?>(initialValue = null, pageIndex) {
-        value = withContext(Dispatchers.IO) {
-            mutex.withLock {
-                val page = renderer.openPage(pageIndex)
-                val scale = 2f
-                val bmp = createBitmap((page.width * scale).toInt(), (page.height * scale).toInt())
-                bmp.eraseColor(android.graphics.Color.WHITE)
-                page.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-                page.close()
-                bmp
-            }
+    val render by produceState<PageRender>(initialValue = PageRender.Loading, pageIndex) {
+        val bitmap = withContext(Dispatchers.IO) {
+            pdfState.withRenderer { renderer -> renderPdfPage(renderer, pageIndex) }
         }
+        value = bitmap?.let(PageRender::Ready) ?: PageRender.Failed
     }
 
     WormaCeptorCard(
@@ -465,26 +461,73 @@ private fun PdfPageCard(
                 color = WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.padding(bottom = WormaCeptorTokens.Spacing.xs),
             )
-            val currentBitmap = bitmap
-            if (currentBitmap != null) {
-                Image(
-                    bitmap = currentBitmap.asImageBitmap(),
+            when (val current = render) {
+                is PageRender.Ready -> Image(
+                    bitmap = current.bitmap.asImageBitmap(),
                     contentDescription = stringResource(R.string.filebrowser_pdf_page, pageNumber),
                     modifier = Modifier.fillMaxWidth(),
                 )
-            } else {
-                Box(
+                PageRender.Loading, PageRender.Failed -> Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(WormaCeptorTokens.ComponentSize.textAreaHeight),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
-                    )
+                    if (current == PageRender.Loading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Warning,
+                            contentDescription = stringResource(R.string.filebrowser_pdf_page_failed, pageNumber),
+                            tint = WormaCeptorTokens.semantic().textSecondary,
+                            modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
+                        )
+                    }
                 }
             }
         }
+    }
+}
+
+private sealed interface PageRender {
+    data object Loading : PageRender
+
+    data class Ready(val bitmap: Bitmap) : PageRender
+
+    data object Failed : PageRender
+}
+
+// A corrupt page or zero-size page box makes openPage/createBitmap/render throw; the page then
+// stays on its placeholder instead of crashing the host app.
+private fun renderPdfPage(
+    renderer: PdfRenderer,
+    pageIndex: Int,
+): Bitmap? {
+    val page = try {
+        renderer.openPage(pageIndex)
+    } catch (e: IllegalStateException) {
+        Log.w(TAG, "Failed to open PDF page $pageIndex", e)
+        return null
+    } catch (e: IllegalArgumentException) {
+        Log.w(TAG, "Failed to open PDF page $pageIndex", e)
+        return null
+    }
+    return try {
+        val scale = 2f
+        val bmp = createBitmap((page.width * scale).toInt(), (page.height * scale).toInt())
+        bmp.eraseColor(android.graphics.Color.WHITE)
+        page.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+        bmp
+    } catch (e: IllegalStateException) {
+        Log.w(TAG, "Failed to render PDF page $pageIndex", e)
+        null
+    } catch (e: IllegalArgumentException) {
+        Log.w(TAG, "Failed to render PDF page $pageIndex", e)
+        null
+    } finally {
+        page.close()
     }
 }
 
@@ -500,4 +543,10 @@ private fun ErrorContent(message: String) {
             color = WormaCeptorTokens.semantic().error,
         )
     }
+}
+
+private const val TAG = "FileViewerScreen"
+
+private val closeExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+    Log.w(TAG, "Failed to close PDF renderer", throwable)
 }

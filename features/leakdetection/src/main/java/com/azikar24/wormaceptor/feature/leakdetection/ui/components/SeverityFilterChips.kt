@@ -25,12 +25,6 @@ internal fun SeverityFilterChips(
             onClick = { onSelectSeverity(null) },
         )
         LeakInfo.LeakSeverity.entries.forEach { severity ->
-            val color = when (severity) {
-                LeakInfo.LeakSeverity.CRITICAL -> WormaCeptorTokens.Colors.LeakDetection.critical
-                LeakInfo.LeakSeverity.HIGH -> WormaCeptorTokens.Colors.LeakDetection.high
-                LeakInfo.LeakSeverity.MEDIUM -> WormaCeptorTokens.Colors.LeakDetection.medium
-                LeakInfo.LeakSeverity.LOW -> WormaCeptorTokens.Colors.LeakDetection.low
-            }
             val label = when (severity) {
                 LeakInfo.LeakSeverity.CRITICAL -> stringResource(R.string.leakdetection_severity_critical)
                 LeakInfo.LeakSeverity.HIGH -> stringResource(R.string.leakdetection_severity_high)
@@ -42,7 +36,6 @@ internal fun SeverityFilterChips(
                 label = label,
                 selected = isSelected,
                 onClick = { onSelectSeverity(if (isSelected) null else severity) },
-                accentColor = color,
             )
         }
     }

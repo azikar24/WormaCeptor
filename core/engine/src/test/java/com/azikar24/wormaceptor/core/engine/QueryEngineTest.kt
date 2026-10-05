@@ -6,6 +6,7 @@ import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.entities.Crash
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.Request
+import com.azikar24.wormaceptor.domain.entities.Response
 import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import io.kotest.matchers.shouldBe
@@ -16,6 +17,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -234,6 +236,21 @@ class QueryEngineTest {
 
             coVerify { repository.clearAll() }
         }
+
+        @Test
+        fun `should delete request and response blobs of all transactions`() = runTest {
+            coEvery { repository.getAllTransactionsAsList() } returns listOf(
+                createTransactionWithBlobs(requestBlob = "req-1", responseBlob = "res-1"),
+                createTransactionWithBlobs(requestBlob = null, responseBlob = "res-2"),
+            )
+
+            engine.clear()
+
+            coVerify { blobStorage.deleteBlob("req-1") }
+            coVerify { blobStorage.deleteBlob("res-1") }
+            coVerify { blobStorage.deleteBlob("res-2") }
+            coVerify(exactly = 3) { blobStorage.deleteBlob(any()) }
+        }
     }
 
     @Nested
@@ -284,7 +301,75 @@ class QueryEngineTest {
 
             coVerify { repository.deleteTransactions(ids) }
         }
+
+        @Test
+        fun `should delete blobs of only the given transactions`() = runTest {
+            val deleted = createTransactionWithBlobs(requestBlob = "req-1", responseBlob = "res-1")
+            coEvery { repository.getTransactionById(deleted.id) } returns deleted
+
+            engine.deleteTransactions(listOf(deleted.id))
+
+            coVerify { blobStorage.deleteBlob("req-1") }
+            coVerify { blobStorage.deleteBlob("res-1") }
+            coVerify(exactly = 2) { blobStorage.deleteBlob(any()) }
+        }
+
+        @Test
+        fun `should skip blob deletion for unknown ids`() = runTest {
+            val id = UUID.randomUUID()
+            coEvery { repository.getTransactionById(id) } returns null
+
+            engine.deleteTransactions(listOf(id))
+
+            coVerify { repository.deleteTransactions(listOf(id)) }
+            coVerify(exactly = 0) { blobStorage.deleteBlob(any()) }
+        }
     }
+
+    @Nested
+    inner class ObserveDetails {
+
+        @Test
+        fun `should re-emit details when the transaction changes`() = runTest {
+            val id = UUID.randomUUID()
+            val inFlightTx = createTransactionWithBlobs(requestBlob = null, responseBlob = null)
+            val completedTx = createTransactionWithBlobs(requestBlob = null, responseBlob = "res-1")
+            every { repository.observeTransaction(id) } returns flowOf(inFlightTx, completedTx)
+
+            val result = engine.observeDetails(id).toList()
+
+            result shouldBe listOf(inFlightTx, completedTx)
+        }
+
+        @Test
+        fun `should not re-emit when the transaction is unchanged`() = runTest {
+            val id = UUID.randomUUID()
+            val tx = createTransactionWithBlobs(requestBlob = null, responseBlob = null)
+            every { repository.observeTransaction(id) } returns flowOf(tx, tx)
+
+            val result = engine.observeDetails(id).toList()
+
+            result shouldBe listOf(tx)
+        }
+
+        @Test
+        fun `should emit null when the transaction is missing`() = runTest {
+            val id = UUID.randomUUID()
+            every { repository.observeTransaction(id) } returns flowOf(null)
+
+            val result = engine.observeDetails(id).toList()
+
+            result shouldBe listOf(null)
+        }
+    }
+
+    private fun createTransactionWithBlobs(
+        requestBlob: String?,
+        responseBlob: String?,
+    ) = NetworkTransaction(
+        request = Request("https://example.com", "POST", emptyMap(), requestBlob),
+        response = Response(200, "OK", emptyMap(), responseBlob, null, null, null),
+    )
 
     private fun createTransactionSummary(
         id: UUID = UUID.randomUUID(),

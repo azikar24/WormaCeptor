@@ -348,7 +348,7 @@ private fun BooleanValueInput(
                     fontWeight = FontWeight.Medium,
                 ),
                 color = if (value) {
-                    WormaCeptorTokens.Colors.Preferences.typeScheme().boolean
+                    WormaCeptorTokens.semantic().textPrimary
                 } else {
                     WormaCeptorTokens.semantic().textSecondary
                 },

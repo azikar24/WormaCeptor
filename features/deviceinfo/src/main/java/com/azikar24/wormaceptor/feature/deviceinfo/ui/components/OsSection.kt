@@ -18,7 +18,7 @@ internal fun OsSection(
     WormaCeptorInfoCard(
         title = stringResource(R.string.deviceinfo_section_os),
         icon = Icons.Default.SystemUpdate,
-        iconTint = WormaCeptorTokens.Colors.Status.green,
+        iconTint = WormaCeptorTokens.semantic().textSecondary,
         onAction = onCopy,
         actionContentDescription = stringResource(
             R.string.deviceinfo_copy_section,

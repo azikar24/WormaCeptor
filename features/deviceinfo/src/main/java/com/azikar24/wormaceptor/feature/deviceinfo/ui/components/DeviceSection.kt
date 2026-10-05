@@ -21,7 +21,7 @@ internal fun DeviceSection(
     WormaCeptorInfoCard(
         title = sectionTitle,
         icon = Icons.Default.PhoneAndroid,
-        iconTint = WormaCeptorTokens.semantic().accent,
+        iconTint = WormaCeptorTokens.semantic().textSecondary,
         onAction = onCopy,
         actionContentDescription = stringResource(R.string.deviceinfo_copy_section, sectionTitle),
     ) {

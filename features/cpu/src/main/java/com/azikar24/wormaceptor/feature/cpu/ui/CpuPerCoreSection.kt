@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -70,7 +69,6 @@ internal fun PerCoreUsageCard(
                     CoreUsageBar(
                         coreIndex = index,
                         usage = usage,
-                        color = WormaCeptorTokens.Colors.Cpu.forCore(index),
                     )
                 }
             }
@@ -82,7 +80,6 @@ internal fun PerCoreUsageCard(
 private fun CoreUsageBar(
     coreIndex: Int,
     usage: Float,
-    color: Color,
     modifier: Modifier = Modifier,
 ) {
     val animatedProgress by animateFloatAsState(
@@ -109,7 +106,7 @@ private fun CoreUsageBar(
                 .weight(1f)
                 .height(WormaCeptorTokens.Spacing.sm)
                 .clip(WormaCeptorTokens.Shapes.chip),
-            color = color,
+            color = MaterialTheme.colorScheme.primary,
             trackColor = WormaCeptorTokens.semantic().surfaceVariant,
         )
 

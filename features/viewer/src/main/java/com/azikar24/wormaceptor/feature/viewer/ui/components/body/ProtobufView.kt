@@ -40,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -47,7 +48,6 @@ import com.azikar24.wormaceptor.domain.contracts.ProtobufDecoder
 import com.azikar24.wormaceptor.domain.entities.ProtobufDecodeResult
 import com.azikar24.wormaceptor.domain.entities.ProtobufField
 import com.azikar24.wormaceptor.feature.viewer.R
-import org.koin.java.KoinJavaComponent.get
 
 /**
  * Composable that decodes and displays protobuf wire format data without a schema.
@@ -62,7 +62,7 @@ fun ProtobufView(
 ) {
     val decodeResult = remember(data) {
         try {
-            val decoder: ProtobufDecoder = get(ProtobufDecoder::class.java)
+            val decoder: ProtobufDecoder = WormaCeptorKoin.get(ProtobufDecoder::class.java)
             decoder.decode(data)
         } catch (_: RuntimeException) {
             ProtobufDecodeResult.Failure("Decoder not available")

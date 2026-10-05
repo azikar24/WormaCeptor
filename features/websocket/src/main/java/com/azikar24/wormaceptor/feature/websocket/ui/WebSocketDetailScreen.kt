@@ -44,6 +44,7 @@ import com.azikar24.wormaceptor.feature.websocket.ui.components.StatsBar
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewEvent
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewState
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -224,7 +225,7 @@ private fun WebSocketDetailScreenPreview() {
                     ),
                 ),
                 totalMessageCount = 2,
-                directionCounts = mapOf(
+                directionCounts = persistentMapOf(
                     WebSocketMessageDirection.SENT to 1,
                     WebSocketMessageDirection.RECEIVED to 1,
                 ),

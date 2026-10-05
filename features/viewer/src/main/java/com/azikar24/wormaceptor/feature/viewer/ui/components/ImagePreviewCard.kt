@@ -54,6 +54,7 @@ import coil.compose.AsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
@@ -66,7 +67,6 @@ import com.azikar24.wormaceptor.domain.entities.ImageMetadata
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.koin.java.KoinJavaComponent.get
 
 /**
  * Checks if the given content type string indicates an image.
@@ -84,7 +84,7 @@ fun isImageContentType(contentType: String?): Boolean {
 fun isImageData(data: ByteArray?): Boolean {
     if (data == null || data.size < 4) return false
     return try {
-        val extractor: ImageMetadataExtractor = get(ImageMetadataExtractor::class.java)
+        val extractor: ImageMetadataExtractor = WormaCeptorKoin.get(ImageMetadataExtractor::class.java)
         extractor.isImageData(data)
     } catch (_: Exception) {
         false
@@ -138,7 +138,7 @@ fun ImagePreviewCard(
         isLoadingMetadata = true
         metadata = withContext(Dispatchers.Default) {
             try {
-                val extractor: ImageMetadataExtractor = get(ImageMetadataExtractor::class.java)
+                val extractor: ImageMetadataExtractor = WormaCeptorKoin.get(ImageMetadataExtractor::class.java)
                 val extracted = extractor.extractMetadata(imageData)
                 if (extracted.width > 0 && extracted.height > 0) extracted else null
             } catch (_: Exception) {

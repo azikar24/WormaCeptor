@@ -35,11 +35,7 @@ internal fun HistoryItem(
     onRemove: () -> Unit,
 ) {
     val haptic = LocalHapticFeedback.current
-    val accentColor = when {
-        !result.success -> WormaCeptorTokens.semantic().error
-        result.operation == CryptoOperation.ENCRYPT -> WormaCeptorTokens.Colors.Crypto.encrypt
-        else -> WormaCeptorTokens.Colors.Crypto.decrypt
-    }
+    val accentColor = if (result.success) null else WormaCeptorTokens.semantic().error
     val dateFormat = remember { SimpleDateFormat("HH:mm:ss", Locale.getDefault()) }
     val successText = stringResource(R.string.crypto_success)
     val failedText = stringResource(R.string.crypto_failed)
@@ -61,7 +57,7 @@ internal fun HistoryItem(
                     Icons.Default.LockOpen
                 },
                 contentDescription = null,
-                tint = accentColor,
+                tint = accentColor ?: WormaCeptorTokens.semantic().textSecondary,
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
             )
         },

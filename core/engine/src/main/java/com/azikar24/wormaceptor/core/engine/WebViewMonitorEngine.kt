@@ -3,6 +3,12 @@ package com.azikar24.wormaceptor.core.engine
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Build
+import android.os.Message
+import android.view.KeyEvent
+import android.webkit.ClientCertRequest
+import android.webkit.HttpAuthHandler
+import android.webkit.RenderProcessGoneDetail
+import android.webkit.SafeBrowsingResponse
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -354,7 +360,10 @@ class WebViewMonitorEngine(
 
     /**
      * Internal WebViewClient that monitors requests.
+     * Every callback is forwarded to [delegate], falling back to the platform default when there is
+     * none, so wrapping never changes how the host's WebView behaves.
      */
+    @Suppress("TooManyFunctions")
     private inner class MonitoringWebViewClient(
         private val webViewId: String,
         private val delegate: WebViewClient?,
@@ -379,11 +388,7 @@ class WebViewMonitorEngine(
                     webViewId = webViewId,
                     resourceType = resourceType,
                     isForMainFrame = request.isForMainFrame,
-                    hasGesture = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        request.isRedirect
-                    } else {
-                        false
-                    },
+                    hasGesture = request.hasGesture(),
                     isRedirect = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         request.isRedirect
                     } else {
@@ -558,7 +563,12 @@ class WebViewMonitorEngine(
                 }
             }
 
-            delegate?.onReceivedSslError(view, handler, error)
+            // Without a delegate the platform default cancels; doing nothing would hang the load
+            if (delegate != null) {
+                delegate.onReceivedSslError(view, handler, error)
+            } else {
+                super.onReceivedSslError(view, handler, error)
+            }
         }
 
         @RequiresApi(Build.VERSION_CODES.N)
@@ -577,6 +587,121 @@ class WebViewMonitorEngine(
         ): Boolean {
             @Suppress("DEPRECATION")
             return delegate?.shouldOverrideUrlLoading(view, url) ?: false
+        }
+
+        override fun onLoadResource(
+            view: WebView?,
+            url: String?,
+        ) {
+            delegate?.onLoadResource(view, url) ?: super.onLoadResource(view, url)
+        }
+
+        override fun onPageCommitVisible(
+            view: WebView?,
+            url: String?,
+        ) {
+            delegate?.onPageCommitVisible(view, url) ?: super.onPageCommitVisible(view, url)
+        }
+
+        @Deprecated("Deprecated in Java")
+        @Suppress("DEPRECATION")
+        override fun onTooManyRedirects(
+            view: WebView?,
+            cancelMsg: Message?,
+            continueMsg: Message?,
+        ) {
+            if (delegate != null) {
+                delegate.onTooManyRedirects(view, cancelMsg, continueMsg)
+            } else {
+                super.onTooManyRedirects(view, cancelMsg, continueMsg)
+            }
+        }
+
+        override fun onFormResubmission(
+            view: WebView?,
+            dontResend: Message?,
+            resend: Message?,
+        ) {
+            if (delegate != null) {
+                delegate.onFormResubmission(view, dontResend, resend)
+            } else {
+                super.onFormResubmission(view, dontResend, resend)
+            }
+        }
+
+        override fun doUpdateVisitedHistory(
+            view: WebView?,
+            url: String?,
+            isReload: Boolean,
+        ) {
+            delegate?.doUpdateVisitedHistory(view, url, isReload)
+                ?: super.doUpdateVisitedHistory(view, url, isReload)
+        }
+
+        override fun onReceivedClientCertRequest(
+            view: WebView?,
+            request: ClientCertRequest?,
+        ) {
+            delegate?.onReceivedClientCertRequest(view, request)
+                ?: super.onReceivedClientCertRequest(view, request)
+        }
+
+        override fun onReceivedHttpAuthRequest(
+            view: WebView?,
+            handler: HttpAuthHandler?,
+            host: String?,
+            realm: String?,
+        ) {
+            delegate?.onReceivedHttpAuthRequest(view, handler, host, realm)
+                ?: super.onReceivedHttpAuthRequest(view, handler, host, realm)
+        }
+
+        override fun shouldOverrideKeyEvent(
+            view: WebView?,
+            event: KeyEvent?,
+        ): Boolean = delegate?.shouldOverrideKeyEvent(view, event) ?: super.shouldOverrideKeyEvent(view, event)
+
+        override fun onUnhandledKeyEvent(
+            view: WebView?,
+            event: KeyEvent?,
+        ) {
+            delegate?.onUnhandledKeyEvent(view, event) ?: super.onUnhandledKeyEvent(view, event)
+        }
+
+        override fun onScaleChanged(
+            view: WebView?,
+            oldScale: Float,
+            newScale: Float,
+        ) {
+            delegate?.onScaleChanged(view, oldScale, newScale) ?: super.onScaleChanged(view, oldScale, newScale)
+        }
+
+        override fun onReceivedLoginRequest(
+            view: WebView?,
+            realm: String?,
+            account: String?,
+            args: String?,
+        ) {
+            delegate?.onReceivedLoginRequest(view, realm, account, args)
+                ?: super.onReceivedLoginRequest(view, realm, account, args)
+        }
+
+        // Returning true here keeps the app process alive after a renderer crash; the host decides
+        @RequiresApi(Build.VERSION_CODES.O)
+        override fun onRenderProcessGone(
+            view: WebView?,
+            detail: RenderProcessGoneDetail?,
+        ): Boolean = delegate?.onRenderProcessGone(view, detail) ?: super.onRenderProcessGone(view, detail)
+
+        @RequiresApi(Build.VERSION_CODES.O_MR1)
+        override fun onSafeBrowsingHit(
+            view: WebView?,
+            request: WebResourceRequest?,
+            threatType: Int,
+            callback: SafeBrowsingResponse?,
+        ) {
+            delegate?.onSafeBrowsingHit(view, request, threatType, callback)
+                ?: super.onSafeBrowsingHit(view, request, threatType, callback)
         }
 
         private fun inferResourceType(request: WebResourceRequest): WebViewResourceType {

@@ -22,8 +22,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -35,6 +41,7 @@ import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
+import com.azikar24.wormaceptor.domain.entities.NotificationTemplate
 import com.azikar24.wormaceptor.feature.pushsimulator.R
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewEffect
 import com.azikar24.wormaceptor.feature.pushsimulator.vm.PushSimulatorViewEvent
@@ -52,16 +59,11 @@ fun PushSimulatorScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-    ) { isGranted ->
-        if (isGranted) {
-            viewModel.sendEvent(PushSimulatorViewEvent.SendNotification)
-        } else {
-            val message = context.getString(R.string.pushsimulator_notification_permission_denied)
-            scope.launch { snackBarHostState.showSnackbar(message) }
-        }
-    }
+    // Saveable so a grant after rotating during the permission dialog still sends
+    var pendingSend by rememberSaveable(stateSaver = PendingSendSaver) { mutableStateOf<PendingSend?>(null) }
+
+    // Granted but not yet sent: after process death the grant can arrive before templates reload
+    var grantedSend by rememberSaveable(stateSaver = PendingSendSaver) { mutableStateOf<PendingSend?>(null) }
 
     val notificationSentMessage = stringResource(R.string.pushsimulator_notification_sent)
     val templateSavedMessage = stringResource(R.string.pushsimulator_template_saved)
@@ -93,29 +95,76 @@ fun PushSimulatorScreen(
             }
         },
     ) { state, onEvent ->
+        val permissionLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestPermission(),
+        ) { isGranted ->
+            val pending = pendingSend
+            pendingSend = null
+            if (isGranted) {
+                grantedSend = pending
+            } else {
+                val message = context.getString(R.string.pushsimulator_notification_permission_denied)
+                scope.launch { snackBarHostState.showSnackbar(message) }
+            }
+        }
+        LaunchedEffect(grantedSend, state.templates) {
+            val event = grantedSend?.toEvent(state.templates) ?: return@LaunchedEffect
+            grantedSend = null
+            onEvent(event)
+        }
+        val sendWithPermission: (PendingSend) -> Unit = { pending ->
+            val permission = Manifest.permission.POST_NOTIFICATIONS
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED
+            ) {
+                pendingSend = pending
+                permissionLauncher.launch(permission)
+            } else {
+                pending.toEvent(state.templates)?.let(onEvent)
+            }
+        }
         PushSimulatorScreenContent(
             state = state,
             onEvent = onEvent,
             onBack = onBack,
             snackBarHostState = snackBarHostState,
-            onSendClick = {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    val permission = Manifest.permission.POST_NOTIFICATIONS
-                    if (ContextCompat.checkSelfPermission(context, permission) ==
-                        PackageManager.PERMISSION_GRANTED
-                    ) {
-                        onEvent(PushSimulatorViewEvent.SendNotification)
-                    } else {
-                        permissionLauncher.launch(permission)
-                    }
-                } else {
-                    onEvent(PushSimulatorViewEvent.SendNotification)
-                }
-            },
+            onSendClick = { sendWithPermission(PendingSend.Form) },
+            onSendTemplate = { sendWithPermission(PendingSend.Template(it.id)) },
             modifier = modifier,
         )
     }
 }
+
+private sealed interface PendingSend {
+    data object Form : PendingSend
+
+    data class Template(val id: String) : PendingSend
+
+    fun toEvent(templates: List<NotificationTemplate>): PushSimulatorViewEvent? = when (this) {
+        Form -> PushSimulatorViewEvent.SendNotification
+        is Template -> templates.firstOrNull { it.id == id }?.let(PushSimulatorViewEvent::SendFromTemplate)
+    }
+}
+
+private const val PendingFormKey = "form"
+private const val PendingTemplatePrefix = "template:"
+
+private val PendingSendSaver = Saver<PendingSend?, String>(
+    save = { pending ->
+        when (pending) {
+            PendingSend.Form -> PendingFormKey
+            is PendingSend.Template -> PendingTemplatePrefix + pending.id
+            null -> null
+        }
+    },
+    restore = { saved ->
+        if (saved == PendingFormKey) {
+            PendingSend.Form
+        } else {
+            PendingSend.Template(saved.removePrefix(PendingTemplatePrefix))
+        }
+    },
+)
 
 @Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -127,6 +176,7 @@ internal fun PushSimulatorScreenContent(
     modifier: Modifier = Modifier,
     snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onSendClick: () -> Unit = { onEvent(PushSimulatorViewEvent.SendNotification) },
+    onSendTemplate: (NotificationTemplate) -> Unit = { onEvent(PushSimulatorViewEvent.SendFromTemplate(it)) },
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(0),
@@ -167,7 +217,7 @@ internal fun PushSimulatorScreenContent(
                 TemplatesRow(
                     templates = state.templates,
                     onLoad = { onEvent(PushSimulatorViewEvent.LoadTemplate(it)) },
-                    onSend = { onEvent(PushSimulatorViewEvent.SendFromTemplate(it)) },
+                    onSend = onSendTemplate,
                     onDelete = { onEvent(PushSimulatorViewEvent.DeleteTemplate(it.id)) },
                 )
             }

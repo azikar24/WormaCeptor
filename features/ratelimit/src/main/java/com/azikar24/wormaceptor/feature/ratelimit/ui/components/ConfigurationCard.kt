@@ -14,12 +14,10 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
@@ -29,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.feature.ratelimit.R
 
@@ -44,7 +41,6 @@ internal fun ConfigurationCard(
     onChangeUploadSpeed: (Long) -> Unit,
     onChangeLatency: (Long) -> Unit,
     onChangePacketLoss: (Float) -> Unit,
-    colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
     WormaCeptorCard(
@@ -59,7 +55,7 @@ internal fun ConfigurationCard(
                 text = stringResource(R.string.ratelimit_config_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = colors.labelPrimary,
+                color = WormaCeptorTokens.semantic().textPrimary,
                 modifier = Modifier.semantics { heading() },
             )
 
@@ -72,9 +68,7 @@ internal fun ConfigurationCard(
                 minValue = 1f,
                 maxValue = 100_000f,
                 enabled = enabled,
-                color = colors.download,
                 onValueChange = { onChangeDownloadSpeed(it.toLong()) },
-                colors = colors,
             )
 
             // Upload speed slider
@@ -86,9 +80,7 @@ internal fun ConfigurationCard(
                 minValue = 1f,
                 maxValue = 100_000f,
                 enabled = enabled,
-                color = colors.upload,
                 onValueChange = { onChangeUploadSpeed(it.toLong()) },
-                colors = colors,
             )
 
             // Latency slider
@@ -100,9 +92,7 @@ internal fun ConfigurationCard(
                 minValue = 0f,
                 maxValue = 5000f,
                 enabled = enabled,
-                color = colors.latency,
                 onValueChange = { onChangeLatency(it.toLong()) },
-                colors = colors,
             )
 
             // Packet loss slider
@@ -114,9 +104,7 @@ internal fun ConfigurationCard(
                 minValue = 0f,
                 maxValue = 100f,
                 enabled = enabled,
-                color = colors.packetLoss,
                 onValueChange = { onChangePacketLoss(it) },
-                colors = colors,
             )
         }
     }
@@ -132,11 +120,14 @@ private fun ConfigSlider(
     minValue: Float,
     maxValue: Float,
     enabled: Boolean,
-    color: Color,
     onValueChange: (Float) -> Unit,
-    colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
+    val labelColor = if (enabled) {
+        WormaCeptorTokens.semantic().textPrimary
+    } else {
+        WormaCeptorTokens.semantic().textSecondary
+    }
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.xs),
@@ -153,13 +144,13 @@ private fun ConfigSlider(
                 Icon(
                     imageVector = icon,
                     contentDescription = label,
-                    tint = if (enabled) color else colors.disabled,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 )
                 Text(
                     text = label,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (enabled) colors.labelPrimary else colors.labelSecondary,
+                    color = labelColor,
                 )
             }
             Text(
@@ -167,7 +158,7 @@ private fun ConfigSlider(
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = FontFamily.Monospace,
-                color = if (enabled) color else colors.disabled,
+                color = labelColor,
             )
         }
 
@@ -176,14 +167,6 @@ private fun ConfigSlider(
             onValueChange = onValueChange,
             valueRange = minValue..maxValue,
             enabled = enabled,
-            colors = SliderDefaults.colors(
-                thumbColor = color,
-                activeTrackColor = color,
-                inactiveTrackColor = colors.sliderTrack,
-                disabledThumbColor = colors.disabled,
-                disabledActiveTrackColor = colors.disabled,
-                disabledInactiveTrackColor = colors.sliderTrack,
-            ),
         )
     }
 }

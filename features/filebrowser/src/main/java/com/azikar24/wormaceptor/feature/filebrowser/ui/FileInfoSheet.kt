@@ -15,6 +15,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
+import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorAlertDialog
 import com.azikar24.wormaceptor.core.ui.components.dialog.WormaCeptorBottomSheet
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -49,6 +54,24 @@ fun FileInfoSheet(
             onEvent = onEvent,
         )
     }
+}
+
+@Composable
+private fun DeleteFileConfirmDialog(
+    fileName: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    WormaCeptorAlertDialog(
+        title = stringResource(R.string.filebrowser_delete_confirm_title),
+        message = stringResource(R.string.filebrowser_delete_confirm_message, fileName),
+        confirmLabel = stringResource(R.string.filebrowser_delete),
+        onConfirm = onConfirm,
+        dismissLabel = stringResource(R.string.filebrowser_cancel),
+        onDismiss = onDismiss,
+        icon = Icons.Default.Delete,
+        destructive = true,
+    )
 }
 
 @Composable
@@ -105,14 +128,23 @@ private fun FileInfoSheetContent(
         WormaCeptorDivider()
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.lg))
 
+        var showDeleteConfirmation by remember { mutableStateOf(false) }
         ActionButtons(
             isWritable = fileInfo.isWritable,
             onDismiss = { onEvent(FileBrowserViewEvent.HideFileInfo) },
-            onDelete = {
-                onEvent(FileBrowserViewEvent.DeleteFile(fileInfo.path))
-                onEvent(FileBrowserViewEvent.HideFileInfo)
-            },
+            onDelete = { showDeleteConfirmation = true },
         )
+        if (showDeleteConfirmation) {
+            DeleteFileConfirmDialog(
+                fileName = fileInfo.name,
+                onConfirm = {
+                    showDeleteConfirmation = false
+                    onEvent(FileBrowserViewEvent.DeleteFile(fileInfo.path))
+                    onEvent(FileBrowserViewEvent.HideFileInfo)
+                },
+                onDismiss = { showDeleteConfirmation = false },
+            )
+        }
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
     }

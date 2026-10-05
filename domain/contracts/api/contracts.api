@@ -8,6 +8,7 @@ public abstract class com/azikar24/wormaceptor/domain/contracts/BaseBodyParser :
 
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/BlobStorage {
 	public abstract fun deleteBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun deleteUnreferenced (Ljava/util/Set;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun readBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun saveBlob (Ljava/io/InputStream;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -274,11 +275,13 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Transa
 	public abstract fun clearAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun deleteTransactions (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun deleteTransactionsBefore (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAllBodyRefs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getAllTransactions ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun getAllTransactionsAsList (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getTransactionById (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getTransactionsPaged (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;I)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun observeTransaction (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 }

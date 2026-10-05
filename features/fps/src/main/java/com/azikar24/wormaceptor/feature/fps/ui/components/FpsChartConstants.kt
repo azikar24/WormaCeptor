@@ -8,4 +8,5 @@ internal object FpsChartConstants {
     const val THRESHOLD_STROKE_WIDTH = 2f
     const val GRID_STROKE_WIDTH = 1f
     const val LINE_STROKE_WIDTH = 3f
+    const val THRESHOLD_DASH_LENGTH = 8f
 }

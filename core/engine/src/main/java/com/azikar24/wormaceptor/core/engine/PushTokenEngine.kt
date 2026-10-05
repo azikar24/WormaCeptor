@@ -189,7 +189,7 @@ class PushTokenEngine(
                 return@withContext PushTokenInfo(
                     token = fcmToken,
                     provider = PushProvider.FCM,
-                    createdAt = _currentToken.value?.createdAt ?: now,
+                    createdAt = createdAtFor(fcmToken, now),
                     lastRefreshed = now,
                     isValid = true,
                     associatedUserId = null,
@@ -208,7 +208,7 @@ class PushTokenEngine(
                 return@withContext PushTokenInfo(
                     token = hmsToken,
                     provider = PushProvider.HUAWEI_HMS,
-                    createdAt = _currentToken.value?.createdAt ?: now,
+                    createdAt = createdAtFor(hmsToken, now),
                     lastRefreshed = now,
                     isValid = true,
                     associatedUserId = null,
@@ -221,6 +221,12 @@ class PushTokenEngine(
 
         null
     }
+
+    /** Keeps the original creation time only while the token itself is unchanged. */
+    private fun createdAtFor(
+        token: String,
+        now: Long,
+    ): Long = _currentToken.value?.takeIf { it.token == token }?.createdAt ?: now
 
     private fun getFcmToken(): String? {
         return try {

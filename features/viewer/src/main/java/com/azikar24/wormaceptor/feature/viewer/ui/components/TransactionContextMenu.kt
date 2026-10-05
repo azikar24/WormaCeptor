@@ -2,9 +2,11 @@ package com.azikar24.wormaceptor.feature.viewer.ui.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -34,6 +36,8 @@ fun TransactionContextMenu(
     onShareAsHar: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
+    onAddToMock: () -> Unit,
+    onSelect: () -> Unit,
     modifier: Modifier = Modifier,
     offset: DpOffset = DpOffset(0.dp, 0.dp),
 ) {
@@ -44,6 +48,21 @@ fun TransactionContextMenu(
         offset = offset,
         shape = WormaCeptorTokens.Shapes.card,
     ) {
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.viewer_context_menu_select)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.CheckCircleOutline,
+                    contentDescription = null,
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+                )
+            },
+            onClick = {
+                onSelect()
+                onDismiss()
+            },
+        )
+
         DropdownMenuItem(
             text = { Text(stringResource(R.string.viewer_context_menu_copy_url)) },
             leadingIcon = {
@@ -104,6 +123,21 @@ fun TransactionContextMenu(
             },
         )
 
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.viewer_context_menu_add_to_mock)) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Science,
+                    contentDescription = null,
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
+                )
+            },
+            onClick = {
+                onAddToMock()
+                onDismiss()
+            },
+        )
+
         WormaCeptorDivider()
 
         DropdownMenuItem(
@@ -141,6 +175,8 @@ private fun TransactionContextMenuPreview() {
             onShareAsHar = {},
             onDelete = {},
             onCopyAsCurl = {},
+            onAddToMock = {},
+            onSelect = {},
         )
     }
 }

@@ -200,6 +200,13 @@ class SecureStorageEngine(
         file: File,
         entries: MutableList<SecureStorageEntry>,
     ): Boolean {
+        // create() writes Tink keysets into the file when missing, so only call it on files
+        // that already hold them; otherwise plain host prefs would get keysets injected
+        val rawPrefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        if (!rawPrefs.contains(PrefsKeyKeyset) && !rawPrefs.contains(PrefsValueKeyset)) {
+            return false
+        }
+
         return try {
             val prefs = EncryptedSharedPreferences.create(
                 context,
@@ -486,3 +493,7 @@ class SecureStorageEngine(
         }
     }
 }
+
+// Keyset entries EncryptedSharedPreferences stores in its own prefs file
+private const val PrefsKeyKeyset = "__androidx_security_crypto_encrypted_prefs_key_keyset__"
+private const val PrefsValueKeyset = "__androidx_security_crypto_encrypted_prefs_value_keyset__"

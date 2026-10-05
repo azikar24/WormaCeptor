@@ -55,13 +55,13 @@ class ExportManager(
                     }
                     ExportFormat.HAR -> {
                         // Pre-resolve all body blobs so HarExporter can stay non-suspending.
-                        val bodyCache = mutableMapOf<String, String>()
+                        val bodyCache = mutableMapOf<String, ByteArray>()
                         transactions.forEach { tx ->
                             tx.request.bodyRef?.let { ref ->
-                                queryEngine?.getBody(ref)?.let { bodyCache[ref] = it }
+                                queryEngine?.getBodyBytes(ref)?.let { bodyCache[ref] = it }
                             }
                             tx.response?.bodyRef?.let { ref ->
-                                queryEngine?.getBody(ref)?.let { bodyCache[ref] = it }
+                                queryEngine?.getBodyBytes(ref)?.let { bodyCache[ref] = it }
                             }
                         }
                         val harLog = HarExporter.toHarLog(

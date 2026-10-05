@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
@@ -48,7 +49,6 @@ import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.contracts.MultipartParser
 import com.azikar24.wormaceptor.domain.entities.MultipartPart
 import com.azikar24.wormaceptor.feature.viewer.R
-import org.koin.java.KoinJavaComponent.get
 
 /**
  * An accordion-style view for multipart form data.
@@ -62,7 +62,7 @@ fun MultipartView(
 ) {
     val parts = remember(multipartData, boundary) {
         try {
-            val parser: MultipartParser = get(MultipartParser::class.java)
+            val parser: MultipartParser = WormaCeptorKoin.get(MultipartParser::class.java)
             parser.parse(multipartData, boundary)
         } catch (_: RuntimeException) {
             emptyList()

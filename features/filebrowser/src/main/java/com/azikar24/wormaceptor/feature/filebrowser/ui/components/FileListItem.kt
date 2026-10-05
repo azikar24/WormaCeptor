@@ -26,7 +26,7 @@ import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDateOnly
 import com.azikar24.wormaceptor.domain.entities.FileEntry
 import com.azikar24.wormaceptor.feature.filebrowser.R
-import com.azikar24.wormaceptor.feature.filebrowser.ui.util.resolveFileAppearance
+import com.azikar24.wormaceptor.feature.filebrowser.ui.util.resolveFileIcon
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -56,16 +56,10 @@ fun FileListItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val ext = file.name.substringAfterLast('.', "").lowercase()
-        val appearance = resolveFileAppearance(
-            ext = ext,
-            isDirectory = file.isDirectory,
-            scheme = WormaCeptorTokens.Colors.FileBrowser.fileTypeScheme(),
-        )
-
         Icon(
-            imageVector = appearance.icon,
+            imageVector = resolveFileIcon(ext = ext, isDirectory = file.isDirectory),
             contentDescription = null,
-            tint = appearance.tint,
+            tint = WormaCeptorTokens.semantic().textSecondary,
             modifier = Modifier.size(WormaCeptorTokens.IconSize.lg),
         )
 

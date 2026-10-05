@@ -41,11 +41,7 @@ internal fun EntryCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val typeColor = when (entry.storageType) {
-        StorageType.ENCRYPTED_SHARED_PREFS -> WormaCeptorTokens.Colors.SecureStorage.encryptedPrefs
-        StorageType.KEYSTORE -> WormaCeptorTokens.Colors.SecureStorage.keystore
-        StorageType.DATASTORE -> WormaCeptorTokens.Colors.SecureStorage.datastore
-    }
+    val typeColor = WormaCeptorTokens.semantic().textSecondary
 
     WormaCeptorCard(
         onClick = onClick,
@@ -121,7 +117,7 @@ internal fun EntryCard(
             // Type badge
             Surface(
                 shape = WormaCeptorTokens.Shapes.chip,
-                color = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                color = WormaCeptorTokens.semantic().surfaceVariant,
             ) {
                 Text(
                     text = when (entry.storageType) {

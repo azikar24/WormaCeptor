@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.api
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
@@ -18,6 +19,13 @@ object WormaCeptorApi {
     @Volatile
     internal var provider: ServiceProvider? = null
         private set
+
+    /**
+     * [provider] when it actually records traffic. Null when uninitialized or when only a no-op
+     * provider is present (release builds), so capture paths can skip body copying entirely.
+     */
+    internal val capturingProvider: ServiceProvider?
+        get() = provider?.takeIf { CoreHolder.captureEngine != null }
 
     @Volatile
     private var enabledFeatures: Set<Feature> = Feature.DEFAULT
@@ -201,10 +209,10 @@ object WormaCeptorApi {
             val engineClass = Class.forName(
                 "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine",
             )
-            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val koinClass = Class.forName("com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin")
             val getMethod = koinClass.getMethod("get", Class::class.java)
             val engine = getMethod.invoke(null, engineClass)
-            val showMethod = engineClass.getMethod("show", ComponentActivity::class.java.superclass)
+            val showMethod = engineClass.getMethod("show", Activity::class.java)
             showMethod.invoke(engine, activity)
             true
         } catch (e: ReflectiveOperationException) {
@@ -221,7 +229,7 @@ object WormaCeptorApi {
             val engineClass = Class.forName(
                 "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine",
             )
-            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val koinClass = Class.forName("com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin")
             val getMethod = koinClass.getMethod("get", Class::class.java)
             val engine = getMethod.invoke(null, engineClass)
             val hideMethod = engineClass.getMethod("hide")
@@ -241,12 +249,14 @@ object WormaCeptorApi {
             val engineClass = Class.forName(
                 "com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine",
             )
-            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val koinClass = Class.forName("com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin")
             val getMethod = koinClass.getMethod("get", Class::class.java)
             val engine = getMethod.invoke(null, engineClass)
             val isVisibleField = engineClass.getMethod("isVisible")
             val stateFlow = isVisibleField.invoke(engine)
-            val valueMethod = stateFlow.javaClass.getMethod("getValue")
+            // Resolve on the public interface: the runtime class (ReadonlyStateFlow) isn't public, so invoking
+            // its getValue reflectively throws IllegalAccessException
+            val valueMethod = Class.forName("kotlinx.coroutines.flow.StateFlow").getMethod("getValue")
             valueMethod.invoke(stateFlow) as? Boolean ?: false
         } catch (_: Exception) {
             false

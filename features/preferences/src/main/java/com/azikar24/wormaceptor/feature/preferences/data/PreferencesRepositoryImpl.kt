@@ -5,13 +5,17 @@ import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
@@ -22,6 +26,8 @@ class PreferencesRepositoryImpl(
     private val dataSource: PreferencesDataSource,
 ) : PreferencesRepository {
 
+    private val clearedFiles = MutableSharedFlow<String>()
+
     override fun observePreferenceFiles(): Flow<List<PreferenceFile>> = flow {
         while (true) {
             emit(dataSource.getPreferenceFiles())
@@ -30,6 +36,13 @@ class PreferencesRepositoryImpl(
     }.flowOn(Dispatchers.IO)
 
     override fun observePreferenceItems(fileName: String): Flow<List<PreferenceItem>> = callbackFlow {
+        // Subscribe before the initial emission so a clear right after it is not missed.
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            clearedFiles.filter { it == fileName }.collect {
+                trySend(dataSource.getPreferenceItems(fileName))
+            }
+        }
+
         // Emit initial value
         trySend(dataSource.getPreferenceItems(fileName))
 
@@ -67,8 +80,12 @@ class PreferencesRepositoryImpl(
         dataSource.deletePreference(fileName, key)
     }
 
-    override suspend fun clearFile(fileName: String) = withContext(Dispatchers.IO) {
-        dataSource.clearFile(fileName)
+    override suspend fun clearFile(fileName: String) {
+        withContext(Dispatchers.IO) {
+            dataSource.clearFile(fileName)
+        }
+        // Below API 30, clear() does not notify change listeners, so observers would keep stale items.
+        clearedFiles.emit(fileName)
     }
 
     /** Polling interval for preference file changes. */

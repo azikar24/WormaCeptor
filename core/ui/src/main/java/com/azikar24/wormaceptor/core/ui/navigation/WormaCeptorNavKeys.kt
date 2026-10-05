@@ -215,10 +215,16 @@ object WormaCeptorNavKeys {
         /** Route template with optional `{ruleId}` placeholder (null = create new). */
         const val route = "mockrules/editor/{ruleId}"
 
+        /** Route template for a new, unsaved rule pre-filled from a captured transaction. */
+        const val fromTransactionRoute = "mockrules/editor/from-transaction/{transactionId}"
+
         /** Builds a concrete route for editing an existing rule. */
         fun createRoute(ruleId: String) = "mockrules/editor/$ruleId"
 
         /** Route for creating a new rule. */
         fun createNewRoute() = "mockrules/editor/new"
+
+        /** Builds the route that opens a new rule pre-filled from the transaction with [transactionId]. */
+        fun createFromTransactionRoute(transactionId: String) = "mockrules/editor/from-transaction/$transactionId"
     }
 }

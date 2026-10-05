@@ -48,17 +48,16 @@ internal fun ResultCard(
 ) {
     val haptic = LocalHapticFeedback.current
     val isSuccess = result.success
-    val accentColor = when {
-        !isSuccess -> WormaCeptorTokens.semantic().error
-        result.operation == CryptoOperation.ENCRYPT -> WormaCeptorTokens.Colors.Crypto.encrypt
-        else -> WormaCeptorTokens.Colors.Crypto.decrypt
+    val accentColor = if (isSuccess) {
+        WormaCeptorTokens.semantic().success
+    } else {
+        WormaCeptorTokens.semantic().error
     }
     val successText = stringResource(R.string.crypto_success)
     val failedText = stringResource(R.string.crypto_failed)
     val unknownErrorText = stringResource(R.string.crypto_unknown_error)
 
     WormaCeptorContainer(
-        backgroundColor = accentColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
         borderColor = accentColor.copy(alpha = WormaCeptorTokens.Alpha.MODERATE),
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -83,7 +82,7 @@ internal fun ResultCard(
                     Text(
                         "${result.operation.displayName} ${if (isSuccess) successText else failedText}",
                         fontWeight = FontWeight.SemiBold,
-                        color = accentColor,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                 }
                 WormaCeptorIconButton(
@@ -156,7 +155,7 @@ internal fun ResultCard(
             } else if (!isSuccess) {
                 Text(
                     result.errorMessage ?: unknownErrorText,
-                    color = accentColor,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }

@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.feature.viewer.ui
 
 import com.azikar24.wormaceptor.core.engine.ParserRegistry
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 
 internal const val MaxParseBodySize = 500_000
@@ -15,7 +16,7 @@ internal fun detectContentTypeViaRegistry(
     body: String?,
 ): ContentType {
     return try {
-        val registry: ParserRegistry = org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
+        val registry: ParserRegistry = WormaCeptorKoin.get(ParserRegistry::class.java)
         registry.detectContentType(contentTypeHeader, body)
     } catch (_: RuntimeException) {
         ContentType.UNKNOWN
@@ -24,11 +25,16 @@ internal fun detectContentTypeViaRegistry(
 
 internal fun extractMultipartBoundaryViaRegistry(contentType: String): String? {
     return try {
-        val registry: ParserRegistry = org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
+        val registry: ParserRegistry = WormaCeptorKoin.get(ParserRegistry::class.java)
         registry.extractMultipartBoundary(contentType)
     } catch (_: RuntimeException) {
         null
     }
+}
+
+/** Caps raw text for on-screen rendering using the same thresholds as [parseBodyViaRegistry]. */
+internal fun capRawBodyForDisplay(raw: String): String {
+    return if (raw.length > MaxParseBodySize) raw.take(TruncatedDisplaySize) else raw
 }
 
 internal fun parseBodyViaRegistry(
@@ -43,7 +49,7 @@ internal fun parseBodyViaRegistry(
     }
     return try {
         val registry: ParserRegistry =
-            org.koin.java.KoinJavaComponent.get(ParserRegistry::class.java)
+            WormaCeptorKoin.get(ParserRegistry::class.java)
         val parsed = registry.parseBody(contentType, bytes)
         parsed.formatted to parsed.contentType
     } catch (_: RuntimeException) {

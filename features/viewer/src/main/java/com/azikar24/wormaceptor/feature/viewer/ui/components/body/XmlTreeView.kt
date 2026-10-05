@@ -19,10 +19,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.withStyle
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ComposeSyntaxColors
 import com.azikar24.wormaceptor.domain.contracts.XmlFormatter
-import org.koin.java.KoinJavaComponent.get
 import java.util.Locale
 
 private val attrRegex = Regex("""(\s*)(\w+(?::\w+)?)\s*=\s*("[^"]*"|'[^']*')""")
@@ -39,7 +39,7 @@ fun XmlTreeView(
     val colors = WormaCeptorTokens.syntax()
     val formattedLines = remember(xmlString) {
         try {
-            val formatter: XmlFormatter = get(XmlFormatter::class.java)
+            val formatter: XmlFormatter = WormaCeptorKoin.get(XmlFormatter::class.java)
             formatter.format(xmlString)
         } catch (_: RuntimeException) {
             listOf(xmlString)

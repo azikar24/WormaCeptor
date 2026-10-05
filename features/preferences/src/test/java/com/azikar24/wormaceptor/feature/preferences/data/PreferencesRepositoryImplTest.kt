@@ -87,6 +87,20 @@ class PreferencesRepositoryImplTest {
         }
 
         @Test
+        fun `re-emits items after clearFile`() = runTest {
+            val item = PreferenceItem("key1", PreferenceValue.StringValue("val1"))
+            every { dataSource.getPreferenceItems("file") } returnsMany listOf(listOf(item), emptyList())
+            every { dataSource.registerChangeListener("file", any()) } returns mockk(relaxed = true)
+
+            repository.observePreferenceItems("file").test {
+                awaitItem() shouldHaveSize 1
+                repository.clearFile("file")
+                awaitItem() shouldHaveSize 0
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+        @Test
         fun `unregisters listener on cancellation`() = runTest {
             every { dataSource.getPreferenceItems("file") } returns emptyList()
 

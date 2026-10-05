@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
@@ -184,10 +185,21 @@ private fun SecureStorageTabRow(
     keyStoreEntriesCount: Int,
     onSelectTab: (Int) -> Unit,
 ) {
-    PrimaryTabRow(selectedTabIndex = currentPage) {
+    PrimaryTabRow(
+        selectedTabIndex = currentPage,
+        containerColor = MaterialTheme.colorScheme.background,
+        divider = {
+            HorizontalDivider(
+                thickness = WormaCeptorTokens.BorderWidth.thin,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+            )
+        },
+    ) {
         Tab(
             selected = currentPage == 0,
             onClick = { onSelectTab(0) },
+            selectedContentColor = MaterialTheme.colorScheme.primary,
+            unselectedContentColor = WormaCeptorTokens.semantic().textSecondary,
             text = {
                 TabContent(
                     icon = Icons.Default.Lock,
@@ -199,6 +211,8 @@ private fun SecureStorageTabRow(
         Tab(
             selected = currentPage == 1,
             onClick = { onSelectTab(1) },
+            selectedContentColor = MaterialTheme.colorScheme.primary,
+            unselectedContentColor = WormaCeptorTokens.semantic().textSecondary,
             text = {
                 TabContent(
                     icon = Icons.Default.Key,

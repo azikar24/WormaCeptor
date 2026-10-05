@@ -6,7 +6,8 @@
             android:name=".ViewerActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.WormaCeptor.Viewer">
+            android:theme="@style/Theme.WormaCeptor.Viewer"
+            android:windowSoftInputMode="adjustResize">
 
             <!-- Deep link intent filter for wormaceptor:// scheme -->
             <intent-filter>

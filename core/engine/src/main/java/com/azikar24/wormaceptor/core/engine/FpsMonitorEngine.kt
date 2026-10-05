@@ -15,14 +15,18 @@ import kotlin.math.min
  * Uses the system Choreographer to measure frame delivery times and calculates
  * FPS metrics including current FPS, average, min, max, and dropped frames.
  *
- * A frame is considered "dropped" if it takes longer than 16.67ms (60fps threshold).
+ * A frame is considered "dropped" if it takes longer than 1.5x the display refresh period
+ * (read from [refreshRateProvider] on start, falling back to 60Hz).
  * A frame is considered "jank" if it takes longer than 32ms.
+ * Gaps longer than 500ms (app backgrounded, callbacks paused) are skipped, not counted.
  */
-class FpsMonitorEngine(
+class FpsMonitorEngine @JvmOverloads constructor(
     private val historySize: Int = DEFAULT_HISTORY_SIZE,
+    private val refreshRateProvider: () -> Float = { DEFAULT_REFRESH_RATE_HZ },
 ) {
     private var isMonitoring = false
     private var lastFrameTimeNanos = 0L
+    private var refreshPeriodNanos = framePeriodNanos(DEFAULT_REFRESH_RATE_HZ)
 
     // Frame time tracking for FPS calculation
     private val frameTimesNanos = CopyOnWriteArrayList<Long>()
@@ -61,7 +65,10 @@ class FpsMonitorEngine(
 
             if (lastFrameTimeNanos > 0) {
                 val frameDurationNanos = frameTimeNanos - lastFrameTimeNanos
-                processFrame(frameDurationNanos)
+                // A long gap is a pause, not a frame: restart timing from this frame
+                if (frameDurationNanos <= MAX_FRAME_GAP_NANOS) {
+                    processFrame(frameDurationNanos)
+                }
             }
 
             lastFrameTimeNanos = frameTimeNanos
@@ -83,6 +90,7 @@ class FpsMonitorEngine(
         isMonitoring = true
         _isRunning.value = true
         lastFrameTimeNanos = 0L
+        refreshPeriodNanos = framePeriodNanos(refreshRateProvider())
 
         choreographer.postFrameCallback(frameCallback)
     }
@@ -121,8 +129,8 @@ class FpsMonitorEngine(
             frameTimesNanos.removeAt(0)
         }
 
-        // Check for dropped frame (> 16.67ms)
-        if (frameDurationNanos > FpsInfo.TARGET_FRAME_TIME_NS) {
+        // Check for dropped frame (> 1.5x refresh period)
+        if (isDroppedFrame(frameDurationNanos, refreshPeriodNanos)) {
             totalDroppedFrames++
         }
 
@@ -202,5 +210,24 @@ class FpsMonitorEngine(
         private const val FPS_CALCULATION_WINDOW = 10
         private const val HISTORY_SAMPLE_INTERVAL = 6 // Sample every 6 frames (~100ms at 60fps)
         private const val NANOS_PER_SECOND = 1_000_000_000.0
+
+        /** Refresh rate assumed when the display rate is unknown. */
+        const val DEFAULT_REFRESH_RATE_HZ = 60f
+
+        /** A frame counts as dropped when it exceeds this multiple of the refresh period. */
+        private const val DROPPED_FRAME_TOLERANCE = 1.5
+
+        /** Frame gaps above this (500ms) are treated as pauses and skipped. */
+        private const val MAX_FRAME_GAP_NANOS = 500_000_000L
+
+        internal fun framePeriodNanos(refreshRateHz: Float): Long {
+            val rate = if (refreshRateHz > 0f) refreshRateHz else DEFAULT_REFRESH_RATE_HZ
+            return (NANOS_PER_SECOND / rate).toLong()
+        }
+
+        internal fun isDroppedFrame(
+            frameDurationNanos: Long,
+            framePeriodNanos: Long,
+        ): Boolean = frameDurationNanos > framePeriodNanos * DROPPED_FRAME_TOLERANCE
     }
 }

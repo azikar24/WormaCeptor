@@ -31,15 +31,21 @@ object SampleWebSocketService {
             .build()
     }
 
-    private val listener = object : WebSocketListener() {
+    // One listener per connection so a late callback from an old socket records on its own monitor
+    private class EchoListener : WebSocketListener() {
+        var monitor: WormaCeptorWebSocket? = null
+
         override fun onOpen(
             webSocket: WebSocket,
             response: Response,
         ) {
             Log.d(TAG, "WebSocket opened: ${response.message}")
-            // Send some test messages and record them
-            sendAndRecord("Hello from WormaCeptor!")
-            sendAndRecord("""{"type":"test","message":"JSON message","timestamp":${System.currentTimeMillis()}}""")
+            sendAndRecord(webSocket, monitor, "Hello from WormaCeptor!")
+            sendAndRecord(
+                webSocket,
+                monitor,
+                """{"type":"test","message":"JSON message","timestamp":${System.currentTimeMillis()}}""",
+            )
         }
 
         override fun onMessage(
@@ -55,7 +61,7 @@ object SampleWebSocketService {
             reason: String,
         ) {
             Log.d(TAG, "WebSocket closing: $code - $reason")
-            webSocket.close(1000, null)
+            webSocket.close(NormalClosureCode, null)
         }
 
         override fun onClosed(
@@ -75,25 +81,33 @@ object SampleWebSocketService {
         }
     }
 
-    private fun sendAndRecord(message: String) {
-        webSocket?.send(message)
-        monitor?.recordSentMessage(message)
+    private fun sendAndRecord(
+        socket: WebSocket?,
+        socketMonitor: WormaCeptorWebSocket?,
+        message: String,
+    ) {
+        socket?.send(message)
+        socketMonitor?.recordSentMessage(message)
     }
 
     fun connect() {
+        disconnect()
+
         val request = Request.Builder()
             .url(ECHO_SERVER_URL)
             .build()
 
         // Use the public API to wrap the listener for monitoring
+        val listener = EchoListener()
         val wsMonitor = WormaCeptorWebSocket.wrap(listener, ECHO_SERVER_URL)
+        listener.monitor = wsMonitor
         monitor = wsMonitor
 
         webSocket = client.newWebSocket(request, wsMonitor.listener)
     }
 
     fun sendMessage(message: String) {
-        sendAndRecord(message)
+        sendAndRecord(webSocket, monitor, message)
     }
 
     fun disconnect() {
@@ -102,3 +116,5 @@ object SampleWebSocketService {
         monitor = null
     }
 }
+
+private const val NormalClosureCode = 1000

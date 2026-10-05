@@ -3,10 +3,10 @@ public final class com/azikar24/wormaceptor/core/engine/CaptureEngine {
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/core/engine/ExtensionRegistry;)V
 	public synthetic fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Lcom/azikar24/wormaceptor/domain/contracts/BlobStorage;Lcom/azikar24/wormaceptor/core/engine/ExtensionRegistry;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun cleanup (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun completeTransaction (Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun completeTransaction$default (Lcom/azikar24/wormaceptor/core/engine/CaptureEngine;Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public final fun startTransaction (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun startTransaction$default (Lcom/azikar24/wormaceptor/core/engine/CaptureEngine;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun completeTransaction (Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun completeTransaction$default (Lcom/azikar24/wormaceptor/core/engine/CaptureEngine;Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun startTransaction (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/util/UUID;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun startTransaction$default (Lcom/azikar24/wormaceptor/core/engine/CaptureEngine;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/util/UUID;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/core/engine/CoreHolder {
@@ -131,10 +131,12 @@ public final class com/azikar24/wormaceptor/core/engine/FpsMonitorEngine {
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/FpsMonitorEngine$Companion;
 	public static final field DEFAULT_HISTORY_SIZE I
+	public static final field DEFAULT_REFRESH_RATE_HZ F
 	public static final field FPS_WARNING_THRESHOLD F
 	public fun <init> ()V
 	public fun <init> (I)V
-	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (ILkotlin/jvm/functions/Function0;)V
+	public synthetic fun <init> (ILkotlin/jvm/functions/Function0;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getCurrentFpsInfo ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun getFpsHistory ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun isRunning ()Lkotlinx/coroutines/flow/StateFlow;
@@ -281,7 +283,10 @@ public final class com/azikar24/wormaceptor/core/engine/MetricStatus$Companion {
 
 public final class com/azikar24/wormaceptor/core/engine/MockEngine {
 	public static final field $stable I
+	public static final field InitialRulesTimeoutMs J
 	public fun <init> ()V
+	public fun <init> (J)V
+	public synthetic fun <init> (JILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun buildOkHttpResponse (Lcom/azikar24/wormaceptor/domain/entities/mock/MockResponse;Lokhttp3/Request;)Lokhttp3/Response;
 	public final fun computeDelayMs (Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;)J
 	public final fun findMatchingRule (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)Lcom/azikar24/wormaceptor/domain/entities/mock/MockRule;
@@ -319,6 +324,7 @@ public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayEngine
 	public fun getSavedStateRegistry ()Landroidx/savedstate/SavedStateRegistry;
 	public final fun getState ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun hide ()V
+	public final fun isVisible ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun loadSavedMetricStates (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun savePosition ()V
 	public final fun setDragging (Z)V
@@ -473,6 +479,7 @@ public final class com/azikar24/wormaceptor/core/engine/QueryEngine {
 	public final fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun getTransactionCount$default (Lcom/azikar24/wormaceptor/core/engine/QueryEngine;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun observeCrashes ()Lkotlinx/coroutines/flow/Flow;
+	public final fun observeDetails (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public final fun observeTransactions ()Lkotlinx/coroutines/flow/Flow;
 	public final fun observeTransactionsPaged (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;I)Lkotlinx/coroutines/flow/Flow;
 	public static synthetic fun observeTransactionsPaged$default (Lcom/azikar24/wormaceptor/core/engine/QueryEngine;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;IILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
@@ -494,6 +501,7 @@ public final class com/azikar24/wormaceptor/core/engine/RateLimitEngine {
 	public final fun disable ()V
 	public final fun enable ()V
 	public final fun getConfig ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getDelayMillis ()J
 	public final fun getInterceptor ()Lokhttp3/Interceptor;
 	public final fun getStats ()Lkotlinx/coroutines/flow/StateFlow;
 	public final fun setConfig (Lcom/azikar24/wormaceptor/domain/entities/RateLimitConfig;)V
@@ -617,6 +625,8 @@ public final class com/azikar24/wormaceptor/core/engine/di/WormaCeptorKoin {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/engine/di/WormaCeptorKoin;
 	public final fun cleanup ()V
+	public static final fun get (Ljava/lang/Class;)Ljava/lang/Object;
+	public final fun getApplication ()Lorg/koin/core/KoinApplication;
 	public final fun getKoin ()Lorg/koin/core/Koin;
 	public final fun init (Landroid/content/Context;)V
 }

@@ -29,6 +29,13 @@ internal sealed class TransactionDetailViewEvent {
         data object CopyAsCurl : Menu()
         data object ShareAsJson : Menu()
         data object ShareAsHar : Menu()
+        data object AddToMockRules : Menu()
+    }
+
+    // -- Overview tab --
+
+    sealed class Overview : TransactionDetailViewEvent() {
+        data object CopyUrl : Overview()
     }
 
     // -- Request section --

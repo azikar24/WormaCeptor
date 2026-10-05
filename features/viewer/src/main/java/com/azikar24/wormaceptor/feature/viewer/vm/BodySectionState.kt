@@ -11,6 +11,7 @@ import com.azikar24.wormaceptor.feature.viewer.ui.MatchInfo
 internal data class BodySectionState(
     val parsedBody: String? = null,
     val rawBody: String? = null,
+    val displayRawBody: String? = null,
     val rawBodyBytes: ByteArray? = null,
     val isLoading: Boolean = false,
     val parsedContentType: ContentType = ContentType.UNKNOWN,
@@ -22,12 +23,18 @@ internal data class BodySectionState(
     val showImageViewer: Boolean = false,
     val showPdfViewer: Boolean = false,
 ) {
+    /** True when [displayRawBody] is a prefix of [rawBody] cut for rendering performance. */
+    val isRawBodyTruncated: Boolean
+        get() = rawBody != null && displayRawBody != null && displayRawBody.length < rawBody.length
+
     // ByteArray needs custom equals/hashCode
+    @Suppress("CyclomaticComplexMethod")
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is BodySectionState) return false
         return parsedBody == other.parsedBody &&
             rawBody == other.rawBody &&
+            displayRawBody == other.displayRawBody &&
             rawBodyBytes.contentEquals(other.rawBodyBytes) &&
             isLoading == other.isLoading &&
             parsedContentType == other.parsedContentType &&
@@ -43,6 +50,7 @@ internal data class BodySectionState(
     override fun hashCode(): Int {
         var result = parsedBody.hashCode()
         result = 31 * result + rawBody.hashCode()
+        result = 31 * result + displayRawBody.hashCode()
         result = 31 * result + (rawBodyBytes?.contentHashCode() ?: 0)
         result = 31 * result + isLoading.hashCode()
         result = 31 * result + parsedContentType.hashCode()

@@ -19,9 +19,11 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.mockrules.R
 
+@Suppress("LongParameterList")
 @Composable
 internal fun ResponseSection(
-    statusCode: Int,
+    statusCodeText: String,
+    isStatusCodeValid: Boolean,
     statusMessage: String,
     contentType: String,
     responseBody: String,
@@ -42,8 +44,9 @@ internal fun ResponseSection(
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
         ) {
             WormaCeptorTextField(
-                value = statusCode.toString(),
+                value = statusCodeText,
                 onValueChange = onStatusCodeChange,
+                isError = !isStatusCodeValid,
                 label = { Text(stringResource(R.string.mock_editor_status_code)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -84,7 +87,8 @@ internal fun ResponseSection(
 private fun ResponseSectionPreview() {
     WormaCeptorTheme {
         ResponseSection(
-            statusCode = 500,
+            statusCodeText = "500",
+            isStatusCodeValid = true,
             statusMessage = "Internal Server Error",
             contentType = "application/json",
             responseBody = "{\"error\": \"Something went wrong\"}",
@@ -101,7 +105,8 @@ private fun ResponseSectionPreview() {
 private fun ResponseSectionDefaultPreview() {
     WormaCeptorTheme {
         ResponseSection(
-            statusCode = 200,
+            statusCodeText = "200",
+            isStatusCodeValid = true,
             statusMessage = "OK",
             contentType = "application/json",
             responseBody = "",

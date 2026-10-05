@@ -205,7 +205,6 @@ private fun PreferenceDetailBody(
 
         PreferenceDetailFilterChips(
             state = state,
-            typeColors = typeColors,
             onEvent = onEvent,
         )
 
@@ -270,7 +269,6 @@ private fun PreferenceDetailBody(
 @Composable
 private fun PreferenceDetailFilterChips(
     state: PreferencesViewState,
-    typeColors: ToolColors.Preferences.TypeScheme,
     onEvent: (PreferencesViewEvent) -> Unit,
 ) {
     if (state.availableTypes.isEmpty()) return
@@ -290,12 +288,10 @@ private fun PreferenceDetailFilterChips(
             onClick = { onEvent(PreferencesViewEvent.Detail.TypeFilterChanged(null)) },
         )
         state.availableTypes.forEach { type ->
-            val typeColor = typeColors.forTypeName(type)
             WormaCeptorChip(
                 label = type,
                 selected = state.typeFilter == type,
                 onClick = { onEvent(PreferencesViewEvent.Detail.TypeFilterChanged(type)) },
-                accentColor = typeColor,
             )
         }
     }

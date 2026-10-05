@@ -101,18 +101,17 @@ private fun MemoryChartEmptyState() {
 
 @Composable
 private fun MemoryChartLegend() {
-    val mem = WormaCeptorTokens.Colors.Memory
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
     ) {
         WormaCeptorChartLegendItem(
             label = stringResource(R.string.memory_heap_used),
-            color = mem.heapUsed,
+            color = MaterialTheme.colorScheme.primary,
         )
         WormaCeptorChartLegendItem(
             label = stringResource(R.string.memory_native),
-            color = mem.nativeHeap,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }
@@ -124,7 +123,8 @@ private fun MemoryLineChart(
 ) {
     if (history.isEmpty()) return
 
-    val mem = WormaCeptorTokens.Colors.Memory
+    val heapColor = MaterialTheme.colorScheme.primary
+    val nativeColor = WormaCeptorTokens.semantic().textSecondary
     val maxMemory = history.maxOf { maxOf(it.usedMemory, it.nativeHeapAllocated) }
         .coerceAtLeast(1L)
 
@@ -149,9 +149,9 @@ private fun MemoryLineChart(
 
         if (history.size < 2) return@Canvas
 
-        drawLinePath(history, maxMemory, mem.heapUsed, dimensions) { it.usedMemory }
-        drawLinePath(history, maxMemory, mem.nativeHeap, dimensions) { it.nativeHeapAllocated }
-        drawAreaFill(history, maxMemory, mem.heapUsed, dimensions) { it.usedMemory }
+        drawLinePath(history, maxMemory, heapColor, dimensions) { it.usedMemory }
+        drawLinePath(history, maxMemory, nativeColor, dimensions) { it.nativeHeapAllocated }
+        drawAreaFill(history, maxMemory, heapColor, dimensions) { it.usedMemory }
     }
 }
 

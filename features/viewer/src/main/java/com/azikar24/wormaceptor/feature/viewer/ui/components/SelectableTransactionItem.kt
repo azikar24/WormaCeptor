@@ -7,7 +7,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +30,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorMethodBadge
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorStatusBadge
@@ -59,6 +58,7 @@ fun SelectableTransactionItem(
     onShareAsHar: () -> Unit,
     onDelete: () -> Unit,
     onCopyAsCurl: () -> Unit,
+    onAddToMock: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val hapticFeedback = LocalHapticFeedback.current
@@ -67,7 +67,6 @@ fun SelectableTransactionItem(
     val statusColor = getStatusColor(transaction.status, transaction.code)
 
     // Scale animation for press feedback
-    val interactionSource = remember { MutableInteractionSource() }
     val scale by animateFloatAsState(
         targetValue = if (isSelected && isSelectionMode) 0.98f else 1f,
         animationSpec = spring(
@@ -91,12 +90,12 @@ fun SelectableTransactionItem(
                     width = if (isSelected) {
                         WormaCeptorTokens.BorderWidth.thick
                     } else {
-                        WormaCeptorTokens.BorderWidth.regular
+                        WormaCeptorTokens.BorderWidth.thin
                     },
                     color = if (isSelected) {
                         WormaCeptorTokens.semantic().accent
                     } else {
-                        WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
+                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
                     },
                     shape = WormaCeptorTokens.Shapes.card,
                 )
@@ -104,13 +103,11 @@ fun SelectableTransactionItem(
                     color = if (isSelected) {
                         WormaCeptorTokens.semantic().accentSubtle.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
                     } else {
-                        statusColor.copy(alpha = TokenAlpha.SUBTLE)
+                        MaterialTheme.colorScheme.background
                     },
                     shape = WormaCeptorTokens.Shapes.card,
                 )
                 .combinedClickable(
-                    interactionSource = interactionSource,
-                    indication = null,
                     onClick = {
                         if (isSelectionMode) {
                             onClick()
@@ -119,11 +116,10 @@ fun SelectableTransactionItem(
                         }
                     },
                     onLongClick = {
-                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                         if (!isSelectionMode) {
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                             showContextMenu = true
                         }
-                        onLongClick()
                     },
                 )
                 .padding(WormaCeptorTokens.Spacing.md),
@@ -141,13 +137,19 @@ fun SelectableTransactionItem(
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.weight(1f, fill = false),
-                        color = WormaCeptorTokens.semantic().accent,
+                        color = WormaCeptorTokens.semantic().textPrimary,
                     )
                 }
 
                 Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
 
-                HostChip(transaction.host)
+                Text(
+                    text = transaction.host,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = WormaCeptorTokens.semantic().textSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
 
             Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md))
@@ -163,9 +165,7 @@ fun SelectableTransactionItem(
                 Text(
                     text = formatDuration(transaction.tookMs),
                     style = MaterialTheme.typography.labelSmall,
-                    color = WormaCeptorTokens.semantic().textSecondary.copy(
-                        alpha = WormaCeptorTokens.Alpha.HEAVY,
-                    ),
+                    color = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
         }
@@ -179,27 +179,11 @@ fun SelectableTransactionItem(
             onShareAsHar = onShareAsHar,
             onDelete = onDelete,
             onCopyAsCurl = onCopyAsCurl,
+            onAddToMock = onAddToMock,
+            onSelect = onLongClick,
             offset = DpOffset(
                 x = WormaCeptorTokens.Spacing.lg,
                 y = -WormaCeptorTokens.Spacing.sm,
-            ),
-        )
-    }
-}
-
-@Composable
-private fun HostChip(host: String) {
-    Surface(
-        color = WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
-        shape = WormaCeptorTokens.Shapes.pill,
-    ) {
-        Text(
-            text = host,
-            style = MaterialTheme.typography.labelSmall,
-            color = WormaCeptorTokens.semantic().textSecondary,
-            modifier = Modifier.padding(
-                horizontal = WormaCeptorTokens.Spacing.sm,
-                vertical = WormaCeptorTokens.Spacing.xxs,
             ),
         )
     }

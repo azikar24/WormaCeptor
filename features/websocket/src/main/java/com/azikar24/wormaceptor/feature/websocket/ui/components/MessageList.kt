@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -39,7 +38,6 @@ import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessage
 import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
@@ -91,7 +89,6 @@ private fun MessageItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val palette = messagePalette(message)
     val timeFormat = remember { SimpleDateFormat("HH:mm:ss.SSS", Locale.US) }
     val formattedTime = remember(message.timestamp) {
         timeFormat.format(Date(message.timestamp))
@@ -106,7 +103,6 @@ private fun MessageItem(
             .animateContentSize(),
         onClick = onClick,
         style = CardStyle.Outlined,
-        backgroundColor = palette.direction.copy(alpha = TokenAlpha.SUBTLE),
     ) {
         Column(
             modifier = Modifier
@@ -118,7 +114,6 @@ private fun MessageItem(
         ) {
             MessageHeader(
                 message = message,
-                palette = palette,
                 formattedTime = formattedTime,
                 isExpanded = isExpanded,
             )
@@ -141,7 +136,6 @@ private fun MessageItem(
 @Composable
 private fun MessageHeader(
     message: WebSocketMessage,
-    palette: MessagePalette,
     formattedTime: String,
     isExpanded: Boolean,
     modifier: Modifier = Modifier,
@@ -150,17 +144,14 @@ private fun MessageHeader(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        DirectionIndicator(
-            direction = message.direction,
-            color = palette.direction,
-        )
+        DirectionIndicator(direction = message.direction)
 
         Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
 
         WormaCeptorStatusBadge(
             text = message.type.name,
-            containerColor = palette.type.copy(alpha = WormaCeptorTokens.Alpha.SOFT),
-            contentColor = palette.type,
+            containerColor = WormaCeptorTokens.semantic().surfaceVariant,
+            contentColor = WormaCeptorTokens.semantic().textSecondary,
         )
 
         Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.sm))
@@ -203,9 +194,9 @@ private fun MessageHeader(
 @Composable
 private fun DirectionIndicator(
     direction: WebSocketMessageDirection,
-    color: Color,
     modifier: Modifier = Modifier,
 ) {
+    val color = WormaCeptorTokens.semantic().textSecondary
     val icon: ImageVector = when (direction) {
         WebSocketMessageDirection.SENT -> Icons.AutoMirrored.Filled.CallMade
         WebSocketMessageDirection.RECEIVED -> Icons.AutoMirrored.Filled.CallReceived
@@ -234,24 +225,6 @@ private fun DirectionIndicator(
             color = color,
         )
     }
-}
-
-private data class MessagePalette(val direction: Color, val type: Color)
-
-@Composable
-private fun messagePalette(message: WebSocketMessage): MessagePalette {
-    val ws = WormaCeptorTokens.Colors.WebSocket
-    val direction = when (message.direction) {
-        WebSocketMessageDirection.SENT -> ws.sent
-        WebSocketMessageDirection.RECEIVED -> ws.received
-    }
-    val type = when (message.type) {
-        WebSocketMessageType.TEXT -> ws.textMessage
-        WebSocketMessageType.BINARY -> ws.binaryMessage
-        WebSocketMessageType.PING -> ws.pingPong
-        WebSocketMessageType.PONG -> ws.pingPong
-    }
-    return MessagePalette(direction = direction, type = type)
 }
 
 @Preview(showBackground = true)

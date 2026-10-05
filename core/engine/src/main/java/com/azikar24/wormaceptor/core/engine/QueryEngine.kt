@@ -7,9 +7,11 @@ import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
 import com.azikar24.wormaceptor.domain.entities.BlobID
 import com.azikar24.wormaceptor.domain.entities.Crash
+import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import java.util.UUID
@@ -63,6 +65,14 @@ class QueryEngine(
     /** Retrieves full transaction details by ID. */
     suspend fun getDetails(id: UUID) = repository.getTransactionById(id)
 
+    /**
+     * Observes full transaction details by ID, re-emitting when that transaction changes
+     * (e.g. an in-flight request completes). Emits null if the transaction does not exist.
+     */
+    fun observeDetails(id: UUID): Flow<NetworkTransaction?> {
+        return repository.observeTransaction(id).distinctUntilChanged()
+    }
+
     /** Reads the text content of a stored request or response body. */
     suspend fun getBody(blobId: BlobID): String? = withContext(Dispatchers.IO) {
         blobStorage.readBlob(blobId)?.use { input ->
@@ -79,8 +89,12 @@ class QueryEngine(
         }
     }
 
-    /** Deletes all stored transactions. */
-    suspend fun clear() = repository.clearAll()
+    /** Deletes all stored transactions and their body blobs. */
+    suspend fun clear() {
+        val blobIds = repository.getAllTransactionsAsList().flatMap { it.blobIds() }
+        repository.clearAll()
+        blobIds.forEach { blobStorage.deleteBlob(it) }
+    }
 
     /** Deletes all stored crash reports. */
     suspend fun clearCrashes() = crashRepository?.clearCrashes()
@@ -88,6 +102,12 @@ class QueryEngine(
     /** Returns all transactions for export (e.g., HAR, cURL). */
     suspend fun getAllTransactionsForExport() = repository.getAllTransactionsAsList()
 
-    /** Deletes specific transactions by their IDs. */
-    suspend fun deleteTransactions(ids: List<UUID>) = repository.deleteTransactions(ids)
+    /** Deletes specific transactions by their IDs, along with their body blobs. */
+    suspend fun deleteTransactions(ids: List<UUID>) {
+        val blobIds = ids.mapNotNull { repository.getTransactionById(it) }.flatMap { it.blobIds() }
+        repository.deleteTransactions(ids)
+        blobIds.forEach { blobStorage.deleteBlob(it) }
+    }
+
+    private fun NetworkTransaction.blobIds(): List<BlobID> = listOfNotNull(request.bodyRef, response?.bodyRef)
 }

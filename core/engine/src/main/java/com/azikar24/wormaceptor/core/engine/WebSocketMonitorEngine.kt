@@ -131,14 +131,8 @@ class WebSocketMonitorEngine(
         }
     }
 
-    private fun registerConnection(
-        webSocket: WebSocket,
-        url: String,
-    ): Long {
+    private fun registerConnection(url: String): Long {
         val connectionId = connectionIdGenerator.incrementAndGet()
-        synchronized(connectionMapLock) {
-            connectionMap[webSocket] = connectionId
-        }
         val connection = WebSocketConnection(
             id = connectionId,
             url = url,
@@ -146,6 +140,15 @@ class WebSocketMonitorEngine(
         )
         addConnection(connection)
         return connectionId
+    }
+
+    private fun bindWebSocket(
+        webSocket: WebSocket,
+        connectionId: Long,
+    ) {
+        synchronized(connectionMapLock) {
+            connectionMap[webSocket] = connectionId
+        }
     }
 
     private fun getConnectionId(webSocket: WebSocket): Long? {
@@ -186,19 +189,35 @@ class WebSocketMonitorEngine(
 
     /**
      * WebSocketListener that intercepts all events for monitoring.
+     * The connection is registered as CONNECTING on creation so handshake failures
+     * and events before onOpen are attributed to it.
      */
     inner class MonitoringWebSocketListener(
         private val delegate: WebSocketListener?,
         private val url: String,
     ) : WebSocketListener() {
 
-        private var connectionId: Long = -1
+        @Volatile
+        private var connectionId: Long = registerConnection(url)
+        private var boundSocket: WebSocket? = null
+
+        // Hosts may reuse one listener across reconnects; each new socket gets its own entry.
+        @Synchronized
+        private fun connectionFor(webSocket: WebSocket): Long {
+            val bound = boundSocket
+            if (bound != null && bound !== webSocket) {
+                connectionId = registerConnection(url)
+            }
+            boundSocket = webSocket
+            return connectionId
+        }
 
         override fun onOpen(
             webSocket: WebSocket,
             response: Response,
         ) {
-            connectionId = registerConnection(webSocket, url)
+            val connectionId = connectionFor(webSocket)
+            bindWebSocket(webSocket, connectionId)
             updateConnection(connectionId) { conn ->
                 conn.copy(
                     state = WebSocketState.OPEN,
@@ -287,7 +306,7 @@ class WebSocketMonitorEngine(
             t: Throwable,
             response: Response?,
         ) {
-            val connId = getConnectionId(webSocket) ?: connectionId
+            val connId = getConnectionId(webSocket) ?: connectionFor(webSocket)
             updateConnection(connId) { conn ->
                 conn.copy(
                     state = WebSocketState.CLOSED,

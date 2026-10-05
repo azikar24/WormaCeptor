@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -22,6 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
@@ -40,6 +42,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -56,6 +59,7 @@ import com.azikar24.wormaceptor.feature.viewer.R
 @Composable
 internal fun OverviewTab(
     transaction: NetworkTransaction,
+    onCopyUrl: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val navBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
@@ -77,7 +81,7 @@ internal fun OverviewTab(
             icon = Icons.Default.Schedule,
             iconTint = WormaCeptorTokens.semantic().accent,
         ) {
-            DetailRow("URL", transaction.request.url)
+            UrlDetailRow(url = transaction.request.url, onCopyUrl = onCopyUrl)
             DetailRow("Method", transaction.request.method)
             DetailRow("Status", transaction.status.name)
             DetailRow("Response Code", transaction.response?.code?.toString() ?: "-")
@@ -96,6 +100,7 @@ internal fun OverviewTab(
             TransactionTimeline(
                 durationMs = transaction.durationMs ?: 0,
                 hasResponse = transaction.response != null,
+                isPending = transaction.status == TransactionStatus.ACTIVE,
             )
         }
 
@@ -148,10 +153,36 @@ internal fun OverviewTab(
 }
 
 @Composable
+private fun UrlDetailRow(
+    url: String,
+    onCopyUrl: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Box(modifier = Modifier.weight(1f)) {
+            DetailRow("URL", url)
+        }
+        // Pulled up so the icon lines up with the first text line instead of the 48dp target's center.
+        WormaCeptorIconButton(
+            onClick = onCopyUrl,
+            icon = Icons.Default.ContentCopy,
+            contentDescription = stringResource(R.string.viewer_overview_copy_url),
+            tint = WormaCeptorTokens.semantic().textSecondary,
+            iconSize = WormaCeptorTokens.IconSize.sm,
+            modifier = Modifier.offset(y = -WormaCeptorTokens.Spacing.md),
+        )
+    }
+}
+
+@Composable
 private fun TransactionTimeline(
     durationMs: Long,
     hasResponse: Boolean,
+    isPending: Boolean,
 ) {
+    val awaitingResponse = !hasResponse && isPending
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -209,6 +240,8 @@ private fun TransactionTimeline(
                     .background(
                         if (hasResponse) {
                             WormaCeptorTokens.semantic().accent.copy(alpha = WormaCeptorTokens.Alpha.HEAVY)
+                        } else if (awaitingResponse) {
+                            WormaCeptorTokens.semantic().textSecondary.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
                         } else {
                             WormaCeptorTokens.semantic().error.copy(alpha = WormaCeptorTokens.Alpha.STRONG)
                         },
@@ -241,6 +274,8 @@ private fun TransactionTimeline(
             Text(
                 text = if (hasResponse) {
                     stringResource(R.string.viewer_overview_timeline_response)
+                } else if (awaitingResponse) {
+                    stringResource(R.string.viewer_overview_timeline_pending)
                 } else {
                     stringResource(R.string.viewer_overview_timeline_failed)
                 },
@@ -372,6 +407,7 @@ private fun OverviewTabPreview() {
                 durationMs = 142L,
                 status = TransactionStatus.COMPLETED,
             ),
+            onCopyUrl = {},
         )
     }
 }

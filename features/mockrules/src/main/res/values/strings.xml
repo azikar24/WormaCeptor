@@ -5,6 +5,9 @@
     <string name="mock_editor_title_edit">Edit Rule</string>
     <string name="mock_editor_back">Back</string>
     <string name="mock_editor_save">Save rule</string>
+    <string name="mock_editor_save_failed">Couldn\'t save rule. Try again.</string>
+    <string name="mock_editor_transaction_not_found">Transaction no longer exists. Starting from an empty rule.</string>
+    <string name="mock_editor_body_omitted">Response body is binary or too large and was not copied.</string>
 
     <string name="mock_editor_section_basic_info">Basic Info</string>
     <string name="mock_editor_section_request_matching">Request Matching</string>

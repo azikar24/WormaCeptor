@@ -48,6 +48,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,7 +88,7 @@ fun CrashDetailPagerScreen(
     val view = LocalView.current
 
     // Current crash index state with direction tracking
-    var currentCrashIndex by remember {
+    var currentCrashIndex by rememberSaveable {
         mutableIntStateOf(initialCrashIndex.coerceIn(0, (crashes.size - 1).coerceAtLeast(0)))
     }
     var navigationDirection by remember { mutableIntStateOf(0) } // -1 = prev, 1 = next, 0 = none
@@ -189,7 +190,7 @@ private fun CrashDetailContent(
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
     val stackFrames = remember(crash.stackTrace) {
-        CrashUtils.parseStackTrace(crash.stackTrace)
+        CrashUtils.parseStackTrace(crash.stackTrace, hostCodePackage(context))
     }
 
     Scaffold(
@@ -615,3 +616,10 @@ private fun CrashDetailScreenPreview() {
         )
     }
 }
+
+// applicationId can carry a suffix (".debug") that source packages don't, so prefer the Application class's package.
+private fun hostCodePackage(context: Context): String = context.applicationContext.javaClass.`package`?.name
+    ?.takeUnless { pkg -> pkg.isBlank() || FrameworkPackagePrefixes.any { pkg.startsWith(it) } }
+    ?: context.packageName
+
+private val FrameworkPackagePrefixes = listOf("android.", "androidx.", "kotlin.", "java.")

@@ -38,7 +38,6 @@ internal fun TypeFilterChips(
                 onClick = { onTypeSelected(if (selectedType == type) null else type) },
                 leadingIcon = type.icon,
                 modifier = Modifier.semantics { selected = isSelected },
-                accentColor = type.color,
             )
         }
     }

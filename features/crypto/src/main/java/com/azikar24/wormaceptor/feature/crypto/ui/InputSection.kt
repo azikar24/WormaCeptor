@@ -71,7 +71,6 @@ private fun EncryptDecryptButtons(
             onClick = { onEvent(CryptoViewEvent.Operation.Encrypt) },
             enabled = !isProcessing && inputText.isNotBlank() && config.key.isNotBlank(),
             loading = isProcessing,
-            containerColor = WormaCeptorTokens.Colors.Crypto.encrypt,
             modifier = Modifier.weight(1f),
         )
         WormaCeptorButton(
@@ -79,7 +78,6 @@ private fun EncryptDecryptButtons(
             onClick = { onEvent(CryptoViewEvent.Operation.Decrypt) },
             enabled = !isProcessing && inputText.isNotBlank() && config.key.isNotBlank(),
             loading = isProcessing,
-            containerColor = WormaCeptorTokens.Colors.Crypto.decrypt,
             modifier = Modifier.weight(1f),
         )
     }

@@ -1,12 +1,22 @@
 package com.azikar24.wormaceptor.feature.location
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -53,27 +63,9 @@ private fun LocationDestination(onBack: (() -> Unit)? = null) {
 
     val snackBarState = remember { androidx.compose.material3.SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val sendEvent = rememberLocationPermissionGate(context, viewModel::sendEvent)
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            when (event) {
-                Lifecycle.Event.ON_RESUME -> {
-                    viewModel.sendEvent(LocationViewEvent.RefreshMockLocationAvailability)
-                    viewModel.sendEvent(LocationViewEvent.StartRealLocationUpdates)
-                }
-                Lifecycle.Event.ON_PAUSE -> {
-                    viewModel.sendEvent(LocationViewEvent.StopRealLocationUpdates)
-                }
-                else -> {}
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-            viewModel.sendEvent(LocationViewEvent.StopRealLocationUpdates)
-        }
-    }
+    LocationLifecycleEffect(context = context, sendEvent = viewModel::sendEvent)
 
     BaseScreen(
         viewModel = viewModel,
@@ -83,7 +75,7 @@ private fun LocationDestination(onBack: (() -> Unit)? = null) {
                 is LocationViewEffect.ShowSuccess -> scope.launch { snackBarState.showSnackbar(effect.message) }
             }
         },
-    ) { state, onEvent ->
+    ) { state, _ ->
         val presets by viewModel.presets.collectAsState()
         val currentMockLocation by viewModel.currentMockLocation.collectAsState()
         val isMockEnabled by viewModel.isMockEnabled.collectAsState()
@@ -104,9 +96,90 @@ private fun LocationDestination(onBack: (() -> Unit)? = null) {
 
         LocationScreen(
             state = mergedState,
-            onEvent = onEvent,
+            onEvent = sendEvent,
             onBack = onBack,
             snackBarHostState = snackBarState,
         )
+    }
+}
+
+@Composable
+private fun LocationLifecycleEffect(
+    context: Context,
+    sendEvent: (LocationViewEvent) -> Unit,
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val currentSendEvent by rememberUpdatedState(sendEvent)
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_RESUME -> {
+                    currentSendEvent(LocationViewEvent.RefreshMockLocationAvailability)
+                    if (hasLocationPermission(context)) {
+                        currentSendEvent(LocationViewEvent.StartRealLocationUpdates)
+                    }
+                }
+                Lifecycle.Event.ON_PAUSE -> {
+                    currentSendEvent(LocationViewEvent.StopRealLocationUpdates)
+                }
+                else -> {}
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+            currentSendEvent(LocationViewEvent.StopRealLocationUpdates)
+        }
+    }
+}
+
+private val LocationPermissions = arrayOf(
+    Manifest.permission.ACCESS_FINE_LOCATION,
+    Manifest.permission.ACCESS_COARSE_LOCATION,
+)
+
+private fun hasLocationPermission(context: Context): Boolean = LocationPermissions.any {
+    ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+}
+
+/**
+ * Asks for location permission once on entry and returns an event sender that requests it before
+ * [LocationViewEvent.SetToCurrentRealLocation]. On denial the event still runs so the ViewModel
+ * reports the missing permission.
+ */
+@Composable
+private fun rememberLocationPermissionGate(
+    context: Context,
+    sendEvent: (LocationViewEvent) -> Unit,
+): (LocationViewEvent) -> Unit {
+    var pendingSetToCurrent by rememberSaveable { mutableStateOf(false) }
+    var initialRequestDone by rememberSaveable { mutableStateOf(false) }
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions(),
+    ) { results ->
+        if (results.values.any { it }) {
+            sendEvent(LocationViewEvent.StartRealLocationUpdates)
+        }
+        if (pendingSetToCurrent) {
+            pendingSetToCurrent = false
+            sendEvent(LocationViewEvent.SetToCurrentRealLocation)
+        }
+    }
+    val request: (Boolean) -> Unit = { setToCurrent ->
+        pendingSetToCurrent = setToCurrent
+        launcher.launch(LocationPermissions)
+    }
+    LaunchedEffect(Unit) {
+        if (!initialRequestDone && !hasLocationPermission(context)) {
+            initialRequestDone = true
+            request(false)
+        }
+    }
+    return { event ->
+        if (event is LocationViewEvent.SetToCurrentRealLocation && !hasLocationPermission(context)) {
+            request(true)
+        } else {
+            sendEvent(event)
+        }
     }
 }

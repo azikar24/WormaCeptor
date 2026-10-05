@@ -196,10 +196,14 @@ private fun TransactionDetailScaffold(
                 HorizontalPager(
                     state = tabPagerState,
                     modifier = Modifier.fillMaxSize(),
-                    beyondViewportPageCount = 2,
+                    beyondViewportPageCount = 1,
                 ) { page ->
                     when (page) {
-                        0 -> OverviewTab(transaction, Modifier.fillMaxSize())
+                        0 -> OverviewTab(
+                            transaction = transaction,
+                            onCopyUrl = { onEvent(TransactionDetailViewEvent.Overview.CopyUrl) },
+                            modifier = Modifier.fillMaxSize(),
+                        )
                         1 -> RequestTab(
                             transaction = transaction,
                             requestState = state.requestState,

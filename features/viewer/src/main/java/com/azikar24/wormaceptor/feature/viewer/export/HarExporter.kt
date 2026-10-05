@@ -44,12 +44,12 @@ object HarExporter {
      *
      * @param transactions the transactions to convert
      * @param version the WormaCeptor version string embedded in the creator field
-     * @param bodyProvider optional callback that resolves a blob reference to its content
+     * @param bodyProvider optional callback that resolves a blob reference to its raw bytes
      */
     fun toHarLog(
         transactions: List<NetworkTransaction>,
         version: String,
-        bodyProvider: (blobRef: String) -> String? = { null },
+        bodyProvider: (blobRef: String) -> ByteArray? = { null },
     ): HarLog {
         val entries = transactions.map { tx -> toHarEntry(tx, bodyProvider) }
         return HarLog(
@@ -67,9 +67,9 @@ object HarExporter {
 
     private fun toHarEntry(
         tx: NetworkTransaction,
-        bodyProvider: (String) -> String?,
+        bodyProvider: (String) -> ByteArray?,
     ): HarEntry {
-        val requestBody = tx.request.bodyRef?.let(bodyProvider)
+        val requestBody = tx.request.bodyRef?.let(bodyProvider)?.toString(Charsets.UTF_8)
         val responseBody = tx.response?.bodyRef?.let(bodyProvider)
 
         val httpVersion = tx.response?.protocol?.toHarHttpVersion() ?: DEFAULT_HTTP_VERSION
@@ -115,7 +115,7 @@ object HarExporter {
 
     private fun buildHarResponse(
         tx: NetworkTransaction,
-        body: String?,
+        body: ByteArray?,
         httpVersion: String,
     ): HarResponse {
         val response = tx.response
@@ -128,9 +128,9 @@ object HarExporter {
             size = response?.bodySize ?: 0,
             mimeType = contentType,
             text = if (isBinary && body != null) {
-                Base64.encodeToString(body.toByteArray(Charsets.UTF_8), Base64.NO_WRAP)
+                Base64.encodeToString(body, Base64.NO_WRAP)
             } else {
-                body
+                body?.toString(Charsets.UTF_8)
             },
             encoding = if (isBinary && body != null) "base64" else null,
         )

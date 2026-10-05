@@ -50,6 +50,7 @@ import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorBadge
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
+import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash
@@ -223,6 +224,13 @@ fun HomeScreen(
                             onCopyAsCurl = {
                                 onTransactionEvent(
                                     TransactionListViewEvent.CopyTransactionAsCurl(it.id),
+                                )
+                            },
+                            onAddToMock = {
+                                onHomeEvent(
+                                    HomeViewEvent.ToolNavigated(
+                                        WormaCeptorNavKeys.MockRuleEditor.createFromTransactionRoute(it.id.toString()),
+                                    ),
                                 )
                             },
                         ),

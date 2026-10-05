@@ -2,7 +2,9 @@ package com.azikar24.wormaceptor.feature.viewer.export
 
 import android.content.Context
 import android.content.Intent
+import com.azikar24.wormaceptor.core.ui.util.MAX_CLIPBOARD_SIZE
 import com.azikar24.wormaceptor.domain.entities.Crash
+import com.azikar24.wormaceptor.feature.viewer.ui.util.shareAsFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -30,8 +32,18 @@ suspend fun exportCrashes(
 
             val jsonContent = jsonArray.toString(2)
 
-            withContext(Dispatchers.Main) {
-                shareText(context, jsonContent, "WormaCeptor Crash Export", onMessage)
+            if (jsonContent.length > MAX_CLIPBOARD_SIZE) {
+                shareAsFile(
+                    context = context,
+                    content = jsonContent,
+                    fileName = "wormaceptor_crashes_${System.currentTimeMillis()}.json",
+                    mimeType = "application/json",
+                    onMessage = onMessage,
+                )
+            } else {
+                withContext(Dispatchers.Main) {
+                    shareText(context, jsonContent, "WormaCeptor Crash Export", onMessage)
+                }
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {

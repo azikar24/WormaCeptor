@@ -106,6 +106,8 @@ private fun TransactionPagerContent(
                 }
             },
             label = "transaction_transition",
+            // Live updates of the same transaction must not replay the slide animation.
+            contentKey = { (index, _) -> index },
         ) { (_, currentTransaction) ->
             when {
                 pagerState.isLoading -> {

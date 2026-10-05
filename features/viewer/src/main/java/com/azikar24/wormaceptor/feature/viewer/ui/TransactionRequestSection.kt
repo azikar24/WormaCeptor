@@ -34,9 +34,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.ContentType
@@ -79,6 +83,7 @@ internal fun RequestTab(
     // Pixel-based scrolling (rendering concerns stay local)
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+    val scrollAnchor = remember { BodyScrollAnchor() }
     val isScrolling = scrollState.value > 100
 
     // Get content type from headers for multipart boundary extraction
@@ -95,7 +100,7 @@ internal fun RequestTab(
 
         try {
             val lineNumber = layout.getLineForOffset(match.globalPosition)
-            val pixelOffset = layout.getLineTop(lineNumber).toInt()
+            val pixelOffset = scrollAnchor.bodyOffsetInColumn() + layout.getLineTop(lineNumber).toInt()
             scrollState.animateScrollTo(pixelOffset)
         } catch (_: Exception) {
             // Offset out of bounds, ignore
@@ -107,6 +112,7 @@ internal fun RequestTab(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
+                .onGloballyPositioned { scrollAnchor.column = it }
                 .padding(
                     start = WormaCeptorTokens.Spacing.lg,
                     top = WormaCeptorTokens.Spacing.lg,
@@ -168,11 +174,15 @@ internal fun RequestTab(
                             )
                         },
                     ) {
+                        val rawDisplayBody = requestState.displayRawBody ?: rawBody
                         val displayBody = if (isPrettyMode) {
-                            requestBody ?: requireNotNull(rawBody) { "Body must be available" }
+                            requestBody ?: requireNotNull(rawDisplayBody) { "Body must be available" }
                         } else {
-                            rawBody ?: requireNotNull(requestBody) { "Body must be available" }
+                            rawDisplayBody ?: requireNotNull(requestBody) { "Body must be available" }
                         }
+                        val bodyTextModifier = Modifier
+                            .fillMaxWidth()
+                            .onGloballyPositioned { scrollAnchor.body = it }
                         val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
                         val hasActiveSearch = searchQuery.isNotEmpty()
 
@@ -190,7 +200,7 @@ internal fun RequestTab(
                             }
                             val highlighter = try {
                                 val registry: HighlighterRegistry =
-                                    org.koin.java.KoinJavaComponent.get(HighlighterRegistry::class.java)
+                                    WormaCeptorKoin.get(HighlighterRegistry::class.java)
                                 registry.getHighlighter(language)
                             } catch (_: RuntimeException) {
                                 null
@@ -242,7 +252,7 @@ internal fun RequestTab(
                                             text = displayBody,
                                             query = searchQuery,
                                             currentMatchGlobalPos = currentMatchGlobalPos,
-                                            modifier = Modifier.fillMaxWidth(),
+                                            modifier = bodyTextModifier,
                                             syntaxHighlighted = syntaxHighlighted,
                                             onTextLayout = { textLayoutResult = it },
                                         )
@@ -256,11 +266,14 @@ internal fun RequestTab(
                                     text = displayBody,
                                     query = searchQuery,
                                     currentMatchGlobalPos = currentMatchGlobalPos,
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = bodyTextModifier,
                                     syntaxHighlighted = syntaxHighlighted,
                                     onTextLayout = { textLayoutResult = it },
                                 )
                             }
+                        }
+                        if (requestState.isRawBodyTruncated && (!isPrettyMode || requestBody == null)) {
+                            RawBodyTruncatedNote()
                         }
                     }
                 }
@@ -297,4 +310,29 @@ internal fun RequestTab(
             )
         }
     }
+}
+
+/**
+ * Holds the scroll column and body text coordinates so search navigation can add the body's
+ * offset (headers and section chrome above it) to a line position measured inside the body text.
+ */
+internal class BodyScrollAnchor {
+    var column: LayoutCoordinates? = null
+    var body: LayoutCoordinates? = null
+
+    fun bodyOffsetInColumn(): Int {
+        val columnCoordinates = column?.takeIf { it.isAttached } ?: return 0
+        val bodyCoordinates = body?.takeIf { it.isAttached } ?: return 0
+        return columnCoordinates.localPositionOf(bodyCoordinates, Offset.Zero).y.toInt()
+    }
+}
+
+@Composable
+internal fun RawBodyTruncatedNote(modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.viewer_body_raw_truncated, TruncatedDisplaySize),
+        style = MaterialTheme.typography.bodySmall,
+        color = WormaCeptorTokens.semantic().textSecondary,
+        modifier = modifier.padding(top = WormaCeptorTokens.Spacing.sm),
+    )
 }

@@ -14,7 +14,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,10 +41,12 @@ internal fun MockRuleEditorContent(
     onEvent: (MockRulesViewEvent) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets(0),
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             WormaCeptorTopBar(
                 title = stringResource(
@@ -105,7 +110,8 @@ private fun EditorFormBody(
         )
 
         ResponseSection(
-            statusCode = state.statusCode,
+            statusCodeText = state.statusCodeText,
+            isStatusCodeValid = state.isStatusCodeValid,
             statusMessage = state.statusMessage,
             contentType = state.contentType,
             responseBody = state.responseBody,
@@ -152,7 +158,7 @@ private fun MockRuleEditorEditPreview() {
                 urlPattern = "https://api.example.com/login",
                 matchType = UrlMatchType.PREFIX,
                 method = "POST",
-                statusCode = 500,
+                statusCodeText = "500",
                 statusMessage = "Internal Server Error",
                 responseBody = "{\"error\": \"Something went wrong\"}",
                 delayType = DelayType.FIXED,

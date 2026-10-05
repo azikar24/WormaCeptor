@@ -118,6 +118,7 @@ private fun TransactionListContent(
                 onShareAsHar = { itemActions.onShareAsHar(transaction) },
                 onDelete = { itemActions.onDelete(transaction) },
                 onCopyAsCurl = { itemActions.onCopyAsCurl(transaction) },
+                onAddToMock = { itemActions.onAddToMock(transaction) },
                 modifier = Modifier.animateItem(),
             )
         }

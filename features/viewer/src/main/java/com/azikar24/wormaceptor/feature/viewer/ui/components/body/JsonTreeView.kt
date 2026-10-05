@@ -20,12 +20,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,7 +41,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.ComposeSyntaxColors
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
 /**
@@ -54,18 +59,11 @@ fun JsonTreeView(
     maxDepth: Int = 10,
     colors: ComposeSyntaxColors = WormaCeptorTokens.syntax(),
 ) {
-    val json = remember(jsonString) {
-        try {
-            val trimmed = jsonString.trim()
-            when {
-                trimmed.startsWith("{") -> JSONObject(trimmed)
-                trimmed.startsWith("[") -> JSONArray(trimmed)
-                else -> null
-            }
-        } catch (e: Exception) {
-            null
-        }
+    val parseResult by produceState<JsonParseResult>(JsonParseResult.Parsing, jsonString) {
+        value = JsonParseResult.Parsing
+        value = withContext(Dispatchers.Default) { parseJson(jsonString) }
     }
+    val json = (parseResult as? JsonParseResult.Parsed)?.json
 
     Box(
         modifier = modifier
@@ -73,7 +71,9 @@ fun JsonTreeView(
             .background(colors.codeBackground, WormaCeptorTokens.Shapes.chip)
             .padding(WormaCeptorTokens.Spacing.sm),
     ) {
-        if (json != null) {
+        if (parseResult == JsonParseResult.Parsing) {
+            CircularProgressIndicator(modifier = Modifier.size(WormaCeptorTokens.IconSize.lg))
+        } else if (json != null) {
             SelectionContainer {
                 Column(
                     modifier = Modifier
@@ -108,6 +108,25 @@ fun JsonTreeView(
                 color = colors.default,
             )
         }
+    }
+}
+
+private sealed class JsonParseResult {
+    data object Parsing : JsonParseResult()
+    data object Failed : JsonParseResult()
+    class Parsed(val json: Any) : JsonParseResult()
+}
+
+private fun parseJson(jsonString: String): JsonParseResult {
+    val trimmed = jsonString.trim()
+    return try {
+        when {
+            trimmed.startsWith("{") -> JsonParseResult.Parsed(JSONObject(trimmed))
+            trimmed.startsWith("[") -> JsonParseResult.Parsed(JSONArray(trimmed))
+            else -> JsonParseResult.Failed
+        }
+    } catch (_: JSONException) {
+        JsonParseResult.Failed
     }
 }
 

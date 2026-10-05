@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.core.engine.QueryEngine
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.contracts.ImageMetadataExtractor
@@ -13,6 +14,7 @@ import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.feature.viewer.FormatHeadersUseCase
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.MatchInfo
+import com.azikar24.wormaceptor.feature.viewer.ui.capRawBodyForDisplay
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isImageData
 import com.azikar24.wormaceptor.feature.viewer.ui.components.isPdfContent
@@ -21,11 +23,13 @@ import com.azikar24.wormaceptor.feature.viewer.ui.isProtobufContentType
 import com.azikar24.wormaceptor.feature.viewer.ui.parseBodyViaRegistry
 import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
 import com.azikar24.wormaceptor.feature.viewer.ui.util.getFileInfoForContentType
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 /**
  * MVI ViewModel for the transaction detail screen.
@@ -36,6 +40,8 @@ import kotlinx.coroutines.withContext
  */
 internal class TransactionDetailViewModel(
     private val queryEngine: QueryEngine,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : BaseViewModel<TransactionDetailViewState, TransactionDetailViewEffect, TransactionDetailViewEvent, NoOpNavigator>(
     TransactionDetailViewState(),
     NoOpNavigator,
@@ -43,12 +49,15 @@ internal class TransactionDetailViewModel(
 
     private val formatHeaders = FormatHeadersUseCase()
     private var searchDebounceJob: Job? = null
+    private var requestBodyJob: Job? = null
+    private var responseBodyJob: Job? = null
 
     override fun handleEvent(event: TransactionDetailViewEvent) {
         when (event) {
             is TransactionDetailViewEvent.Lifecycle -> handleLifecycleEvent(event)
             is TransactionDetailViewEvent.Search -> handleSearchEvent(event)
             is TransactionDetailViewEvent.Menu -> handleMenuEvent(event)
+            is TransactionDetailViewEvent.Overview.CopyUrl -> handleCopyUrl()
             is TransactionDetailViewEvent.Request -> handleRequestEvent(event)
             is TransactionDetailViewEvent.Response -> handleResponseEvent(event)
             is TransactionDetailViewEvent.ShowMessage ->
@@ -84,6 +93,7 @@ internal class TransactionDetailViewModel(
             is TransactionDetailViewEvent.Menu.CopyAsCurl -> handleCopyAsCurl()
             is TransactionDetailViewEvent.Menu.ShareAsJson -> handleExport(ExportFormat.JSON)
             is TransactionDetailViewEvent.Menu.ShareAsHar -> handleExport(ExportFormat.HAR)
+            is TransactionDetailViewEvent.Menu.AddToMockRules -> handleAddToMockRules()
         }
     }
 
@@ -123,6 +133,16 @@ internal class TransactionDetailViewModel(
     }
 
     private fun handleTransactionLoaded(transaction: NetworkTransaction) {
+        val current = uiState.value.transaction
+        if (current?.id == transaction.id) {
+            // Same transaction re-delivered (config change or in-flight update): keep tab, search, and
+            // loaded bodies; reload only the sections whose blob changed.
+            updateState { copy(transaction = transaction) }
+            if (transaction.request.bodyRef != current.request.bodyRef) loadRequestBody(transaction)
+            if (transaction.response?.bodyRef != current.response?.bodyRef) loadResponseBody(transaction)
+            return
+        }
+        searchDebounceJob?.cancel()
         updateState {
             TransactionDetailViewState(transaction = transaction)
         }
@@ -130,138 +150,150 @@ internal class TransactionDetailViewModel(
         loadResponseBody(transaction)
     }
 
+    private fun updateRequestState(
+        transactionId: UUID,
+        reducer: BodySectionState.() -> BodySectionState,
+    ) {
+        updateState {
+            if (transaction?.id == transactionId) copy(requestState = requestState.reducer()) else this
+        }
+    }
+
+    private fun updateResponseState(
+        transactionId: UUID,
+        reducer: BodySectionState.() -> BodySectionState,
+    ) {
+        updateState {
+            if (transaction?.id == transactionId) copy(responseState = responseState.reducer()) else this
+        }
+    }
+
     private fun loadRequestBody(transaction: NetworkTransaction) {
+        requestBodyJob?.cancel()
         val blobId = transaction.request.bodyRef ?: return
-        updateState { copy(requestState = requestState.copy(isLoading = true)) }
+        val transactionId = transaction.id
+        updateRequestState(transactionId) { copy(isLoading = true) }
 
         val requestContentType = transaction.request.headers.entries
             .firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
             ?.value?.firstOrNull()
 
-        viewModelScope.launch {
-            val bytes = withContext(Dispatchers.IO) {
+        requestBodyJob = viewModelScope.launch {
+            val bytes = withContext(ioDispatcher) {
                 queryEngine.getBodyBytes(blobId)
             }
 
             if (bytes != null && isProtobufContentType(requestContentType)) {
-                updateState {
+                updateRequestState(transactionId) {
                     copy(
-                        requestState = requestState.copy(
-                            rawBodyBytes = bytes,
-                            parsedContentType = ContentType.PROTOBUF,
-                            isLoading = false,
-                        ),
+                        rawBodyBytes = bytes,
+                        parsedContentType = ContentType.PROTOBUF,
+                        isLoading = false,
                     )
                 }
             } else if (bytes != null) {
-                val raw = String(bytes, Charsets.UTF_8)
-                val result = withContext(Dispatchers.Default) {
-                    parseBodyViaRegistry(requestContentType, bytes, raw)
-                }
-                updateState {
-                    copy(
-                        requestState = requestState.copy(
-                            parsedBody = result.first,
-                            rawBody = raw,
-                            rawBodyBytes = bytes,
-                            parsedContentType = result.second,
-                            isLoading = false,
-                        ),
-                    )
-                }
+                val text = withContext(defaultDispatcher) { parseTextBody(requestContentType, bytes) }
+                updateRequestState(transactionId) { withTextBody(text, bytes) }
             } else {
-                updateState {
-                    copy(requestState = requestState.copy(isLoading = false))
-                }
+                updateRequestState(transactionId) { copy(isLoading = false) }
             }
         }
     }
 
     private fun loadResponseBody(transaction: NetworkTransaction) {
+        responseBodyJob?.cancel()
         val blobId = transaction.response?.bodyRef ?: return
-        updateState { copy(responseState = responseState.copy(isLoading = true)) }
+        val transactionId = transaction.id
+        updateResponseState(transactionId) { copy(isLoading = true) }
 
         val contentType = transaction.response?.headers?.entries
             ?.firstOrNull { it.key.equals("Content-Type", ignoreCase = true) }
             ?.value?.firstOrNull()
 
-        viewModelScope.launch {
-            val bytes = withContext(Dispatchers.IO) {
+        responseBodyJob = viewModelScope.launch {
+            val bytes = withContext(ioDispatcher) {
                 queryEngine.getBodyBytes(blobId)
             }
 
             when {
                 bytes != null && (isImageContentType(contentType) || isImageData(bytes)) -> {
-                    val metadata = withContext(Dispatchers.Default) {
+                    val metadata = withContext(defaultDispatcher) {
                         try {
                             val extractor: ImageMetadataExtractor =
-                                org.koin.java.KoinJavaComponent.get(ImageMetadataExtractor::class.java)
+                                WormaCeptorKoin.get(ImageMetadataExtractor::class.java)
                             val meta = extractor.extractMetadata(bytes)
                             if (meta.width > 0 && meta.height > 0) meta else null
                         } catch (_: Exception) {
                             null
                         }
                     }
-                    updateState {
+                    updateResponseState(transactionId) {
                         copy(
-                            responseState = responseState.copy(
-                                rawBodyBytes = bytes,
-                                imageMetadata = metadata,
-                                isLoading = false,
-                            ),
+                            rawBodyBytes = bytes,
+                            imageMetadata = metadata,
+                            isLoading = false,
                         )
                     }
                 }
 
                 bytes != null && isPdfContent(contentType, bytes) -> {
-                    updateState {
+                    updateResponseState(transactionId) {
                         copy(
-                            responseState = responseState.copy(
-                                rawBodyBytes = bytes,
-                                isLoading = false,
-                            ),
+                            rawBodyBytes = bytes,
+                            isLoading = false,
                         )
                     }
                 }
 
                 bytes != null && isProtobufContentType(contentType) -> {
-                    updateState {
+                    updateResponseState(transactionId) {
                         copy(
-                            responseState = responseState.copy(
-                                rawBodyBytes = bytes,
-                                parsedContentType = ContentType.PROTOBUF,
-                                isLoading = false,
-                            ),
+                            rawBodyBytes = bytes,
+                            parsedContentType = ContentType.PROTOBUF,
+                            isLoading = false,
                         )
                     }
                 }
 
                 bytes != null -> {
-                    val raw = String(bytes, Charsets.UTF_8)
-                    val result = withContext(Dispatchers.Default) {
-                        parseBodyViaRegistry(contentType, bytes, raw)
-                    }
-                    updateState {
-                        copy(
-                            responseState = responseState.copy(
-                                parsedBody = result.first,
-                                rawBody = raw,
-                                rawBodyBytes = bytes,
-                                parsedContentType = result.second,
-                                isLoading = false,
-                            ),
-                        )
-                    }
+                    val text = withContext(defaultDispatcher) { parseTextBody(contentType, bytes) }
+                    updateResponseState(transactionId) { withTextBody(text, bytes) }
                 }
 
                 else -> {
-                    updateState {
-                        copy(responseState = responseState.copy(isLoading = false))
-                    }
+                    updateResponseState(transactionId) { copy(isLoading = false) }
                 }
             }
         }
     }
+
+    private data class ParsedTextBody(
+        val parsed: String,
+        val contentType: ContentType,
+        val raw: String,
+        val displayRaw: String,
+    )
+
+    private fun parseTextBody(
+        contentType: String?,
+        bytes: ByteArray,
+    ): ParsedTextBody {
+        val raw = String(bytes, Charsets.UTF_8)
+        val (parsed, detected) = parseBodyViaRegistry(contentType, bytes, raw)
+        return ParsedTextBody(parsed, detected, raw, capRawBodyForDisplay(raw))
+    }
+
+    private fun BodySectionState.withTextBody(
+        text: ParsedTextBody,
+        bytes: ByteArray,
+    ) = copy(
+        parsedBody = text.parsed,
+        rawBody = text.raw,
+        displayRawBody = text.displayRaw,
+        rawBodyBytes = bytes,
+        parsedContentType = text.contentType,
+        isLoading = false,
+    )
 
     private fun handleSearchVisibilityChanged(visible: Boolean) {
         if (visible) {
@@ -316,20 +348,20 @@ internal class TransactionDetailViewModel(
             return
         }
 
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(defaultDispatcher) {
             val state = uiState.value
 
             val requestMatches = findMatchesInBody(
                 query = query,
                 parsedBody = state.requestState.parsedBody,
-                rawBody = state.requestState.rawBody,
+                rawBody = state.requestState.displayRawBody,
                 isPrettyMode = state.requestState.isPrettyMode,
             )
 
             val responseMatches = findMatchesInBody(
                 query = query,
                 parsedBody = state.responseState.parsedBody,
-                rawBody = state.responseState.rawBody,
+                rawBody = state.responseState.displayRawBody,
                 isPrettyMode = state.responseState.isPrettyMode,
             )
 
@@ -384,6 +416,8 @@ internal class TransactionDetailViewModel(
     }
 
     private fun handleActiveTabChanged(tabIndex: Int) {
+        // Re-sent with the same index after recreation; must not close an open search.
+        if (tabIndex == uiState.value.activeTabIndex) return
         updateState { copy(activeTabIndex = tabIndex) }
         // Close search when switching tabs (matches existing behavior)
         if (uiState.value.showSearch) {
@@ -526,7 +560,7 @@ internal class TransactionDetailViewModel(
         val transaction = uiState.value.transaction ?: return
 
         viewModelScope.launch {
-            val (requestBody, responseBody) = withContext(Dispatchers.IO) {
+            val (requestBody, responseBody) = withContext(ioDispatcher) {
                 val reqBody = transaction.request.bodyRef?.let { queryEngine.getBody(it) }
                 val resBody = transaction.response?.bodyRef?.let { queryEngine.getBody(it) }
                 reqBody to resBody
@@ -546,7 +580,7 @@ internal class TransactionDetailViewModel(
         val transaction = uiState.value.transaction ?: return
 
         viewModelScope.launch {
-            val body = withContext(Dispatchers.IO) {
+            val body = withContext(ioDispatcher) {
                 transaction.request.bodyRef?.let { queryEngine.getBody(it) }
             }
             val curl = CurlGenerator.generate(
@@ -562,6 +596,19 @@ internal class TransactionDetailViewModel(
                 ),
             )
         }
+    }
+
+    private fun handleCopyUrl() {
+        val url = uiState.value.transaction?.request?.url ?: return
+        emitEffect(
+            TransactionDetailViewEffect.Clipboard.CopyText(labelResId = R.string.viewer_clipboard_url, content = url),
+        )
+    }
+
+    private fun handleAddToMockRules() {
+        updateState { copy(showMenu = false) }
+        val transaction = uiState.value.transaction ?: return
+        emitEffect(TransactionDetailViewEffect.Navigate.AddToMockRules(transaction.id))
     }
 
     private fun handleExport(format: ExportFormat) {

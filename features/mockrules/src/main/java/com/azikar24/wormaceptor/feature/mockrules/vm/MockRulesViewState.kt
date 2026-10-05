@@ -19,7 +19,8 @@ data class EditorState(
     val urlPattern: String = "",
     val matchType: UrlMatchType = UrlMatchType.PREFIX,
     val method: String = "",
-    val statusCode: Int = 200,
+    /** Raw status code input; kept as text so the field can be cleared while editing. */
+    val statusCodeText: String = "200",
     val statusMessage: String = "OK",
     val contentType: String = "application/json",
     val responseBody: String = "",
@@ -30,6 +31,16 @@ data class EditorState(
     val isEditing: Boolean = false,
     val isLoaded: Boolean = false,
     val methodDropdownExpanded: Boolean = false,
+    /** True while a save is in flight; further save requests are ignored. */
+    val isSaving: Boolean = false,
 ) {
-    val isValid: Boolean get() = name.isNotBlank() && urlPattern.isNotBlank()
+    /** Whether [statusCodeText] is an HTTP status code in the 100..599 range. */
+    val isStatusCodeValid: Boolean
+        get() = statusCodeText.toIntOrNull()?.let { it in MinStatusCode..MaxStatusCode } == true
+
+    /** Whether the editor holds enough valid input to save the rule. */
+    val isValid: Boolean get() = name.isNotBlank() && urlPattern.isNotBlank() && isStatusCodeValid
 }
+
+private const val MinStatusCode = 100
+private const val MaxStatusCode = 599

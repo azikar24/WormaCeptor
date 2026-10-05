@@ -64,14 +64,14 @@ internal fun CollapsibleSection(
                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = if (isExpanded) "Collapse" else "Expand",
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
-                    tint = WormaCeptorTokens.semantic().accent,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                 )
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.SemiBold,
                     ),
-                    color = WormaCeptorTokens.semantic().accent,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
             }
 
@@ -146,7 +146,7 @@ internal fun DetailRow(
         Text(
             text = "$label: ",
             style = MaterialTheme.typography.bodyMedium,
-            color = WormaCeptorTokens.semantic().accent,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
         SelectionContainer {
             Text(text = value, style = MaterialTheme.typography.bodyMedium)

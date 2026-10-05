@@ -36,6 +36,14 @@ class MockRulesNavigationContributor : FeatureNavigationContributor {
                     navController = navController,
                 )
             }
+            composable(WormaCeptorNavKeys.MockRuleEditor.fromTransactionRoute) { backStackEntry ->
+                MockRuleEditorDestination(
+                    ruleId = null,
+                    backStackEntry = backStackEntry,
+                    navController = navController,
+                    transactionId = backStackEntry.arguments?.getString("transactionId"),
+                )
+            }
         }
     }
 }

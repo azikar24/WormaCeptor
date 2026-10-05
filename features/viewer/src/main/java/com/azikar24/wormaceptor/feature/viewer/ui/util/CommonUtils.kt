@@ -169,22 +169,6 @@ fun extractUrlPath(url: String): String {
     }
 }
 
-/**
- * Builds a full URL from host and path components.
- *
- * @param host The host name
- * @param path The path
- * @param scheme The URL scheme (default: https)
- * @return The complete URL string
- */
-fun buildFullUrl(
-    host: String,
-    path: String,
-    scheme: String = "https",
-): String {
-    return "$scheme://$host$path"
-}
-
 // ============================================================================
 // STATUS COLOR UTILITIES
 // ============================================================================

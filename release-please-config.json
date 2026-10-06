@@ -20,6 +20,18 @@
         {
           "type": "generic",
           "path": "gradle/libs.versions.toml"
+        },
+        {
+          "type": "generic",
+          "path": "README.md"
+        },
+        {
+          "type": "generic",
+          "path": "docs/migration/from-chucker.md"
+        },
+        {
+          "type": "generic",
+          "path": "docs/migration/from-flipper.md"
         }
       ],
       "changelog-sections": [

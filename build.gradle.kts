@@ -70,6 +70,8 @@ apiValidation {
             "app",
             "test",
             "architecture",
+            // CLI application, no library API
+            "bridge",
         )
     nonPublicMarkers +=
         listOf(

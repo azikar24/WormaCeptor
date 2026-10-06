@@ -22,6 +22,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.named<Jar>("jar") {
     manifest {
         attributes["Main-Class"] = "com.azikar24.wormaceptor.mcp.bridge.MainKt"
+        attributes["Implementation-Version"] = providers.gradleProperty("VERSION_NAME").get()
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })

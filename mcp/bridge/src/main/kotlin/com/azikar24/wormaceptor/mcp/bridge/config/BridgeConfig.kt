@@ -1,5 +1,7 @@
 package com.azikar24.wormaceptor.mcp.bridge.config
 
+import com.azikar24.wormaceptor.mcp.bridge.mcp.McpProtocol
+
 internal data class BridgeConfig(
     val port: Int = 8999,
     val deviceSerial: String? = null,
@@ -24,7 +26,7 @@ internal data class BridgeConfig(
                     "--verbose", "-v" -> verbose = true
                     "--token" -> authToken = iter.next()
                     "--version" -> {
-                        System.err.println("wormaceptor-bridge 1.0.0")
+                        System.err.println("wormaceptor-bridge ${McpProtocol.SERVER_VERSION}")
                         kotlin.system.exitProcess(0)
                     }
                     "--help", "-h" -> {

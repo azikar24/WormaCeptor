@@ -1,22 +1,17 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    id("wormaceptor.android.library")
+    id("wormaceptor.publishing")
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.azikar24.wormaceptor.mcp.server"
-    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+        buildConfigField("String", "VERSION_NAME", "\"${providers.gradleProperty("VERSION_NAME").get()}\"")
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
+    buildFeatures {
+        buildConfig = true
     }
     packaging {
         resources {
@@ -47,7 +42,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.kotlin.serialization)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
+    testImplementation(libs.ktor.client.websockets)
 }

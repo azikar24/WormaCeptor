@@ -4,6 +4,7 @@ import com.azikar24.wormaceptor.mcp.bridge.adb.AdbClient
 import com.azikar24.wormaceptor.mcp.bridge.adb.DeviceDiscovery
 import com.azikar24.wormaceptor.mcp.bridge.config.BridgeConfig
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
+import com.azikar24.wormaceptor.mcp.bridge.mcp.McpProtocol
 import com.azikar24.wormaceptor.mcp.bridge.mcp.McpServer
 import com.azikar24.wormaceptor.mcp.bridge.mcp.tools.ToolRegistry
 import kotlinx.coroutines.CancellationException
@@ -12,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 fun main(args: Array<String>) {
     val config = BridgeConfig.fromArgs(args)
 
-    System.err.println("WormaCeptor MCP Bridge v1.0.0")
+    System.err.println("WormaCeptor MCP Bridge v${McpProtocol.SERVER_VERSION}")
     if (config.verbose) {
         System.err.println("Config: port=${config.port}, device=${config.deviceSerial ?: "auto"}")
     }
@@ -38,12 +39,11 @@ fun main(args: Array<String>) {
         val connection = DeviceConnection(config, adbClient)
         try {
             connection.connect()
-        } catch (e: Exception) {
-            if (e is CancellationException) throw e
-            System.err.println("Error: ${e.message}")
-            kotlin.system.exitProcess(1)
+            System.err.println("Connected to WormaCeptor server")
+        } catch (e: IllegalStateException) {
+            // The app may not be running yet; tool calls reconnect on demand.
+            System.err.println("Warning: ${e.message}")
         }
-        System.err.println("Connected to WormaCeptor server")
 
         Runtime.getRuntime().addShutdownHook(
             Thread {

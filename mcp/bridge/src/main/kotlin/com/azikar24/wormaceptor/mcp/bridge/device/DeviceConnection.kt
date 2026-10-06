@@ -43,27 +43,26 @@ internal class DeviceConnection(
         throw IllegalStateException(errorMsg)
     }
 
-    suspend fun reconnect(maxRetries: Int = MAX_RETRY_ATTEMPTS) {
+    /** Re-creates the port forward and health-checks with exponential backoff. Returns whether it reconnected. */
+    suspend fun reconnect(maxRetries: Int = RECONNECT_ATTEMPTS): Boolean {
         var retryDelay = INITIAL_RETRY_DELAY_MS
-        var attempt = 1
-        while (attempt <= maxRetries) {
+        for (attempt in 1..maxRetries) {
             _state.value = ConnectionState.Reconnecting(attempt, retryDelay)
-            System.err.println("Reconnecting (attempt $attempt/$maxRetries, next retry in ${retryDelay}ms)...")
-            delay(retryDelay)
-            try {
-                adbClient.forwardPort(config.deviceSerial, config.port, config.port)
-                connect()
-                return
-            } catch (e: Exception) {
-                if (e is CancellationException) throw e
-                retryDelay = (retryDelay * 2).coerceAtMost(MAX_RETRY_DELAY_MS)
-                attempt++
+            System.err.println("Reconnecting (attempt $attempt/$maxRetries)...")
+            adbClient.forwardPort(config.deviceSerial, config.port, config.port)
+            if (apiClient.healthCheck()) {
+                _state.value = ConnectionState.Connected
+                System.err.println("Reconnected to WormaCeptor server")
+                return true
             }
+            delay(retryDelay)
+            retryDelay = (retryDelay * 2).coerceAtMost(MAX_RETRY_DELAY_MS)
         }
 
         val errorMsg = "Reconnection failed after $maxRetries attempts"
         System.err.println(errorMsg)
         _state.value = ConnectionState.Error(errorMsg)
+        return false
     }
 
     fun close() {
@@ -76,6 +75,7 @@ internal class DeviceConnection(
         internal const val INITIAL_RETRY_DELAY_MS = 1_000L
         internal const val MAX_RETRY_DELAY_MS = 30_000L
         internal const val MAX_RETRY_ATTEMPTS = 20
+        internal const val RECONNECT_ATTEMPTS = 4
         internal const val HEALTH_CHECK_TIMEOUT_MS = 500L
     }
 }

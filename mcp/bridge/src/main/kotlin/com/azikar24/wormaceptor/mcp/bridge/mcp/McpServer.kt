@@ -16,6 +16,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
+import java.io.IOException
 
 internal class McpServer(
     private val connection: DeviceConnection,
@@ -98,7 +99,13 @@ internal class McpServer(
             ?: return errorResponse(request.id, "Unknown tool: $toolName")
 
         return try {
-            val result = tool.execute(arguments, connection)
+            val result = try {
+                tool.execute(arguments, connection)
+            } catch (e: IOException) {
+                // App restarted or the adb forward dropped: re-forward once, then retry the call.
+                if (!connection.reconnect()) throw e
+                tool.execute(arguments, connection)
+            }
             JsonRpcResponse(
                 id = request.id,
                 result = buildJsonObject {

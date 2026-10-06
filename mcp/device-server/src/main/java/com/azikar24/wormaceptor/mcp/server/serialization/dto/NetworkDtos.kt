@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 internal data class TransactionSummaryDto(
     val id: String,
     val method: String,
+    val url: String,
     val host: String,
     val path: String,
     val code: Int?,

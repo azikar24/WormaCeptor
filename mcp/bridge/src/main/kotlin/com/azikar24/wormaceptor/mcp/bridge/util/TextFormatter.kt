@@ -16,13 +16,13 @@ internal object TextFormatter {
         if (transactions.isEmpty()) return "No transactions captured."
         val sb = StringBuilder()
         sb.appendLine("Found ${transactions.size} transaction(s):\n")
-        sb.appendLine("| # | Method | URL | Status | Duration | Time |")
-        sb.appendLine("|---|--------|-----|--------|----------|------|")
+        sb.appendLine("| # | ID | Method | URL | Status | Duration | Time |")
+        sb.appendLine("|---|----|--------|-----|--------|----------|------|")
         transactions.forEachIndexed { i, tx ->
             val o = tx.jsonObject
             sb.appendLine(
-                "| ${i + 1} | ${o.str("method")} | ${o.str("url")} " +
-                    "| ${o.str("statusCode")} | ${o.str("durationMs")}ms | ${o.str("timestamp")} |",
+                "| ${i + 1} | ${o.str("id")} | ${o.str("method")} | ${o.str("url")} " +
+                    "| ${o.str("code")} | ${o.str("tookMs")}ms | ${o.str("timestamp")} |",
             )
         }
         return sb.toString()
@@ -30,21 +30,24 @@ internal object TextFormatter {
 
     fun formatTransactionDetail(tx: JsonObject): String {
         val sb = StringBuilder()
+        val request = tx.objectOrNull("request")
+        val response = tx.objectOrNull("response")
         sb.appendLine("Transaction: ${tx.str("id")}")
-        sb.appendLine("Method: ${tx.str("method")}")
-        sb.appendLine("URL: ${tx.str("url")}")
-        sb.appendLine("Status: ${tx.str("statusCode")}")
+        sb.appendLine("Method: ${request?.str("method") ?: "N/A"}")
+        sb.appendLine("URL: ${request?.str("url") ?: "N/A"}")
+        sb.appendLine("Status: ${response?.let { "${it.str("code")} ${it.str("message")}" } ?: tx.str("status")}")
         sb.appendLine("Duration: ${tx.str("durationMs")}ms")
-        tx.strOrNull("protocol")?.let { sb.appendLine("Protocol: $it") }
-        tx.strOrNull("tlsVersion")?.let { sb.appendLine("TLS: $it") }
+        response?.strOrNull("protocol")?.let { sb.appendLine("Protocol: $it") }
+        response?.strOrNull("tlsVersion")?.let { sb.appendLine("TLS: $it") }
+        response?.strOrNull("error")?.let { sb.appendLine("Error: $it") }
         sb.appendLine()
 
-        tx["requestHeaders"]?.jsonObject?.let { headers ->
+        request?.objectOrNull("headers")?.let { headers ->
             sb.appendLine("Request Headers:")
             headers.forEach { (k, v) -> sb.appendLine("  $k: ${v.content()}") }
             sb.appendLine()
         }
-        tx["responseHeaders"]?.jsonObject?.let { headers ->
+        response?.objectOrNull("headers")?.let { headers ->
             sb.appendLine("Response Headers:")
             headers.forEach { (k, v) -> sb.appendLine("  $k: ${v.content()}") }
         }
@@ -59,7 +62,7 @@ internal object TextFormatter {
     ): String {
         val sb = StringBuilder()
         if (contentType != null) sb.appendLine("Content-Type: $contentType")
-        if (totalSize != null) sb.appendLine("Size: $totalSize bytes")
+        if (totalSize != null) sb.appendLine("Size: $totalSize characters")
         if (truncated) sb.appendLine("[TRUNCATED]")
         sb.appendLine()
         sb.append(body)
@@ -90,7 +93,10 @@ internal object TextFormatter {
     }
 
     fun formatLogEntries(logs: JsonArray): String {
-        if (logs.isEmpty()) return "No log entries found."
+        if (logs.isEmpty()) {
+            return "No log entries found. Capture starts with the first tail_logs call and records entries " +
+                "logged after that; trigger the flow again, then retry."
+        }
         return logs.joinToString("\n") { entry ->
             val o = entry.jsonObject
             "${o.str("timestamp")} ${o.str("level")}/${o.str("tag")}: ${o.str("message")}"
@@ -111,7 +117,10 @@ internal object TextFormatter {
             sb.appendLine("  Native: ${mem.str("nativeHeapAllocated")} bytes allocated")
             sb.appendLine()
         }
-        data["fps"]?.jsonObject?.let { fps ->
+        if (data.strOrNull("fpsMonitoring") == "false") {
+            sb.appendLine("FPS: monitoring is off (open the FPS tool or performance overlay to sample)")
+        }
+        data.objectOrNull("fps")?.takeIf { data.strOrNull("fpsMonitoring") != "false" }?.let { fps ->
             sb.appendLine(
                 "FPS: ${fps.str("currentFps")} (avg: ${fps.str("averageFps")}, " +
                     "min: ${fps.str("minFps")}, max: ${fps.str("maxFps")})",
@@ -127,8 +136,7 @@ internal object TextFormatter {
         sb.appendLine("Found ${databases.size} database(s):\n")
         databases.forEachIndexed { i, db ->
             val o = db.jsonObject
-            val tableCount = o["tables"]?.jsonArray?.size ?: "?"
-            sb.appendLine("${i + 1}. ${o.str("name")} (${o.str("size")} bytes, tables: $tableCount)")
+            sb.appendLine("${i + 1}. ${o.str("name")} (${o.str("sizeBytes")} bytes, tables: ${o.str("tableCount")})")
         }
         return sb.toString()
     }
@@ -154,7 +162,7 @@ internal object TextFormatter {
         val sb = StringBuilder()
         prefs.forEach { file ->
             val o = file.jsonObject
-            sb.appendLine("File: ${o.str("fileName")}")
+            sb.appendLine("File: ${o.str("name")}")
             o["entries"]?.jsonArray?.forEach { entry ->
                 val e = entry.jsonObject
                 sb.appendLine("  ${e.str("key")} = ${e.str("value")} (${e.str("type")})")
@@ -180,7 +188,8 @@ internal object TextFormatter {
         files.forEach { f ->
             val o = f.jsonObject
             val type = if (o["isDirectory"]?.jsonPrimitive?.boolean == true) "DIR " else "FILE"
-            sb.appendLine("[$type] ${o.str("name")}  (${o.str("size")} bytes)")
+            val size = if (type == "FILE") "  (${o.str("sizeBytes")} bytes)" else ""
+            sb.appendLine("[$type] ${o.str("name")}$size  ${o.str("path")}")
         }
         return sb.toString()
     }
@@ -203,6 +212,8 @@ internal object TextFormatter {
     private fun JsonObject.str(key: String): String = this[key]?.jsonPrimitive?.contentOrNull ?: "N/A"
 
     private fun JsonObject.strOrNull(key: String): String? = this[key]?.jsonPrimitive?.contentOrNull
+
+    private fun JsonObject.objectOrNull(key: String): JsonObject? = this[key] as? JsonObject
 
     private fun JsonElement.content(): String = when (this) {
         is JsonPrimitive -> contentOrNull ?: "null"

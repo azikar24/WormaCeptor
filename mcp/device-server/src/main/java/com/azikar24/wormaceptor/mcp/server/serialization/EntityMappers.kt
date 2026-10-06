@@ -96,6 +96,7 @@ private val SENSITIVE_HEADERS = setOf(
 internal fun TransactionSummary.toDto() = TransactionSummaryDto(
     id = id.toString(),
     method = method,
+    url = url.ifEmpty { host + path },
     host = host,
     path = path,
     code = code,

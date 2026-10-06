@@ -70,7 +70,7 @@ jobs:
         run: ./gradlew detekt
 
       - name: Upload Detekt Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: detekt-report
@@ -98,7 +98,7 @@ jobs:
         run: ./gradlew lint
 
       - name: Upload Lint Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: lint-results
@@ -127,7 +127,7 @@ jobs:
         run: ./gradlew buildHealth
 
       - name: Upload Dependency Analysis Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: dependency-analysis
@@ -176,7 +176,7 @@ jobs:
         run: ./gradlew test
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: unit-test-results
@@ -206,7 +206,7 @@ jobs:
         run: ./gradlew koverVerify koverXmlReport
 
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage-report
@@ -234,7 +234,7 @@ jobs:
         run: ./gradlew :test:architecture:test
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: architecture-test-results

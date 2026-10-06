@@ -50,6 +50,10 @@ This automatically formats your code to match the project's style. Detekt will f
 | Interfaces           | `domain/contracts`  | Repository interfaces and use case contracts     |
 | UI screens           | `features/*`        | Jetpack Compose screens and ViewModels           |
 | Storage / Network    | `infra/*`           | Database, network, file system implementations   |
+| MCP server           | `mcp/device-server` | Debug-only HTTP API the bridge queries (Android) |
+| MCP bridge           | `mcp/bridge`        | JVM CLI speaking MCP over stdio                  |
+
+An MCP tool spans four places that must change together: the tool in `mcp/bridge/.../mcp/tools/*Tools.kt`, the route in `mcp/device-server/.../routes/*Routes.kt`, its DTO in `.../serialization/dto/`, and `docs/MCP.md`. `ToolRouteTest` and `ToolDocsTest` (`./gradlew :mcp:bridge:test`) fail when they drift.
 
 ## Quality Checks
 

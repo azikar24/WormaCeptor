@@ -22,15 +22,18 @@ The AI reads live data from your running app — no copy-pasting logs or screens
 
 In your app's `build.gradle.kts`:
 
+<!-- x-release-please-start-version -->
 ```kotlin
 dependencies {
     // Your existing WormaCeptor dependencies
-    debugImplementation("com.github.azikar24.WormaCeptor:api-impl-persistence:2.2.1")
+    implementation("com.azikar24.wormaceptor:wormaceptor-client:2.4.0")
+    debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:2.4.0")
 
-    // Add MCP server (debug only — zero code in release)
-    debugImplementation("com.github.azikar24.WormaCeptor:mcp-device-server:2.2.1")
+    // Add the MCP server (debug only, zero code in release)
+    debugImplementation("com.azikar24.wormaceptor:wormaceptor-mcp-server:2.4.0")
 }
 ```
+<!-- x-release-please-end -->
 
 That's it. The server auto-starts when your debug app launches. No code changes.
 
@@ -61,14 +64,18 @@ java -jar mcp/bridge/build/libs/bridge.jar --verbose
 
 You should see:
 
+<!-- x-release-please-start-version -->
 ```
-WormaCeptor MCP Bridge v1.0.0
+WormaCeptor MCP Bridge v2.4.0
 Config: port=8999, device=auto
 Found device: emulator-5554 (sdk_gphone64_arm64)
 Port forwarded: localhost:8999 -> device:8999
 Connected to WormaCeptor server
 MCP server ready. Listening for requests on stdin...
 ```
+<!-- x-release-please-end -->
+
+If the app isn't running yet you'll see a `Warning: Could not connect...` line instead of `Connected`; the bridge keeps running and connects on the first tool call.
 
 Press `Ctrl+C` to stop. The bridge works.
 
@@ -76,7 +83,11 @@ Press `Ctrl+C` to stop. The bridge works.
 
 #### Claude Code
 
-Add to your project's `.claude/settings.local.json`:
+```bash
+claude mcp add --transport stdio wormaceptor -- java -jar /absolute/path/to/bridge.jar
+```
+
+To share the setup with your team, commit a `.mcp.json` at the project root instead:
 
 ```json
 {
@@ -89,7 +100,7 @@ Add to your project's `.claude/settings.local.json`:
 }
 ```
 
-Restart Claude Code. You should see WormaCeptor tools available.
+Run `claude mcp get wormaceptor` to check that it connected.
 
 #### Cursor
 
@@ -131,7 +142,7 @@ The AI calls `list_transactions` and returns a table of HTTP requests with metho
 **"Why is this endpoint slow?"**
 
 ```
-Get the details of transaction 42, including request and response bodies
+Find the slowest request and show its headers, request body, and response body
 ```
 
 The AI calls `get_transaction`, `get_request_body`, and `get_response_body` to show you headers, timing, and payloads.
@@ -139,10 +150,10 @@ The AI calls `get_transaction`, `get_request_body`, and `get_response_body` to s
 **"Show me all the failed requests"**
 
 ```
-List transactions that returned 5xx status codes
+List transactions that returned a 500
 ```
 
-The AI filters transactions by status code.
+The AI passes `query: "500"` to `list_transactions`, which matches URL, method, or status code.
 
 **"What's going over the wire?"**
 
@@ -325,7 +336,7 @@ java -jar bridge.jar --port 9090
 
 ### With Authentication
 
-Prevent other apps on the device from accessing the debug server.
+Prevent other apps on the device, and other local processes while `adb forward` is active, from reading the debug server.
 
 **App side:**
 
@@ -407,7 +418,7 @@ WormaCeptorApi.configureMcpServer(McpConfig(enabled = false))
 WormaCeptorApi.init(context = this)
 ```
 
-Then start it from your AI agent or from code when needed:
+Then start it from code when needed (the AI agent can't start it, since the bridge has nothing to talk to until it runs):
 
 ```kotlin
 // From a debug menu button, for example:
@@ -476,17 +487,21 @@ This logs all MCP traffic to stderr:
 
 ## Part 4: Tips
 
-### Keep the app in the foreground
+### Keep the app process alive
 
-The MCP server runs inside the app process. If Android kills the app in the background, the server goes with it. Keep the app visible or use `adb shell settings put global background_activity_starts_enabled 1` on emulators.
+The MCP server runs inside the app process. If Android kills the app in the background, the server goes with it. Relaunch the app and the next tool call reconnects.
 
-### Bridge auto-reconnects
+### Bridge reconnects on demand
 
-If you restart the app, the bridge detects the disconnect and retries with exponential backoff (up to 20 attempts). You don't need to restart the bridge.
+If you restart the app, the next tool call that fails to connect makes the bridge re-create the port forward and retry (4 attempts with backoff), then repeat the call. You don't need to restart the bridge.
 
 ### Sensitive data is redacted
 
-Headers like `Authorization`, `Cookie`, and `X-Api-Key` are automatically replaced with `[REDACTED]` in API responses. Your tokens won't leak into AI conversations.
+Headers like `Authorization`, `Cookie`, and `X-Api-Key` are automatically replaced with `[REDACTED]` in API responses, on top of any `RedactionConfig` rules applied at capture time. `browse_secure_storage` returns key names only, never values. Bodies, preferences, databases, and files are sent as-is, so treat the conversation as containing app data.
+
+### Auth is off by default
+
+Any app on the device, and anything that can use `adb` on your machine, can read the server while auth is off. Fine on your own emulator; turn it on for shared devices (see "With Authentication" above).
 
 ### SQL queries are read-only
 
@@ -523,8 +538,8 @@ The `mcp-device-server` module is included as `debugImplementation`. It physical
 | `port` | Int | 8999 | Server port on device |
 | `enableAuth` | Boolean | false | Require bearer token |
 | `authToken` | String? | null | The token to require |
-| `maxBodySize` | Long | 1,048,576 | Max body bytes in responses |
-| `enabled` | Boolean | true | Auto-start on app launch |
+| `maxBodySize` | Long | 1,048,576 | Max body characters in responses |
+| `enabled` | Boolean | true | Auto-start on app launch; `false` stops a running server |
 
 ### All 32 MCP Tools
 

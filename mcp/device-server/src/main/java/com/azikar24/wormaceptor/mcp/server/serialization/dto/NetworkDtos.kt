@@ -70,3 +70,12 @@ internal data class SetRateLimitRequestDto(
     val latencyMs: Long? = null,
     val packetLossPercent: Float? = null,
 )
+
+/** A request or response body. [totalSize] is the full length in characters; [body] is cut at the max body size. */
+@Serializable
+internal data class BodyDto(
+    val body: String,
+    val contentType: String?,
+    val truncated: Boolean,
+    val totalSize: Long,
+)

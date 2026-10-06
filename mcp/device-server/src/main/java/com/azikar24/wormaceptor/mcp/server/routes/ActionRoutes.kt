@@ -1,9 +1,9 @@
 package com.azikar24.wormaceptor.mcp.server.routes
 
+import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.engine.LocationSimulatorEngine
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
-import com.azikar24.wormaceptor.core.engine.QueryEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
@@ -21,8 +21,7 @@ import kotlin.coroutines.cancellation.CancellationException
 internal fun Routing.actionRoutes() {
     post("/api/clear/transactions") {
         try {
-            val koin = WormaCeptorKoin.getKoin()
-            val queryEngine = koin.getOrNull<QueryEngine>()
+            val queryEngine = CoreHolder.queryEngine
             if (queryEngine == null) {
                 call.respond(
                     ApiResponse(success = false, error = "Transaction engine not available"),
@@ -42,8 +41,7 @@ internal fun Routing.actionRoutes() {
 
     post("/api/clear/crashes") {
         try {
-            val koin = WormaCeptorKoin.getKoin()
-            val queryEngine = koin.getOrNull<QueryEngine>()
+            val queryEngine = CoreHolder.queryEngine
             if (queryEngine == null) {
                 call.respond(
                     ApiResponse(success = false, error = "Crash engine not available"),

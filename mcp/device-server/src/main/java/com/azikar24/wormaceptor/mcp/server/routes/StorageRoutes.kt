@@ -7,9 +7,13 @@ import com.azikar24.wormaceptor.domain.contracts.DatabaseRepository
 import com.azikar24.wormaceptor.domain.contracts.FileSystemRepository
 import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
 import com.azikar24.wormaceptor.domain.entities.FileEntry
-import com.azikar24.wormaceptor.feature.database.DatabaseFeature
-import com.azikar24.wormaceptor.feature.filebrowser.FileBrowserFeature
-import com.azikar24.wormaceptor.feature.preferences.PreferencesFeature
+import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
+import com.azikar24.wormaceptor.feature.database.data.DatabaseDataSource
+import com.azikar24.wormaceptor.feature.database.data.DatabaseRepositoryImpl
+import com.azikar24.wormaceptor.feature.filebrowser.data.FileSystemDataSource
+import com.azikar24.wormaceptor.feature.filebrowser.data.FileSystemRepositoryImpl
+import com.azikar24.wormaceptor.feature.preferences.data.PreferencesDataSource
+import com.azikar24.wormaceptor.feature.preferences.data.PreferencesRepositoryImpl
 import com.azikar24.wormaceptor.mcp.server.security.resolveWithinRoots
 import com.azikar24.wormaceptor.mcp.server.serialization.JsonConfig
 import com.azikar24.wormaceptor.mcp.server.serialization.dto.ApiResponse
@@ -53,12 +57,20 @@ private fun resolveAppPath(
     return resolveWithinRoots(path, dataDir, roots.map { File(it.path) } + dataDir)
 }
 
+/** Built on first use: routes register before the host calls `WormaCeptor.init()`. */
+private class StorageRepositories {
+    val context: Context by lazy { WormaCeptorKoin.getKoin().get<Context>() }
+    val preferences: PreferencesRepository by lazy { PreferencesRepositoryImpl(PreferencesDataSource(context)) }
+    val database: DatabaseRepository by lazy { DatabaseRepositoryImpl(DatabaseDataSource(context)) }
+    val files: FileSystemRepository by lazy { FileSystemRepositoryImpl(FileSystemDataSource(context)) }
+}
+
 internal fun Routing.storageRoutes() {
+    val repositories = StorageRepositories()
+
     get("/api/preferences") {
         try {
-            val koin = WormaCeptorKoin.getKoin()
-            val prefsRepo = koin.getOrNull<PreferencesRepository>()
-                ?: PreferencesFeature.createRepository(koin.get<Context>())
+            val prefsRepo = repositories.preferences
 
             val files = prefsRepo.observePreferenceFiles().first()
             val dtos = files.map { file ->
@@ -83,9 +95,7 @@ internal fun Routing.storageRoutes() {
 
     get("/api/databases") {
         try {
-            val koin = WormaCeptorKoin.getKoin()
-            val dbRepo = koin.getOrNull<DatabaseRepository>()
-                ?: DatabaseFeature.createRepository(koin.get<Context>())
+            val dbRepo = repositories.database
 
             val databases = dbRepo.getDatabases()
             val dtos = databases.map { it.toDto() }
@@ -107,9 +117,7 @@ internal fun Routing.storageRoutes() {
 
     post("/api/databases/{name}/query") {
         try {
-            val koin = WormaCeptorKoin.getKoin()
-            val dbRepo = koin.getOrNull<DatabaseRepository>()
-                ?: DatabaseFeature.createRepository(koin.get<Context>())
+            val dbRepo = repositories.database
 
             val dbName = call.parameters["name"]
             if (dbName.isNullOrBlank()) {
@@ -154,9 +162,7 @@ internal fun Routing.storageRoutes() {
 
     get("/api/files/browse") {
         try {
-            val koin = WormaCeptorKoin.getKoin()
-            val fileRepo = koin.getOrNull<FileSystemRepository>()
-                ?: FileBrowserFeature.createRepository(koin.get<Context>())
+            val fileRepo = repositories.files
 
             val path = call.parameters["path"]
             val roots = fileRepo.getRootDirectories()
@@ -164,7 +170,7 @@ internal fun Routing.storageRoutes() {
             val entries = if (path.isNullOrBlank() || path == "/") {
                 roots
             } else {
-                val dir = resolveAppPath(path, koin.get<Context>(), roots)
+                val dir = resolveAppPath(path, repositories.context, roots)
                 if (dir == null) {
                     call.respond(HttpStatusCode.Forbidden, ApiResponse(success = false, error = PATH_OUTSIDE_APP))
                     return@get
@@ -197,9 +203,7 @@ internal fun Routing.storageRoutes() {
 
     get("/api/files/read") {
         try {
-            val koin = WormaCeptorKoin.getKoin()
-            val fileRepo = koin.getOrNull<FileSystemRepository>()
-                ?: FileBrowserFeature.createRepository(koin.get<Context>())
+            val fileRepo = repositories.files
 
             val path = call.parameters["path"]
             if (path.isNullOrBlank()) {
@@ -210,7 +214,7 @@ internal fun Routing.storageRoutes() {
                 return@get
             }
 
-            val file = resolveAppPath(path, koin.get<Context>(), fileRepo.getRootDirectories())
+            val file = resolveAppPath(path, repositories.context, fileRepo.getRootDirectories())
             if (file == null) {
                 call.respond(HttpStatusCode.Forbidden, ApiResponse(success = false, error = PATH_OUTSIDE_APP))
                 return@get
@@ -240,7 +244,13 @@ internal fun Routing.storageRoutes() {
             val limit = call.parameters["limit"]?.toIntOrNull() ?: DEFAULT_LIMIT
             val offset = call.parameters["offset"]?.toIntOrNull() ?: DEFAULT_OFFSET
 
+            val typeFilter = call.parameters["type"]?.let { name ->
+                SecureStorageEntry.StorageType.entries.find { it.name.equals(name, ignoreCase = true) }
+            }
+
+            if (secureEngine.entries.value.isEmpty()) awaitRefresh(secureEngine.isLoading, secureEngine::refresh)
             val allEntries = secureEngine.entries.value
+                .let { entries -> if (typeFilter == null) entries else entries.filter { it.storageType == typeFilter } }
             val total = allEntries.size
             val paged = allEntries.drop(offset).take(limit)
             val dtos = paged.map { it.toDto() }

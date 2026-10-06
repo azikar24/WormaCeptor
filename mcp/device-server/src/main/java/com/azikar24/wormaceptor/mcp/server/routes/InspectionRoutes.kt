@@ -14,12 +14,31 @@ import com.azikar24.wormaceptor.mcp.server.serialization.toDto
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlin.coroutines.cancellation.CancellationException
 
 private const val DEFAULT_LIMIT = 100
 private const val DEFAULT_OFFSET = 0
+
+private const val RefreshTimeoutMs = 10_000L
+private const val RefreshStartDelayMs = 100L
+
+/** Engines that scan lazily only fill after the in-app screen calls `refresh()`, so trigger it on first read. */
+internal suspend fun awaitRefresh(
+    isLoading: StateFlow<Boolean>,
+    refresh: () -> Unit,
+) {
+    refresh()
+    withTimeoutOrNull(RefreshTimeoutMs) {
+        delay(RefreshStartDelayMs)
+        isLoading.first { !it }
+    }
+}
 
 internal fun Routing.inspectionRoutes() {
     get("/api/dependencies") {
@@ -95,6 +114,7 @@ internal fun Routing.inspectionRoutes() {
             val typeFilter = call.parameters["type"]
             val systemFilter = call.parameters["system"]?.toBooleanStrictOrNull()
 
+            if (libEngine.libraries.value.isEmpty()) awaitRefresh(libEngine.isLoading, libEngine::refresh)
             var libraries = libEngine.libraries.value
 
             if (typeFilter != null) {

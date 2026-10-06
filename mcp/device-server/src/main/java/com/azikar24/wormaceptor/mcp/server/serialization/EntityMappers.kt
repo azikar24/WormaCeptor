@@ -326,7 +326,6 @@ internal fun FileInfo.toDto() = FileInfoDto(
 
 internal fun SecureStorageEntry.toDto() = SecureStorageEntryDto(
     key = key,
-    value = value,
     storageType = storageType.name,
     isEncrypted = isEncrypted,
     lastModified = lastModified,

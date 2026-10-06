@@ -4,6 +4,8 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.azikar24.wormaceptor.core.engine.McpHolder
 
@@ -18,14 +20,17 @@ internal class WormaCeptorServerInitializer : ContentProvider() {
     override fun onCreate(): Boolean {
         val server = WormaCeptorServer()
         McpHolder.registerServer(server)
-        // Off the main thread; reading the config there also picks up a configureMcpServer() from Application.onCreate.
-        Thread({
-            if (McpHolder.config.enabled) {
-                server.start()
-            } else {
-                Log.i(TAG, "MCP server auto-start disabled via McpConfig")
-            }
-        }, "WormaCeptorMCP-start").start()
+        // Providers run before Application.onCreate; a main-looper post runs after it, so the config read below
+        // includes the host's configureMcpServer(). Reading it any earlier started the server without auth.
+        Handler(Looper.getMainLooper()).post {
+            Thread({
+                if (McpHolder.config.enabled) {
+                    server.start()
+                } else {
+                    Log.i(TAG, "MCP server auto-start disabled via McpConfig")
+                }
+            }, "WormaCeptorMCP-start").start()
+        }
         return true
     }
 

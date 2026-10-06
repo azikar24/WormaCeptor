@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -88,6 +89,7 @@ fun MockRulesScreen(
                 onClick = { onNavigateToEditor(null) },
                 icon = Icons.Default.Add,
                 contentDescription = stringResource(R.string.mock_rules_add_rule),
+                modifier = Modifier.navigationBarsPadding(),
             )
         },
     ) { padding ->
@@ -96,9 +98,7 @@ fun MockRulesScreen(
             onEvent = onEvent,
             onNavigateToEditor = onNavigateToEditor,
             onDeleteRule = { rule -> onEvent(MockRulesViewEvent.List.RequestDeleteRule(rule)) },
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
+            modifier = Modifier.fillMaxSize().padding(padding),
         )
     }
 

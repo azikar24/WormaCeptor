@@ -32,6 +32,14 @@
         {
           "type": "generic",
           "path": "docs/migration/from-flipper.md"
+        },
+        {
+          "type": "generic",
+          "path": "docs/MCP.md"
+        },
+        {
+          "type": "generic",
+          "path": "docs/MCP_TUTORIAL.md"
         }
       ],
       "changelog-sections": [

@@ -17,24 +17,24 @@ internal data class DeviceInfo(
     val product: String?,
 )
 
+/** Parses `adb devices -l` output. */
+internal fun parseDevices(output: String): List<DeviceInfo> = output.lines()
+    .drop(1)
+    .filter { it.isNotBlank() && !it.startsWith("*") }
+    .mapNotNull { line ->
+        val parts = line.trim().split("\\s+".toRegex())
+        if (parts.size < 2) return@mapNotNull null
+        val model = parts.find { it.startsWith("model:") }?.removePrefix("model:")
+        val product = parts.find { it.startsWith("product:") }?.removePrefix("product:")
+        DeviceInfo(parts[0], parts[1], model, product)
+    }
+
 internal class AdbClient(private val adbPath: String = "adb") {
 
     fun listDevices(): List<DeviceInfo> {
         val result = runCommand(listOf(adbPath, "devices", "-l"))
         if (result.exitCode != 0) return emptyList()
-
-        return result.output.lines()
-            .drop(1)
-            .filter { it.isNotBlank() && !it.startsWith("*") }
-            .mapNotNull { line ->
-                val parts = line.trim().split("\\s+".toRegex())
-                if (parts.size < 2) return@mapNotNull null
-                val serial = parts[0]
-                val state = parts[1]
-                val model = parts.find { it.startsWith("model:") }?.removePrefix("model:")
-                val product = parts.find { it.startsWith("product:") }?.removePrefix("product:")
-                DeviceInfo(serial, state, model, product)
-            }
+        return parseDevices(result.output)
     }
 
     fun forwardPort(

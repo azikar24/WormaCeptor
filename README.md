@@ -43,12 +43,14 @@ dependencyResolutionManagement {
 
 Add the dependencies in your app's `build.gradle.kts`:
 
+<!-- x-release-please-start-version -->
 ```kotlin
 dependencies {
     implementation("com.azikar24.wormaceptor:wormaceptor-client:2.3.1")
     debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:2.3.1")
 }
 ```
+<!-- x-release-please-end -->
 
 Initialize in your `Application` class:
 
@@ -85,11 +87,11 @@ You can also enable the shake gesture with `WormaCeptorApi.startActivityOnShake(
 
 ## Features
 
-**Network** — Intercept HTTP/HTTPS via OkHttp or Ktor, monitor WebSocket connections and WebView requests, export as cURL or JSON, throttle with the rate limiter
+**Network** — Intercept HTTP/HTTPS via OkHttp or Ktor, monitor WebSocket connections and WebView requests, copy URLs or export as cURL, JSON and HAR, throttle with the rate limiter, and mock responses with Mock Rules (turn any captured request into a mock with Add to Mock)
 
-**Performance** — Track FPS, memory, and CPU in real time with a live overlay, catch memory leaks and StrictMode thread violations
+**Performance** — Track FPS, memory, and CPU in real time with a live overlay, catch memory leaks and StrictMode thread violations, spot excessive Compose recompositions
 
-**System** — Browse SQLite databases, edit SharedPreferences, inspect encrypted storage, explore files, view loaded native libraries and Gradle dependencies, read device info and logcat, capture crash reports
+**System** — Browse SQLite databases, edit SharedPreferences, inspect DataStore and encrypted storage, explore files, view loaded native libraries and Gradle dependencies, read device info and logcat, capture crash reports
 
 **Testing** — Fire test push notifications, manage FCM tokens, mock GPS locations, encrypt/decrypt and hash with the crypto tool
 

@@ -32,6 +32,7 @@ releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.x.x")
 
 ### After (WormaCeptor)
 
+<!-- x-release-please-start-version -->
 ```kotlin
 // settings.gradle.kts
 dependencyResolutionManagement {
@@ -44,6 +45,7 @@ dependencyResolutionManagement {
 implementation("com.azikar24.wormaceptor:wormaceptor-client:2.3.1")
 debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:2.3.1")
 ```
+<!-- x-release-please-end -->
 
 **No release no-op artifact needed.** The `wormaceptor-client` module auto-discovers the implementation at runtime. In release builds where `wormaceptor-persistence` is absent, it falls back to a built-in no-op automatically.
 

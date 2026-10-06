@@ -79,11 +79,13 @@ dependencyResolutionManagement {
 
 ### Add Dependencies
 
+<!-- x-release-please-start-version -->
 ```kotlin
 // build.gradle.kts (app)
 implementation("com.azikar24.wormaceptor:wormaceptor-client:2.3.1")
 debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:2.3.1")
 ```
+<!-- x-release-please-end -->
 
 No release no-op artifact needed. The `wormaceptor-client` module auto-discovers the implementation at runtime and falls back to no-op when `wormaceptor-persistence` is absent.
 

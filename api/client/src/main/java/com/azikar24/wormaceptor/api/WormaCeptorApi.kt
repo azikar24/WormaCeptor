@@ -8,8 +8,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.core.net.toUri
 import com.azikar24.wormaceptor.core.engine.CoreHolder
-import com.azikar24.wormaceptor.core.engine.McpConfig
 import com.azikar24.wormaceptor.core.engine.McpHolder
+import com.azikar24.wormaceptor.domain.entities.McpConfig
 import com.azikar24.wormaceptor.platform.android.ShakeDetector
 
 private const val TAG = "WormaCeptorApi"
@@ -269,8 +269,8 @@ object WormaCeptorApi {
 
     /**
      * Configures the MCP (Model Context Protocol) debug server.
-     * Call before [init] to apply settings before the server auto-starts,
-     * or call after to restart the server with new settings.
+     * Call from `Application.onCreate`. If the server already auto-started it restarts with
+     * the new settings; `McpConfig(enabled = false)` stops it.
      *
      * The MCP server runs on the device and exposes debugging data
      * (network transactions, crashes, performance metrics, etc.) via REST API

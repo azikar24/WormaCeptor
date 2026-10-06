@@ -369,7 +369,7 @@ DTO for transferring complete transaction details to IDE plugins via content pro
 
 ### McpConfig
 
-**Package:** `com.azikar24.wormaceptor.core.engine`
+**Package:** `com.azikar24.wormaceptor.domain.entities`
 
 Configuration for the MCP (Model Context Protocol) debug server.
 

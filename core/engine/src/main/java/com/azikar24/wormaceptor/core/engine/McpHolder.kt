@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.core.engine
 
+import com.azikar24.wormaceptor.domain.entities.McpConfig
 import java.util.concurrent.atomic.AtomicReference
 
 /** Holds the MCP server configuration and the running server, so the host API can control it. */
@@ -34,10 +35,10 @@ object McpHolder {
         _server.get()?.stop()
     }
 
-    /** Stops then starts the server, applying the current [config]. */
+    /** Stops the server, then starts it again with the current [config] unless that config is disabled. */
     fun restart() {
         stop()
-        start()
+        if (config.enabled) start()
     }
 }
 

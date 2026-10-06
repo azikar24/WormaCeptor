@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptor.core.engine
+package com.azikar24.wormaceptor.domain.entities
 
 /**
  * Settings for the debug-only MCP device server.

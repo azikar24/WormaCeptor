@@ -5,6 +5,7 @@ import app.cash.turbine.test
 import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
 import com.azikar24.wormaceptor.domain.entities.PreferenceFile
 import com.azikar24.wormaceptor.domain.entities.PreferenceItem
+import com.azikar24.wormaceptor.domain.entities.PreferenceSource
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -192,6 +193,22 @@ class PreferencesViewModelTest {
             viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
 
             viewModel.uiState.value.typeFilter shouldBe null
+        }
+
+        @Test
+        fun `marks DataStore files read-only and SharedPreferences files editable`() = runTest {
+            filesFlow.value = filesFlow.value +
+                PreferenceFile("settings.preferences_pb", 1, PreferenceSource.DATASTORE)
+            viewModel.uiState.test {
+                awaitUntil { it.preferenceFiles.size == 4 }
+                cancelAndIgnoreRemainingEvents()
+            }
+
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("settings.preferences_pb"))
+            viewModel.uiState.value.isSelectedFileReadOnly shouldBe true
+
+            viewModel.sendEvent(PreferencesViewEvent.List.Selected("app_settings"))
+            viewModel.uiState.value.isSelectedFileReadOnly shouldBe false
         }
     }
 

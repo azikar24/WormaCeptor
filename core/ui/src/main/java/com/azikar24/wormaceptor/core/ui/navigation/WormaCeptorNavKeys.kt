@@ -48,6 +48,24 @@ object WormaCeptorNavKeys {
         const val route = "preferences/detail"
     }
 
+    /** DataStore Inspector nested graph. */
+    object DataStore {
+        /** Graph route for the DataStore feature. */
+        const val route = "datastore"
+    }
+
+    /** DataStore file list screen. */
+    object DataStoreList {
+        /** Route string for the DataStore file list. */
+        const val route = "datastore/list"
+    }
+
+    /** DataStore items detail screen. */
+    object DataStoreDetail {
+        /** Route string for the DataStore items detail. */
+        const val route = "datastore/detail"
+    }
+
     /** Database Browser nested graph. */
     object Database {
         /** Graph route for the database browser feature. */

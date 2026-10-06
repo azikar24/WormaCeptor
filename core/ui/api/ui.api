@@ -897,6 +897,24 @@ public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKey
 	public static final field route Ljava/lang/String;
 }
 
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DataStore {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DataStore;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DataStoreDetail {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DataStoreDetail;
+	public static final field route Ljava/lang/String;
+}
+
+public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DataStoreList {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$DataStoreList;
+	public static final field route Ljava/lang/String;
+}
+
 public final class com/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Database {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/navigation/WormaCeptorNavKeys$Database;

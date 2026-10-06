@@ -14,6 +14,7 @@ sealed class MainViewEffect {
 
     data object SeedDatabase : MainViewEffect()
     data object SeedPreferences : MainViewEffect()
+    data object SeedDataStore : MainViewEffect()
     data object WriteSampleFiles : MainViewEffect()
 
     data object EmitSampleLogs : MainViewEffect()

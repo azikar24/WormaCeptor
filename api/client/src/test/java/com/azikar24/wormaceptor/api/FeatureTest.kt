@@ -73,6 +73,7 @@ class FeatureTest {
         fun `inspection features exist`() {
             Feature.ALL shouldContainAll listOf(
                 Feature.SHARED_PREFERENCES,
+                Feature.DATASTORE,
                 Feature.DATABASE_BROWSER,
                 Feature.FILE_BROWSER,
                 Feature.LOADED_LIBRARIES,
@@ -122,8 +123,8 @@ class FeatureTest {
         }
 
         @Test
-        fun `total enum count is 22`() {
-            Feature.entries shouldHaveSize 22
+        fun `total enum count is 23`() {
+            Feature.entries shouldHaveSize 23
         }
     }
 }

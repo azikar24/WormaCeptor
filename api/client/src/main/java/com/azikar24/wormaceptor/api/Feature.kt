@@ -19,6 +19,9 @@ enum class Feature {
     /** Browses and edits SharedPreferences files. */
     SHARED_PREFERENCES,
 
+    /** Browses Jetpack Preferences DataStore files (read-only). */
+    DATASTORE,
+
     /** Browses SQLite databases and executes queries. */
     DATABASE_BROWSER,
 

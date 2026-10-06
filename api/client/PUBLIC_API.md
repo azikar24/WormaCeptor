@@ -218,6 +218,24 @@ All methods return `RedactionConfig` for method chaining.
 
 ---
 
+### Modifier.trackRecomposition
+
+**Package:** `com.azikar24.wormaceptor.api.compose`
+
+Records a recomposition every time the modified composable recomposes. Counts appear in the Recomposition Inspector (`Feature.COMPOSE_RECOMPOSITION_INSPECTOR`).
+
+```kotlin
+Card(modifier = Modifier.trackRecomposition("ProductCard")) { ... }
+```
+
+| Parameter | Description |
+|-----------|-------------|
+| `name: String` | Identifier shown in the inspector |
+
+In release builds the tracking backend is not on the classpath, so the modifier returns itself with no Compose overhead.
+
+---
+
 ### Feature
 
 **Package:** `com.azikar24.wormaceptor.api`
@@ -229,6 +247,7 @@ Enum of all available WormaCeptor features for selective enabling.
 | Value | Description |
 |-------|-------------|
 | `SHARED_PREFERENCES` | Browse and edit SharedPreferences |
+| `DATASTORE` | Browse Jetpack Preferences DataStore files (read-only) |
 | `DATABASE_BROWSER` | Browse SQLite databases |
 | `FILE_BROWSER` | Browse app files |
 | `LOADED_LIBRARIES` | View loaded native libraries |
@@ -245,6 +264,7 @@ Enum of all available WormaCeptor features for selective enabling.
 | `CPU_MONITOR` | CPU usage monitoring |
 | `LEAK_DETECTION` | Memory leak detection |
 | `THREAD_VIOLATIONS` | StrictMode violation detection |
+| `COMPOSE_RECOMPOSITION_INSPECTOR` | Recomposition counts per composable tracked with `Modifier.trackRecomposition` |
 
 #### Network Features
 
@@ -356,5 +376,8 @@ They should only be used by WormaCeptor implementation modules, not by host appl
 
 | Version | Changes |
 |---------|---------|
+| Unreleased | `Feature.DATASTORE`: read-only Preferences DataStore inspector |
+| 2.3.2 | `ServiceProvider` overloads: `startTransaction(..., startedAtMillis)` and `completeTransaction(..., showNotification, durationMs)`; defaults delegate to the existing methods, so custom providers keep compiling |
+| 2.3.0 | `Feature.MOCK_RULES`, `Feature.COMPOSE_RECOMPOSITION_INSPECTOR`, `Modifier.trackRecomposition` |
 | 2.2.0 | Ktor HTTP client support, MVI pattern adoption (BaseViewModel), shared WormaCeptorTheme, decoupled syntax highlighting |
 | 2.0.0 | Initial modular architecture |

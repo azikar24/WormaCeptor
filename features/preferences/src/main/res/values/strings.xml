@@ -12,6 +12,8 @@
     <string name="preferences_empty_no_files">No preferences files</string>
     <string name="preferences_empty_try_different_search">Try a different search term</string>
     <string name="preferences_empty_files_will_appear">Shared Preferences files will appear here</string>
+    <string name="datastore_list_title">DataStore</string>
+    <string name="datastore_empty_files_will_appear">Preferences DataStore files in files/datastore will appear here</string>
 
     <!-- PreferenceDetailScreen -->
     <string name="preferences_filter">Filter</string>
@@ -31,6 +33,7 @@
     <string name="preferences_empty_no_preferences">No preferences</string>
     <string name="preferences_empty_try_adjusting_filters">Try adjusting your search or filters</string>
     <string name="preferences_empty_add_using_button">Add preferences using the + button</string>
+    <string name="preferences_datastore_read_only_notice">Preferences DataStore file. Read-only: the app caches DataStore in memory, so edits made here would be lost. Tap a value to expand it.</string>
 
     <!-- PreferenceEditDialog -->
     <string name="preferences_dialog_create_title">Create Preference</string>

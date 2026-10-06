@@ -13,4 +13,7 @@ dependencies {
     implementation(project(":domain:contracts"))
     implementation(project(":domain:entities"))
     implementation(libs.androidx.navigation.compose)
+
+    // Writes real .preferences_pb files to verify the hand-written decoder
+    testImplementation(libs.androidx.datastore.preferences)
 }

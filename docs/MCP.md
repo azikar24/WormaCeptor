@@ -19,18 +19,20 @@ WormaCeptor exposes a [Model Context Protocol](https://modelcontextprotocol.io/)
 
 ### 1. Add the dependency
 
-The device server is already included in the demo app. For your own app:
+The device server is already included in the demo app. For your own app, add it next to your existing WormaCeptor dependencies:
 
+<!-- x-release-please-start-version -->
 ```kotlin
 // app/build.gradle.kts
-debugImplementation("com.github.azikar24.WormaCeptor:mcp-device-server:2.2.1")
+debugImplementation("com.azikar24.wormaceptor:wormaceptor-mcp-server:2.4.0")
 ```
+<!-- x-release-please-end -->
 
-The server auto-starts via a ContentProvider — no code changes needed.
+The server auto-starts via a ContentProvider, no code changes needed. It answers as soon as the process starts; tools return data once `WormaCeptorApi.init()` has run.
 
 ### 1b. Configure via API (optional)
 
-The server works out of the box with defaults. To customize, call `configureMcpServer` before `init`:
+The server works out of the box with defaults. To customize, call `configureMcpServer` in `Application.onCreate`. If the server already auto-started, it restarts with the new settings:
 
 ```kotlin
 // In Application.onCreate()
@@ -45,7 +47,7 @@ WormaCeptorApi.configureMcpServer(
 WormaCeptorApi.init(context = this)
 ```
 
-To disable auto-start and control the server manually:
+`McpConfig(enabled = false)` stops a running server and keeps it from auto-starting. To control it manually:
 
 ```kotlin
 WormaCeptorApi.configureMcpServer(McpConfig(enabled = false))
@@ -83,18 +85,24 @@ The bridge discovers the device, forwards port 8999, verifies the server is reac
 
 ### 4. Configure in Claude Code
 
-Add to your project's `.claude/settings.json`:
+```bash
+claude mcp add --transport stdio wormaceptor -- java -jar /absolute/path/to/bridge.jar
+```
+
+Or share it with your team by committing a `.mcp.json` at the project root:
 
 ```json
 {
   "mcpServers": {
     "wormaceptor": {
       "command": "java",
-      "args": ["-jar", "/path/to/bridge.jar"]
+      "args": ["-jar", "/absolute/path/to/bridge.jar"]
     }
   }
 }
 ```
+
+With more than one device attached, add `"--device", "<serial>"` to `args`.
 
 ## Architecture
 
@@ -102,12 +110,13 @@ Add to your project's `.claude/settings.json`:
 
 An embedded Ktor/Netty HTTP server that runs inside the debug build on port 8999. It exposes REST endpoints backed by WormaCeptor's core engines.
 
-- **Auto-initializes** via `WormaCeptorServerInitializer` (a ContentProvider that waits for Koin)
-- **Debug-only** — included as `debugImplementation`, zero code in release builds
-- **Category-gated routes** — disable endpoint groups via `ServerConfig.enabledCategories`
-- **Optional auth** — bearer token validation via `AuthPlugin` when `ServerConfig.enableAuth` is true
+- **Auto-starts** via `WormaCeptorServerInitializer`, a ContentProvider that registers the server with `McpHolder` and starts it off the main thread
+- **Debug-only**: included as `debugImplementation`, zero code in release builds
+- **Localhost-only**: binds `127.0.0.1` and rejects requests with an `Origin` header or a non-local `Host` (blocks browser and DNS-rebinding access)
+- **Optional auth**: bearer token validation when `McpConfig.enableAuth` is true
 - **Header redaction** — sensitive headers (`Authorization`, `Cookie`, `X-Api-Key`, etc.) are replaced with `[REDACTED]` in API responses
-- **WebSocket streaming** — real-time engine data at `/api/stream`
+- **Secure storage keys only**: `browse_secure_storage` never returns stored values
+- **WebSocket streaming**: real-time engine data at `/api/stream`
 
 ### Bridge CLI (`mcp/bridge`)
 
@@ -115,7 +124,7 @@ A standalone JVM application that translates MCP protocol (JSON-RPC 2.0 on stdin
 
 - **Auto-discovers** connected devices via ADB
 - **Port forwarding** — sets up `tcp:8999 → tcp:8999` automatically
-- **Reconnection** — exponential backoff (1s → 30s), max 20 attempts
+- **Reconnection**: at startup it waits ~10s for the server, then starts anyway; a tool call that fails with a connection error re-creates the port forward, retries 4 times with backoff (1s, 2s, 4s), then repeats the call once
 - **Input validation** — path traversal protection, SQL injection prevention, parameter range checks
 - **Verbose mode** — `--verbose` logs all MCP requests and responses to stderr
 
@@ -140,7 +149,7 @@ Options:
 
 | Tool | Parameters | Description |
 |------|-----------|-------------|
-| `list_transactions` | `query?`, `limit?`, `offset?` | List captured HTTP transactions, paginated |
+| `list_transactions` | `query?`, `limit?`, `offset?` | List captured HTTP transactions, paginated. `query` is a case-insensitive substring match on URL, method, or status code |
 | `get_transaction` | `id` | Get full details of a specific transaction |
 | `get_request_body` | `id` | Get the request body of a transaction |
 | `get_response_body` | `id` | Get the response body of a transaction |
@@ -153,7 +162,7 @@ Options:
 
 | Tool | Parameters | Description |
 |------|-----------|-------------|
-| `list_crashes` | — | List all captured crash reports |
+| `list_crashes` | `limit?`, `offset?` | List captured crash reports, paginated |
 | `get_crash` | `id` | Get full crash details with stack trace |
 | `tail_logs` | `level?`, `tag?`, `limit?` | Retrieve recent log entries. `level` matches exactly (`VERBOSE`...`ASSERT`); `tag` is a case-insensitive substring |
 | `list_leaks` | — | List detected memory leaks (LeakCanary integration) |
@@ -165,8 +174,8 @@ Options:
 | Tool | Parameters | Description |
 |------|-----------|-------------|
 | `get_cpu_stats` | `include_history?` | Get CPU usage with optional history |
-| `get_memory_stats` | — | Get current memory usage |
-| `get_fps_stats` | — | Get current frame rate stats |
+| `get_memory_stats` | `include_history?` | Get memory usage with optional history |
+| `get_fps_stats` | `include_history?` | Get frame rate stats with optional history |
 | `get_performance_snapshot` | — | Get a combined snapshot of CPU, memory, and FPS |
 
 ### Storage (8 tools)
@@ -178,9 +187,9 @@ Options:
 | `query_database` | `database`, `query` | Execute a SELECT query (read-only, no DROP/DELETE/INSERT/UPDATE/ALTER) |
 | `list_files` | `path?` | Browse app file system directory |
 | `read_file` | `path` | Read a text file (JSON/XML pretty-printed). Binary files, images, and PDFs return a one-line summary |
-| `browse_secure_storage` | — | List secure/encrypted storage entries |
-| `list_dependencies` | — | List app dependencies |
-| `list_loaded_libraries` | — | List loaded native libraries |
+| `browse_secure_storage` | `type?` | List secure storage keys and metadata (`ENCRYPTED_SHARED_PREFS`, `KEYSTORE`, `DATASTORE`). Values are never returned |
+| `list_dependencies` | `category?` | List detected app dependencies, optionally by category (`NETWORKING`, `UI_FRAMEWORK`, ...) |
+| `list_loaded_libraries` | `type?`, `system?` | List loaded libraries. `type`: `NATIVE_SO`, `DEX`, `JAR`, `AAR_RESOURCE`; `system`: true/false |
 
 ### Actions (6 tools)
 
@@ -222,10 +231,10 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/transactions` | List transactions (`?limit=&offset=`) |
+| GET | `/api/transactions` | List transactions (`?query=&limit=&offset=`) |
 | GET | `/api/transactions/{id}` | Transaction details |
-| GET | `/api/transactions/{id}/request-body` | Request body (truncated to `maxBodySize`) |
-| GET | `/api/transactions/{id}/response-body` | Response body (truncated to `maxBodySize`) |
+| GET | `/api/transactions/{id}/request-body` | Request body: `{body, contentType, truncated, totalSize}`, `body` cut at `maxBodySize` |
+| GET | `/api/transactions/{id}/response-body` | Response body, same shape |
 | GET | `/api/websockets/connections` | WebSocket connections |
 | GET | `/api/websockets/messages` | WebSocket messages (`?connection_id=`) |
 | GET | `/api/rate-limit` | Current rate limit config |
@@ -260,14 +269,14 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 | POST | `/api/databases/{name}/query` | Execute SELECT query |
 | GET | `/api/files/browse` | Browse files (`?path=`) |
 | GET | `/api/files/read` | Read file (`?path=`) |
-| GET | `/api/secure-storage` | Encrypted storage entries |
+| GET | `/api/secure-storage` | Secure storage keys and metadata (`?type=&limit=&offset=`) |
 
 ### Inspection
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/dependencies` | App dependencies (`?category=`) |
-| GET | `/api/loaded-libraries` | Native libraries (`?type=&system=`) |
+| GET | `/api/loaded-libraries` | Loaded libraries (`?type=&system=`) |
 
 ### Actions
 
@@ -284,12 +293,14 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 
 | Protocol | Endpoint | Description |
 |----------|----------|-------------|
-| WebSocket | `/api/stream` | Real-time engine events (CPU, memory, FPS, logs) |
+| WebSocket | `/api/stream` | Real-time events: `transactions`, `crashes`, `logs`, `cpu`, `memory`, `fps` |
 
-Subscribe by sending:
+Subscribe by sending (send `"type": "unsubscribe"` to stop a channel):
 ```json
-{ "type": "subscribe", "channels": ["cpu", "memory", "fps", "logs"] }
+{ "type": "subscribe", "channels": ["transactions", "crashes", "logs", "cpu", "memory", "fps"] }
 ```
+
+`transactions` and `crashes` emit `"event": "new"` once per new item; `logs` emits `"new"` per entry; `cpu`, `memory` and `fps` emit `"update"` whenever the monitor publishes a reading (the monitors only sample while they are running, for example with the performance overlay open). The bridge doesn't use the stream; it is for scripts and custom clients.
 
 Events arrive as:
 ```json
@@ -302,19 +313,22 @@ The MCP server is designed for **debug builds only**. It should never be include
 
 ### Authentication
 
-Disabled by default. To enable bearer token auth:
+**Auth is off by default.** With it off, anything that can reach port 8999 on the device can read every captured request and response body, crash, log line, SharedPreferences value, database row and app file, and can run the action tools. The server binds to `127.0.0.1` and rejects browser requests, so in practice that means:
+
+- other apps on the same device (any app can connect to `127.0.0.1:8999`)
+- anyone with `adb` access to the device, and any local process on your computer while `adb forward` is active
+
+That is acceptable on a personal emulator or test device. Turn auth on for shared devices, device farms, or apps that handle real user data:
 
 ```kotlin
-// In your Application class or DI module
-val config = ServerConfig(
-    enableAuth = true,
-    authToken = "your-secret-token"
+WormaCeptorApi.configureMcpServer(
+    McpConfig(enableAuth = true, authToken = "your-secret-token"),
 )
 ```
 
-Then pass `--token your-secret-token` to the bridge CLI.
+Then pass `--token your-secret-token` to the bridge CLI. If `enableAuth` is true but `authToken` is blank, the server refuses to start rather than run unprotected.
 
-The health endpoint (`/api/health`) always bypasses authentication.
+Without a token the server answers `401`, with a wrong token `403`. The health endpoint (`/api/health`) always bypasses authentication so the bridge can probe it.
 
 ### Header Redaction
 
@@ -329,41 +343,28 @@ Sensitive HTTP headers are automatically redacted in API responses. The followin
 
 ### Input Validation
 
-The bridge validates all tool inputs before forwarding to the device:
+The bridge validates tool inputs before forwarding to the device, and the server checks again:
 
-- **Path traversal** — file paths and database names containing `..` are rejected
+- **Path traversal**: file paths and database names containing `..` are rejected by the bridge; the server only resolves paths inside the app's own storage directories
 - **SQL injection** — only `SELECT` queries are allowed; `DROP`, `DELETE`, `INSERT`, `UPDATE`, `ALTER` are blocked
 - **Parameter ranges** — latitude (-90..90), longitude (-180..180) are bounds-checked
 - **Required fields** — IDs, titles, and bodies are checked for presence and non-emptiness
 
 ### Network Exposure
 
-The device server binds to `localhost:8999` on the Android device. It is only accessible through ADB port forwarding — it is not exposed on the device's network interfaces.
+The device server binds to `127.0.0.1:8999` on the Android device. It is not exposed on the device's network interfaces; from your computer it is reachable only through ADB port forwarding.
 
 ## Configuration
 
-### Server Config
+`McpConfig` (package `com.azikar24.wormaceptor.domain.entities`), passed to `WormaCeptorApi.configureMcpServer`:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
 | `port` | Int | 8999 | HTTP server port |
 | `enableAuth` | Boolean | false | Enable bearer token authentication |
 | `authToken` | String? | null | Required token when auth is enabled |
-| `maxBodySize` | Long | 1,048,576 (1 MB) | Max transaction body size in responses |
-| `enabledCategories` | Set&lt;ApiCategory&gt; | All | Which endpoint groups to register |
-
-### API Categories
-
-Disable endpoint groups you don't need:
-
-| Category | Routes Controlled |
-|----------|-------------------|
-| `NETWORK` | transactions, websockets, rate-limit |
-| `DIAGNOSTICS` | crashes, logs, leaks, violations, device-info, dependencies, libraries |
-| `PERFORMANCE` | cpu, memory, fps, performance snapshot |
-| `STORAGE` | preferences, databases, files, secure-storage |
-| `ACTIONS` | clear, location, push |
-| `STREAMING` | WebSocket stream |
+| `maxBodySize` | Long | 1,048,576 (1 MB) | Max characters of a body returned by the body endpoints |
+| `enabled` | Boolean | true | Auto-start the server; `false` stops a running one |
 
 ## Module Structure
 
@@ -404,12 +405,13 @@ mcp/
     └── src/main/java/.../server/
         ├── WormaCeptorServer.kt         # Ktor server setup
         ├── WormaCeptorServerInitializer.kt  # ContentProvider auto-start
-        ├── ServerConfig.kt              # Configuration
-        ├── di/
-        │   └── ServerModule.kt          # Koin module
+        ├── ServerConfig.kt              # Internal config built from McpConfig
         ├── middleware/
-        │   ├── AuthPlugin.kt           # Bearer token auth
-        │   └── RedactionPlugin.kt      # Header/body redaction
+        │   ├── AuthPlugin.kt            # Bearer token auth
+        │   ├── LocalRequestGuard.kt     # Rejects browser / non-local requests
+        │   └── RedactionPlugin.kt       # Header redaction helper
+        ├── security/
+        │   └── FilePathGuard.kt         # Keeps file paths inside app storage
         ├── routes/
         │   ├── HealthRoutes.kt
         │   ├── TransactionRoutes.kt
@@ -441,20 +443,19 @@ mcp/
 
 **Connection refused / timeout**
 - Make sure the app is running in the foreground
-- Check logcat for `WormaCeptorMCP`: `adb logcat -s WormaCeptorMCP`
+- Check logcat: `adb logcat -s WormaCeptorMCP WormaCeptorServer`
 - Verify port forwarding: `adb forward tcp:8999 tcp:8999 && curl http://localhost:8999/api/health`
 
 **Server not starting**
-- The server needs Koin to be initialized first (waits up to 5 seconds)
-- Ensure `WormaCeptorKoin` is set up in your Application class
-- Check that `mcp:device-server` is included as `debugImplementation`
+- Check that `wormaceptor-mcp-server` is included as `debugImplementation`
+- Look for `WormaCeptorServer` in logcat: a port clash or `enableAuth` without a token is logged there
+- Tools answering "engine not available" mean `WormaCeptorApi.init()` hasn't run yet
 
 **Auth failures**
-- Ensure `ServerConfig.enableAuth = true` and `authToken` is set on the device side
+- Ensure `McpConfig(enableAuth = true, authToken = ...)` is set on the device side
 - Pass the same token with `--token` on the bridge side
 - The health endpoint (`/api/health`) always bypasses auth
 
 **Bridge reconnection exhausted**
-- The bridge retries up to 20 times with exponential backoff (1s → 30s)
-- If the device disconnects permanently, the bridge exits with an error state
-- Restart the bridge after reconnecting the device
+- A failing tool call retries the port forward 4 times, then returns the connection error
+- The bridge keeps running; the next tool call tries again, so reconnecting the device or relaunching the app is enough

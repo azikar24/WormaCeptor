@@ -189,7 +189,7 @@ internal class ListWebSocketConnectionsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/websockets")
+        val response = connection.apiClient.get("/api/websockets/connections")
         val data = response.jsonObject.arrayOrNull("data") ?: return "No WebSocket connections found."
         return TextFormatter.formatGenericList(data, "WebSocket connection(s)")
     }

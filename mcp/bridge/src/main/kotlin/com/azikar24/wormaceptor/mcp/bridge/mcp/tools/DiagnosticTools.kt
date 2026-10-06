@@ -13,6 +13,8 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
 
+private const val DefaultCrashLimit = 50
+
 internal class ListCrashesTool : McpTool() {
 
     override val name = "list_crashes"
@@ -24,14 +26,29 @@ internal class ListCrashesTool : McpTool() {
 
     override val inputSchema = buildJsonObject {
         put("type", "object")
-        putJsonObject("properties") {}
+        putJsonObject("properties") {
+            putJsonObject("limit") {
+                put("type", "integer")
+                put("description", "Maximum number of crashes to return (default: $DefaultCrashLimit)")
+                put("default", DefaultCrashLimit)
+            }
+            putJsonObject("offset") {
+                put("type", "integer")
+                put("description", "Number of crashes to skip for pagination (default: 0)")
+                put("default", 0)
+            }
+        }
     }
 
     override suspend fun execute(
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/crashes")
+        val params = buildMap {
+            arguments["limit"]?.jsonPrimitive?.intOrNull?.let { put("limit", it.toString()) }
+            arguments["offset"]?.jsonPrimitive?.intOrNull?.let { put("offset", it.toString()) }
+        }
+        val response = connection.apiClient.get("/api/crashes", params)
         val data = response.jsonObject.arrayOrNull("data") ?: return "No crashes found."
         return TextFormatter.formatCrashList(data)
     }

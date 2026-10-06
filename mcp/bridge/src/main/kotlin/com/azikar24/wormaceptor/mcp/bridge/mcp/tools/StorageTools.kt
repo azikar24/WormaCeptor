@@ -1,9 +1,13 @@
 package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
+import com.azikar24.wormaceptor.domain.entities.DependencyCategory
+import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
+import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
@@ -222,21 +226,31 @@ internal class BrowseSecureStorageTool : McpTool() {
 
     override val name = "browse_secure_storage"
 
-    override val description = "Browse entries in the app's secure storage (Android Keystore / EncryptedSharedPreferences). " +
-        "Returns key names and metadata (but not decrypted values, for security). " +
+    override val description = "Browse entries in the app's secure storage " +
+        "(EncryptedSharedPreferences, Android Keystore, DataStore). " +
+        "Returns key names, storage type, and encryption flags; values are never sent off the device. " +
         "Use to verify that sensitive data is stored securely, " +
         "check for expected encryption keys, or audit secure storage usage."
 
     override val inputSchema = buildJsonObject {
         put("type", "object")
-        putJsonObject("properties") {}
+        putJsonObject("properties") {
+            putJsonObject("type") {
+                put("type", "string")
+                putJsonArray("enum") { SecureStorageEntry.StorageType.entries.forEach { add(JsonPrimitive(it.name)) } }
+                put("description", "Only return entries from this storage backend")
+            }
+        }
     }
 
     override suspend fun execute(
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/secure-storage")
+        val params = buildMap {
+            arguments["type"]?.jsonPrimitive?.contentOrNull?.let { put("type", it) }
+        }
+        val response = connection.apiClient.get("/api/secure-storage", params)
         val data = response.jsonObject.arrayOrNull("data") ?: return "No secure storage entries found."
         return TextFormatter.formatGenericList(data, "secure storage entry(ies)")
     }
@@ -253,14 +267,23 @@ internal class ListDependenciesTool : McpTool() {
 
     override val inputSchema = buildJsonObject {
         put("type", "object")
-        putJsonObject("properties") {}
+        putJsonObject("properties") {
+            putJsonObject("category") {
+                put("type", "string")
+                putJsonArray("enum") { DependencyCategory.entries.forEach { add(JsonPrimitive(it.name)) } }
+                put("description", "Only return dependencies in this category")
+            }
+        }
     }
 
     override suspend fun execute(
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/dependencies")
+        val params = buildMap {
+            arguments["category"]?.jsonPrimitive?.contentOrNull?.let { put("category", it) }
+        }
+        val response = connection.apiClient.get("/api/dependencies", params)
         val data = response.jsonObject.arrayOrNull("data") ?: return "No dependency information available."
         return TextFormatter.formatGenericList(data, "dependency(ies)")
     }
@@ -270,21 +293,36 @@ internal class ListLoadedLibrariesTool : McpTool() {
 
     override val name = "list_loaded_libraries"
 
-    override val description = "List native libraries (.so files) currently loaded by the running Android app process. " +
-        "Returns library file names and paths. " +
+    override val description = "List libraries loaded by the running Android app process: " +
+        "native .so files, DEX files, JARs, and AAR resources. " +
+        "Returns names, paths, types, and whether each is a system library. " +
         "Use to verify native library loading, debug UnsatisfiedLinkError crashes, " +
         "or audit which native code is active in the app."
 
     override val inputSchema = buildJsonObject {
         put("type", "object")
-        putJsonObject("properties") {}
+        putJsonObject("properties") {
+            putJsonObject("type") {
+                put("type", "string")
+                putJsonArray("enum") { LoadedLibrary.LibraryType.entries.forEach { add(JsonPrimitive(it.name)) } }
+                put("description", "Only return libraries of this type")
+            }
+            putJsonObject("system") {
+                put("type", "boolean")
+                put("description", "true for system libraries only, false for app libraries only; omit for both")
+            }
+        }
     }
 
     override suspend fun execute(
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/loaded-libraries")
+        val params = buildMap {
+            arguments["type"]?.jsonPrimitive?.contentOrNull?.let { put("type", it) }
+            arguments["system"]?.jsonPrimitive?.booleanOrNull?.let { put("system", it.toString()) }
+        }
+        val response = connection.apiClient.get("/api/loaded-libraries", params)
         val data = response.jsonObject.arrayOrNull("data") ?: return "No loaded libraries information available."
         return TextFormatter.formatGenericList(data, "loaded library(ies)")
     }

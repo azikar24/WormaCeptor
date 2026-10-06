@@ -99,6 +99,28 @@ interface ServiceProvider {
     ): UUID?
 
     /**
+     * Same as the overload without [startedAtMillis], recording the caller's own start time instead of
+     * the time the provider stores the row. The default implementation ignores [startedAtMillis].
+     *
+     * @param url The complete request URL
+     * @param method The HTTP method (GET, POST, etc.)
+     * @param headers Request headers as a map of name to values
+     * @param bodyStream Input stream for reading the request body, or null if no body
+     * @param bodySize Size of the request body in bytes
+     * @param startedAtMillis Epoch millis when the request started
+     * @return A unique transaction ID for correlating with the response, or null on failure
+     */
+    @Suppress("LongParameterList")
+    fun startTransaction(
+        url: String,
+        method: String,
+        headers: Map<String, List<String>>,
+        bodyStream: InputStream?,
+        bodySize: Long,
+        startedAtMillis: Long,
+    ): UUID? = startTransaction(url, method, headers, bodyStream, bodySize)
+
+    /**
      * Records the completion of an HTTP transaction (response phase).
      *
      * @param id The transaction ID returned from [startTransaction]
@@ -122,6 +144,41 @@ interface ServiceProvider {
         tlsVersion: String?,
         error: String?,
     )
+
+    /**
+     * Same as the overload without [showNotification], letting the caller suppress the capture
+     * notification for this transaction and supply the measured duration. The default implementation
+     * ignores [showNotification] and [durationMs].
+     *
+     * @param id The transaction ID returned from [startTransaction]
+     * @param code HTTP response status code
+     * @param message HTTP status message
+     * @param headers Response headers as a map of name to values
+     * @param bodyStream Input stream for reading the response body, or null if no body
+     * @param bodySize Size of the response body in bytes
+     * @param protocol HTTP protocol version (e.g., "HTTP/1.1", "h2")
+     * @param tlsVersion TLS version used for HTTPS connections, or null for HTTP
+     * @param error Error message if the request failed, or null on success
+     * @param showNotification Whether a capture notification may be shown for this transaction
+     * @param durationMs Time from request start until the response headers arrived, or null to let the
+     *   provider derive it from the start timestamp
+     */
+    @Suppress("LongParameterList")
+    fun completeTransaction(
+        id: UUID,
+        code: Int,
+        message: String,
+        headers: Map<String, List<String>>,
+        bodyStream: InputStream?,
+        bodySize: Long,
+        protocol: String?,
+        tlsVersion: String?,
+        error: String?,
+        showNotification: Boolean,
+        durationMs: Long? = null,
+    ) {
+        completeTransaction(id, code, message, headers, bodyStream, bodySize, protocol, tlsVersion, error)
+    }
 
     /**
      * Deletes transactions older than the specified threshold.

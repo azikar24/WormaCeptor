@@ -11,7 +11,10 @@ import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrokenImage
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -38,6 +41,7 @@ internal fun ZoomablePage(
     bitmap: Bitmap?,
     pageNumber: Int,
     onTap: () -> Unit,
+    isFailed: Boolean = false,
 ) {
     val darkColors = WormaCeptorTokens.semantic(darkTheme = true)
     var scale by remember { mutableFloatStateOf(1f) }
@@ -109,10 +113,19 @@ internal fun ZoomablePage(
                     .background(darkColors.surface),
                 contentAlignment = Alignment.Center,
             ) {
-                CircularProgressIndicator(
-                    color = darkColors.textPrimary.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
-                    modifier = Modifier.size(WormaCeptorTokens.IconSize.xl),
-                )
+                if (isFailed) {
+                    Icon(
+                        imageVector = Icons.Default.BrokenImage,
+                        contentDescription = stringResource(R.string.viewer_pdf_page_failed, pageNumber),
+                        tint = darkColors.textPrimary.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.xl),
+                    )
+                } else {
+                    CircularProgressIndicator(
+                        color = darkColors.textPrimary.copy(alpha = WormaCeptorTokens.Alpha.BOLD),
+                        modifier = Modifier.size(WormaCeptorTokens.IconSize.xl),
+                    )
+                }
             }
         }
     }

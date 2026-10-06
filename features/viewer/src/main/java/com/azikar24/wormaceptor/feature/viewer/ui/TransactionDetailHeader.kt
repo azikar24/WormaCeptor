@@ -9,17 +9,17 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.api.Feature
+import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.components.appbar.WormaCeptorTopBar
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.tab.WormaCeptorTabRow
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.TextWithStartEllipsis
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEvent
@@ -74,25 +74,11 @@ internal fun TransactionDetailHeader(
             )
         }
 
-        PrimaryTabRow(selectedTabIndex = selectedTabIndex) {
-            tabs.forEachIndexed { index, tabTitle ->
-                Tab(
-                    selected = selectedTabIndex == index,
-                    onClick = { onTabSelected(index) },
-                    text = {
-                        Text(
-                            text = tabTitle,
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = if (selectedTabIndex == index) {
-                                FontWeight.SemiBold
-                            } else {
-                                FontWeight.Normal
-                            },
-                        )
-                    },
-                )
-            }
-        }
+        WormaCeptorTabRow(
+            selectedTabIndex = selectedTabIndex,
+            titles = tabs,
+            onTabSelect = onTabSelected,
+        )
     }
 }
 
@@ -129,6 +115,7 @@ private fun MenuAction(
     showMenu: Boolean,
     onEvent: (TransactionDetailViewEvent) -> Unit,
 ) {
+    val mockRulesEnabled = remember { WormaCeptorApi.isFeatureEnabled(Feature.MOCK_RULES) }
     WormaCeptorIconButton(
         onClick = { onEvent(TransactionDetailViewEvent.Menu.VisibilityChanged(true)) },
     ) {
@@ -159,5 +146,12 @@ private fun MenuAction(
             text = { Text(stringResource(R.string.viewer_transaction_detail_share_as_har)) },
             onClick = { onEvent(TransactionDetailViewEvent.Menu.ShareAsHar) },
         )
+        if (mockRulesEnabled) {
+            WormaCeptorDivider()
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.viewer_transaction_detail_add_to_mock)) },
+                onClick = { onEvent(TransactionDetailViewEvent.Menu.AddToMockRules) },
+            )
+        }
     }
 }

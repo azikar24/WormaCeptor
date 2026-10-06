@@ -1,5 +1,8 @@
 package com.azikar24.wormaceptor.core.engine.di
 
+import android.content.Context
+import android.hardware.display.DisplayManager
+import android.view.Display
 import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
 import com.azikar24.wormaceptor.core.engine.CryptoEngine
 import com.azikar24.wormaceptor.core.engine.DefaultHighlighterRegistry
@@ -34,7 +37,15 @@ import org.koin.dsl.module
 val engineModule = module {
     // Performance monitoring engines
     single { MemoryMonitorEngine() }
-    single { FpsMonitorEngine() }
+    single {
+        val displayManager = androidContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        FpsMonitorEngine(
+            refreshRateProvider = {
+                displayManager.getDisplay(Display.DEFAULT_DISPLAY)?.refreshRate
+                    ?: FpsMonitorEngine.DEFAULT_REFRESH_RATE_HZ
+            },
+        )
+    }
     single { CpuMonitorEngine() }
     single { PerformanceOverlayEngine(androidContext()) }
 

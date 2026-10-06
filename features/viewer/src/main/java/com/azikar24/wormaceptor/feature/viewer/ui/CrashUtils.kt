@@ -46,7 +46,7 @@ object CrashUtils {
      */
     fun parseStackTrace(
         stackTrace: String,
-        appPackage: String = "com.azikar24.wormaceptor",
+        appPackage: String,
     ): List<StackFrame> {
         return stackTrace.lines()
             .filter { it.isNotBlank() }

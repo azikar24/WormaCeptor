@@ -34,7 +34,6 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.DependencyInfo
 import com.azikar24.wormaceptor.feature.dependenciesinspector.R
-import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util.categoryColor
 import com.azikar24.wormaceptor.feature.dependenciesinspector.ui.util.shortLabel
 
 private const val CategoryIconBackgroundAlpha = 0.15f
@@ -45,7 +44,7 @@ internal fun DependencyCard(
     onClick: () -> Unit,
     colors: ToolColors.DependenciesInspector.Scheme,
 ) {
-    val categoryColor = dependency.category.categoryColor(colors)
+    val categoryColor = colors.labelSecondary
 
     WormaCeptorCard(
         onClick = onClick,
@@ -146,8 +145,8 @@ private fun VersionBadge(
     WormaCeptorBadge(
         text = "v$version",
         variant = BadgeVariant.Tonal(
-            containerColor = colors.versionDetected.copy(CategoryIconBackgroundAlpha),
-            contentColor = colors.versionText,
+            containerColor = colors.labelSecondary.copy(CategoryIconBackgroundAlpha),
+            contentColor = colors.valuePrimary,
         ),
         textStyle = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
     )

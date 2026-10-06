@@ -55,14 +55,24 @@ class WebSocketMonitorEngineTest {
             val delegate = mockk<WebSocketListener>(relaxed = true)
             val listener = engine.wrap(delegate, "wss://example.com")
 
-            listener.getConnectionId() shouldBe -1L
+            listener.getConnectionId() shouldBe 1L
         }
 
         @Test
         fun `should create MonitoringWebSocketListener without delegate`() {
             val listener = engine.wrap("wss://example.com")
 
-            listener.getConnectionId() shouldBe -1L
+            listener.getConnectionId() shouldBe 1L
+        }
+
+        @Test
+        fun `should register connection as CONNECTING on wrap`() {
+            engine.wrap("wss://example.com")
+
+            val connections = engine.connections.value
+            connections shouldHaveSize 1
+            connections.first().url shouldBe "wss://example.com"
+            connections.first().state shouldBe WebSocketState.CONNECTING
         }
     }
 
@@ -70,22 +80,21 @@ class WebSocketMonitorEngineTest {
     inner class OnOpen {
 
         @Test
-        fun `should register connection on open`() = runTest {
-            val listener = engine.wrap("wss://example.com")
+        fun `should register connection on wrap and mark it open on open`() = runTest {
             val webSocket = mockk<WebSocket>(relaxed = true)
             val response = mockk<Response>(relaxed = true)
 
             engine.connections.test {
                 awaitItem() // initial empty
 
-                listener.onOpen(webSocket, response)
-
-                // registerConnection emits CONNECTING, then updateConnection emits OPEN
+                // wrap registers CONNECTING, then onOpen updates to OPEN
+                val listener = engine.wrap("wss://example.com")
                 val connecting = awaitItem()
                 connecting shouldHaveSize 1
                 connecting.first().url shouldBe "wss://example.com"
                 connecting.first().state shouldBe WebSocketState.CONNECTING
 
+                listener.onOpen(webSocket, response)
                 val opened = awaitItem()
                 opened shouldHaveSize 1
                 opened.first().state shouldBe WebSocketState.OPEN
@@ -153,6 +162,16 @@ class WebSocketMonitorEngineTest {
             listener.onMessage(webSocket, "Hello")
 
             engine.messages.value.first().size shouldBe 5L
+        }
+
+        @Test
+        fun `should attribute messages before onOpen to the listener connection`() {
+            val listener = engine.wrap("wss://example.com")
+            val webSocket = mockk<WebSocket>(relaxed = true)
+
+            listener.onMessage(webSocket, "early")
+
+            engine.messages.value.first().connectionId shouldBe listener.getConnectionId()
         }
 
         @Test
@@ -271,6 +290,20 @@ class WebSocketMonitorEngineTest {
             val connection = engine.connections.value.first()
             connection.state shouldBe WebSocketState.CLOSED
             connection.closeReason shouldBe "Connection lost"
+        }
+
+        @Test
+        fun `should record handshake failure without onOpen`() {
+            val listener = engine.wrap("wss://example.com")
+            val webSocket = mockk<WebSocket>(relaxed = true)
+
+            listener.onFailure(webSocket, RuntimeException("Handshake failed"), null)
+
+            val connections = engine.connections.value
+            connections shouldHaveSize 1
+            connections.first().id shouldBe listener.getConnectionId()
+            connections.first().state shouldBe WebSocketState.CLOSED
+            connections.first().closeReason shouldBe "Handshake failed"
         }
 
         @Test

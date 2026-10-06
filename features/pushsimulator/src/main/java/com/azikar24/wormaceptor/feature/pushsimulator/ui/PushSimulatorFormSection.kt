@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -57,6 +56,7 @@ import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorDropdownBox
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -205,36 +205,31 @@ private fun ChannelSelector(
     var expanded by remember { mutableStateOf(false) }
     val selectedChannel = channels.find { it.id == selectedChannelId }
 
-    ExposedDropdownMenuBox(
+    WormaCeptorDropdownBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },
         modifier = Modifier.fillMaxWidth(),
-    ) {
-        WormaCeptorTextField(
-            value = selectedChannel?.name.orEmpty(),
-            onValueChange = {},
-            readOnly = true,
-            label = { Text(stringResource(R.string.pushsimulator_channel_label)) },
-            placeholder = { Text(stringResource(R.string.pushsimulator_channel_placeholder)) },
-            trailingIcon = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
-                    modifier = Modifier.padding(end = WormaCeptorTokens.Spacing.sm),
-                ) {
-                    selectedChannel?.let { ImportanceBadge(importance = it.importance) }
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor(),
-        )
-
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-        ) {
+        anchor = {
+            WormaCeptorTextField(
+                value = selectedChannel?.name.orEmpty(),
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(stringResource(R.string.pushsimulator_channel_label)) },
+                placeholder = { Text(stringResource(R.string.pushsimulator_channel_placeholder)) },
+                trailingIcon = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
+                        modifier = Modifier.padding(end = WormaCeptorTokens.Spacing.sm),
+                    ) {
+                        selectedChannel?.let { ImportanceBadge(importance = it.importance) }
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        menu = {
             channels.forEach { channel ->
                 val isSelected = channel.id == selectedChannelId
                 DropdownMenuItem(
@@ -291,8 +286,8 @@ private fun ChannelSelector(
                     },
                 )
             }
-        }
-    }
+        },
+    )
 }
 
 @Composable
@@ -359,17 +354,16 @@ private fun PrioritySelector(
                         )
                     },
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = priorityColor
+                        selectedContainerColor = MaterialTheme.colorScheme.primary
                             .copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
-                        selectedLabelColor = priorityColor,
-                        selectedLeadingIconColor = priorityColor,
+                        selectedLabelColor = MaterialTheme.colorScheme.primary,
                     ),
                     border = FilterChipDefaults.filterChipBorder(
                         enabled = true,
                         selected = isSelected,
                         borderColor = WormaCeptorTokens.semantic().textTertiary
                             .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
-                        selectedBorderColor = priorityColor
+                        selectedBorderColor = MaterialTheme.colorScheme.primary
                             .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                     ),
                 )
@@ -453,18 +447,18 @@ private fun ActionButtonsSection(
                             )
                         },
                         colors = InputChipDefaults.inputChipColors(
-                            selectedContainerColor = ToolColors.PushSimulator.Template.action
+                            selectedContainerColor = MaterialTheme.colorScheme.primary
                                 .copy(alpha = WormaCeptorTokens.Alpha.SUBTLE),
-                            selectedLabelColor = ToolColors.PushSimulator.Template.action,
-                            selectedLeadingIconColor = ToolColors.PushSimulator.Template.action,
-                            selectedTrailingIconColor = ToolColors.PushSimulator.Template.action
+                            selectedLabelColor = MaterialTheme.colorScheme.primary,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                            selectedTrailingIconColor = MaterialTheme.colorScheme.primary
                                 .copy(alpha = WormaCeptorTokens.Alpha.STRONG),
                         ),
                         border = InputChipDefaults.inputChipBorder(
                             enabled = true,
                             selected = true,
                             borderColor = Color.Transparent,
-                            selectedBorderColor = ToolColors.PushSimulator.Template.action
+                            selectedBorderColor = MaterialTheme.colorScheme.primary
                                 .copy(alpha = WormaCeptorTokens.Alpha.MEDIUM),
                         ),
                     )

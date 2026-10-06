@@ -18,13 +18,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorContainer
 import com.azikar24.wormaceptor.core.ui.components.divider.DividerStyle
 import com.azikar24.wormaceptor.core.ui.components.divider.WormaCeptorDivider
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.FormDataParser
 import com.azikar24.wormaceptor.feature.viewer.R
-import org.koin.java.KoinJavaComponent.get
 
 /**
  * A table view for URL-encoded form data (application/x-www-form-urlencoded).
@@ -37,7 +37,7 @@ fun FormDataView(
 ) {
     val parsedData = remember(formData) {
         try {
-            val parser: FormDataParser = get(FormDataParser::class.java)
+            val parser: FormDataParser = WormaCeptorKoin.get(FormDataParser::class.java)
             parser.parse(formData)
         } catch (_: RuntimeException) {
             emptyList()

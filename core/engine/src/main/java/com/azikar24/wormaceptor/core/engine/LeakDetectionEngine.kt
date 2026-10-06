@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import com.azikar24.wormaceptor.domain.contracts.LeakRepository
 import com.azikar24.wormaceptor.domain.entities.LeakInfo
 import com.azikar24.wormaceptor.domain.entities.LeakInfo.LeakSeverity
@@ -30,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Features:
  * - Automatic Activity lifecycle tracking via ActivityLifecycleCallbacks
  * - Configurable check delay after onDestroy
- * - Severity classification based on retained size
+ * - Severity classification based on object type, retention time, and recurrence
  * - Force GC and manual check capability
  * - Thread-safe leak tracking
  */
@@ -158,7 +159,7 @@ class LeakDetectionEngine(
     }
 
     /**
-     * Clears all detected leaks.
+     * Clears all detected leaks, including persisted ones.
      */
     fun clearLeaks() {
         synchronized(leaksLock) {
@@ -166,6 +167,11 @@ class LeakDetectionEngine(
         }
         _detectedLeaks.value = emptyList()
         _leakSummary.value = LeakSummary.empty()
+        leakRepository?.let { repo ->
+            scope.launch {
+                repo.clearLeaks()
+            }
+        }
     }
 
     /**
@@ -257,10 +263,12 @@ class LeakDetectionEngine(
     }
 
     /**
-     * Checks all pending references for leaks.
+     * Checks pending references whose grace period has elapsed.
+     * Younger references stay pending for their scheduled check.
      */
     private fun checkPendingReferences() {
-        val checksToProcess = pendingChecks.toMap()
+        val now = System.currentTimeMillis()
+        val checksToProcess = pendingChecks.filterValues { now - it.destroyedAt >= checkDelayMs }
         checksToProcess.forEach { (id, check) ->
             val leakedObject = check.weakRef.get()
             if (leakedObject != null) {
@@ -280,26 +288,32 @@ class LeakDetectionEngine(
         check: PendingCheck,
         leakedObject: Any,
     ) {
-        val retainedSize = estimateRetainedSize(leakedObject)
-        val severity = classifySeverity(check.className, retainedSize)
+        val kind = leakedObjectKind(leakedObject)
         val referencePath = buildReferencePath(leakedObject)
+        val now = System.currentTimeMillis()
 
-        val leakInfo = LeakInfo(
-            timestamp = System.currentTimeMillis(),
-            objectClass = check.className,
-            leakDescription = check.description,
-            retainedSize = retainedSize,
-            referencePath = referencePath,
-            severity = severity,
-        )
-
-        synchronized(leaksLock) {
-            leaksList.add(0, leakInfo)
+        val leakInfo = synchronized(leaksLock) {
+            val severity = classifyLeakSeverity(
+                kind = kind,
+                retainedMs = now - check.destroyedAt,
+                isRecurring = leaksList.any { it.objectClass == check.className },
+            )
+            // Heap size isn't measured (that needs a heap dump), so no size is reported
+            val info = LeakInfo(
+                timestamp = now,
+                objectClass = check.className,
+                leakDescription = check.description,
+                retainedSize = 0L,
+                referencePath = referencePath,
+                severity = severity,
+            )
+            leaksList.add(0, info)
             // Trim to max size
             while (leaksList.size > maxLeakHistory) {
                 leaksList.removeAt(leaksList.size - 1)
             }
             updateStateFlows()
+            info
         }
 
         // Persist to repository if configured
@@ -313,32 +327,16 @@ class LeakDetectionEngine(
         onLeakDetected?.invoke(leakInfo)
     }
 
-    /**
-     * Estimates the retained size of an object.
-     * This is an approximation based on object type and known patterns.
-     */
-    private fun estimateRetainedSize(obj: Any): Long {
-        return if (obj is Activity) ESTIMATED_ACTIVITY_SIZE else ESTIMATED_DEFAULT_SIZE
+    private fun leakedObjectKind(obj: Any): LeakedObjectKind = when {
+        obj is Activity -> LeakedObjectKind.ACTIVITY
+        obj is View -> LeakedObjectKind.VIEW
+        isFragment(obj.javaClass) -> LeakedObjectKind.FRAGMENT
+        else -> LeakedObjectKind.OTHER
     }
 
-    /**
-     * Classifies the severity of a leak based on object type and retained size.
-     */
-    private fun classifySeverity(
-        className: String,
-        retainedSize: Long,
-    ): LeakSeverity {
-        // Activities are always high or critical severity
-        val isActivity = className.contains("Activity")
-
-        return when {
-            isActivity && retainedSize >= CRITICAL_SIZE_THRESHOLD -> LeakSeverity.CRITICAL
-            isActivity -> LeakSeverity.HIGH
-            retainedSize >= CRITICAL_SIZE_THRESHOLD -> LeakSeverity.HIGH
-            retainedSize >= HIGH_SIZE_THRESHOLD -> LeakSeverity.MEDIUM
-            else -> LeakSeverity.LOW
-        }
-    }
+    // Name-based so core needs no dependency on androidx.fragment
+    private fun isFragment(clazz: Class<*>): Boolean = generateSequence<Class<*>>(clazz) { it.superclass }
+        .any { it.name == ANDROIDX_FRAGMENT || it.name == PLATFORM_FRAGMENT }
 
     /**
      * Builds a simplified reference path for the leaked object.
@@ -429,7 +427,7 @@ class LeakDetectionEngine(
         )
     }
 
-    /** Timing, history size, and retained size estimation defaults. */
+    /** Timing and history size defaults. */
     companion object {
         /** Default delay before checking if an object was collected (5 seconds). */
         const val DEFAULT_CHECK_DELAY_MS = 5000L
@@ -440,16 +438,31 @@ class LeakDetectionEngine(
         /** Wait time after GC to allow collection to complete. */
         private const val GC_WAIT_MS = 100L
 
-        /** Estimated retained size for an Activity (~2MB). */
-        private const val ESTIMATED_ACTIVITY_SIZE = 2_097_152L
-
-        /** Default estimated size for unknown objects (~256KB). */
-        private const val ESTIMATED_DEFAULT_SIZE = 262_144L
-
-        /** Size threshold for critical severity (10MB). */
-        private const val CRITICAL_SIZE_THRESHOLD = 10_485_760L
-
-        /** Size threshold for high severity (1MB). */
-        private const val HIGH_SIZE_THRESHOLD = 1_048_576L
+        private const val ANDROIDX_FRAGMENT = "androidx.fragment.app.Fragment"
+        private const val PLATFORM_FRAGMENT = "android.app.Fragment"
     }
+}
+
+internal enum class LeakedObjectKind { ACTIVITY, FRAGMENT, VIEW, OTHER }
+
+/** Retention past this means the object outlived far more than a normal GC cycle. */
+internal const val LongRetentionMs = 30_000L
+
+/**
+ * Severity from what leaked and how badly: an Activity pins its whole view tree and resources,
+ * a Fragment or View pins part of it, anything else is unknown. A leak that recurs for the same
+ * class or stays retained past [LongRetentionMs] is escalated one level.
+ */
+internal fun classifyLeakSeverity(
+    kind: LeakedObjectKind,
+    retainedMs: Long,
+    isRecurring: Boolean,
+): LeakSeverity {
+    val base = when (kind) {
+        LeakedObjectKind.ACTIVITY -> LeakSeverity.HIGH
+        LeakedObjectKind.FRAGMENT, LeakedObjectKind.VIEW -> LeakSeverity.MEDIUM
+        LeakedObjectKind.OTHER -> LeakSeverity.LOW
+    }
+    val escalate = isRecurring || retainedMs >= LongRetentionMs
+    return if (escalate) LeakSeverity.entries[base.ordinal + 1] else base
 }

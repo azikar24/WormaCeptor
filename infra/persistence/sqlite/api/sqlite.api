@@ -1,3 +1,16 @@
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/BodyRefs {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/BodyRefs;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/BodyRefs;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/azikar24/wormaceptor/infra/persistence/sqlite/BodyRefs;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReqBodyRef ()Ljava/lang/String;
+	public final fun getResBodyRef ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/Converters {
 	public fun <init> ()V
 	public final fun dateToTimestamp (Ljava/util/Date;)Ljava/lang/Long;
@@ -57,6 +70,7 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/CrashEntity
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/FileSystemBlobStorage : com/azikar24/wormaceptor/domain/contracts/BlobStorage {
 	public fun <init> (Landroid/content/Context;)V
 	public fun deleteBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteUnreferenced (Ljava/util/Set;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun readBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun saveBlob (Ljava/io/InputStream;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -64,6 +78,7 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/FileSystemB
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryBlobStorage : com/azikar24/wormaceptor/domain/contracts/BlobStorage {
 	public fun <init> ()V
 	public fun deleteBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun deleteUnreferenced (Ljava/util/Set;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun readBlob (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun saveBlob (Ljava/io/InputStream;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -111,13 +126,16 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryTra
 	public fun clearAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteTransactions (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteTransactionsBefore (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAllBodyRefs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAllTransactions ()Lkotlinx/coroutines/flow/Flow;
 	public fun getAllTransactionsAsList (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getTransactionById (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getTransactionsPaged (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;I)Lkotlinx/coroutines/flow/Flow;
+	public fun observeTransaction (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun updateTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/InMemoryWebViewMonitorRepository : com/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository {
@@ -460,13 +478,16 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomTransac
 	public fun clearAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteTransactions (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteTransactionsBefore (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAllBodyRefs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAllTransactions ()Lkotlinx/coroutines/flow/Flow;
 	public fun getAllTransactionsAsList (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getTransactionById (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getTransactionsPaged (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;I)Lkotlinx/coroutines/flow/Flow;
+	public fun observeTransaction (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun updateTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/RoomWebViewMonitorRepository : com/azikar24/wormaceptor/domain/contracts/WebViewMonitorRepository {
@@ -485,12 +506,15 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 	public abstract fun deleteOlderThan (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getAll ()Lkotlinx/coroutines/flow/Flow;
 	public abstract fun getAllAsList (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getAllBodyRefs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getById (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getTransactionsPaged (IILjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun observeById (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun search (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun update (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao {
@@ -500,13 +524,16 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/Transaction
 	public fun deleteOlderThan (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAll ()Lkotlinx/coroutines/flow/Flow;
 	public fun getAllAsList (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getAllBodyRefs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getById (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getTransactionsPaged (IILjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun observeById (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public fun search (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
+	public fun update (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity {

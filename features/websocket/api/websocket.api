@@ -216,37 +216,38 @@ public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEv
 public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewModel : com/azikar24/wormaceptor/common/presentation/BaseViewModel {
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;Lcom/azikar24/wormaceptor/feature/websocket/navigator/WebSocketNavigator;)V
-	public final fun getMessageCountForConnection (J)I
 	public synthetic fun handleEvent (Ljava/lang/Object;)V
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;IZLcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;IZLjava/util/Map;ZZ)V
-	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;IZLcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;IZLjava/util/Map;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILkotlinx/collections/immutable/ImmutableMap;ZLcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;IZLkotlinx/collections/immutable/ImmutableMap;ZZ)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILkotlinx/collections/immutable/ImmutableMap;ZLcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;IZLkotlinx/collections/immutable/ImmutableMap;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun component10 ()I
-	public final fun component11 ()Z
-	public final fun component12 ()Ljava/util/Map;
-	public final fun component13 ()Z
+	public final fun component10 ()Lkotlinx/collections/immutable/ImmutableList;
+	public final fun component11 ()I
+	public final fun component12 ()Z
+	public final fun component13 ()Lkotlinx/collections/immutable/ImmutableMap;
 	public final fun component14 ()Z
+	public final fun component15 ()Z
 	public final fun component2 ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun component3 ()I
-	public final fun component4 ()Z
-	public final fun component5 ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;
-	public final fun component6 ()Ljava/lang/String;
-	public final fun component7 ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
-	public final fun component8 ()Ljava/lang/Long;
-	public final fun component9 ()Lkotlinx/collections/immutable/ImmutableList;
-	public final fun copy (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;IZLcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;IZLjava/util/Map;ZZ)Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;
-	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;IZLcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;IZLjava/util/Map;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;
+	public final fun component4 ()Lkotlinx/collections/immutable/ImmutableMap;
+	public final fun component5 ()Z
+	public final fun component6 ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
+	public final fun component9 ()Ljava/lang/Long;
+	public final fun copy (Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILkotlinx/collections/immutable/ImmutableMap;ZLcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;IZLkotlinx/collections/immutable/ImmutableMap;ZZ)Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;
+	public static synthetic fun copy$default (Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;Ljava/lang/String;Lkotlinx/collections/immutable/ImmutableList;ILkotlinx/collections/immutable/ImmutableMap;ZLcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;Ljava/lang/Long;Lkotlinx/collections/immutable/ImmutableList;IZLkotlinx/collections/immutable/ImmutableMap;ZZILjava/lang/Object;)Lcom/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewState;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getConnectionSearchQuery ()Ljava/lang/String;
 	public final fun getConnections ()Lkotlinx/collections/immutable/ImmutableList;
-	public final fun getDirectionCounts ()Ljava/util/Map;
+	public final fun getDirectionCounts ()Lkotlinx/collections/immutable/ImmutableMap;
 	public final fun getDirectionFilter ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketMessageDirection;
 	public final fun getExpandedMessageId ()Ljava/lang/Long;
+	public final fun getMessageCountsByConnection ()Lkotlinx/collections/immutable/ImmutableMap;
 	public final fun getMessageSearchQuery ()Ljava/lang/String;
 	public final fun getMessages ()Lkotlinx/collections/immutable/ImmutableList;
 	public final fun getSelectedConnection ()Lcom/azikar24/wormaceptor/domain/entities/WebSocketConnection;

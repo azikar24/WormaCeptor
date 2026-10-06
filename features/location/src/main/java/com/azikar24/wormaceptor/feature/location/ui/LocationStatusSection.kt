@@ -39,7 +39,6 @@ import com.azikar24.wormaceptor.core.ui.components.button.ButtonVariant
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorButton
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
-import com.azikar24.wormaceptor.core.ui.components.toggle.SwitchVariant
 import com.azikar24.wormaceptor.core.ui.components.toggle.WormaCeptorSwitch
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
@@ -108,7 +107,6 @@ internal fun MockLocationWarningBanner() {
                     }
                 },
                 variant = ButtonVariant.Primary,
-                containerColor = WormaCeptorTokens.Colors.Location.warning,
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Settings,
@@ -139,20 +137,10 @@ internal fun MockLocationStatusCard(
         animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
         label = "location_toggle_status",
     )
-    val containerColor by animateColorAsState(
-        targetValue = if (isMockEnabled) {
-            WormaCeptorTokens.Colors.Location.enabled.copy(alpha = TokenAlpha.SUBTLE)
-        } else {
-            WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.BOLD)
-        },
-        animationSpec = tween(WormaCeptorTokens.Animation.PAGE),
-        label = "location_toggle_bg",
-    )
 
     WormaCeptorCard(
         modifier = Modifier.fillMaxWidth(),
         style = CardStyle.Outlined,
-        backgroundColor = containerColor,
         borderColor = if (isMockEnabled) {
             WormaCeptorTokens.Colors.Location.enabled.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
         } else {
@@ -224,9 +212,6 @@ private fun MockLocationToggleRow(
             checked = isMockEnabled,
             onCheckedChange = null,
             enabled = isEnabled,
-            variant = SwitchVariant.Accent(
-                color = WormaCeptorTokens.Colors.Location.enabled,
-            ),
         )
     }
 }
@@ -274,7 +259,7 @@ private fun MockLocationLabel(
             Text(
                 text = currentMockLocation.formatCoordinates(),
                 style = MaterialTheme.typography.bodyMedium,
-                color = WormaCeptorTokens.Colors.Location.coordinate,
+                color = WormaCeptorTokens.semantic().textSecondary,
                 fontWeight = FontWeight.Medium,
             )
             currentMockLocation.name?.let { name ->

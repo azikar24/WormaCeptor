@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.domain.contracts
 
 import androidx.paging.PagingData
+import com.azikar24.wormaceptor.domain.entities.BlobID
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.flow.Flow
@@ -14,11 +15,20 @@ interface TransactionRepository {
     /** Returns the full [NetworkTransaction] for the given [id], or null if not found. */
     suspend fun getTransactionById(id: UUID): NetworkTransaction?
 
+    /** Emits the [NetworkTransaction] for [id] (null while absent), re-emitting only when that row changes. */
+    fun observeTransaction(id: UUID): Flow<NetworkTransaction?>
+
     /** Persists or updates a [NetworkTransaction]. */
     suspend fun saveTransaction(transaction: NetworkTransaction)
 
+    /** Replaces the stored transaction with the same id. Returns false, writing nothing, if it no longer exists. */
+    suspend fun updateTransaction(transaction: NetworkTransaction): Boolean
+
     /** Returns all stored transactions as a one-shot list. */
     suspend fun getAllTransactionsAsList(): List<NetworkTransaction>
+
+    /** Returns every request/response body blob reference held by stored transactions. */
+    suspend fun getAllBodyRefs(): Set<BlobID>
 
     /** Deletes all stored transactions. */
     suspend fun clearAll()

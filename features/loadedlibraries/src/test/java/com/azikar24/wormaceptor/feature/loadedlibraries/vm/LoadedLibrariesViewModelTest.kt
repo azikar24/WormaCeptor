@@ -314,6 +314,31 @@ class LoadedLibrariesViewModelTest {
         }
 
         @Test
+        fun `isLibrariesLoading stays true until the first scan starts and finishes`() {
+            viewModel.uiState.value.isLibrariesLoading shouldBe true
+
+            isLoadingFlow.value = true
+            viewModel.uiState.value.isLibrariesLoading shouldBe true
+
+            isLoadingFlow.value = false
+            viewModel.uiState.value.isLibrariesLoading shouldBe false
+        }
+
+        @Test
+        fun `isLibrariesLoading is false once libraries arrive`() {
+            librariesFlow.value = listOf(makeLibrary())
+
+            viewModel.uiState.value.isLibrariesLoading shouldBe false
+        }
+
+        @Test
+        fun `isLibrariesLoading is false on error`() {
+            errorFlow.value = "Scan failed"
+
+            viewModel.uiState.value.isLibrariesLoading shouldBe false
+        }
+
+        @Test
         fun `error reflects engine state`() = runTest {
             viewModel.uiState.test {
                 awaitItem().error shouldBe null

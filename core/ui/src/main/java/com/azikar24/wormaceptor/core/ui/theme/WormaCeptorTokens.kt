@@ -35,7 +35,7 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.Colors as FeatureColors
  * Usage:
  * ```
  * WormaCeptorTokens.Colors.Status.green
- * WormaCeptorTokens.Colors.Memory.heapUsed
+ * WormaCeptorTokens.Colors.LogLevel.error
  * WormaCeptorTokens.Spacing.md
  * WormaCeptorTokens.semantic().accent
  * WormaCeptorTokens.syntax().keyword
@@ -43,7 +43,7 @@ import com.azikar24.wormaceptor.core.ui.theme.tokens.Colors as FeatureColors
  */
 object WormaCeptorTokens {
 
-    /** Unified color access. Use WormaCeptorTokens.Colors.Status.green, .Memory.heapUsed, etc. */
+    /** Unified color access. Use WormaCeptorTokens.Colors.Status.green, .LogLevel.error, etc. */
     object Colors {
 
         /** HTTP status code colors (success, redirect, error). */
@@ -65,12 +65,6 @@ object WormaCeptorTokens {
         val Accent = FeatureColors.Accent
 
         // Tool-specific groups (delegated from ToolColors.kt)
-
-        /** Memory profiler palette (heap, native, etc.). */
-        val Memory = ToolColors.Memory
-
-        /** CPU monitor chart colors. */
-        val Cpu = ToolColors.Cpu
 
         /** Database inspector colors. */
         val Database = ToolColors.Database
@@ -96,9 +90,6 @@ object WormaCeptorTokens {
         /** FPS monitor chart colors. */
         val Fps = ToolColors.Fps
 
-        /** Rate-limit indicator colors. */
-        val RateLimit = ToolColors.RateLimit
-
         /** SharedPreferences viewer colors. */
         val Preferences = ToolColors.Preferences
 
@@ -110,9 +101,6 @@ object WormaCeptorTokens {
 
         /** Compose recomposition tracker colors. */
         val Recomposition = ToolColors.Recomposition
-
-        /** Crypto operations indicator colors. */
-        val Crypto = ToolColors.Crypto
 
         /** File browser item-type colors. */
         val FileBrowser = ToolColors.FileBrowser

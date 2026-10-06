@@ -191,6 +191,8 @@ class PreferenceValueTest {
                 PreferenceValue.FloatValue(1f),
                 PreferenceValue.BooleanValue(true),
                 PreferenceValue.StringSetValue(emptySet()),
+                PreferenceValue.DoubleValue(1.0),
+                PreferenceValue.BytesValue(byteArrayOf()),
             )
 
             val typeNames = values.map { pv ->
@@ -201,10 +203,33 @@ class PreferenceValueTest {
                     is PreferenceValue.FloatValue -> "Float"
                     is PreferenceValue.BooleanValue -> "Boolean"
                     is PreferenceValue.StringSetValue -> "StringSet"
+                    is PreferenceValue.DoubleValue -> "Double"
+                    is PreferenceValue.BytesValue -> "Bytes"
                 }
             }
 
-            typeNames shouldBe listOf("String", "Int", "Long", "Float", "Boolean", "StringSet")
+            typeNames shouldBe listOf("String", "Int", "Long", "Float", "Boolean", "StringSet", "Double", "Bytes")
+        }
+    }
+
+    @Nested
+    inner class BytesValueBehavior {
+
+        @Test
+        fun `displays bytes as lowercase hex`() {
+            PreferenceValue.BytesValue(byteArrayOf(0x0A, 0xFF.toByte())).displayValue shouldBe "0aff"
+        }
+
+        @Test
+        fun `truncates long values and reports the size`() {
+            val display = PreferenceValue.BytesValue(ByteArray(100)).displayValue
+
+            display shouldBe "00".repeat(64) + "… (100 bytes)"
+        }
+
+        @Test
+        fun `equality compares content`() {
+            PreferenceValue.BytesValue(byteArrayOf(1, 2)) shouldBe PreferenceValue.BytesValue(byteArrayOf(1, 2))
         }
     }
 }

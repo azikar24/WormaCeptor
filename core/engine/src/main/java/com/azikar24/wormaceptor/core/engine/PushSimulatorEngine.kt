@@ -39,11 +39,13 @@ class PushSimulatorEngine(private val context: Context) {
      */
     @SuppressLint("MissingPermission") // Permission checked via hasNotificationPermission() before notify()
     fun sendNotification(notification: SimulatedNotification): Int {
-        ensureChannelExists(notification.channelId)
+        // On API 26+ the channel importance decides behavior; setPriority only affects older devices
+        val channelId = resolveChannelId(notification.channelId, notification.priority)
+        ensureChannelExists(channelId, mapImportance(notification.priority))
 
         val notificationId = notification.id.hashCode()
 
-        val builder = NotificationCompat.Builder(context, notification.channelId)
+        val builder = NotificationCompat.Builder(context, channelId)
             .setContentTitle(notification.title)
             .setContentText(notification.body)
             .setSmallIcon(getSmallIcon(notification.smallIconRes))
@@ -224,22 +226,61 @@ class PushSimulatorEngine(private val context: Context) {
         return notificationManagerCompat.areNotificationsEnabled()
     }
 
-    private fun ensureChannelExists(channelId: String) {
+    private fun ensureChannelExists(
+        channelId: String,
+        importance: Int,
+    ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = notificationManager.getNotificationChannel(channelId)
             if (channel == null) {
                 // Create the channel if it doesn't exist
-                if (channelId == DEFAULT_CHANNEL_ID) {
-                    createDefaultChannel()
-                } else {
+                when (channelId) {
+                    DEFAULT_CHANNEL_ID -> createDefaultChannel()
+                    LOW_CHANNEL_ID -> createChannel(
+                        channelId = channelId,
+                        channelName = "$DEFAULT_CHANNEL_NAME (Low)",
+                        description = DEFAULT_CHANNEL_DESCRIPTION,
+                        importance = importance,
+                    )
+                    HIGH_CHANNEL_ID -> createChannel(
+                        channelId = channelId,
+                        channelName = "$DEFAULT_CHANNEL_NAME (High)",
+                        description = DEFAULT_CHANNEL_DESCRIPTION,
+                        importance = importance,
+                    )
                     // Create a generic channel for unknown IDs
-                    createChannel(
+                    else -> createChannel(
                         channelId = channelId,
                         channelName = "Test Channel: $channelId",
                         description = "Auto-created channel for testing",
+                        importance = importance,
                     )
                 }
             }
+        }
+    }
+
+    /**
+     * Routes the default test channel to a per-importance sibling so the chosen priority
+     * takes effect on API 26+. Explicit channels keep their own (immutable) importance.
+     */
+    private fun resolveChannelId(
+        channelId: String,
+        priority: NotificationPriority,
+    ): String {
+        if (channelId != DEFAULT_CHANNEL_ID) return channelId
+        return when (priority) {
+            NotificationPriority.LOW -> LOW_CHANNEL_ID
+            NotificationPriority.DEFAULT -> DEFAULT_CHANNEL_ID
+            NotificationPriority.HIGH, NotificationPriority.MAX -> HIGH_CHANNEL_ID
+        }
+    }
+
+    private fun mapImportance(priority: NotificationPriority): Int {
+        return when (priority) {
+            NotificationPriority.LOW -> NotificationManager.IMPORTANCE_LOW
+            NotificationPriority.DEFAULT -> NotificationManager.IMPORTANCE_DEFAULT
+            NotificationPriority.HIGH, NotificationPriority.MAX -> NotificationManager.IMPORTANCE_HIGH
         }
     }
 
@@ -269,6 +310,8 @@ class PushSimulatorEngine(private val context: Context) {
 
         /** Description for the default test notification channel. */
         const val DEFAULT_CHANNEL_DESCRIPTION = "Channel for testing push notifications"
+        private const val LOW_CHANNEL_ID = "${DEFAULT_CHANNEL_ID}_low"
+        private const val HIGH_CHANNEL_ID = "${DEFAULT_CHANNEL_ID}_high"
         private const val ACTION_BROADCAST_PREFIX = "com.azikar24.wormaceptor.NOTIFICATION_ACTION_"
     }
 }

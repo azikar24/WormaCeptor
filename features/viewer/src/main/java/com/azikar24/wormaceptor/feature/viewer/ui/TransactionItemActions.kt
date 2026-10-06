@@ -14,4 +14,6 @@ data class TransactionItemActions(
     val onShareAsHar: (TransactionSummary) -> Unit = {},
     val onDelete: (TransactionSummary) -> Unit = {},
     val onCopyAsCurl: (TransactionSummary) -> Unit = {},
+    /** Opens a new mock rule pre-filled from the transaction; null hides the action. */
+    val onAddToMock: ((TransactionSummary) -> Unit)? = null,
 )

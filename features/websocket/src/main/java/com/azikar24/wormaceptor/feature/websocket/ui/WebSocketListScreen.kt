@@ -49,7 +49,6 @@ import com.azikar24.wormaceptor.core.ui.components.state.WormaCeptorLoadableCont
 import com.azikar24.wormaceptor.core.ui.components.status.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.theme.tokens.TokenAlpha
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.WebSocketConnection
 import com.azikar24.wormaceptor.domain.entities.WebSocketState
@@ -59,16 +58,17 @@ import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewEvent
 import com.azikar24.wormaceptor.feature.websocket.vm.WebSocketViewState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+@Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WebSocketListScreen(
     state: WebSocketViewState,
     onEvent: (WebSocketViewEvent) -> Unit,
-    getMessageCount: (Long) -> Int,
     onConnectionClick: (WebSocketConnection) -> Unit,
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
@@ -173,7 +173,7 @@ internal fun WebSocketListScreen(
                     ConnectionList(
                         connections = state.connections,
                         onConnectionClick = onConnectionClick,
-                        getMessageCount = getMessageCount,
+                        messageCounts = state.messageCountsByConnection,
                         modifier = Modifier.fillMaxSize(),
                     )
                 },
@@ -186,8 +186,8 @@ internal fun WebSocketListScreen(
 @Composable
 private fun ConnectionList(
     connections: ImmutableList<WebSocketConnection>,
+    messageCounts: Map<Long, Int>,
     onConnectionClick: (WebSocketConnection) -> Unit,
-    getMessageCount: (Long) -> Int,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -205,7 +205,7 @@ private fun ConnectionList(
         ) { connection ->
             ConnectionItem(
                 connection = connection,
-                messageCount = getMessageCount(connection.id),
+                messageCount = messageCounts[connection.id] ?: 0,
                 onClick = { onConnectionClick(connection) },
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -244,7 +244,6 @@ private fun ConnectionItem(
         ),
         onClick = onClick,
         style = CardStyle.Outlined,
-        backgroundColor = stateColor.copy(alpha = TokenAlpha.SUBTLE),
     ) {
         Column(
             modifier = Modifier
@@ -347,10 +346,10 @@ private fun WebSocketListScreenPreview() {
                     ),
                 ),
                 totalConnectionCount = 2,
+                messageCountsByConnection = persistentMapOf(1L to 2, 2L to 2),
             ),
             onEvent = {},
             onConnectionClick = {},
-            getMessageCount = { 5 },
             onBack = {},
         )
     }
@@ -371,11 +370,11 @@ private fun WebSocketListScreenClearConfirmPreview() {
                     ),
                 ),
                 totalConnectionCount = 1,
+                messageCountsByConnection = persistentMapOf(1L to 2),
                 showClearAllConfirmation = true,
             ),
             onEvent = {},
             onConnectionClick = {},
-            getMessageCount = { 3 },
             onBack = {},
         )
     }
@@ -389,7 +388,6 @@ private fun WebSocketListScreenEmptyPreview() {
             state = WebSocketViewState(),
             onEvent = {},
             onConnectionClick = {},
-            getMessageCount = { 0 },
             onBack = {},
         )
     }

@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -261,10 +261,7 @@ private fun DataTable(
                 result.columns.forEach { column ->
                     Box(
                         modifier = Modifier
-                            .widthIn(
-                                min = WormaCeptorTokens.ComponentSize.tableCellMinWidth,
-                                max = WormaCeptorTokens.ComponentSize.tableCellMaxWidth,
-                            )
+                            .width(WormaCeptorTokens.ComponentSize.tableCellMaxWidth)
                             .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                     ) {
                         Text(
@@ -292,10 +289,7 @@ private fun DataTable(
                 row.forEach { cell ->
                     Box(
                         modifier = Modifier
-                            .widthIn(
-                                min = WormaCeptorTokens.ComponentSize.tableCellMinWidth,
-                                max = WormaCeptorTokens.ComponentSize.tableCellMaxWidth,
-                            )
+                            .width(WormaCeptorTokens.ComponentSize.tableCellMaxWidth)
                             .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                     ) {
                         Text(

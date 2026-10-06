@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.material3.SnackbarHostState
 import com.azikar24.wormaceptor.core.engine.CoreHolder
 import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.core.ui.util.isContentTooLargeForClipboard
 import com.azikar24.wormaceptor.feature.viewer.export.ExportManager
 import com.azikar24.wormaceptor.feature.viewer.ui.util.ImageOperationResult
 import com.azikar24.wormaceptor.feature.viewer.ui.util.saveImageToGallery
@@ -26,8 +27,12 @@ internal fun handleTransactionDetailEffect(
         // -- Clipboard --
         is TransactionDetailViewEffect.Clipboard.CopyText -> {
             val label = context.getString(effect.labelResId)
-            val message = copyToClipboard(context, label, effect.content)
-            scope.launch { snackBarHostState.showSnackbar(message) }
+            if (isContentTooLargeForClipboard(effect.content)) {
+                scope.launch { shareAsFile(context, effect.content, "$label.txt", "text/plain", label) }
+            } else {
+                val message = copyToClipboard(context, label, effect.content)
+                scope.launch { snackBarHostState.showSnackbar(message) }
+            }
         }
 
         // -- Share --
@@ -60,6 +65,10 @@ internal fun handleTransactionDetailEffect(
             val message = savePdfToDownloads(context, effect.bytes)
             scope.launch { snackBarHostState.showSnackbar(message) }
         }
+
+        // -- Navigation --
+        // Collected by ViewerActivity, which owns the NavController.
+        is TransactionDetailViewEffect.Navigate -> Unit
 
         // -- Message --
         is TransactionDetailViewEffect.ShowSnackBar -> {

@@ -7,6 +7,7 @@ import com.azikar24.wormaceptor.domain.entities.mock.MockRule
 import com.azikar24.wormaceptor.domain.entities.mock.RequestMatcher
 import com.azikar24.wormaceptor.domain.entities.mock.UrlMatchType
 import io.kotest.matchers.longs.shouldBeGreaterThanOrEqual
+import io.kotest.matchers.longs.shouldBeLessThan
 import io.kotest.matchers.longs.shouldBeLessThanOrEqual
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -15,6 +16,8 @@ import okhttp3.Request
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import kotlin.concurrent.thread
+import kotlin.system.measureTimeMillis
 
 class MockEngineTest {
 
@@ -22,7 +25,7 @@ class MockEngineTest {
 
     @BeforeEach
     fun setUp() {
-        engine = MockEngine()
+        engine = MockEngine(initialRulesTimeoutMs = 0)
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────
@@ -1148,6 +1151,59 @@ class MockEngineTest {
                 method = "POST",
                 headers = mapOf("Content-Type" to listOf("text/html")),
             ).shouldBeNull()
+        }
+    }
+
+    @Nested
+    inner class `initial rules load` {
+
+        private val url = "https://api.example.com/test"
+
+        @Test
+        fun `first lookup waits for rules set from another thread`() {
+            val waitingEngine = MockEngine(initialRulesTimeoutMs = 5_000)
+            val rule = mockRule()
+
+            val loader = thread {
+                Thread.sleep(100)
+                waitingEngine.setRules(listOf(rule))
+            }
+            val match = waitingEngine.findMatchingRule(url, "GET", emptyMap())
+            loader.join()
+
+            match.shouldNotBeNull()
+            match.id shouldBe rule.id
+        }
+
+        @Test
+        fun `lookup gives up after the timeout and never waits again`() {
+            val waitingEngine = MockEngine(initialRulesTimeoutMs = 200)
+
+            val first = measureTimeMillis { waitingEngine.findMatchingRule(url, "GET", emptyMap()).shouldBeNull() }
+            val second = measureTimeMillis { waitingEngine.findMatchingRule(url, "GET", emptyMap()).shouldBeNull() }
+
+            first shouldBeGreaterThanOrEqual 200
+            second shouldBeLessThan 200
+        }
+
+        @Test
+        fun `lookup does not wait once rules were set`() {
+            val waitingEngine = MockEngine(initialRulesTimeoutMs = 5_000)
+            waitingEngine.setRules(emptyList())
+
+            val elapsed = measureTimeMillis { waitingEngine.findMatchingRule(url, "GET", emptyMap()).shouldBeNull() }
+
+            elapsed shouldBeLessThan 5_000
+        }
+
+        @Test
+        fun `lookup does not wait when mocking is disabled`() {
+            val waitingEngine = MockEngine(initialRulesTimeoutMs = 5_000)
+            waitingEngine.setMockingEnabled(false)
+
+            val elapsed = measureTimeMillis { waitingEngine.findMatchingRule(url, "GET", emptyMap()).shouldBeNull() }
+
+            elapsed shouldBeLessThan 5_000
         }
     }
 }

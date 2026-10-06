@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -153,7 +154,7 @@ private fun TransactionDetailScaffold(
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
-        snackbarHost = { SnackbarHost(snackBarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState, modifier = Modifier.navigationBarsPadding()) },
         topBar = {
             TransactionDetailHeader(
                 title = title,
@@ -196,10 +197,14 @@ private fun TransactionDetailScaffold(
                 HorizontalPager(
                     state = tabPagerState,
                     modifier = Modifier.fillMaxSize(),
-                    beyondViewportPageCount = 2,
+                    beyondViewportPageCount = 1,
                 ) { page ->
                     when (page) {
-                        0 -> OverviewTab(transaction, Modifier.fillMaxSize())
+                        0 -> OverviewTab(
+                            transaction = transaction,
+                            onCopyUrl = { onEvent(TransactionDetailViewEvent.Overview.CopyUrl) },
+                            modifier = Modifier.fillMaxSize(),
+                        )
                         1 -> RequestTab(
                             transaction = transaction,
                             requestState = state.requestState,

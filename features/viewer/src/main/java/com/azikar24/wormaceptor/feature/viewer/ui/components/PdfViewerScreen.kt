@@ -1,5 +1,8 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -17,6 +20,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,6 +72,15 @@ fun PdfViewerScreen(
 
     LaunchedEffect(pdfData) {
         viewModel.sendEvent(PdfViewerViewEvent.LoadPdf(pdfData, initialPage, context.cacheDir))
+    }
+
+    // The VM is scoped to the detail entry and outlives the dialog, so free the document on close.
+    // A config change keeps it so the viewer resumes on the same page.
+    val activity = remember(context) { context.findActivity() }
+    DisposableEffect(viewModel) {
+        onDispose {
+            if (activity?.isChangingConfigurations != true) viewModel.sendEvent(PdfViewerViewEvent.Release)
+        }
     }
 
     val scope = rememberCoroutineScope()
@@ -131,7 +144,7 @@ private fun PdfViewerContent(
 
     // Sync thumbnail scroll to current page
     LaunchedEffect(state.currentPage) {
-        if (state.showThumbnails && state.pages.isNotEmpty()) {
+        if (state.showThumbnails && state.pageCount > 0) {
             thumbnailListState.animateScrollToItem(
                 index = state.currentPage,
                 scrollOffset = -100,
@@ -160,16 +173,24 @@ private fun PdfViewerContent(
             when {
                 state.isLoading -> PdfLoadingOverlay()
                 errorMessage != null -> PdfErrorOverlay(errorMessage, onDismiss)
-                state.pages.isNotEmpty() -> {
+                state.pageCount > 0 -> {
                     HorizontalPager(
                         state = pagerState,
                         modifier = Modifier.fillMaxSize(),
-                        beyondViewportPageCount = 2,
+                        beyondViewportPageCount = 1,
                     ) { pageIndex ->
+                        val bitmap = state.pages[pageIndex]
+                        // Re-requests if the page is evicted from the VM's bounded cache while composed.
+                        val isFailed = pageIndex in state.failedPages
+                        DisposableEffect(pageIndex, bitmap == null, isFailed) {
+                            if (bitmap == null && !isFailed) onEvent(PdfViewerViewEvent.RequestPage(pageIndex))
+                            onDispose { onEvent(PdfViewerViewEvent.CancelPage(pageIndex)) }
+                        }
                         ZoomablePage(
-                            bitmap = state.pages.getOrNull(pageIndex),
+                            bitmap = bitmap,
                             pageNumber = pageIndex + 1,
                             onTap = { onEvent(PdfViewerViewEvent.ToggleControls) },
+                            isFailed = isFailed,
                         )
                     }
 
@@ -220,12 +241,16 @@ private fun PdfViewerContent(
                             .padding(bottom = ThumbnailStripBottomInset),
                     ) {
                         PdfThumbnailStrip(
-                            pages = state.pages,
+                            pageCount = state.pageCount,
+                            thumbnails = state.thumbnails,
+                            failedPages = state.failedThumbnails,
                             currentPage = state.currentPage,
                             listState = thumbnailListState,
                             onPageSelect = { index ->
                                 scope.launch { pagerState.animateScrollToPage(index) }
                             },
+                            onRequestThumbnail = { index -> onEvent(PdfViewerViewEvent.RequestThumbnail(index)) },
+                            onCancelThumbnail = { index -> onEvent(PdfViewerViewEvent.CancelThumbnail(index)) },
                         )
                     }
                 }
@@ -254,6 +279,12 @@ private fun PdfViewerContent(
             }
         }
     }
+}
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 @Composable

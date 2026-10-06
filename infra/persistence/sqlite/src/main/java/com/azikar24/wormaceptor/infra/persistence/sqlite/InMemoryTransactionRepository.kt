@@ -7,10 +7,13 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.azikar24.wormaceptor.domain.contracts.TransactionFilters
 import com.azikar24.wormaceptor.domain.contracts.TransactionRepository
+import com.azikar24.wormaceptor.domain.entities.BlobID
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import java.util.UUID
@@ -29,12 +32,29 @@ class InMemoryTransactionRepository : TransactionRepository {
         return _transactionsFlow.value[id]
     }
 
+    override fun observeTransaction(id: UUID): Flow<NetworkTransaction?> {
+        return _transactionsFlow.map { it[id] }.distinctUntilChanged()
+    }
+
     override suspend fun saveTransaction(transaction: NetworkTransaction) {
         _transactionsFlow.update { current -> current + (transaction.id to transaction) }
     }
 
+    override suspend fun updateTransaction(transaction: NetworkTransaction): Boolean {
+        val previous = _transactionsFlow.getAndUpdate { current ->
+            if (transaction.id in current) current + (transaction.id to transaction) else current
+        }
+        return transaction.id in previous
+    }
+
     override suspend fun getAllTransactionsAsList(): List<NetworkTransaction> {
         return _transactionsFlow.value.values.toList()
+    }
+
+    override suspend fun getAllBodyRefs(): Set<BlobID> {
+        return _transactionsFlow.value.values
+            .flatMap { listOfNotNull(it.request.bodyRef, it.response?.bodyRef) }
+            .toSet()
     }
 
     override suspend fun clearAll() {
@@ -114,6 +134,7 @@ class InMemoryTransactionRepository : TransactionRepository {
             hasRequestBody = request.bodySize > 0,
             hasResponseBody = (response?.bodySize ?: 0) > 0,
             status = status,
+            url = request.url,
         )
     }
 

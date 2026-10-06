@@ -29,7 +29,7 @@ internal fun DirectionFilterChips(
     onDirectionToggle: (WebSocketMessageDirection) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val ws = WormaCeptorTokens.Colors.WebSocket
+    val directionColor = MaterialTheme.colorScheme.primary
     val scrollState = rememberScrollState()
 
     Row(
@@ -41,10 +41,6 @@ internal fun DirectionFilterChips(
         WebSocketMessageDirection.entries.forEach { direction ->
             val isSelected = selectedDirection == direction
             val count = directionCounts[direction] ?: 0
-            val directionColor = when (direction) {
-                WebSocketMessageDirection.SENT -> ws.sent
-                WebSocketMessageDirection.RECEIVED -> ws.received
-            }
             val icon = when (direction) {
                 WebSocketMessageDirection.SENT -> Icons.AutoMirrored.Filled.CallMade
                 WebSocketMessageDirection.RECEIVED -> Icons.AutoMirrored.Filled.CallReceived

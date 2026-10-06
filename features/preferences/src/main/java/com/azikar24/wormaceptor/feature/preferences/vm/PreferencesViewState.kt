@@ -9,6 +9,8 @@ data class PreferencesViewState(
     val isFileSearchActive: Boolean = false,
     val fileSearchQuery: String = "",
     val selectedFileName: String? = null,
+    /** True for DataStore files, which the inspector shows but never writes. */
+    val isSelectedFileReadOnly: Boolean = false,
     val itemSearchQuery: String = "",
     val typeFilter: String? = null,
     val isLoading: Boolean = false,

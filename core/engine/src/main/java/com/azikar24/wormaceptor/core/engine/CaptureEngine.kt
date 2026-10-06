@@ -24,17 +24,23 @@ class CaptureEngine(
         headers: Map<String, List<String>>,
         bodyStream: InputStream?,
         bodySize: Long = 0,
+        id: UUID = UUID.randomUUID(),
+        timestamp: Long = System.currentTimeMillis(),
     ): UUID {
         val blobId = bodyStream?.let { blobStorage.saveBlob(it) }
 
         val request = Request(url, method, headers, blobId, bodySize)
-        val transaction = NetworkTransaction(request = request)
+        val transaction = NetworkTransaction(id = id, request = request, timestamp = timestamp)
 
         repository.saveTransaction(transaction)
         return transaction.id
     }
 
-    /** Records the response for a previously started transaction. */
+    /**
+     * Records the response for a previously started transaction. [durationMs] is the caller's measured
+     * request time; when null it falls back to now minus the transaction's start timestamp. Does nothing if the
+     * transaction was deleted (e.g. cleared) while in flight.
+     */
     suspend fun completeTransaction(
         id: UUID,
         code: Int,
@@ -45,6 +51,7 @@ class CaptureEngine(
         protocol: String? = null,
         tlsVersion: String? = null,
         error: String? = null,
+        durationMs: Long? = null,
     ) {
         val original = repository.getTransactionById(id) ?: return
 
@@ -52,7 +59,7 @@ class CaptureEngine(
         val response = Response(code, message, headers, blobId, error, protocol, tlsVersion, bodySize)
 
         val status = if (error != null || code >= 400) TransactionStatus.FAILED else TransactionStatus.COMPLETED
-        val duration = System.currentTimeMillis() - original.timestamp
+        val duration = durationMs ?: (System.currentTimeMillis() - original.timestamp)
 
         // Extract custom extensions from registered providers
         val extensions = extensionRegistry?.let { registry ->
@@ -71,11 +78,16 @@ class CaptureEngine(
             durationMs = duration,
             extensions = extensions,
         )
-        repository.saveTransaction(updated)
+        // Update-only: re-inserting a cleared transaction would resurrect it with a deleted request blob.
+        if (!repository.updateTransaction(updated)) blobId?.let { blobStorage.deleteBlob(it) }
     }
 
-    /** Deletes transactions older than the given timestamp threshold. */
+    /** Deletes transactions older than the given timestamp threshold, along with their body blobs. */
     suspend fun cleanup(timestampThreshold: Long) {
+        val blobIds = repository.getAllTransactionsAsList()
+            .filter { it.timestamp < timestampThreshold }
+            .flatMap { listOfNotNull(it.request.bodyRef, it.response?.bodyRef) }
         repository.deleteTransactionsBefore(timestampThreshold)
+        blobIds.forEach { blobStorage.deleteBlob(it) }
     }
 }

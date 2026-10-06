@@ -46,7 +46,7 @@ class WormaCeptorWebSocket private constructor(
             val engineClass = Class.forName(
                 "com.azikar24.wormaceptor.core.engine.WebSocketMonitorEngine",
             )
-            val koinClass = Class.forName("org.koin.java.KoinJavaComponent")
+            val koinClass = Class.forName("com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin")
             val getMethod = koinClass.getMethod("get", Class::class.java)
             val engine = getMethod.invoke(null, engineClass)
 

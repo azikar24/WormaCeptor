@@ -5,8 +5,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,7 +33,8 @@ import com.azikar24.wormaceptor.core.ui.navigation.FeatureRegistry
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavTransitions
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
-import com.azikar24.wormaceptor.core.ui.util.copyToClipboard
+import com.azikar24.wormaceptor.core.ui.util.ClipboardResult
+import com.azikar24.wormaceptor.core.ui.util.copyToClipboardWithSizeCheck
 import com.azikar24.wormaceptor.feature.viewer.export.ExportManager
 import com.azikar24.wormaceptor.feature.viewer.export.exportCrashes
 import com.azikar24.wormaceptor.feature.viewer.navigation.DeepLinkHandler
@@ -40,22 +47,26 @@ import com.azikar24.wormaceptor.feature.viewer.vm.CrashListViewModel
 import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewEffect
 import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewEvent
 import com.azikar24.wormaceptor.feature.viewer.vm.HomeViewModel
+import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewEffect
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionDetailViewModel
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionListViewEffect
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionListViewModel
 import com.azikar24.wormaceptor.feature.viewer.vm.TransactionPagerViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.compose.KoinIsolatedContext
 import java.util.UUID
 
 /** Main activity hosting the WormaCeptor debugging UI with navigation and deep link support. */
 class ViewerActivity : ComponentActivity() {
 
     // Inject only engines needed directly by ViewerActivity
-    private val logCaptureEngine: LogCaptureEngine by inject()
-    private val performanceOverlayEngine: PerformanceOverlayEngine by inject()
+    private val logCaptureEngine: LogCaptureEngine by lazy { WormaCeptorKoin.get(LogCaptureEngine::class.java) }
+    private val performanceOverlayEngine: PerformanceOverlayEngine by lazy {
+        WormaCeptorKoin.get(PerformanceOverlayEngine::class.java)
+    }
 
     // Deep link handling - use SharedFlow to emit navigation events
     private val _deepLinkNavigation = MutableSharedFlow<DeepLinkHandler.DeepLinkDestination>(
@@ -69,6 +80,7 @@ class ViewerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // Initialize Koin before super.onCreate() to ensure injection works
         WormaCeptorKoin.init(applicationContext)
+        FeatureRegistry.preload()
 
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -101,7 +113,7 @@ class ViewerActivity : ComponentActivity() {
             viewModelFactory { CrashListViewModel(queryEngine) },
         )[CrashListViewModel::class.java]
 
-        setContent {
+        setWormaCeptorContent {
             val snackbarMessages = remember { MutableSharedFlow<String>(extraBufferCapacity = 1) }
 
             val homeState by homeViewModel.uiState.collectAsState()
@@ -119,11 +131,15 @@ class ViewerActivity : ComponentActivity() {
                             shareText(this@ViewerActivity, effect.text, effect.title)
 
                         is TransactionListViewEffect.CopyToClipboard -> {
-                            val message = copyToClipboard(
+                            val result = copyToClipboardWithSizeCheck(
                                 this@ViewerActivity,
                                 effect.label,
                                 effect.content,
                             )
+                            val message = when (result) {
+                                is ClipboardResult.Success -> result.message
+                                is ClipboardResult.TooLarge -> result.message
+                            }
                             snackbarMessages.tryEmit(message)
                         }
 
@@ -213,9 +229,13 @@ class ViewerActivity : ComponentActivity() {
                 // Wrap NavHost in Surface to ensure proper background during navigation transitions
                 // This prevents white flash in dark mode when navigating back
                 Surface(modifier = Modifier.fillMaxSize()) {
+                    // Screens only pad for the bottom bar; side bars and cutouts in landscape are handled here
                     NavHost(
                         navController = navController,
                         startDestination = WormaCeptorNavKeys.Home.route,
+                        modifier = Modifier.windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+                        ),
                         enterTransition = WormaCeptorNavTransitions.enterTransition,
                         exitTransition = WormaCeptorNavTransitions.exitTransition,
                         popEnterTransition = WormaCeptorNavTransitions.popEnterTransition,
@@ -261,6 +281,18 @@ class ViewerActivity : ComponentActivity() {
                                         TransactionDetailViewModel(queryEngine)
                                     },
                                 )
+
+                                LaunchedEffect(detailViewModel) {
+                                    detailViewModel.effects
+                                        .filterIsInstance<TransactionDetailViewEffect.Navigate.AddToMockRules>()
+                                        .collect { effect ->
+                                            navController.navigate(
+                                                WormaCeptorNavKeys.MockRuleEditor.createFromTransactionRoute(
+                                                    effect.transactionId.toString(),
+                                                ),
+                                            )
+                                        }
+                                }
 
                                 val pagerViewModel: TransactionPagerViewModel = viewModel(
                                     factory = viewModelFactory {
@@ -376,6 +408,17 @@ class ViewerActivity : ComponentActivity() {
                 // Do nothing for invalid deep links
             }
         }
+    }
+}
+
+/**
+ * Provides WormaCeptor's isolated Koin to `koinInject()` and holds composition until
+ * [FeatureRegistry] has finished its off-main scan, so the NavHost graph contains every tool route.
+ */
+private fun ComponentActivity.setWormaCeptorContent(content: @Composable () -> Unit) = setContent {
+    KoinIsolatedContext(context = WormaCeptorKoin.application) {
+        val featureContributors by FeatureRegistry.contributors.collectAsState()
+        if (featureContributors != null) content()
     }
 }
 

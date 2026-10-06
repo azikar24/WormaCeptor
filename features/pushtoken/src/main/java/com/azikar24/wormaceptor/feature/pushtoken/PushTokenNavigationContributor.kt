@@ -6,6 +6,7 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,11 +54,14 @@ private fun PushTokenDestination(onBack: () -> Unit) {
     val clipboardManager = remember { context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     val clipboardLabel = stringResource(R.string.pushtoken_clipboard_label)
     var showCopiedSnackbar by remember { mutableStateOf(false) }
+    // Counter, not a boolean: each copy must restart the timer even while the snackbar is shown.
+    var copyCount by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) { viewModel.sendEvent(PushTokenViewEvent.FetchToken) }
 
-    LaunchedEffect(showCopiedSnackbar) {
-        if (showCopiedSnackbar) {
+    LaunchedEffect(copyCount) {
+        if (copyCount > 0) {
+            showCopiedSnackbar = true
             delay(SnackbarDurationMs)
             showCopiedSnackbar = false
         }
@@ -71,7 +75,7 @@ private fun PushTokenDestination(onBack: () -> Unit) {
                     clipboardManager.setPrimaryClip(
                         ClipData.newPlainText(clipboardLabel, effect.token),
                     )
-                    showCopiedSnackbar = true
+                    copyCount++
                 }
             }
         },

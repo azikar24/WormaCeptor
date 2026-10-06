@@ -31,7 +31,6 @@ internal fun NativeHeapCard(
     currentMemory: MemoryInfo,
     modifier: Modifier = Modifier,
 ) {
-    val mem = WormaCeptorTokens.Colors.Memory
     val usageRatio = if (currentMemory.nativeHeapSize > 0) {
         currentMemory.nativeHeapAllocated.toFloat() / currentMemory.nativeHeapSize.toFloat()
     } else {
@@ -65,13 +64,13 @@ internal fun NativeHeapCard(
                     )} / ${formatBytes(currentMemory.nativeHeapSize)}",
                     style = MaterialTheme.typography.bodyLarge,
                     fontFamily = FontFamily.Monospace,
-                    color = mem.nativeHeap,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
                 Text(
                     text = "${(usageRatio * 100).roundToInt()}%",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = mem.nativeHeap,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
             }
 
@@ -81,7 +80,7 @@ internal fun NativeHeapCard(
                     .fillMaxWidth()
                     .height(WormaCeptorTokens.Elevation.lg)
                     .clip(WormaCeptorTokens.Shapes.chip),
-                color = mem.nativeHeap,
+                color = MaterialTheme.colorScheme.primary,
                 trackColor = WormaCeptorTokens.semantic().surfaceVariant,
             )
         }

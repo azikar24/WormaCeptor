@@ -115,7 +115,7 @@ internal fun WebViewRequestDetailScreen(
                     title = stringResource(R.string.webviewmonitor_detail_request_headers, request.headers.size),
                     headers = request.headers,
                     icon = Icons.Default.Code,
-                    iconTint = WormaCeptorTokens.Colors.Status.blue,
+                    iconTint = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
             if (request.statusCode != null || request.mimeType != null || request.contentLength != null) {
@@ -129,7 +129,7 @@ internal fun WebViewRequestDetailScreen(
                     ),
                     headers = request.responseHeaders,
                     icon = Icons.Default.Code,
-                    iconTint = WormaCeptorTokens.Colors.Status.green,
+                    iconTint = WormaCeptorTokens.semantic().textSecondary,
                 )
             }
             request.errorMessage?.let { ErrorCard(it) }
@@ -198,7 +198,7 @@ private fun RequestInfoCard(request: WebViewRequest) {
     WormaCeptorInfoCard(
         title = stringResource(R.string.webviewmonitor_detail_request_info),
         icon = Icons.Default.Description,
-        iconTint = WormaCeptorTokens.Colors.Status.blue,
+        iconTint = WormaCeptorTokens.semantic().textSecondary,
     ) {
         WormaCeptorDetailRow(
             label = stringResource(R.string.webviewmonitor_label_method),
@@ -270,7 +270,7 @@ private fun ResponseInfoCard(request: WebViewRequest) {
     WormaCeptorInfoCard(
         title = stringResource(R.string.webviewmonitor_detail_response_info),
         icon = Icons.Default.CheckCircle,
-        iconTint = WormaCeptorTokens.Colors.Status.green,
+        iconTint = WormaCeptorTokens.semantic().textSecondary,
     ) {
         request.statusCode?.let {
             WormaCeptorDetailRow(

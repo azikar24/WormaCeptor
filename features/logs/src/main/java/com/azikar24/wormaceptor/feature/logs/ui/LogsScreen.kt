@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,8 +28,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -82,9 +86,16 @@ internal fun LogsScreenContent(
     val listState = rememberLazyListState()
     val currentOnEvent by rememberUpdatedState(onEvent)
 
-    LaunchedEffect(state.logs.size, state.autoScroll) {
+    // Keyed on the newest id: size stops changing once the ring buffer is full.
+    var isAutoScrolling by remember { mutableStateOf(false) }
+    LaunchedEffect(state.logs.lastOrNull()?.id, state.autoScroll) {
         if (state.autoScroll && state.logs.isNotEmpty()) {
-            listState.animateScrollToItem(state.logs.size - 1)
+            isAutoScrolling = true
+            try {
+                listState.animateScrollToItem(state.logs.size - 1)
+            } finally {
+                isAutoScrolling = false
+            }
         }
     }
 
@@ -96,8 +107,16 @@ internal fun LogsScreenContent(
         }
     }
 
-    LaunchedEffect(isAtBottom) {
-        if (!isAtBottom && state.autoScroll) {
+    // Any scroll we didn't start (drag, fling, mouse wheel, accessibility) is the user's; bursts of
+    // new logs briefly leave the list off-bottom without scrolling and must not turn auto-scroll off.
+    val isDragged by listState.interactionSource.collectIsDraggedAsState()
+    var isUserScrolling by remember { mutableStateOf(false) }
+    LaunchedEffect(isDragged, listState.isScrollInProgress) {
+        isUserScrolling = isDragged || (listState.isScrollInProgress && !isAutoScrolling)
+    }
+
+    LaunchedEffect(isUserScrolling, isAtBottom) {
+        if (isUserScrolling && !isAtBottom && state.autoScroll) {
             currentOnEvent(LogsViewEvent.AutoScrollSet(false))
         }
     }
@@ -219,6 +238,7 @@ private fun ScrollToBottomFab(
             onClick = onClick,
             icon = Icons.Default.KeyboardArrowDown,
             contentDescription = stringResource(R.string.logs_scroll_to_bottom),
+            modifier = Modifier.navigationBarsPadding(),
         )
     }
 }

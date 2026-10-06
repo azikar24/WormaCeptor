@@ -103,6 +103,7 @@ object DeepLinkHandler {
             "fps" -> WormaCeptorNavKeys.Fps.route
             "cpu" -> WormaCeptorNavKeys.Cpu.route
             "preferences", "sharedpreferences" -> WormaCeptorNavKeys.Preferences.route
+            "datastore" -> WormaCeptorNavKeys.DataStore.route
             "database" -> WormaCeptorNavKeys.Database.route
             "filebrowser", "files" -> WormaCeptorNavKeys.FileBrowser.route
             "websocket" -> WormaCeptorNavKeys.WebSocket.route

@@ -13,7 +13,6 @@ import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.ui.components.QuickFilter
 import com.azikar24.wormaceptor.feature.viewer.ui.components.applyQuickFilters
 import com.azikar24.wormaceptor.feature.viewer.ui.util.CurlGenerator
-import com.azikar24.wormaceptor.feature.viewer.ui.util.buildFullUrl
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -255,6 +254,7 @@ class TransactionListViewModel(
     }
 
     private fun handleDeleteTransaction(id: UUID) {
+        updateState { copy(selectedIds = selectedIds - id) }
         viewModelScope.launch {
             queryEngine.deleteTransactions(listOf(id))
         }
@@ -299,9 +299,8 @@ class TransactionListViewModel(
     private fun handleShareSelected() {
         val selected = getSelectedTransactions()
         val text = selected.joinToString("\n\n") { transaction ->
-            val url = buildFullUrl(transaction.host, transaction.path)
             buildString {
-                appendLine("${transaction.method} $url")
+                appendLine("${transaction.method} ${transaction.url}")
                 appendLine("Status: ${transaction.code ?: "Pending"}")
                 transaction.tookMs?.let { appendLine("Duration: ${it}ms") }
             }
@@ -322,9 +321,8 @@ class TransactionListViewModel(
     }
 
     private fun handleShareTransaction(summary: TransactionSummary) {
-        val url = buildFullUrl(summary.host, summary.path)
         val text = buildString {
-            appendLine("${summary.method} $url")
+            appendLine("${summary.method} ${summary.url}")
             appendLine("Status: ${summary.code ?: "Pending"}")
             summary.tookMs?.let { appendLine("Duration: ${it}ms") }
         }
@@ -332,8 +330,7 @@ class TransactionListViewModel(
     }
 
     private fun handleCopyUrl(summary: TransactionSummary) {
-        val url = buildFullUrl(summary.host, summary.path)
-        emitEffect(TransactionListViewEffect.CopyToClipboard(label = "URL", content = url))
+        emitEffect(TransactionListViewEffect.CopyToClipboard(label = "URL", content = summary.url))
     }
 
     private fun handleCopyAsCurl(id: UUID) {

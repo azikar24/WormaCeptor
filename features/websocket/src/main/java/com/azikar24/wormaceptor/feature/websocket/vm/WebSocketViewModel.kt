@@ -9,6 +9,7 @@ import com.azikar24.wormaceptor.domain.entities.WebSocketMessageDirection
 import com.azikar24.wormaceptor.feature.websocket.navigator.WebSocketNavigator
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -44,6 +45,7 @@ class WebSocketViewModel(
     init {
         observeFilteredConnections()
         observeTotalConnectionCount()
+        observeMessageCountsByConnection()
         observeSelectedConnection()
         observeFilteredMessages()
         observeTotalMessageCount()
@@ -72,13 +74,6 @@ class WebSocketViewModel(
             is WebSocketViewEvent.ClearMessagesConfirmed -> confirmClearMessages()
             is WebSocketViewEvent.ClearMessagesDismissed -> updateState { copy(showClearMessagesConfirmation = false) }
         }
-    }
-
-    /**
-     * Message count per connection for list display.
-     */
-    fun getMessageCountForConnection(connectionId: Long): Int {
-        return engine.getMessageCountForConnection(connectionId)
     }
 
     private fun onConnectionSearchQueryChanged(query: String) {
@@ -186,6 +181,15 @@ class WebSocketViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun observeMessageCountsByConnection() {
+        rawMessages
+            .map { messages -> messages.groupingBy { it.connectionId }.eachCount().toImmutableMap() }
+            .onEach { counts ->
+                updateState { copy(messageCountsByConnection = counts) }
+            }
+            .launchIn(viewModelScope)
+    }
+
     private fun observeSelectedConnection() {
         _selectedConnectionId
             .flatMapLatest { connectionId ->
@@ -254,7 +258,7 @@ class WebSocketViewModel(
                     .eachCount()
             }
         }.onEach { counts ->
-            updateState { copy(directionCounts = counts) }
+            updateState { copy(directionCounts = counts.toImmutableMap()) }
         }.launchIn(viewModelScope)
     }
 }

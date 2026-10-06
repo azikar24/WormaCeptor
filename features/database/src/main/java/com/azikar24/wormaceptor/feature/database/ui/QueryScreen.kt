@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
@@ -305,10 +305,7 @@ private fun QueryResultView(
                         result.columns.forEach { column ->
                             Box(
                                 modifier = Modifier
-                                    .widthIn(
-                                        min = WormaCeptorTokens.ComponentSize.tableCellMinWidth,
-                                        max = WormaCeptorTokens.ComponentSize.tableCellMaxWidth,
-                                    )
+                                    .width(WormaCeptorTokens.ComponentSize.tableCellMaxWidth)
                                     .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                             ) {
                                 Text(
@@ -336,10 +333,7 @@ private fun QueryResultView(
                         row.forEach { cell ->
                             Box(
                                 modifier = Modifier
-                                    .widthIn(
-                                        min = WormaCeptorTokens.ComponentSize.tableCellMinWidth,
-                                        max = WormaCeptorTokens.ComponentSize.tableCellMaxWidth,
-                                    )
+                                    .width(WormaCeptorTokens.ComponentSize.tableCellMaxWidth)
                                     .padding(horizontal = WormaCeptorTokens.Spacing.sm),
                             ) {
                                 Text(

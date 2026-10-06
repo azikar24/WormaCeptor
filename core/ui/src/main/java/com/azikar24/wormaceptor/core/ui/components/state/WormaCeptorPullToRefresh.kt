@@ -148,7 +148,7 @@ private fun pullConnection(
         available: Offset,
         source: NestedScrollSource,
     ): Offset {
-        if (isRefreshing() || available.y <= 0f) return Offset.Zero
+        if (isRefreshing() || available.y <= 0f || source != NestedScrollSource.UserInput) return Offset.Zero
         val delta = available.y * DragDamping
         scope.launch { pullOffset.snapTo(pullOffset.value + delta) }
         return Offset(0f, available.y)

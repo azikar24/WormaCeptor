@@ -5,4 +5,5 @@
     <string name="monitoring_status_active">Monitoring</string>
     <string name="monitoring_status_paused">Paused</string>
     <string name="monitoring_status_samples_suffix">samples</string>
+    <string name="chip_dismiss_description">Remove %1$s</string>
 </resources>

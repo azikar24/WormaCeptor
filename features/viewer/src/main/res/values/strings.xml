@@ -42,6 +42,7 @@
     <string name="viewer_transaction_detail_copy_as_curl">Copy as cURL</string>
     <string name="viewer_transaction_detail_share_as_json">Share as JSON</string>
     <string name="viewer_transaction_detail_share_as_har">Share as HAR</string>
+    <string name="viewer_transaction_detail_add_to_mock">Add to mock rules</string>
     <string name="viewer_transaction_detail_tab_overview">Overview</string>
     <string name="viewer_transaction_detail_tab_request">Request</string>
     <string name="viewer_transaction_detail_tab_response">Response</string>
@@ -53,6 +54,7 @@
     <!-- Overview Tab -->
     <string name="viewer_overview_timing">Timing</string>
     <string name="viewer_overview_url">URL</string>
+    <string name="viewer_overview_copy_url">Copy URL</string>
     <string name="viewer_overview_method">Method</string>
     <string name="viewer_overview_status">Status</string>
     <string name="viewer_overview_response_code">Response Code</string>
@@ -198,7 +200,9 @@
     <string name="viewer_item_selected">Selected</string>
 
     <!-- TransactionContextMenu -->
+    <string name="viewer_context_menu_select">Select</string>
     <string name="viewer_context_menu_copy_url">Copy URL</string>
+    <string name="viewer_context_menu_add_to_mock">Add to mock rules</string>
     <string name="viewer_context_menu_share">Share</string>
     <string name="viewer_context_menu_share_transaction">Share transaction</string>
     <string name="viewer_context_menu_copy_as_curl">Copy as cURL</string>
@@ -335,6 +339,7 @@
     <string name="viewer_clipboard_response_content">Response Content</string>
     <string name="viewer_clipboard_transaction">Transaction</string>
     <string name="viewer_clipboard_curl">cURL</string>
+    <string name="viewer_clipboard_url">URL</string>
 
     <!-- Share Utilities -->
     <string name="viewer_share_title">Share</string>
@@ -353,4 +358,9 @@
     <string name="viewer_empty_transactions_hint">Network requests will appear here as they happen</string>
     <string name="viewer_empty_clear_search">Clear Search</string>
     <string name="viewer_empty_clear_filters">Clear Filters</string>
+    <string name="viewer_overview_timeline_pending">Pending</string>
+    <string name="viewer_body_waiting_for_response">Waiting for response</string>
+    <string name="viewer_body_raw_truncated">Showing the first %1$d characters. Use share to see the full body.</string>
+    <string name="viewer_pdf_page_failed">Page %1$d could not be rendered</string>
+    <string name="viewer_pdf_thumbnail_loading">Page %1$d, loading thumbnail</string>
 </resources>

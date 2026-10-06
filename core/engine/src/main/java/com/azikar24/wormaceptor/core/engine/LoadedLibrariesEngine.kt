@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.core.engine
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.azikar24.wormaceptor.domain.entities.LibrarySummary
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
@@ -15,6 +16,7 @@ import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
+import java.io.IOException
 import java.util.Locale
 import java.util.zip.ZipFile
 
@@ -60,13 +62,14 @@ class LoadedLibrariesEngine(
 
     // Cache for package info
     private val packageName: String = context.packageName
-    private val appSourceDir: String by lazy {
+    private val appInfo: ApplicationInfo? by lazy {
         try {
-            context.packageManager.getApplicationInfo(packageName, 0).sourceDir
+            context.packageManager.getApplicationInfo(packageName, 0)
         } catch (_: PackageManager.NameNotFoundException) {
-            ""
+            null
         }
     }
+    private val appSourceDir: String by lazy { appInfo?.sourceDir.orEmpty() }
     init {
         // Initial scan
         refresh()
@@ -84,11 +87,18 @@ class LoadedLibrariesEngine(
             try {
                 val allLibraries = mutableListOf<LoadedLibrary>()
 
+                val mapsLines = withContext(Dispatchers.IO) { readProcMaps() }
+
                 // Collect native libraries from /proc/self/maps
-                val nativeLibs = withContext(Dispatchers.IO) {
-                    parseNativeLibraries()
-                }
+                val nativeLibs = parseNativeLibraries(mapsLines)
                 allLibraries.addAll(nativeLibs)
+
+                // App libs mapped straight from the APK (extractNativeLibs=false) never show as .so in maps
+                val appNativeLibs = withContext(Dispatchers.IO) {
+                    parseApkMappedNativeLibraries(apkMappingOffsets(mapsLines))
+                }
+                val mappedNames = nativeLibs.filterNot { it.isSystemLibrary }.map { it.name }.toSet()
+                allLibraries.addAll(appNativeLibs.filterNot { it.name in mappedNames })
 
                 // Collect DEX files from APK
                 val dexFiles = withContext(Dispatchers.IO) {
@@ -135,32 +145,32 @@ class LoadedLibrariesEngine(
         }
     }
 
-    /**
-     * Parses /proc/self/maps to find loaded native libraries.
-     */
-    private fun parseNativeLibraries(): List<LoadedLibrary> {
-        val libraries = mutableMapOf<String, LoadedLibrary>()
-
-        try {
+    private fun readProcMaps(): List<String> {
+        return try {
             val mapsFile = File("/proc/self/maps")
             if (!mapsFile.exists() || !mapsFile.canRead()) {
                 return emptyList()
             }
-
-            BufferedReader(FileReader(mapsFile)).use { reader ->
-                reader.lineSequence().forEach { line ->
-                    parseMapLine(line)?.let { lib ->
-                        // Keep the first occurrence (with load address)
-                        if (!libraries.containsKey(lib.path)) {
-                            libraries[lib.path] = lib
-                        }
-                    }
-                }
-            }
+            BufferedReader(FileReader(mapsFile)).use { reader -> reader.readLines() }
         } catch (_: Exception) {
             // Silently handle permission issues
+            emptyList()
         }
+    }
 
+    /**
+     * Parses /proc/self/maps lines to find loaded native libraries.
+     */
+    private fun parseNativeLibraries(mapsLines: List<String>): List<LoadedLibrary> {
+        val libraries = mutableMapOf<String, LoadedLibrary>()
+        mapsLines.forEach { line ->
+            parseMapLine(line)?.let { lib ->
+                // Keep the first occurrence (with load address)
+                if (!libraries.containsKey(lib.path)) {
+                    libraries[lib.path] = lib
+                }
+            }
+        }
         return libraries.values.toList()
     }
 
@@ -207,6 +217,50 @@ class LoadedLibrariesEngine(
             isSystemLibrary = isSystemLibrary,
         )
     }
+
+    /**
+     * Lists `lib/` entries of the base and split APKs that are actually mapped into this process:
+     * packaged-but-never-loaded libraries are left out.
+     */
+    private fun parseApkMappedNativeLibraries(apkOffsets: Map<String, List<Long>>): List<LoadedLibrary> {
+        val info = appInfo ?: return emptyList()
+        val apkPaths = listOfNotNull(info.sourceDir) + info.splitSourceDirs.orEmpty()
+        return apkPaths.flatMap { apkPath ->
+            apkOffsets[apkPath]?.let { offsets -> listMappedApkNativeLibraries(apkPath, offsets) }.orEmpty()
+        }
+    }
+
+    private fun listMappedApkNativeLibraries(
+        apkPath: String,
+        mappedOffsets: List<Long>,
+    ): List<LoadedLibrary> = try {
+        val ranges = readZipEntryDataRanges(File(apkPath)) { it.startsWith("lib/") && it.endsWith(".so") }
+        mappedEntries(ranges, mappedOffsets).map { entryName ->
+            appNativeLibrary(
+                name = entryName.substringAfterLast('/'),
+                path = "$apkPath!/$entryName",
+                size = ranges.getValue(entryName).let { it.last - it.first + 1 },
+            )
+        }
+    } catch (_: IOException) {
+        emptyList()
+    } catch (_: SecurityException) {
+        emptyList()
+    }
+
+    private fun appNativeLibrary(
+        name: String,
+        path: String,
+        size: Long?,
+    ) = LoadedLibrary(
+        name = name,
+        path = path,
+        type = LoadedLibrary.LibraryType.NATIVE_SO,
+        size = size?.takeIf { it > 0 },
+        loadAddress = null,
+        version = extractVersionFromName(name),
+        isSystemLibrary = false,
+    )
 
     /**
      * Parses DEX files from the application APK.

@@ -36,4 +36,13 @@ class FileSystemBlobStorage(private val context: Context) : BlobStorage {
             if (file.exists()) file.delete()
         }
     }
+
+    override suspend fun deleteUnreferenced(
+        referenced: Set<BlobID>,
+        createdBeforeMillis: Long,
+    ): Int = withContext(Dispatchers.IO) {
+        blobDir.listFiles().orEmpty()
+            .filter { it.isFile && it.name !in referenced && it.lastModified() < createdBeforeMillis }
+            .count { it.delete() }
+    }
 }

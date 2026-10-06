@@ -199,13 +199,13 @@ internal fun NotificationPreview(
                                         imageVector = Icons.Default.TouchApp,
                                         contentDescription = null,
                                         modifier = Modifier.size(WormaCeptorTokens.IconSize.xs),
-                                        tint = ToolColors.PushSimulator.Template.action,
+                                        tint = MaterialTheme.colorScheme.primary,
                                     )
                                     Text(
                                         text = action.title.uppercase(),
                                         style = MaterialTheme.typography.labelMedium,
                                         fontWeight = FontWeight.Medium,
-                                        color = ToolColors.PushSimulator.Template.action,
+                                        color = MaterialTheme.colorScheme.primary,
                                     )
                                 }
                             }

@@ -5,7 +5,7 @@
     <ID>LongMethod:EntryCard.kt$@Composable internal fun EntryCard( entry: SecureStorageEntry, onClick: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:EntryDetailContent.kt$@Composable internal fun EntryDetailContent( entry: SecureStorageEntry, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:SecureStorageScreen.kt$@Composable private fun SecureStorageContent( state: SecureStorageViewState, onEvent: (SecureStorageViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>LongParameterList:SummarySection.kt$( count: Int, label: String, icon: ImageVector, color: Color, isAccessible: Boolean, accessibleText: String, notAccessibleText: String, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:SummarySection.kt$( count: Int, label: String, icon: ImageVector, isAccessible: Boolean, accessibleText: String, notAccessibleText: String, modifier: Modifier = Modifier, )</ID>
     <ID>MagicNumber:EntryCard.kt$100</ID>
     <ID>ParameterNaming:TypeFilterChips.kt$onTypeSelected</ID>
     <ID>UndocumentedPublicClass:SecureStorageNavigationContributor.kt$SecureStorageNavigationContributor : FeatureNavigationContributor</ID>

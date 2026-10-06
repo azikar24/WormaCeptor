@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.SearchDebounce
 import com.azikar24.wormaceptor.domain.contracts.PreferencesRepository
+import com.azikar24.wormaceptor.domain.entities.PreferenceSource
 import com.azikar24.wormaceptor.domain.entities.PreferenceValue
 import com.azikar24.wormaceptor.feature.preferences.navigator.PreferencesNavigator
 import kotlinx.collections.immutable.persistentListOf
@@ -184,6 +185,9 @@ class PreferencesViewModel(
         updateState {
             copy(
                 selectedFileName = fileName,
+                isSelectedFileReadOnly = preferenceFiles
+                    .firstOrNull { it.name == fileName }
+                    ?.source == PreferenceSource.DATASTORE,
                 itemSearchQuery = "",
                 typeFilter = null,
                 isItemsLoading = true,
@@ -199,6 +203,7 @@ class PreferencesViewModel(
         updateState {
             copy(
                 selectedFileName = null,
+                isSelectedFileReadOnly = false,
                 itemSearchQuery = "",
                 typeFilter = null,
                 isItemsLoading = false,
@@ -265,7 +270,7 @@ class PreferencesViewModel(
         viewModelScope.launch {
             combine(
                 repository.observePreferenceFiles(),
-                _fileSearchQuery.debounce(SearchDebounce.DEFAULT),
+                _fileSearchQuery.debounce(::searchDebounceMillis),
             ) { files, query ->
                 files.filter { file ->
                     query.isBlank() || file.name.contains(query, ignoreCase = true)
@@ -286,7 +291,7 @@ class PreferencesViewModel(
                     } else {
                         combine(
                             repository.observePreferenceItems(fileName),
-                            _itemSearchQuery.debounce(SearchDebounce.DEFAULT),
+                            _itemSearchQuery.debounce(::searchDebounceMillis),
                             _typeFilter,
                         ) { items, query, typeFilter ->
                             items.filter { item ->
@@ -346,3 +351,7 @@ class PreferencesViewModel(
         }
     }
 }
+
+// A blank query (initial load, cleared search) must not wait out the debounce, or the list
+// shows its loading state through the whole navigation transition.
+internal fun searchDebounceMillis(query: String): Long = if (query.isBlank()) 0L else SearchDebounce.DEFAULT

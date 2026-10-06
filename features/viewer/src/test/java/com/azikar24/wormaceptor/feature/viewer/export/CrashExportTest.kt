@@ -1,6 +1,8 @@
 package com.azikar24.wormaceptor.feature.viewer.export
 
 import android.content.Context
+import android.net.Uri
+import androidx.core.content.FileProvider
 import com.azikar24.wormaceptor.domain.entities.Crash
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -8,6 +10,8 @@ import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -20,6 +24,8 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.io.TempDir
+import java.io.File
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CrashExportTest {
@@ -37,6 +43,7 @@ class CrashExportTest {
     @AfterEach
     fun tearDown() {
         Dispatchers.resetMain()
+        unmockkAll()
     }
 
     @Nested
@@ -219,6 +226,33 @@ class CrashExportTest {
             exportCrashes(context, crashes, onMessage = { messages.add(it) })
 
             messages.none { it.startsWith("Export failed:") } shouldBe true
+        }
+
+        @Test
+        fun `should share as file instead of EXTRA_TEXT when content exceeds clipboard limit`(
+            @TempDir cacheDir: File,
+        ) = runTest {
+            every { context.cacheDir } returns cacheDir
+            // A relaxed Context makes FileProvider loop forever parsing its mocked XML config.
+            mockkStatic(FileProvider::class)
+            every { FileProvider.getUriForFile(any(), any(), any()) } returns mockk<Uri>()
+            val crashes = List(50) { index ->
+                Crash(
+                    id = index.toLong(),
+                    timestamp = 1_700_000_000_000L,
+                    exceptionType = "java.lang.IllegalStateException",
+                    message = "boom $index",
+                    stackTrace = "at com.example.Frame.run(Frame.kt:1)\n".repeat(100),
+                )
+            }
+
+            exportCrashes(context, crashes, onMessage = { messages.add(it) })
+
+            val written = File(cacheDir, "shared_bodies").listFiles().orEmpty()
+                .filter { it.name.startsWith("wormaceptor_crashes_") }
+            written.size shouldBe 1
+            JSONArray(written.single().readText()).length() shouldBe 50
+            messages.none { it.startsWith("Failed to share:") } shouldBe true
         }
     }
 

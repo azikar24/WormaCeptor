@@ -5,6 +5,7 @@ public final class com/azikar24/wormaceptor/api/Feature : java/lang/Enum {
 	public static final field CRYPTO_TOOL Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field Companion Lcom/azikar24/wormaceptor/api/Feature$Companion;
 	public static final field DATABASE_BROWSER Lcom/azikar24/wormaceptor/api/Feature;
+	public static final field DATASTORE Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field DEPENDENCIES_INSPECTOR Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field DEVICE_INFO Lcom/azikar24/wormaceptor/api/Feature;
 	public static final field FILE_BROWSER Lcom/azikar24/wormaceptor/api/Feature;
@@ -47,6 +48,7 @@ public abstract interface class com/azikar24/wormaceptor/api/ServiceProvider {
 	public abstract fun cleanup (J)V
 	public abstract fun clearTransactions ()V
 	public abstract fun completeTransaction (Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public abstract fun completeTransaction (Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Long;)V
 	public abstract fun getAllTransactions ()Ljava/util/List;
 	public abstract fun getLaunchIntent (Landroid/content/Context;)Landroid/content/Intent;
 	public abstract fun getTransaction (Ljava/lang/String;)Ljava/lang/Object;
@@ -54,10 +56,14 @@ public abstract interface class com/azikar24/wormaceptor/api/ServiceProvider {
 	public abstract fun getTransactionDetail (Ljava/lang/String;)Lcom/azikar24/wormaceptor/api/TransactionDetailDto;
 	public abstract fun init (Landroid/content/Context;ZZ)V
 	public abstract fun startTransaction (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;J)Ljava/util/UUID;
+	public abstract fun startTransaction (Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JJ)Ljava/util/UUID;
 }
 
 public final class com/azikar24/wormaceptor/api/ServiceProvider$DefaultImpls {
+	public static fun completeTransaction (Lcom/azikar24/wormaceptor/api/ServiceProvider;Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Long;)V
+	public static synthetic fun completeTransaction$default (Lcom/azikar24/wormaceptor/api/ServiceProvider;Ljava/util/UUID;ILjava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/Long;ILjava/lang/Object;)V
 	public static synthetic fun init$default (Lcom/azikar24/wormaceptor/api/ServiceProvider;Landroid/content/Context;ZZILjava/lang/Object;)V
+	public static fun startTransaction (Lcom/azikar24/wormaceptor/api/ServiceProvider;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Ljava/io/InputStream;JJ)Ljava/util/UUID;
 }
 
 public final class com/azikar24/wormaceptor/api/TransactionDetailDto {

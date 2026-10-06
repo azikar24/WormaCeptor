@@ -35,6 +35,9 @@
     <string name="filebrowser_permission_none">None</string>
     <string name="filebrowser_close">Close</string>
     <string name="filebrowser_delete">Delete</string>
+    <string name="filebrowser_delete_confirm_title">Delete file?</string>
+    <string name="filebrowser_delete_confirm_message">%1$s will be permanently deleted.</string>
+    <string name="filebrowser_cancel">Cancel</string>
 
     <!-- FileViewerScreen -->
     <string name="filebrowser_valid_json">Valid JSON</string>
@@ -50,6 +53,7 @@
     <string name="filebrowser_pdf_info">PDF: %1$d pages (%2$s)</string>
     <string name="filebrowser_page_number">Page %1$d</string>
     <string name="filebrowser_pdf_page">PDF page %1$d</string>
+    <string name="filebrowser_pdf_page_failed">Couldn\'t render PDF page %1$d</string>
     <string name="filebrowser_image_dimensions">%1$d x %2$d</string>
     <string name="filebrowser_image_dimensions_animated">%1$d x %2$d (animated)</string>
     <string name="filebrowser_file_too_large">File too large: %1$s\nMax size: %2$s</string>

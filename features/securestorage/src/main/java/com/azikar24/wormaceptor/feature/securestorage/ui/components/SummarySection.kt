@@ -18,12 +18,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.formatDateShort
@@ -53,7 +53,6 @@ internal fun SummarySection(
                 count = summary.encryptedPrefsCount,
                 label = stringResource(R.string.securestorage_summary_prefs),
                 icon = Icons.Default.EnhancedEncryption,
-                color = WormaCeptorTokens.Colors.SecureStorage.encryptedPrefs,
                 isAccessible = encryptedPrefsAccessible,
                 accessibleText = accessibleText,
                 notAccessibleText = notAccessibleText,
@@ -63,7 +62,6 @@ internal fun SummarySection(
                 count = summary.keystoreAliasCount,
                 label = stringResource(R.string.securestorage_summary_keystore),
                 icon = Icons.Default.Key,
-                color = WormaCeptorTokens.Colors.SecureStorage.keystore,
                 isAccessible = keystoreAccessible,
                 accessibleText = accessibleText,
                 notAccessibleText = notAccessibleText,
@@ -73,7 +71,6 @@ internal fun SummarySection(
                 count = summary.dataStoreFileCount,
                 label = stringResource(R.string.securestorage_summary_datastore),
                 icon = Icons.Default.DataObject,
-                color = WormaCeptorTokens.Colors.SecureStorage.datastore,
                 isAccessible = true, // DataStore is always accessible if files exist
                 accessibleText = accessibleText,
                 notAccessibleText = notAccessibleText,
@@ -97,7 +94,6 @@ private fun SummaryCard(
     count: Int,
     label: String,
     icon: ImageVector,
-    color: Color,
     isAccessible: Boolean,
     accessibleText: String,
     notAccessibleText: String,
@@ -111,8 +107,8 @@ private fun SummaryCard(
     val statusDescription = if (isAccessible) accessibleText else notAccessibleText
     WormaCeptorCard(
         modifier = modifier.semantics { contentDescription = statusDescription },
+        style = CardStyle.Outlined,
         shape = WormaCeptorTokens.Shapes.cardLarge,
-        backgroundColor = color.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
     ) {
         Column(
             modifier = Modifier
@@ -123,7 +119,7 @@ private fun SummaryCard(
             Icon(
                 imageVector = icon,
                 contentDescription = label,
-                tint = color.copy(alpha = contentAlpha),
+                tint = WormaCeptorTokens.semantic().textSecondary.copy(alpha = contentAlpha),
                 modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
             )
             Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
@@ -131,7 +127,7 @@ private fun SummaryCard(
                 text = count.toString(),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = color.copy(alpha = contentAlpha),
+                color = WormaCeptorTokens.semantic().textPrimary.copy(alpha = contentAlpha),
             )
             Text(
                 text = label,

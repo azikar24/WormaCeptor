@@ -4,28 +4,36 @@ import androidx.lifecycle.viewModelScope
 import com.azikar24.wormaceptor.common.presentation.BaseViewModel
 import com.azikar24.wormaceptor.common.presentation.NoOpNavigator
 import com.azikar24.wormaceptor.core.engine.QueryEngine
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.UUID
 
 /**
  * ViewModel for the transaction pager screen.
  *
- * Manages transaction navigation index, loading, and animation direction.
+ * Manages transaction navigation index, live observation of the current transaction, and animation direction.
  */
 internal class TransactionPagerViewModel(
     private val queryEngine: QueryEngine,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel<TransactionPagerViewState, TransactionPagerEffect, TransactionPagerEvent, NoOpNavigator>(
     initialState = TransactionPagerViewState(),
     navigator = NoOpNavigator,
 ) {
 
     private var transactionIds: List<UUID> = emptyList()
+    private var isInitialized = false
+    private var observeJob: Job? = null
 
     override fun handleEvent(event: TransactionPagerEvent) {
         when (event) {
             is TransactionPagerEvent.Initialize -> {
+                // The screen re-sends Initialize after recreation; the retained state wins.
+                if (isInitialized) return
+                isInitialized = true
                 transactionIds = event.transactionIds
                 val index = event.initialIndex.coerceIn(0, (transactionIds.size - 1).coerceAtLeast(0))
                 updateState {
@@ -74,10 +82,12 @@ internal class TransactionPagerViewModel(
 
     private fun loadTransaction(index: Int) {
         val id = transactionIds.getOrNull(index) ?: return
+        observeJob?.cancel()
         updateState { copy(isLoading = true) }
-        viewModelScope.launch {
-            val tx = withContext(Dispatchers.IO) { queryEngine.getDetails(id) }
-            updateState { copy(transaction = tx, isLoading = false) }
+        observeJob = viewModelScope.launch {
+            queryEngine.observeDetails(id)
+                .flowOn(ioDispatcher)
+                .collect { tx -> updateState { copy(transaction = tx, isLoading = false) } }
         }
     }
 }

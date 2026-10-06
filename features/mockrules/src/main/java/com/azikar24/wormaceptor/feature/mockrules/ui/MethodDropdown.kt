@@ -3,13 +3,13 @@ package com.azikar24.wormaceptor.feature.mockrules.ui
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorDropdownBox
 import com.azikar24.wormaceptor.core.ui.components.input.WormaCeptorTextField
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.domain.entities.mock.RequestMatcher
@@ -26,26 +26,21 @@ internal fun MethodDropdown(
 ) {
     val anyLabel = stringResource(R.string.mock_editor_method_any)
 
-    ExposedDropdownMenuBox(
+    WormaCeptorDropdownBox(
         expanded = expanded,
         onExpandedChange = onExpandedChange,
         modifier = modifier,
-    ) {
-        WormaCeptorTextField(
-            value = selectedMethod.ifBlank { anyLabel },
-            onValueChange = {},
-            readOnly = true,
-            label = { Text(stringResource(R.string.mock_editor_http_method)) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor(),
-        )
-
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { onExpandedChange(false) },
-        ) {
+        anchor = {
+            WormaCeptorTextField(
+                value = selectedMethod.ifBlank { anyLabel },
+                onValueChange = {},
+                readOnly = true,
+                label = { Text(stringResource(R.string.mock_editor_http_method)) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        menu = {
             DropdownMenuItem(
                 text = { Text(anyLabel) },
                 onClick = {
@@ -62,8 +57,8 @@ internal fun MethodDropdown(
                     },
                 )
             }
-        }
-    }
+        },
+    )
 }
 
 @Preview(showBackground = true)

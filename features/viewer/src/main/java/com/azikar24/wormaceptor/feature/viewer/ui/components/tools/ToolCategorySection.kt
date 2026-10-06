@@ -1,7 +1,6 @@
 package com.azikar24.wormaceptor.feature.viewer.ui.components.tools
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -58,16 +57,6 @@ internal fun ToolCategorySection(
         label = "collapse_rotation",
     )
 
-    val headerBackground by animateColorAsState(
-        targetValue = if (isCollapsed) {
-            WormaCeptorTokens.semantic().surfaceVariant.copy(alpha = WormaCeptorTokens.Alpha.MODERATE)
-        } else {
-            categoryColor.copy(alpha = WormaCeptorTokens.Alpha.SUBTLE)
-        },
-        animationSpec = tween(WormaCeptorTokens.Animation.FAST),
-        label = "header_bg",
-    )
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -78,16 +67,13 @@ internal fun ToolCategorySection(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(WormaCeptorTokens.Shapes.card),
-            color = headerBackground,
+            color = Color.Transparent,
             shape = WormaCeptorTokens.Shapes.card,
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        horizontal = WormaCeptorTokens.Spacing.md,
-                        vertical = WormaCeptorTokens.Spacing.sm,
-                    ),
+                    .padding(vertical = WormaCeptorTokens.Spacing.sm),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -95,7 +81,7 @@ internal fun ToolCategorySection(
                     Icon(
                         imageVector = categoryIcon,
                         contentDescription = null,
-                        tint = categoryColor.copy(alpha = WormaCeptorTokens.Alpha.HEAVY),
+                        tint = categoryColor,
                         modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                     )
 

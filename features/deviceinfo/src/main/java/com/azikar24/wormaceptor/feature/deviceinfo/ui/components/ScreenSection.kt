@@ -19,7 +19,7 @@ internal fun ScreenSection(
     WormaCeptorInfoCard(
         title = stringResource(R.string.deviceinfo_section_display),
         icon = Icons.Default.ScreenRotation,
-        iconTint = WormaCeptorTokens.Colors.Status.blue,
+        iconTint = WormaCeptorTokens.semantic().textSecondary,
         onAction = onCopy,
         actionContentDescription = stringResource(
             R.string.deviceinfo_copy_section,

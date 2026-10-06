@@ -64,13 +64,12 @@ fun WormaCeptorDetailRow(
         Spacer(modifier = Modifier.width(WormaCeptorTokens.Spacing.md.scaled()))
         val valueModifier = Modifier.weight(1f - labelWeight)
         if (selectable) {
-            SelectionContainer {
+            SelectionContainer(modifier = valueModifier) {
                 Text(
                     text = value,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = valueModifier,
                     fontFamily = fontFamily,
                 )
             }

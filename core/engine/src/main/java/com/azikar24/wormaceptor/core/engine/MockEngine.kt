@@ -15,6 +15,8 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.random.Random
 
@@ -22,8 +24,19 @@ import kotlin.random.Random
  * Engine that evaluates mock rules against incoming HTTP requests and builds OkHttp responses.
  *
  * Thread-safe: rules and hit counters use concurrent data structures.
+ *
+ * Saved rules arrive asynchronously after startup, so [findMatchingRule] blocks the calling
+ * (network) thread for up to [initialRulesTimeoutMs] until the first [setRules] call. Once that
+ * wait has elapsed or rules have arrived, it never blocks again.
  */
-class MockEngine {
+class MockEngine(
+    private val initialRulesTimeoutMs: Long = InitialRulesTimeoutMs,
+) {
+
+    private val initialRulesLoaded = CountDownLatch(1)
+
+    @Volatile
+    private var initialWaitDone = false
 
     private val _mockingEnabled = MutableStateFlow(true)
 
@@ -70,6 +83,8 @@ class MockEngine {
                 }
             }
             .toMap()
+
+        initialRulesLoaded.countDown()
     }
 
     /**
@@ -86,6 +101,7 @@ class MockEngine {
         headers: Map<String, List<String>>,
     ): MockRule? {
         if (!_mockingEnabled.value) return null
+        awaitInitialRules()
 
         for (rule in sortedEnabledRules) {
             if (matchesUrl(url, rule.matcher.urlPattern, rule.matcher.matchType) &&
@@ -174,6 +190,16 @@ class MockEngine {
             .build()
     }
 
+    private fun awaitInitialRules() {
+        if (initialWaitDone) return
+        try {
+            initialRulesLoaded.await(initialRulesTimeoutMs, TimeUnit.MILLISECONDS)
+        } catch (_: InterruptedException) {
+            Thread.currentThread().interrupt()
+        }
+        initialWaitDone = true
+    }
+
     /** Resets all hit counters. */
     fun resetCounters() {
         hitCounters.clear()
@@ -237,5 +263,9 @@ class MockEngine {
             is MockBehavior.Sequential -> true
             is MockBehavior.Passthrough -> true
         }
+    }
+
+    private companion object {
+        const val InitialRulesTimeoutMs = 500L
     }
 }

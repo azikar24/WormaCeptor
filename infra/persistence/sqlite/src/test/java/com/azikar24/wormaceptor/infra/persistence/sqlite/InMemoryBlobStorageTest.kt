@@ -110,4 +110,31 @@ class InMemoryBlobStorageTest {
             storage.readBlob(id2).shouldBeNull()
         }
     }
+
+    @Nested
+    inner class `deleteUnreferenced` {
+
+        @Test
+        fun `deletes old unreferenced blobs and keeps referenced ones`() = runTest {
+            val kept = storage.saveBlob(ByteArrayInputStream("kept".toByteArray()))
+            val orphan = storage.saveBlob(ByteArrayInputStream("orphan".toByteArray()))
+
+            val deleted = storage.deleteUnreferenced(setOf(kept), createdBeforeMillis = Long.MAX_VALUE)
+
+            deleted shouldBe 1
+            storage.readBlob(kept).shouldNotBeNull()
+            storage.readBlob(orphan).shouldBeNull()
+        }
+
+        @Test
+        fun `keeps unreferenced blobs created at or after the cutoff`() = runTest {
+            val cutoff = System.currentTimeMillis()
+            val fresh = storage.saveBlob(ByteArrayInputStream("fresh".toByteArray()))
+
+            val deleted = storage.deleteUnreferenced(emptySet(), createdBeforeMillis = cutoff)
+
+            deleted shouldBe 0
+            storage.readBlob(fresh).shouldNotBeNull()
+        }
+    }
 }

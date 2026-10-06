@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorSummaryCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
@@ -23,7 +24,7 @@ internal fun ViolationSummarySection(
         WormaCeptorSummaryCard(
             count = stats.diskReadCount.toString(),
             label = stringResource(R.string.threadviolation_summary_disk_read),
-            color = WormaCeptorTokens.Colors.ThreadViolation.diskRead,
+            color = countColor(stats.diskReadCount),
             modifier = Modifier.weight(1f),
             backgroundColor = WormaCeptorTokens.semantic().surface,
             labelColor = WormaCeptorTokens.semantic().textSecondary,
@@ -31,7 +32,7 @@ internal fun ViolationSummarySection(
         WormaCeptorSummaryCard(
             count = stats.diskWriteCount.toString(),
             label = stringResource(R.string.threadviolation_summary_disk_write),
-            color = WormaCeptorTokens.Colors.ThreadViolation.diskWrite,
+            color = countColor(stats.diskWriteCount),
             modifier = Modifier.weight(1f),
             backgroundColor = WormaCeptorTokens.semantic().surface,
             labelColor = WormaCeptorTokens.semantic().textSecondary,
@@ -39,7 +40,7 @@ internal fun ViolationSummarySection(
         WormaCeptorSummaryCard(
             count = stats.networkCount.toString(),
             label = stringResource(R.string.threadviolation_summary_network),
-            color = WormaCeptorTokens.Colors.ThreadViolation.network,
+            color = countColor(stats.networkCount),
             modifier = Modifier.weight(1f),
             backgroundColor = WormaCeptorTokens.semantic().surface,
             labelColor = WormaCeptorTokens.semantic().textSecondary,
@@ -47,10 +48,17 @@ internal fun ViolationSummarySection(
         WormaCeptorSummaryCard(
             count = (stats.slowCallCount + stats.customSlowCodeCount).toString(),
             label = stringResource(R.string.threadviolation_summary_slow),
-            color = WormaCeptorTokens.Colors.ThreadViolation.slowCall,
+            color = countColor(stats.slowCallCount + stats.customSlowCodeCount),
             modifier = Modifier.weight(1f),
             backgroundColor = WormaCeptorTokens.semantic().surface,
             labelColor = WormaCeptorTokens.semantic().textSecondary,
         )
     }
+}
+
+@Composable
+private fun countColor(count: Int): Color = if (count > 0) {
+    WormaCeptorTokens.semantic().textPrimary
+} else {
+    WormaCeptorTokens.semantic().textSecondary
 }

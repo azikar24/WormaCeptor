@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,13 +20,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,14 +45,21 @@ import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
 
+@Suppress("LongParameterList")
 @Composable
 internal fun PdfThumbnailStrip(
-    pages: List<Bitmap>,
+    pageCount: Int,
+    thumbnails: Map<Int, Bitmap>,
+    failedPages: Set<Int>,
     currentPage: Int,
     listState: LazyListState,
     onPageSelect: (Int) -> Unit,
+    onRequestThumbnail: (Int) -> Unit,
+    onCancelThumbnail: (Int) -> Unit,
 ) {
     val darkColors = WormaCeptorTokens.semantic(darkTheme = true)
+    val currentOnRequestThumbnail by rememberUpdatedState(onRequestThumbnail)
+    val currentOnCancelThumbnail by rememberUpdatedState(onCancelThumbnail)
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = darkColors.background.copy(alpha = WormaCeptorTokens.Alpha.PROMINENT),
@@ -65,9 +76,18 @@ internal fun PdfThumbnailStrip(
             horizontalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.sm),
             contentPadding = PaddingValues(horizontal = WormaCeptorTokens.Spacing.md),
         ) {
-            itemsIndexed(pages) { index, bitmap ->
+            items(pageCount) { index ->
+                val bitmap = thumbnails[index]
+                val isFailed = index in failedPages
+                // Composed items are the visible ones; re-requests if evicted from the VM's bounded cache.
+                // Cancels on dispose so a fling doesn't queue renders for items already scrolled past.
+                DisposableEffect(index, bitmap == null, isFailed) {
+                    if (bitmap == null && !isFailed) currentOnRequestThumbnail(index)
+                    onDispose { currentOnCancelThumbnail(index) }
+                }
                 ThumbnailItem(
                     bitmap = bitmap,
+                    isFailed = isFailed,
                     pageNumber = index + 1,
                     isSelected = index == currentPage,
                     onClick = { onPageSelect(index) },
@@ -79,7 +99,8 @@ internal fun PdfThumbnailStrip(
 
 @Composable
 private fun ThumbnailItem(
-    bitmap: Bitmap,
+    bitmap: Bitmap?,
+    isFailed: Boolean,
     pageNumber: Int,
     isSelected: Boolean,
     onClick: () -> Unit,
@@ -106,12 +127,26 @@ private fun ThumbnailItem(
                     shape = WormaCeptorTokens.Shapes.button,
                 ),
         ) {
-            Image(
-                bitmap = bitmap.asImageBitmap(),
-                contentDescription = stringResource(R.string.viewer_pdf_page_description, pageNumber),
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
-            )
+            if (bitmap != null) {
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = stringResource(R.string.viewer_pdf_page_description, pageNumber),
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                )
+            } else {
+                val placeholderDescription = if (isFailed) {
+                    stringResource(R.string.viewer_pdf_page_failed, pageNumber)
+                } else {
+                    stringResource(R.string.viewer_pdf_thumbnail_loading, pageNumber)
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(darkColors.surface)
+                        .semantics { contentDescription = placeholderDescription },
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xs))
@@ -135,17 +170,21 @@ private const val ThumbnailAspectRatio = 0.75f
 @Preview(showBackground = true, backgroundColor = 0xFF1C1B1F)
 @Composable
 private fun PdfThumbnailStripPreview() {
-    val pages = List(5) {
+    val pages = (0..1).associateWith {
         createBitmap(200, 280).apply {
             eraseColor(android.graphics.Color.WHITE)
         }
     }
     WormaCeptorTheme {
         PdfThumbnailStrip(
-            pages = pages,
-            currentPage = 2,
+            pageCount = 5,
+            thumbnails = pages,
+            failedPages = setOf(2),
+            currentPage = 1,
             listState = LazyListState(),
             onPageSelect = {},
+            onRequestThumbnail = {},
+            onCancelThumbnail = {},
         )
     }
 }

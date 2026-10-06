@@ -6,6 +6,7 @@ import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,13 +16,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.core.ui.R
 import com.azikar24.wormaceptor.core.ui.modifier.wormaceptorFocusRing
 import com.azikar24.wormaceptor.core.ui.modifier.wormaceptorPressScale
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
@@ -76,21 +85,69 @@ fun WormaCeptorChip(
         MaterialTheme.colorScheme.outlineVariant.copy(alpha = WormaCeptorTokens.Alpha.MEDIUM)
     }
     val interactionSource = remember { MutableInteractionSource() }
-    val interactionModifier = if (onClick != null && enabled) {
+    // Size must not depend on `enabled`, or toggling it makes rows of chips jump.
+    val interactionModifier = if (onClick != null) {
         Modifier
+            .minimumInteractiveComponentSize()
             .wormaceptorPressScale(interactionSource)
             .wormaceptorFocusRing(interactionSource, WormaCeptorTokens.Shapes.pill)
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
+                enabled = enabled,
+                role = Role.Button,
                 onClick = onClick,
             )
+            .semantics { this.selected = selected }
     } else {
         Modifier
     }
 
-    Surface(
+    // The dismiss target is a sibling overlay so its 48dp hit area isn't clipped by the pill.
+    Box(
         modifier = modifier.then(interactionModifier),
+        contentAlignment = Alignment.CenterStart,
+    ) {
+        ChipSurface(
+            label = label,
+            container = container,
+            content = content,
+            borderColor = borderColor,
+            enabled = enabled,
+            leadingIcon = leadingIcon,
+            showDismiss = onDismiss != null,
+        )
+        if (onDismiss != null) {
+            val dismissDescription = stringResource(R.string.chip_dismiss_description, label)
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .size(WormaCeptorTokens.TouchTarget.comfortable)
+                    .clickable(
+                        interactionSource = null,
+                        indication = ripple(bounded = false, radius = WormaCeptorTokens.TouchTarget.comfortable / 2),
+                        enabled = enabled,
+                        role = Role.Button,
+                        onClick = onDismiss,
+                    )
+                    .semantics { contentDescription = dismissDescription },
+            )
+        }
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun ChipSurface(
+    label: String,
+    container: Color,
+    content: Color,
+    borderColor: Color,
+    enabled: Boolean,
+    leadingIcon: ImageVector?,
+    showDismiss: Boolean,
+) {
+    Surface(
         shape = WormaCeptorTokens.Shapes.pill,
         color = container,
         contentColor = content.copy(
@@ -117,13 +174,11 @@ fun WormaCeptorChip(
                 text = label,
                 style = MaterialTheme.typography.labelMedium,
             )
-            if (onDismiss != null) {
+            if (showDismiss) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Remove $label",
-                    modifier = Modifier
-                        .size(WormaCeptorTokens.IconSize.sm)
-                        .clickable(enabled = enabled, onClick = onDismiss),
+                    contentDescription = null,
+                    modifier = Modifier.size(WormaCeptorTokens.IconSize.sm),
                     tint = content,
                 )
             }

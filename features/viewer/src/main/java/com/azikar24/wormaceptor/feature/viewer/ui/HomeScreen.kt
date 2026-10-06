@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -44,12 +45,14 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.azikar24.wormaceptor.api.Feature
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.ui.components.badge.BadgeVariant
 import com.azikar24.wormaceptor.core.ui.components.badge.WormaCeptorBadge
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorIconButton
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
+import com.azikar24.wormaceptor.core.ui.navigation.WormaCeptorNavKeys
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTheme
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.Crash
@@ -126,7 +129,7 @@ fun HomeScreen(
 
     Scaffold(
         contentWindowInsets = WindowInsets(0),
-        snackbarHost = { SnackbarHost(snackBarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState, modifier = Modifier.navigationBarsPadding()) },
         floatingActionButton = {
             val filterCount = transactionState.filterMethods.size +
                 transactionState.filterStatusRanges.size +
@@ -134,6 +137,7 @@ fun HomeScreen(
 
             AnimatedVisibility(
                 visible = pagerState.currentPage == 0 && !isSelectionMode,
+                modifier = Modifier.navigationBarsPadding(),
                 enter = fadeIn(),
                 exit = fadeOut(),
             ) {
@@ -224,6 +228,19 @@ fun HomeScreen(
                                 onTransactionEvent(
                                     TransactionListViewEvent.CopyTransactionAsCurl(it.id),
                                 )
+                            },
+                            onAddToMock = if (Feature.MOCK_RULES in enabledFeatures) {
+                                {
+                                    onHomeEvent(
+                                        HomeViewEvent.ToolNavigated(
+                                            WormaCeptorNavKeys.MockRuleEditor.createFromTransactionRoute(
+                                                it.id.toString(),
+                                            ),
+                                        ),
+                                    )
+                                }
+                            } else {
+                                null
                             },
                         ),
                         isInitialLoading = transactionState.isInitialLoading,

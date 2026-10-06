@@ -13,4 +13,16 @@ interface BlobStorage {
 
     /** Permanently deletes the blob identified by [id]. */
     suspend fun deleteBlob(id: BlobID)
+
+    /**
+     * Deletes every blob created before [createdBeforeMillis] whose id is not in [referenced],
+     * reclaiming bodies orphaned by rows deleted without their blobs. Blobs created at or after
+     * the cutoff are kept so in-flight captures are never swept.
+     *
+     * @return The number of blobs deleted.
+     */
+    suspend fun deleteUnreferenced(
+        referenced: Set<BlobID>,
+        createdBeforeMillis: Long,
+    ): Int
 }

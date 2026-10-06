@@ -2,8 +2,13 @@ package com.azikar24.wormaceptor.core.engine
 
 import android.os.Build
 import android.os.StrictMode
+import android.os.strictmode.CustomViolation
+import android.os.strictmode.DiskReadViolation
+import android.os.strictmode.DiskWriteViolation
+import android.os.strictmode.NetworkViolation
 import android.os.strictmode.Violation
 import androidx.annotation.RequiresApi
+import androidx.annotation.VisibleForTesting
 import com.azikar24.wormaceptor.domain.entities.ThreadViolation
 import com.azikar24.wormaceptor.domain.entities.ViolationStats
 import kotlinx.coroutines.CoroutineScope
@@ -64,11 +69,11 @@ class ThreadViolationEngine(
     // Store original policy to restore on disable
     private var originalPolicy: StrictMode.ThreadPolicy? = null
 
+    // Policy installed by enable(), used to detect host changes before restoring
+    private var installedPolicy: StrictMode.ThreadPolicy? = null
+
     // Notification callback
     private var onViolationDetected: ((ThreadViolation) -> Unit)? = null
-
-    // Package filter for violations
-    private var hostPackageName: String? = null
 
     // System packages to exclude from violation tracking
     private val systemPackagePrefixes = listOf(
@@ -86,16 +91,17 @@ class ThreadViolationEngine(
     )
 
     /**
-     * Configures the thread violation engine with notification callback and package filter.
+     * Configures the thread violation engine with a notification callback.
      *
-     * @param hostPackage The host app's package name to filter violations
+     * @param hostPackage Ignored. Any non-system frame marks a violation as relevant, because the
+     *   application id (which may carry an applicationIdSuffix) need not match code packages.
      * @param onViolationCallback Optional callback invoked when a violation is detected (for notifications)
      */
+    @Suppress("UnusedParameter")
     fun configure(
         hostPackage: String? = null,
         onViolationCallback: ((ThreadViolation) -> Unit)? = null,
     ) {
-        this.hostPackageName = hostPackage
         this.onViolationDetected = onViolationCallback
     }
 
@@ -108,7 +114,8 @@ class ThreadViolationEngine(
     fun enable() {
         if (_isMonitoring.value) return
 
-        // Save original policy to restore later
+        // Save original policy to restore later. Not built on top of it: penalties apply to every
+        // detection, so a host's penaltyDeath() would crash on the disk reads we add.
         originalPolicy = StrictMode.getThreadPolicy()
 
         val builder = StrictMode.ThreadPolicy.Builder()
@@ -130,20 +137,27 @@ class ThreadViolationEngine(
             builder.penaltyLog()
         }
 
-        StrictMode.setThreadPolicy(builder.build())
+        val policy = builder.build()
+        installedPolicy = policy
+        StrictMode.setThreadPolicy(policy)
         _isMonitoring.value = true
     }
 
     /**
      * Disables thread violation monitoring.
-     * Restores the original StrictMode.ThreadPolicy.
+     * Restores the original StrictMode.ThreadPolicy unless the host replaced the
+     * policy after [enable], in which case the host's policy is left in place.
      */
     fun disable() {
         if (!_isMonitoring.value) return
 
-        // Restore original policy
-        originalPolicy?.let { StrictMode.setThreadPolicy(it) }
-            ?: StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX)
+        // ThreadPolicy has no equals(); toString() exposes the detect/penalty mask
+        val hostChangedPolicy = installedPolicy?.toString() != StrictMode.getThreadPolicy().toString()
+        if (!hostChangedPolicy) {
+            originalPolicy?.let { StrictMode.setThreadPolicy(it) }
+                ?: StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX)
+        }
+        installedPolicy = null
 
         _isMonitoring.value = false
     }
@@ -165,8 +179,10 @@ class ThreadViolationEngine(
      */
     @RequiresApi(Build.VERSION_CODES.P)
     private fun handleViolation(violation: Violation) {
+        // The listener executor runs inline on the violating thread; capture its name before hopping
+        val threadName = Thread.currentThread().name
         scope.launch {
-            val threadViolation = parseViolation(violation)
+            val threadViolation = parseViolation(violation, threadName)
             addViolation(threadViolation)
         }
     }
@@ -175,12 +191,14 @@ class ThreadViolationEngine(
      * Parses a StrictMode Violation into our ThreadViolation entity.
      */
     @RequiresApi(Build.VERSION_CODES.P)
-    private fun parseViolation(violation: Violation): ThreadViolation {
+    private fun parseViolation(
+        violation: Violation,
+        threadName: String,
+    ): ThreadViolation {
         val timestamp = System.currentTimeMillis()
         val violationType = determineViolationType(violation)
         val description = violation.message ?: violation.javaClass.simpleName
         val stackTrace = violation.stackTrace.map { it.toString() }
-        val threadName = Thread.currentThread().name
 
         // Try to extract duration if available in the message
         val durationMs = extractDuration(violation.message)
@@ -201,25 +219,12 @@ class ThreadViolationEngine(
      */
     @RequiresApi(Build.VERSION_CODES.P)
     private fun determineViolationType(violation: Violation): ThreadViolation.ViolationType {
-        val className = violation.javaClass.simpleName.lowercase()
-        val message = violation.message?.lowercase() ?: ""
-
-        return when {
-            className.contains("diskread") || message.contains("read") -> {
-                ThreadViolation.ViolationType.DISK_READ
-            }
-            className.contains("diskwrite") || message.contains("write") -> {
-                ThreadViolation.ViolationType.DISK_WRITE
-            }
-            className.contains("network") -> {
-                ThreadViolation.ViolationType.NETWORK
-            }
-            className.contains("customslowcall") -> {
-                ThreadViolation.ViolationType.CUSTOM_SLOW_CODE
-            }
-            else -> {
-                ThreadViolation.ViolationType.SLOW_CALL
-            }
+        return when (violation) {
+            is DiskReadViolation -> ThreadViolation.ViolationType.DISK_READ
+            is DiskWriteViolation -> ThreadViolation.ViolationType.DISK_WRITE
+            is NetworkViolation -> ThreadViolation.ViolationType.NETWORK
+            is CustomViolation -> ThreadViolation.ViolationType.CUSTOM_SLOW_CODE
+            else -> ThreadViolation.ViolationType.SLOW_CALL
         }
     }
 
@@ -295,34 +300,15 @@ class ThreadViolationEngine(
 
     /**
      * Checks if a violation is relevant based on its stack trace.
-     * Returns true if the stack trace contains frames from the host app or WormaCeptor.
+     * Returns true if any frame comes from outside the system packages (host app,
+     * WormaCeptor, or third-party libraries running in the host process).
      */
-    private fun isRelevantViolation(violation: ThreadViolation): Boolean {
-        val wormaCeptorPrefix = "com.azikar24.wormaceptor"
-
-        for (frame in violation.stackTrace) {
-            // Skip system package frames
-            val isSystemFrame = systemPackagePrefixes.any { prefix ->
-                frame.contains(prefix)
-            }
-            if (isSystemFrame) continue
-
-            // Check if it's a WormaCeptor frame
-            if (frame.contains(wormaCeptorPrefix)) {
-                return true
-            }
-
-            // Check if it's a host app frame
-            hostPackageName?.let { hostPkg ->
-                if (frame.contains(hostPkg)) {
-                    return true
-                }
-            }
+    @VisibleForTesting
+    internal fun isRelevantViolation(violation: ThreadViolation): Boolean {
+        return violation.stackTrace.any { frame ->
+            val frameText = frame.trimStart()
+            systemPackagePrefixes.none { prefix -> frameText.startsWith(prefix) }
         }
-
-        // If no host package is set, accept any non-system violation
-        // Otherwise, reject if we didn't find a relevant frame
-        return hostPackageName == null
     }
 
     /**

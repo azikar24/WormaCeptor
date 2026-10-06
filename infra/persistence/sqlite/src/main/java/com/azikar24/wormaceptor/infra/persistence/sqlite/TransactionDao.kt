@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
@@ -18,6 +19,10 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE id = :id")
     suspend fun getById(id: UUID): TransactionEntity?
 
+    /** Observes a single transaction by its UUID; emits null while it does not exist. */
+    @Query("SELECT * FROM transactions WHERE id = :id")
+    fun observeById(id: UUID): Flow<TransactionEntity?>
+
     /** Retrieves a single transaction by its string ID. */
     @Query("SELECT * FROM transactions WHERE id = :id")
     suspend fun getById(id: String): TransactionEntity?
@@ -26,9 +31,17 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions ORDER BY timestamp DESC")
     suspend fun getAllAsList(): List<TransactionEntity>
 
+    /** Returns only the body blob references of every transaction. */
+    @Query("SELECT reqBodyRef, resBodyRef FROM transactions")
+    suspend fun getAllBodyRefs(): List<BodyRefs>
+
     /** Inserts or replaces a transaction record. */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(transaction: TransactionEntity)
+
+    /** Updates an existing transaction record; returns the number of rows updated. */
+    @Update
+    suspend fun update(transaction: TransactionEntity): Int
 
     /** Deletes all transaction records. */
     @Query("DELETE FROM transactions")
@@ -87,3 +100,14 @@ interface TransactionDao {
     )
     suspend fun getTransactionCount(searchQuery: String?): Int
 }
+
+/**
+ * Projection of [TransactionEntity] holding only its body blob references.
+ *
+ * @property reqBodyRef Request body blob reference, or null if none.
+ * @property resBodyRef Response body blob reference, or null if none.
+ */
+data class BodyRefs(
+    val reqBodyRef: String?,
+    val resBodyRef: String?,
+)

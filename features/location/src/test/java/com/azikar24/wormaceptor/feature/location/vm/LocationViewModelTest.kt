@@ -31,6 +31,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.util.Locale
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LocationViewModelTest {
@@ -366,8 +367,8 @@ class LocationViewModelTest {
                     effect.shouldBeInstanceOf<LocationViewEffect.ShowSuccess>()
                 }
 
-                viewModel.uiState.value.latitudeInput shouldBe "%.6f".format(lastMock.latitude)
-                viewModel.uiState.value.longitudeInput shouldBe "%.6f".format(lastMock.longitude)
+                viewModel.uiState.value.latitudeInput shouldBe "51.507400"
+                viewModel.uiState.value.longitudeInput shouldBe "-0.127800"
             }
         }
 
@@ -774,8 +775,25 @@ class LocationViewModelTest {
 
             viewModel.sendEvent(LocationViewEvent.MapTapped(48.8566, 2.3522))
 
-            viewModel.uiState.value.latitudeInput shouldBe "%.6f".format(48.8566)
-            viewModel.uiState.value.longitudeInput shouldBe "%.6f".format(2.3522)
+            viewModel.uiState.value.latitudeInput shouldBe "48.856600"
+            viewModel.uiState.value.longitudeInput shouldBe "2.352200"
+        }
+
+        @Test
+        fun `formats with dot decimals under a comma-decimal default locale`() = runTest {
+            val original = Locale.getDefault()
+            Locale.setDefault(Locale.GERMANY)
+            try {
+                viewModel = createViewModel()
+
+                viewModel.sendEvent(LocationViewEvent.MapTapped(48.8566, 2.3522))
+
+                viewModel.uiState.value.latitudeInput shouldBe "48.856600"
+                viewModel.uiState.value.longitudeInput shouldBe "2.352200"
+                viewModel.uiState.value.latitudeInput.toDoubleOrNull() shouldBe 48.8566
+            } finally {
+                Locale.setDefault(original)
+            }
         }
     }
 

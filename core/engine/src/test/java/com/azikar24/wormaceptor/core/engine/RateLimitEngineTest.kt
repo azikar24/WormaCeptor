@@ -5,7 +5,14 @@ import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
 import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import okhttp3.Interceptor
+import okhttp3.Protocol
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -232,6 +239,92 @@ class RateLimitEngineTest {
                 engine.stats.value shouldBe ThrottleStats.empty()
                 cancelAndConsumeRemainingEvents()
             }
+        }
+    }
+
+    @Nested
+    inner class RequestCounting {
+
+        private fun chainReturning(bodySize: Int): Interceptor.Chain {
+            val request = Request.Builder().url("https://example.com").build()
+            val response = Response.Builder()
+                .request(request)
+                .protocol(Protocol.HTTP_1_1)
+                .code(200)
+                .message("OK")
+                .body("a".repeat(bodySize).toResponseBody())
+                .build()
+            return mockk {
+                every { request() } returns request
+                every { proceed(any()) } returns response
+            }
+        }
+
+        @Test
+        fun `throttled download spanning several reads counts as one request`() {
+            // 8000 Kbps = 1 MB/s, so 20 KB takes ~20ms across multiple 8 KB segment reads
+            engine.setCustomConfig(
+                downloadSpeedKbps = 8_000,
+                uploadSpeedKbps = 0,
+                latencyMs = 0,
+                packetLossPercent = 0f,
+            )
+
+            engine.getInterceptor().intercept(chainReturning(20_000)).body?.string()
+
+            engine.stats.value.requestsThrottled shouldBe 1
+            engine.stats.value.bytesThrottled shouldBe 20_000L
+        }
+
+        @Test
+        fun `each request with latency counts once`() {
+            engine.setCustomConfig(
+                downloadSpeedKbps = 0,
+                uploadSpeedKbps = 0,
+                latencyMs = 1,
+                packetLossPercent = 0f,
+            )
+
+            engine.getInterceptor().intercept(chainReturning(10))
+            engine.getInterceptor().intercept(chainReturning(10))
+
+            engine.stats.value.requestsThrottled shouldBe 2
+        }
+
+        @Test
+        fun `disabled engine counts nothing`() {
+            engine.getInterceptor().intercept(chainReturning(10))
+
+            engine.stats.value.requestsThrottled shouldBe 0
+        }
+    }
+
+    @Nested
+    inner class GetDelayMillis {
+
+        @Test
+        fun `returns configured latency when enabled`() {
+            engine.setCustomConfig(
+                downloadSpeedKbps = 0,
+                uploadSpeedKbps = 0,
+                latencyMs = 250,
+                packetLossPercent = 0f,
+            )
+
+            engine.getDelayMillis() shouldBe 250L
+        }
+
+        @Test
+        fun `returns zero when disabled`() {
+            engine.setCustomConfig(
+                downloadSpeedKbps = 0,
+                uploadSpeedKbps = 0,
+                latencyMs = 250,
+                packetLossPercent = 0f,
+            )
+            engine.disable()
+
+            engine.getDelayMillis() shouldBe 0L
         }
     }
 

@@ -3,6 +3,7 @@ package com.azikar24.wormaceptor.feature.viewer.vm
 import androidx.annotation.StringRes
 import com.azikar24.wormaceptor.domain.entities.ExportFormat
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import java.util.UUID
 
 internal sealed class TransactionDetailViewEffect {
     sealed class Clipboard : TransactionDetailViewEffect() {
@@ -37,6 +38,11 @@ internal sealed class TransactionDetailViewEffect {
 
             override fun hashCode(): Int = bytes.contentHashCode()
         }
+    }
+
+    sealed class Navigate : TransactionDetailViewEffect() {
+        /** Open the mock rule editor pre-filled from [transactionId]. Handled by the hosting activity. */
+        data class AddToMockRules(val transactionId: UUID) : Navigate()
     }
 
     data class ShowSnackBar(val message: String) : TransactionDetailViewEffect()

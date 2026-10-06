@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permission to draw over other apps (floating button) -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- Permission for foreground service -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"
+        tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
+
+    <permission
+        android:name="${applicationId}.wormaceptor.CONTENT_PROVIDER"
+        android:protectionLevel="signature" />
+
+    <application>
+        <!-- Content provider for IDE communication via ADB (class lives in api-client) -->
+        <provider
+            android:name="com.azikar24.wormaceptor.api.contentprovider.WormaCeptorContentProvider"
+            android:authorities="${applicationId}.wormaceptor.provider"
+            android:permission="${applicationId}.wormaceptor.CONTENT_PROVIDER"
+            android:exported="true"
+            android:enabled="true" />
+
+        <!-- Floating button service (class lives in platform-android) -->
+        <service
+            android:name="com.azikar24.wormaceptor.platform.android.FloatingButtonService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Developer tool overlay for network inspection" />
+        </service>
+    </application>
+
+</manifest>

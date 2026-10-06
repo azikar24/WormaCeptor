@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import com.azikar24.wormaceptor.core.ui.components.card.CardStyle
 import com.azikar24.wormaceptor.core.ui.components.card.WormaCeptorCard
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
-import com.azikar24.wormaceptor.core.ui.theme.tokens.ToolColors
 import com.azikar24.wormaceptor.core.ui.util.formatBytes
 import com.azikar24.wormaceptor.core.ui.util.formatDuration
 import com.azikar24.wormaceptor.domain.entities.ThrottleStats
@@ -33,7 +32,6 @@ import com.azikar24.wormaceptor.feature.ratelimit.R
 @Composable
 internal fun StatisticsCard(
     stats: ThrottleStats,
-    colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
     WormaCeptorCard(
@@ -53,13 +51,13 @@ internal fun StatisticsCard(
                     text = stringResource(R.string.ratelimit_stats_title),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = colors.labelPrimary,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     modifier = Modifier.semantics { heading() },
                 )
                 Icon(
                     imageVector = Icons.Default.NetworkCheck,
                     contentDescription = stringResource(R.string.ratelimit_stats_title),
-                    tint = colors.primary,
+                    tint = WormaCeptorTokens.semantic().textSecondary,
                     modifier = Modifier.size(WormaCeptorTokens.IconSize.md),
                 )
             }
@@ -71,14 +69,16 @@ internal fun StatisticsCard(
                 StatItem(
                     label = stringResource(R.string.ratelimit_stats_requests_throttled),
                     value = stats.requestsThrottled.toString(),
-                    color = colors.primary,
-                    colors = colors,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
                 StatItem(
                     label = stringResource(R.string.ratelimit_stats_packets_dropped),
                     value = stats.packetsDropped.toString(),
-                    color = colors.packetLoss,
-                    colors = colors,
+                    color = if (stats.packetsDropped > 0) {
+                        WormaCeptorTokens.semantic().error
+                    } else {
+                        WormaCeptorTokens.semantic().textPrimary
+                    },
                 )
             }
 
@@ -89,14 +89,12 @@ internal fun StatisticsCard(
                 StatItem(
                     label = stringResource(R.string.ratelimit_stats_total_delay),
                     value = formatDuration(stats.totalDelayMs),
-                    color = colors.latency,
-                    colors = colors,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
                 StatItem(
                     label = stringResource(R.string.ratelimit_stats_bytes_throttled),
                     value = formatBytes(stats.bytesThrottled),
-                    color = colors.download,
-                    colors = colors,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                 )
             }
         }
@@ -108,7 +106,6 @@ private fun StatItem(
     label: String,
     value: String,
     color: Color,
-    colors: ToolColors.RateLimit.Scheme,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -125,7 +122,7 @@ private fun StatItem(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = colors.labelSecondary,
+            color = WormaCeptorTokens.semantic().textSecondary,
         )
     }
 }

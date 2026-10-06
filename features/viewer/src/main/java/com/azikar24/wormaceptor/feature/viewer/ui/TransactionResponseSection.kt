@@ -11,13 +11,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -34,13 +36,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
 import com.azikar24.wormaceptor.core.engine.HighlighterRegistry
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.components.button.WormaCeptorFAB
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.contracts.ContentType
 import com.azikar24.wormaceptor.domain.entities.NetworkTransaction
+import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.feature.viewer.R
 import com.azikar24.wormaceptor.feature.viewer.ui.components.FullscreenImageViewer
 import com.azikar24.wormaceptor.feature.viewer.ui.components.ImagePreviewCard
@@ -110,6 +115,7 @@ internal fun ResponseTab(
     // Pixel-based scrolling (rendering concerns stay local)
     val scrollState = rememberScrollState()
     var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+    val scrollAnchor = remember { BodyScrollAnchor() }
     val isScrolling = scrollState.value > 100
 
     // Scroll to current match using TextLayoutResult
@@ -121,7 +127,7 @@ internal fun ResponseTab(
 
         try {
             val lineNumber = layout.getLineForOffset(match.globalPosition)
-            val pixelOffset = layout.getLineTop(lineNumber).toInt()
+            val pixelOffset = scrollAnchor.bodyOffsetInColumn() + layout.getLineTop(lineNumber).toInt()
             scrollState.animateScrollTo(pixelOffset)
         } catch (_: Exception) {
             // Offset out of bounds, ignore
@@ -133,13 +139,11 @@ internal fun ResponseTab(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(
-                    start = WormaCeptorTokens.Spacing.lg,
-                    top = WormaCeptorTokens.Spacing.lg,
-                    end = WormaCeptorTokens.Spacing.lg,
-                    bottom = WormaCeptorTokens.Spacing.lg +
-                        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
-                ),
+                .onGloballyPositioned { scrollAnchor.column = it }
+                .padding(WormaCeptorTokens.Spacing.lg)
+                // Inset-aware: the parent already consumed the IME, so this adds only what the
+                // navigation bar exceeds it by, i.e. max(navBars, ime) overall.
+                .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)),
         ) {
             if (transaction.response != null) {
                 val hasHeaders = transaction.response?.headers?.isNotEmpty() == true
@@ -235,11 +239,15 @@ internal fun ResponseTab(
                                 )
                             },
                         ) {
+                            val rawDisplayBody = responseState.displayRawBody ?: rawBody
                             val displayBody = if (isPrettyMode) {
-                                responseBody ?: requireNotNull(rawBody) { "Body must be available" }
+                                responseBody ?: requireNotNull(rawDisplayBody) { "Body must be available" }
                             } else {
-                                rawBody ?: requireNotNull(responseBody) { "Body must be available" }
+                                rawDisplayBody ?: requireNotNull(responseBody) { "Body must be available" }
                             }
+                            val bodyTextModifier = Modifier
+                                .fillMaxWidth()
+                                .onGloballyPositioned { scrollAnchor.body = it }
                             val currentMatchGlobalPos = matches.getOrNull(currentMatchIndex)?.globalPosition
                             val hasActiveSearch = searchQuery.isNotEmpty()
 
@@ -257,7 +265,7 @@ internal fun ResponseTab(
                                 }
                                 val highlighter = try {
                                     val registry: HighlighterRegistry =
-                                        org.koin.java.KoinJavaComponent.get(HighlighterRegistry::class.java)
+                                        WormaCeptorKoin.get(HighlighterRegistry::class.java)
                                     registry.getHighlighter(language)
                                 } catch (_: RuntimeException) {
                                     null
@@ -309,7 +317,7 @@ internal fun ResponseTab(
                                                 text = displayBody,
                                                 query = searchQuery,
                                                 currentMatchGlobalPos = currentMatchGlobalPos,
-                                                modifier = Modifier.fillMaxWidth(),
+                                                modifier = bodyTextModifier,
                                                 syntaxHighlighted = syntaxHighlighted,
                                                 onTextLayout = { textLayoutResult = it },
                                             )
@@ -323,11 +331,14 @@ internal fun ResponseTab(
                                         text = displayBody,
                                         query = searchQuery,
                                         currentMatchGlobalPos = currentMatchGlobalPos,
-                                        modifier = Modifier.fillMaxWidth(),
+                                        modifier = bodyTextModifier,
                                         syntaxHighlighted = syntaxHighlighted,
                                         onTextLayout = { textLayoutResult = it },
                                     )
                                 }
+                            }
+                            if (responseState.isRawBodyTruncated && (!isPrettyMode || responseBody == null)) {
+                                RawBodyTruncatedNote()
                             }
                         }
                     }
@@ -351,10 +362,19 @@ internal fun ResponseTab(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
+                    val isPending = transaction.status == TransactionStatus.ACTIVE
                     Text(
-                        "No response received",
+                        text = if (isPending) {
+                            stringResource(R.string.viewer_body_waiting_for_response)
+                        } else {
+                            stringResource(R.string.viewer_body_no_response_received)
+                        },
                         style = MaterialTheme.typography.bodyMedium,
-                        color = WormaCeptorTokens.semantic().error,
+                        color = if (isPending) {
+                            WormaCeptorTokens.semantic().textSecondary
+                        } else {
+                            WormaCeptorTokens.semantic().error
+                        },
                     )
                 }
             }

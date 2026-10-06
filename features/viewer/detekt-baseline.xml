@@ -3,7 +3,7 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:GridFilterCard.kt$@Composable internal fun GridFilterCard( label: String, count: Int, color: Color, isSelected: Boolean, onClick: () -&gt; Unit, modifier: Modifier = Modifier, sublabel: String? = null, )</ID>
-    <ID>CyclomaticComplexMethod:HarExporter.kt$HarExporter$private fun buildHarResponse( tx: NetworkTransaction, body: String?, httpVersion: String, ): HarResponse</ID>
+    <ID>CyclomaticComplexMethod:HarExporter.kt$HarExporter$private fun buildHarResponse( tx: NetworkTransaction, body: ByteArray?, httpVersion: String, ): HarResponse</ID>
     <ID>CyclomaticComplexMethod:MetricsCard.kt$@Composable fun MetricsCard( transactions: ImmutableList&lt;TransactionSummary&gt;, modifier: Modifier = Modifier, )</ID>
     <ID>CyclomaticComplexMethod:MultipartView.kt$@Composable private fun MultipartPartCard( part: MultipartPart, index: Int, initiallyExpanded: Boolean, )</ID>
     <ID>CyclomaticComplexMethod:PerformanceOverlayToggle.kt$@Composable internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
@@ -19,7 +19,6 @@
     <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackFrameItem( frame: CrashUtils.StackFrame, isHighlighted: Boolean, )</ID>
     <ID>LongMethod:CrashDetailScreen.kt$@Composable private fun StackTraceSection( stackFrames: List&lt;CrashUtils.StackFrame&gt;, fullStackTrace: String, context: Context, )</ID>
     <ID>LongMethod:CrashListScreen.kt$@Composable fun CrashItem( crash: Crash, onClick: () -&gt; Unit, )</ID>
-    <ID>LongMethod:CrashListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun CrashListScreen( crashes: ImmutableList&lt;Crash&gt;, onCrashClick: (Crash) -&gt; Unit, modifier: Modifier = Modifier, isInitialLoading: Boolean = false, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, )</ID>
     <ID>LongMethod:FilterBottomSheetContent.kt$@Composable fun FilterBottomSheetContent( state: TransactionListViewState, onEvent: (TransactionListViewEvent) -&gt; Unit, filteredCount: Int, totalCount: Int, methodCounts: ImmutableMap&lt;String, Int&gt;, statusCounts: ImmutableMap&lt;IntRange, Int&gt;, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:FilterHeader.kt$@Composable internal fun FilterHeader( filteredCount: Int, totalCount: Int, filtersActive: Boolean, )</ID>
     <ID>LongMethod:FormDataView.kt$@Composable fun FormDataView( formData: String, modifier: Modifier = Modifier, )</ID>
@@ -44,15 +43,13 @@
     <ID>LongMethod:PerformanceOverlayToggle.kt$@Composable internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier)</ID>
     <ID>LongMethod:ProtobufView.kt$@Composable fun ProtobufView( data: ByteArray, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:ProtobufView.kt$@Composable private fun ProtobufFieldCard( field: ProtobufField, initiallyExpanded: Boolean, )</ID>
-    <ID>LongMethod:SelectableTransactionItem.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun SelectableTransactionItem( transaction: TransactionSummary, isSelected: Boolean, isSelectionMode: Boolean, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:SelectableTransactionItem.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun SelectableTransactionItem( transaction: TransactionSummary, isSelected: Boolean, isSelectionMode: Boolean, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, onAddToMock: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongMethod:SwipeBackContainer.kt$@Composable fun SwipeBackContainer( onBack: () -&gt; Unit, enabled: Boolean = true, edgeWidth: Float = 48f, thresholdFraction: Float = 0.35f, content: @Composable BoxScope.() -&gt; Unit, )</ID>
-    <ID>LongMethod:TransactionContextMenu.kt$@Composable fun TransactionContextMenu( expanded: Boolean, onDismiss: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, offset: DpOffset = DpOffset(0.dp, 0.dp), )</ID>
+    <ID>LongMethod:TransactionContextMenu.kt$@Composable fun TransactionContextMenu( expanded: Boolean, onDismiss: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, onAddToMock: (() -&gt; Unit)?, onSelect: () -&gt; Unit, modifier: Modifier = Modifier, offset: DpOffset = DpOffset(0.dp, 0.dp), )</ID>
     <ID>LongMethod:TransactionDetailScreen.kt$@Composable private fun TransactionDetailScaffold( transaction: NetworkTransaction, state: TransactionDetailViewState, snackBarHostState: SnackbarHostState, onEvent: (TransactionDetailViewEvent) -&gt; Unit, onBack: () -&gt; Unit, onNavigatePrev: () -&gt; Unit, onNavigateNext: () -&gt; Unit, canNavigatePrev: Boolean, canNavigateNext: Boolean, )</ID>
-    <ID>LongMethod:TransactionDetailViewModel.kt$TransactionDetailViewModel$private fun loadResponseBody(transaction: NetworkTransaction)</ID>
     <ID>LongMethod:TransactionHeadersView.kt$@Composable internal fun CollapsibleSection( title: String, isExpanded: Boolean, onToggle: () -&gt; Unit, onCopy: (() -&gt; Unit)? = null, isCopyLoading: Boolean = false, trailingContent: @Composable (() -&gt; Unit)? = null, content: @Composable () -&gt; Unit, )</ID>
-    <ID>LongMethod:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, selectionState: TransactionSelectionState = TransactionSelectionState(), itemActions: TransactionItemActions = TransactionItemActions(), isInitialLoading: Boolean = false, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, header: (@Composable () -&gt; Unit)? = null, )</ID>
-    <ID>LongMethod:TransactionOverviewSection.kt$@Composable internal fun OverviewTab( transaction: NetworkTransaction, modifier: Modifier = Modifier, )</ID>
-    <ID>LongMethod:TransactionOverviewSection.kt$@Composable private fun TransactionTimeline( durationMs: Long, hasResponse: Boolean, )</ID>
+    <ID>LongMethod:TransactionOverviewSection.kt$@Composable internal fun OverviewTab( transaction: NetworkTransaction, onCopyUrl: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:TransactionOverviewSection.kt$@Composable private fun TransactionTimeline( durationMs: Long, hasResponse: Boolean, isPending: Boolean, )</ID>
     <ID>LongMethod:ViewerActivity.kt$ViewerActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
     <ID>LongMethod:XmlTreeView.kt$private fun highlightXmlLine( line: String, colors: ComposeSyntaxColors, )</ID>
     <ID>LongParameterList:BulkActionBar.kt$( selectedCount: Int, totalCount: Int, onShare: () -&gt; Unit, onDelete: () -&gt; Unit, onExport: () -&gt; Unit, onExportAsHar: () -&gt; Unit, onSelectAll: () -&gt; Unit, onDeselectAll: () -&gt; Unit, onCancel: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
@@ -62,9 +59,9 @@
     <ID>LongParameterList:HomeScreenEffects.kt$( pagerState: PagerState, homeState: HomeViewState, transactionState: TransactionListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, snackBarMessage: Flow&lt;String&gt;?, snackBarHostState: SnackbarHostState, )</ID>
     <ID>LongParameterList:HomeTopBar.kt$( homeState: HomeViewState, transactionState: TransactionListViewState, onHomeEvent: (HomeViewEvent) -&gt; Unit, onTransactionEvent: (TransactionListViewEvent) -&gt; Unit, onCrashEvent: (CrashListViewEvent) -&gt; Unit, pagerState: PagerState, titles: List&lt;String&gt;, )</ID>
     <ID>LongParameterList:PdfPreviewSuccess.kt$( thumbnail: Bitmap, metadata: PdfMetadata, pdfData: ByteArray, tempFile: File?, onFullscreen: () -&gt; Unit, onDownload: () -&gt; Unit, onShowMessage: (String) -&gt; Unit, )</ID>
-    <ID>LongParameterList:SelectableTransactionItem.kt$( transaction: TransactionSummary, isSelected: Boolean, isSelectionMode: Boolean, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:SelectableTransactionItem.kt$( transaction: TransactionSummary, isSelected: Boolean, isSelectionMode: Boolean, onClick: () -&gt; Unit, onLongClick: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, onAddToMock: (() -&gt; Unit)?, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:ToolCategorySection.kt$( categoryName: String, categoryColor: Color, categoryIcon: ImageVector, tools: List&lt;ToolItem&gt;, isCollapsed: Boolean, onToggleCollapse: () -&gt; Unit, onToolClick: (String) -&gt; Unit, onToolLongClick: (ToolItem) -&gt; Unit, favorites: Set&lt;Feature&gt;, modifier: Modifier = Modifier, headerContent: (@Composable () -&gt; Unit)? = null, )</ID>
-    <ID>LongParameterList:TransactionContextMenu.kt$( expanded: Boolean, onDismiss: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, modifier: Modifier = Modifier, offset: DpOffset = DpOffset(0.dp, 0.dp), )</ID>
+    <ID>LongParameterList:TransactionContextMenu.kt$( expanded: Boolean, onDismiss: () -&gt; Unit, onCopyUrl: () -&gt; Unit, onShare: () -&gt; Unit, onShareAsHar: () -&gt; Unit, onDelete: () -&gt; Unit, onCopyAsCurl: () -&gt; Unit, onAddToMock: (() -&gt; Unit)?, onSelect: () -&gt; Unit, modifier: Modifier = Modifier, offset: DpOffset = DpOffset(0.dp, 0.dp), )</ID>
     <ID>LongParameterList:TransactionDetailHeader.kt$( title: String, showSearch: Boolean, showMenu: Boolean, currentTabHasContent: Boolean, tabs: List&lt;String&gt;, selectedTabIndex: Int, onTabSelected: (Int) -&gt; Unit, onEvent: (TransactionDetailViewEvent) -&gt; Unit, onBack: () -&gt; Unit, onNavigatePrev: () -&gt; Unit, onNavigateNext: () -&gt; Unit, canNavigatePrev: Boolean, canNavigateNext: Boolean, modifier: Modifier = Modifier, )</ID>
     <ID>LongParameterList:TransactionDetailScreen.kt$( transaction: NetworkTransaction, state: TransactionDetailViewState, snackBarHostState: SnackbarHostState, onEvent: (TransactionDetailViewEvent) -&gt; Unit, onBack: () -&gt; Unit, onNavigatePrev: () -&gt; Unit, onNavigateNext: () -&gt; Unit, canNavigatePrev: Boolean, canNavigateNext: Boolean, )</ID>
     <ID>LongParameterList:TransactionRequestSection.kt$( transaction: NetworkTransaction, requestState: BodySectionState, searchQuery: String, currentMatchIndex: Int, isSearchActive: Boolean, onEvent: (TransactionDetailViewEvent) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
@@ -136,7 +133,6 @@
     <ID>MagicNumber:PdfPreviewDefaults.kt$PdfPreviewDefaults$0.75f</ID>
     <ID>MagicNumber:PdfThumbnailStrip.kt$200</ID>
     <ID>MagicNumber:PdfThumbnailStrip.kt$280</ID>
-    <ID>MagicNumber:PdfThumbnailStrip.kt$5</ID>
     <ID>MagicNumber:ProtobufView.kt$0x07</ID>
     <ID>MagicNumber:ProtobufView.kt$0x08</ID>
     <ID>MagicNumber:ProtobufView.kt$0x12</ID>
@@ -179,20 +175,17 @@
     <ID>MultipleEmitters:HomeTopBar.kt$TransactionsOverflowMenu</ID>
     <ID>NestedBlockDepth:TransactionExportUtils.kt$internal fun savePdfToDownloads( context: Context, pdfData: ByteArray, ): String</ID>
     <ID>OutdatedDocumentation:ToolsTab.kt$@Suppress("LongMethod") @Composable fun ToolsTab( state: HomeViewState, onEvent: (HomeViewEvent) -&gt; Unit, onNavigate: (String) -&gt; Unit, onShowMessage: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
-    <ID>OutdatedDocumentation:TransactionListScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun SelectableTransactionListScreen( transactions: ImmutableList&lt;TransactionSummary&gt;, onItemClick: (TransactionSummary) -&gt; Unit, modifier: Modifier = Modifier, selectionState: TransactionSelectionState = TransactionSelectionState(), itemActions: TransactionItemActions = TransactionItemActions(), isInitialLoading: Boolean = false, hasActiveFilters: Boolean = false, onClearFilters: () -&gt; Unit = {}, isRefreshing: Boolean = false, onRefresh: (() -&gt; Unit)? = null, header: (@Composable () -&gt; Unit)? = null, )</ID>
     <ID>ParameterNaming:FullscreenImageViewer.kt$onLoadingChanged</ID>
     <ID>ParameterNaming:MethodFilterBars.kt$onMethodToggled</ID>
     <ID>ParameterNaming:PdfPageJumpDialog.kt$onPageSelected</ID>
     <ID>ParameterNaming:StatusFilterBars.kt$onStatusToggled</ID>
     <ID>ParameterNaming:TransactionDetailHeader.kt$onTabSelected</ID>
     <ID>SwallowedException:ImageShareUtils.kt$e: Exception</ID>
-    <ID>SwallowedException:JsonTreeView.kt$e: Exception</ID>
     <ID>SwallowedException:PdfPreviewCard.kt$e: SecurityException</ID>
     <ID>TooGenericExceptionCaught:CommonUtils.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CrashExport.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ExportManager.kt$ExportManager$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ImageShareUtils.kt$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:JsonTreeView.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PdfPreviewCard.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:TransactionExportUtils.kt$e: Exception</ID>
     <ID>TooManyFunctions:HarExporter.kt$HarExporter</ID>

@@ -148,7 +148,7 @@ private fun JankFramesColumn(jankFrames: Int) {
                     modifier = Modifier.size(
                         WormaCeptorTokens.IconSize.sm,
                     ),
-                    tint = WormaCeptorTokens.Colors.Fps.jankIndicator(),
+                    tint = WormaCeptorTokens.Colors.Fps.critical,
                 )
             }
         }

@@ -44,6 +44,7 @@ import com.azikar24.wormaceptor.core.ui.components.status.WormaCeptorStatusDot
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.core.ui.util.clickableWithoutRipple
 import com.azikar24.wormaceptor.core.ui.util.formatDurationAvg
+import com.azikar24.wormaceptor.domain.entities.TransactionStatus
 import com.azikar24.wormaceptor.domain.entities.TransactionSummary
 import com.azikar24.wormaceptor.feature.viewer.R
 import kotlinx.collections.immutable.ImmutableList
@@ -65,14 +66,16 @@ fun MetricsCard(
 
     // Calculate metrics
     val totalRequests = transactions.size
-    val avgDuration = transactions.mapNotNull { it.tookMs }.average().takeIf { !it.isNaN() } ?: 0.0
-    val successCount = transactions.count { (it.code ?: 0) in 200..299 }
-    val successRate = (successCount.toDouble() / totalRequests * 100).takeIf { !it.isNaN() } ?: 0.0
+    val finished = transactions.filter { it.status != TransactionStatus.ACTIVE }
+    val durations = finished.mapNotNull { it.tookMs }
+    val avgDuration = durations.average().takeIf { !it.isNaN() } ?: 0.0
+    val successCount = finished.count { (it.code ?: 0) in 200..299 }
+    val successRate = (successCount.toDouble() / finished.size * 100).takeIf { !it.isNaN() } ?: 0.0
 
     // Response time distribution
-    val fastCount = transactions.count { (it.tookMs ?: 0) < 100 }
-    val mediumCount = transactions.count { (it.tookMs ?: 0) in 100..500 }
-    val slowCount = transactions.count { (it.tookMs ?: 0) > 500 }
+    val fastCount = durations.count { it < 100 }
+    val mediumCount = durations.count { it in 100..500 }
+    val slowCount = durations.count { it > 500 }
 
     // Status code breakdown
     val status2xx = transactions.count { (it.code ?: 0) in 200..299 }
@@ -95,7 +98,7 @@ fun MetricsCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickableWithoutRipple { isExpanded = !isExpanded }
-                .padding(WormaCeptorTokens.Spacing.xl),
+                .padding(WormaCeptorTokens.Spacing.lg),
         ) {
             // Header
             Row(
@@ -123,7 +126,7 @@ fun MetricsCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.xl))
+            Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.md))
 
             // Always visible summary with enhanced visuals
             Row(
@@ -145,14 +148,14 @@ fun MetricsCard(
                 WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_total),
                     value = totalRequests.toString(),
-                    color = WormaCeptorTokens.semantic().accentSecondary,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     modifier = Modifier.weight(1f),
                 )
 
                 WormaCeptorStatItem(
                     label = stringResource(R.string.viewer_metrics_avg_time),
                     value = formatDurationAvg(avgDuration),
-                    color = WormaCeptorTokens.semantic().accentTertiary,
+                    color = WormaCeptorTokens.semantic().textPrimary,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -187,7 +190,7 @@ fun MetricsCard(
                     WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_fast),
                         count = fastCount,
-                        total = totalRequests,
+                        total = durations.size,
                         color = WormaCeptorTokens.Colors.Chart.fast,
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
@@ -195,7 +198,7 @@ fun MetricsCard(
                     WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_medium),
                         count = mediumCount,
-                        total = totalRequests,
+                        total = durations.size,
                         color = WormaCeptorTokens.Colors.Chart.medium,
                     )
                     Spacer(modifier = Modifier.height(WormaCeptorTokens.Spacing.sm))
@@ -203,7 +206,7 @@ fun MetricsCard(
                     WormaCeptorDistributionBar(
                         label = stringResource(R.string.viewer_metrics_slow),
                         count = slowCount,
-                        total = totalRequests,
+                        total = durations.size,
                         color = WormaCeptorTokens.Colors.Chart.slow,
                     )
 

@@ -60,7 +60,7 @@
     <ID>NestedBlockDepth:DependenciesInspectorEngine.kt$DependenciesInspectorEngine$private fun tryFindVersionDynamically(packageName: String): Pair&lt;String, DetectionMethod&gt;?</ID>
     <ID>NestedBlockDepth:LeakDetectionEngine.kt$LeakDetectionEngine$private fun buildReferencePath(obj: Any): List&lt;String&gt;</ID>
     <ID>NestedBlockDepth:LoadedLibrariesEngine.kt$LoadedLibrariesEngine$private fun parseNativeLibraries(): List&lt;LoadedLibrary&gt;</ID>
-    <ID>NestedBlockDepth:LogCaptureEngine.kt$LogCaptureEngine$private fun captureLogcat()</ID>
+    <ID>NestedBlockDepth:LogCaptureEngine.kt$LogCaptureEngine$private suspend fun captureLogcat()</ID>
     <ID>NestedBlockDepth:PushSimulatorEngine.kt$PushSimulatorEngine$@SuppressLint("MissingPermission") // Permission checked via hasNotificationPermission() before notify() fun sendNotification(notification: SimulatedNotification): Int</ID>
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun buildKeyInfo( keyStore: KeyStore, alias: String, ): String</ID>
     <ID>NestedBlockDepth:SecureStorageEngine.kt$SecureStorageEngine$private fun scanEncryptedSharedPreferences(): List&lt;SecureStorageEntry&gt;</ID>

@@ -41,8 +41,6 @@ internal fun ViolationDetailContent(
     violation: ThreadViolation,
     modifier: Modifier = Modifier,
 ) {
-    val typeColor = violation.violationType.color
-
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(WormaCeptorTokens.Spacing.lg),
@@ -50,8 +48,8 @@ internal fun ViolationDetailContent(
         item {
             WormaCeptorDetailHeader(
                 icon = Icons.Default.Warning,
-                iconTint = typeColor,
-                iconBackgroundColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+                iconTint = WormaCeptorTokens.semantic().textSecondary,
+                iconBackgroundColor = WormaCeptorTokens.semantic().surfaceVariant,
                 title = violation.violationType.name.replace("_", " "),
                 subtitle = {
                     Text(

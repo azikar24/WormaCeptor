@@ -1,18 +1,25 @@
 package com.azikar24.wormaceptorapp.main.view
 
-import android.annotation.SuppressLint
+import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -30,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
@@ -53,6 +61,7 @@ import com.azikar24.wormaceptorapp.main.uimodel.MainViewEvent
 import com.azikar24.wormaceptorapp.main.uimodel.MainViewState
 import com.azikar24.wormaceptorapp.main.viewmodel.MainViewModel
 import com.azikar24.wormaceptorapp.navigation.TestToolsRoutes
+import com.azikar24.wormaceptorapp.sampleservice.SampleDataStoreService
 import com.azikar24.wormaceptorapp.sampleservice.SampleDatabaseService
 import com.azikar24.wormaceptorapp.sampleservice.SampleFileService
 import com.azikar24.wormaceptorapp.sampleservice.SampleLogger
@@ -75,6 +84,9 @@ import java.io.File
 
 class MainActivity : ComponentActivity() {
 
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
     private fun triggerMemoryLeak() {
         MainViewModel.registerLeak(this)
     }
@@ -94,6 +106,16 @@ class MainActivity : ComponentActivity() {
             MainActivityContent()
         }
         WormaCeptorApi.startActivityOnShake(this)
+        if (savedInstanceState == null) requestNotificationPermission()
+    }
+
+    // API test and FCM demos post notifications, which are silently dropped on 33+ without this grant
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        val permission = Manifest.permission.POST_NOTIFICATIONS
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            notificationPermissionLauncher.launch(permission)
+        }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -198,7 +220,7 @@ class MainActivity : ComponentActivity() {
                     )
                     LocationTestScreen(
                         viewModel = locationViewModel,
-                        onBack = { navController.popBackStack() },
+                        onBack = { navController.navigateUp() },
                     )
                 }
 
@@ -206,7 +228,7 @@ class MainActivity : ComponentActivity() {
                     val webViewViewModel: WebViewTestViewModel = viewModel()
                     WebViewTestScreen(
                         viewModel = webViewViewModel,
-                        onBack = { navController.popBackStack() },
+                        onBack = { navController.navigateUp() },
                     )
                 }
 
@@ -221,14 +243,13 @@ class MainActivity : ComponentActivity() {
                     )
                     SecureStorageTestScreen(
                         viewModel = secureStorageViewModel,
-                        onBack = { navController.popBackStack() },
+                        onBack = { navController.navigateUp() },
                     )
                 }
             }
         }
     }
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     private fun HomeScreen(
         state: MainViewState,
@@ -242,12 +263,15 @@ class MainActivity : ComponentActivity() {
         ) {
             Scaffold(
                 containerColor = WormaCeptorTokens.semantic().background,
-            ) { _ ->
+                contentWindowInsets = WindowInsets.safeDrawing,
+            ) { innerPadding ->
                 WelcomeScreen(
                     onLaunchClick = { onEvent(MainViewEvent.LaunchWormaCeptorClicked) },
                     onTestToolsClick = { onEvent(MainViewEvent.TestToolsClicked) },
                     onGitHubClick = { onEvent(MainViewEvent.GitHubClicked) },
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
                 )
             }
         }
@@ -275,6 +299,7 @@ class MainActivity : ComponentActivity() {
                     threadViolationStatus = state.threadViolationStatus,
                     seedDatabaseStatus = state.seedDatabaseStatus,
                     seedPreferencesStatus = state.seedPreferencesStatus,
+                    seedDataStoreStatus = state.seedDataStoreStatus,
                     writeFilesStatus = state.writeFilesStatus,
                     logsStatus = state.logsStatus,
                     cpuStressStatus = state.cpuStressStatus,
@@ -288,6 +313,7 @@ class MainActivity : ComponentActivity() {
                     onThreadViolation = { onEvent(MainViewEvent.ThreadViolationClicked) },
                     onSeedDatabase = { onEvent(MainViewEvent.SeedDatabaseClicked) },
                     onSeedPreferences = { onEvent(MainViewEvent.SeedPreferencesClicked) },
+                    onSeedDataStore = { onEvent(MainViewEvent.SeedDataStoreClicked) },
                     onWriteSampleFiles = { onEvent(MainViewEvent.WriteSampleFilesClicked) },
                     onEmitSampleLogs = { onEvent(MainViewEvent.EmitSampleLogsClicked) },
                     onBurnCpu = { onEvent(MainViewEvent.BurnCpuClicked) },
@@ -318,7 +344,11 @@ class MainActivity : ComponentActivity() {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
                     data = getString(R.string.github_link).toUri()
                 }
-                startActivity(intent)
+                try {
+                    startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    Log.w(TAG, "No app can open the GitHub link", e)
+                }
             }
             MainViewEffect.NavigateToLocation -> hideSheetAndNavigate(
                 scope,
@@ -351,6 +381,9 @@ class MainActivity : ComponentActivity() {
             MainViewEffect.SeedPreferences -> scope.launch(
                 Dispatchers.IO,
             ) { SamplePreferencesService.seed(this@MainActivity) }
+            MainViewEffect.SeedDataStore -> scope.launch(
+                Dispatchers.IO,
+            ) { SampleDataStoreService.seed(this@MainActivity) }
             MainViewEffect.WriteSampleFiles -> scope.launch(
                 Dispatchers.IO,
             ) { SampleFileService.seed(this@MainActivity) }
@@ -379,6 +412,7 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         private const val SHEET_DISMISS_DELAY = 100L
+        private const val TAG = "MainActivity"
         private const val GLITCH_ANIMATION_DURATION = 1500
         private const val GLITCH_CRASH_THRESHOLD = 0.96f
     }

@@ -34,9 +34,9 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.azikar24.wormaceptor.api.WormaCeptorApi
 import com.azikar24.wormaceptor.core.engine.PerformanceOverlayEngine
+import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.feature.viewer.R
-import org.koin.java.KoinJavaComponent.get
 
 @Composable
 internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
@@ -44,7 +44,7 @@ internal fun PerformanceOverlayToggle(modifier: Modifier = Modifier) {
     val lifecycleOwner = LocalLifecycleOwner.current
     var canDrawOverlays by remember { mutableStateOf(WormaCeptorApi.canShowFloatingButton(context)) }
 
-    val performanceOverlayEngine = remember { get<PerformanceOverlayEngine>(PerformanceOverlayEngine::class.java) }
+    val performanceOverlayEngine = remember { WormaCeptorKoin.get(PerformanceOverlayEngine::class.java) }
     val overlayState by performanceOverlayEngine.state.collectAsState()
     val isOverlayEnabled = overlayState.isOverlayEnabled
 

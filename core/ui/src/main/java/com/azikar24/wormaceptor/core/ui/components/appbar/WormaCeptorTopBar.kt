@@ -93,7 +93,7 @@ fun WormaCeptorTopBar(
 
 @Composable
 private fun resolveContainer(color: Color): Color =
-    if (color == Unspecified) WormaCeptorTokens.semantic().surface else color
+    if (color == Unspecified) MaterialTheme.colorScheme.background else color
 
 @Composable
 private fun TopBarTitle(

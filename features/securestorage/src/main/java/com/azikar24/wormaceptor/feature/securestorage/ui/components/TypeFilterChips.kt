@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.azikar24.wormaceptor.core.ui.components.chip.WormaCeptorChip
 import com.azikar24.wormaceptor.core.ui.components.section.WormaCeptorScrollableRow
-import com.azikar24.wormaceptor.core.ui.theme.WormaCeptorTokens
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry.StorageType
 import com.azikar24.wormaceptor.feature.securestorage.R
 
@@ -26,16 +25,10 @@ internal fun TypeFilterChips(
             onClick = { onTypeSelected(null) },
         )
         StorageType.entries.forEach { type ->
-            val (icon, color) = when (type) {
-                StorageType.ENCRYPTED_SHARED_PREFS -> Pair(
-                    Icons.Default.EnhancedEncryption,
-                    WormaCeptorTokens.Colors.SecureStorage.encryptedPrefs,
-                )
-                StorageType.KEYSTORE -> Pair(Icons.Default.Key, WormaCeptorTokens.Colors.SecureStorage.keystore)
-                StorageType.DATASTORE -> Pair(
-                    Icons.Default.DataObject,
-                    WormaCeptorTokens.Colors.SecureStorage.datastore,
-                )
+            val icon = when (type) {
+                StorageType.ENCRYPTED_SHARED_PREFS -> Icons.Default.EnhancedEncryption
+                StorageType.KEYSTORE -> Icons.Default.Key
+                StorageType.DATASTORE -> Icons.Default.DataObject
             }
             val label = when (type) {
                 StorageType.ENCRYPTED_SHARED_PREFS -> stringResource(R.string.securestorage_filter_prefs)
@@ -47,7 +40,6 @@ internal fun TypeFilterChips(
                 selected = selectedType == type,
                 onClick = { onTypeSelected(if (selectedType == type) null else type) },
                 leadingIcon = icon,
-                accentColor = color,
             )
         }
     }

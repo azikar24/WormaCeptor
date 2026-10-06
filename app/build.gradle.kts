@@ -131,6 +131,9 @@ dependencies {
     // Preferences for osmdroid configuration
     implementation(libs.androidx.preference.ktx)
 
+    // Preferences DataStore, seeded so the Preferences inspector has a DataStore file to show
+    implementation(libs.androidx.datastore.preferences)
+
     // osmdroid for location map
     implementation(libs.osmdroid.android)
 

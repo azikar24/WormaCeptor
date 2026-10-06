@@ -33,11 +33,7 @@ internal fun EntryDetailContent(
     entry: SecureStorageEntry,
     modifier: Modifier = Modifier,
 ) {
-    val typeColor = when (entry.storageType) {
-        StorageType.ENCRYPTED_SHARED_PREFS -> WormaCeptorTokens.Colors.SecureStorage.encryptedPrefs
-        StorageType.KEYSTORE -> WormaCeptorTokens.Colors.SecureStorage.keystore
-        StorageType.DATASTORE -> WormaCeptorTokens.Colors.SecureStorage.datastore
-    }
+    val typeColor = WormaCeptorTokens.semantic().textSecondary
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -56,7 +52,7 @@ internal fun EntryDetailContent(
                 StorageType.DATASTORE -> Icons.Default.DataObject
             },
             iconTint = typeColor,
-            iconBackgroundColor = typeColor.copy(alpha = WormaCeptorTokens.Alpha.LIGHT),
+            iconBackgroundColor = WormaCeptorTokens.semantic().surfaceVariant,
             title = storageTitle,
             iconContentDescription = storageTitle,
             subtitle = {

@@ -34,9 +34,8 @@ import io.ktor.server.websocket.WebSockets
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 @kotlinx.serialization.Serializable
 internal data class ErrorResponse(
@@ -44,60 +43,61 @@ internal data class ErrorResponse(
     val error: String,
 )
 
+/**
+ * Embedded Ktor server. Reads its [ServerConfig] on every [start], so a restart picks up
+ * `WormaCeptorApi.configureMcpServer` changes.
+ */
 internal class WormaCeptorServer(
-    private val config: ServerConfig = ServerConfig(),
+    private val configProvider: () -> ServerConfig = { ServerConfig.from(McpHolder.config) },
 ) : McpServerHandle {
     private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
+    private var collectorScope: CoroutineScope? = null
     private val _isRunning = MutableStateFlow(false)
-    val isRunning: StateFlow<Boolean> = _isRunning.asStateFlow()
-
-    private val startTimeMs = MutableStateFlow(0L)
-    val uptimeMs: Long
-        get() {
-            val start = startTimeMs.value
-            return if (start > 0) System.currentTimeMillis() - start else 0
-        }
-
-    private val collectorScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
-    private var engineCollector: EngineCollector? = null
 
     override fun isRunning(): Boolean = _isRunning.value
 
+    @Synchronized
     override fun start() {
         if (_isRunning.value) return
+        val config = configProvider()
+        if (config.enableAuth && config.authToken.isNullOrBlank()) {
+            android.util.Log.e(TAG, "MCP auth is enabled without a token; refusing to start the server")
+            return
+        }
+        val eventManager = EventStreamManager()
         try {
             server = embeddedServer(Netty, port = config.port, host = LOCALHOST) {
-                configureServer()
+                configureServer(config, eventManager)
             }.start(wait = false)
-            startTimeMs.value = System.currentTimeMillis()
             _isRunning.value = true
-            McpHolder.registerServer(this)
-            startEngineCollector()
+            if (ApiCategory.STREAMING in config.enabledCategories) {
+                val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+                collectorScope = scope
+                EngineCollector(eventManager, scope).startCollecting()
+            }
+            android.util.Log.i(TAG, "WormaCeptor MCP server started on port ${config.port}")
         } catch (e: Exception) {
             android.util.Log.w(TAG, "Failed to start MCP server", e)
         }
     }
 
+    @Synchronized
     override fun stop() {
+        collectorScope?.cancel()
+        collectorScope = null
         try {
             server?.stop(GRACE_PERIOD_MS, TIMEOUT_MS)
         } catch (e: Exception) {
             android.util.Log.w(TAG, "Error stopping server", e)
         }
         server = null
-        engineCollector = null
         _isRunning.value = false
-        startTimeMs.value = 0
     }
 
-    private fun startEngineCollector() {
-        if (ApiCategory.STREAMING !in config.enabledCategories) return
-        val eventManager = EventStreamManager()
-        engineCollector = EngineCollector(eventManager, collectorScope)
-        engineCollector?.startCollecting()
-    }
-
-    private fun Application.configureServer() {
+    private fun Application.configureServer(
+        config: ServerConfig,
+        eventManager: EventStreamManager,
+    ) {
         install(ContentNegotiation) {
             json(JsonConfig.instance)
         }
@@ -121,7 +121,7 @@ internal class WormaCeptorServer(
         // No CORS: the only client is the MCP bridge over adb, never a browser.
         install(LocalRequestGuard)
 
-        if (config.enableAuth && config.authToken != null) {
+        if (config.enableAuth) {
             install(AuthPlugin) {
                 enabled = true
                 token = config.authToken
@@ -156,7 +156,7 @@ internal class WormaCeptorServer(
             }
 
             if (ApiCategory.STREAMING in config.enabledCategories) {
-                streamRoutes()
+                streamRoutes(eventManager)
             }
         }
     }

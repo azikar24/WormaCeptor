@@ -1,5 +1,7 @@
 package com.azikar24.wormaceptor.mcp.server
 
+import com.azikar24.wormaceptor.domain.entities.McpConfig
+
 internal data class ServerConfig(
     val port: Int = DEFAULT_PORT,
     val enableAuth: Boolean = false,
@@ -10,6 +12,13 @@ internal data class ServerConfig(
     companion object {
         const val DEFAULT_PORT = 8999
         const val DEFAULT_MAX_BODY_SIZE = 1_048_576L
+
+        fun from(config: McpConfig) = ServerConfig(
+            port = config.port,
+            enableAuth = config.enableAuth,
+            authToken = config.authToken,
+            maxBodySize = config.maxBodySize,
+        )
     }
 }
 

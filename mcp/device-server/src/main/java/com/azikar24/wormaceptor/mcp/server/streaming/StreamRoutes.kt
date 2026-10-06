@@ -11,8 +11,7 @@ import kotlin.coroutines.cancellation.CancellationException
 
 private const val TAG = "StreamRoutes"
 
-internal fun Routing.streamRoutes() {
-    val eventManager = EventStreamManager()
+internal fun Routing.streamRoutes(eventManager: EventStreamManager) {
     val json = Json { ignoreUnknownKeys = true }
 
     webSocket("/api/stream") {

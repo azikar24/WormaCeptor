@@ -6,12 +6,13 @@ import kotlinx.serialization.Serializable
 internal data class MockLocationDto(
     val latitude: Double,
     val longitude: Double,
-    val altitude: Double,
-    val accuracy: Float,
-    val speed: Float,
-    val bearing: Float,
-    val timestamp: Long,
-    val name: String?,
+    // Defaults mirror MockLocation; the bridge only sends latitude, longitude, altitude and name.
+    val altitude: Double = 0.0,
+    val accuracy: Float = 1.0f,
+    val speed: Float = 0f,
+    val bearing: Float = 0f,
+    val timestamp: Long = System.currentTimeMillis(),
+    val name: String? = null,
 )
 
 @Serializable

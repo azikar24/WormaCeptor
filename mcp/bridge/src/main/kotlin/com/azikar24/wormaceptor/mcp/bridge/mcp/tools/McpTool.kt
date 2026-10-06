@@ -2,9 +2,12 @@ package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.put
@@ -27,6 +30,10 @@ internal abstract class McpTool {
         put("description", description)
         put("inputSchema", inputSchema)
     }
+
+    /** The device server's `error` message, so a failed call says why instead of "not found". */
+    protected fun JsonElement.serverError(): String? =
+        (this as? JsonObject)?.get("error")?.let { it as? JsonPrimitive }?.contentOrNull?.let { "Error: $it" }
 
     /**
      * Safely extract a [JsonObject] from a parent object by key,

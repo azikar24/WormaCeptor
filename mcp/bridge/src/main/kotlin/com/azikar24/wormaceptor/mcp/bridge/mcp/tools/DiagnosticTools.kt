@@ -49,7 +49,7 @@ internal class ListCrashesTool : McpTool() {
             arguments["offset"]?.jsonPrimitive?.intOrNull?.let { put("offset", it.toString()) }
         }
         val response = connection.apiClient.get("/api/crashes", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No crashes found."
+        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No crashes found."
         return TextFormatter.formatCrashList(data)
     }
 }
@@ -82,7 +82,7 @@ internal class GetCrashTool : McpTool() {
         if (id.isBlank()) return "Error: 'id' parameter is required and must be non-empty."
 
         val response = connection.apiClient.get("/api/crashes/$id")
-        val data = response.jsonObject.objectOrNull("data") ?: return "Crash not found."
+        val data = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "Crash not found."
         return TextFormatter.formatCrashDetail(data)
     }
 }
@@ -131,7 +131,7 @@ internal class TailLogsTool : McpTool() {
         }
 
         val response = connection.apiClient.get("/api/logs", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No log entries found."
+        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No log entries found."
         return TextFormatter.formatLogEntries(data)
     }
 
@@ -159,7 +159,7 @@ internal class ListLeaksTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/leaks")
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No leaks detected."
+        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No leaks detected."
         return TextFormatter.formatGenericList(data, "memory leak(s)")
     }
 }
@@ -183,7 +183,7 @@ internal class ListViolationsTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/violations")
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No violations detected."
+        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No violations detected."
         return TextFormatter.formatGenericList(data, "violation(s)")
     }
 }
@@ -207,7 +207,9 @@ internal class GetDeviceInfoTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/device-info")
-        val data = response.jsonObject.objectOrNull("data") ?: return "Device info unavailable."
+        val data = response.jsonObject.objectOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "Device info unavailable."
         return TextFormatter.formatDeviceInfo(data)
     }
 }

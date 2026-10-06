@@ -57,7 +57,7 @@ internal class ListTransactionsTool : McpTool() {
         }
 
         val response = connection.apiClient.get("/api/transactions", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No transactions found."
+        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No transactions found."
         return TextFormatter.formatTransactionList(data)
     }
 }
@@ -90,7 +90,7 @@ internal class GetTransactionTool : McpTool() {
         if (id.isBlank()) return "Error: 'id' parameter is required and must be non-empty."
 
         val response = connection.apiClient.get("/api/transactions/$id")
-        val data = response.jsonObject.objectOrNull("data") ?: return "Transaction not found."
+        val data = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "Transaction not found."
         return TextFormatter.formatTransactionDetail(data)
     }
 }
@@ -123,7 +123,7 @@ internal class GetRequestBodyTool : McpTool() {
         if (id.isBlank()) return "Error: 'id' parameter is required and must be non-empty."
 
         val response = connection.apiClient.get("/api/transactions/$id/request-body")
-        val data = response.jsonObject.objectOrNull("data") ?: return "No request body found."
+        val data = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "No request body found."
         return TextFormatter.formatBody(
             body = data["body"]?.jsonPrimitive?.contentOrNull ?: "",
             contentType = data["contentType"]?.jsonPrimitive?.contentOrNull,
@@ -161,7 +161,9 @@ internal class GetResponseBodyTool : McpTool() {
         if (id.isBlank()) return "Error: 'id' parameter is required and must be non-empty."
 
         val response = connection.apiClient.get("/api/transactions/$id/response-body")
-        val data = response.jsonObject.objectOrNull("data") ?: return "No response body found."
+        val data = response.jsonObject.objectOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "No response body found."
         return TextFormatter.formatBody(
             body = data["body"]?.jsonPrimitive?.contentOrNull ?: "",
             contentType = data["contentType"]?.jsonPrimitive?.contentOrNull,
@@ -190,7 +192,9 @@ internal class ListWebSocketConnectionsTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/websockets/connections")
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No WebSocket connections found."
+        val data = response.jsonObject.arrayOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "No WebSocket connections found."
         return TextFormatter.formatGenericList(data, "WebSocket connection(s)")
     }
 }
@@ -232,7 +236,9 @@ internal class ListWebSocketMessagesTool : McpTool() {
         }
 
         val response = connection.apiClient.get("/api/websockets/messages", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No WebSocket messages found."
+        val data = response.jsonObject.arrayOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "No WebSocket messages found."
         return TextFormatter.formatGenericList(data, "WebSocket message(s)")
     }
 }
@@ -335,7 +341,9 @@ internal class GetRateLimitTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/rate-limit")
-        val data = response.jsonObject.objectOrNull("data") ?: return "No rate limit configuration found."
+        val data = response.jsonObject.objectOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "No rate limit configuration found."
         val sb = StringBuilder("Rate Limit Configuration:\n")
         data.forEach { (key, value) ->
             sb.appendLine("  $key: ${value.jsonPrimitive.contentOrNull ?: "N/A"}")

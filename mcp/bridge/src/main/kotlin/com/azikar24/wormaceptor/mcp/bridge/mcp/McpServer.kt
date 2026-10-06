@@ -103,7 +103,9 @@ internal class McpServer(
                 tool.execute(arguments, connection)
             } catch (e: IOException) {
                 // App restarted or the adb forward dropped: re-forward once, then retry the call.
-                if (!connection.reconnect()) throw e
+                if (!connection.reconnect()) {
+                    throw IOException("Device server unreachable; is the debug app running? (${e.message})", e)
+                }
                 tool.execute(arguments, connection)
             }
             JsonRpcResponse(

@@ -85,6 +85,22 @@ class ToolContractTest {
     }
 
     @Test
+    fun `query_database sends the sql field the device server reads`() = runTest {
+        val body = slot<JsonElement>()
+        coEvery { apiClient.post("/api/databases/app.db/query", capture(body)) } returns buildJsonObject {
+            put("success", true)
+        }
+        QueryDatabaseTool().execute(
+            buildJsonObject {
+                put("database", "app.db")
+                put("query", "SELECT 1")
+            },
+            connection,
+        )
+        assertEquals(setOf("sql"), body.captured.jsonObject.keys)
+    }
+
+    @Test
     fun `read_file renders content and mime type from the JSON envelope`() = runTest {
         coEvery { apiClient.get("/api/files/read", mapOf("path" to "files/a.json")) } returns buildJsonObject {
             put("success", true)

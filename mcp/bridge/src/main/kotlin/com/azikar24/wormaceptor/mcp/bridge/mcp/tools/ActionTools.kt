@@ -31,6 +31,7 @@ internal class ClearTransactionsTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.post("/api/clear/transactions")
+        response.serverError()?.let { return it }
         return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
             ?: "Transactions cleared."
     }
@@ -55,6 +56,7 @@ internal class ClearCrashesTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.post("/api/clear/crashes")
+        response.serverError()?.let { return it }
         return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
             ?: "Crashes cleared."
     }
@@ -79,6 +81,7 @@ internal class ClearLogsTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.post("/api/clear/logs")
+        response.serverError()?.let { return it }
         return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
             ?: "Logs cleared."
     }
@@ -142,6 +145,7 @@ internal class SimulateLocationTool : McpTool() {
         }
 
         val response = connection.apiClient.post("/api/location", body)
+        response.serverError()?.let { return it }
         return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
             ?: "Location set to $latitude, $longitude."
     }
@@ -165,6 +169,7 @@ internal class StopLocationSimulationTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.delete("/api/location")
+        response.serverError()?.let { return it }
         return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
             ?: "Location simulation stopped."
     }
@@ -230,6 +235,7 @@ internal class SendPushNotificationTool : McpTool() {
         }
 
         val response = connection.apiClient.post("/api/push", requestBody)
+        response.serverError()?.let { return it }
         return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
             ?: "Push notification sent: '$title'."
     }

@@ -1,6 +1,8 @@
 package com.azikar24.wormaceptor.mcp.server.serialization.dto
 
+import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 @Serializable
 internal data class PushTokenInfoDto(
@@ -15,13 +17,14 @@ internal data class PushTokenInfoDto(
 
 @Serializable
 internal data class SimulatedNotificationDto(
-    val id: String,
     val title: String,
     val body: String,
-    val channelId: String,
-    val priority: String,
-    val extras: Map<String, String>,
-    val timestamp: Long,
+    // The bridge sends title, body and optionally channelId and priority.
+    val id: String = UUID.randomUUID().toString(),
+    val channelId: String = PushSimulatorEngine.DEFAULT_CHANNEL_ID,
+    val priority: String = "default",
+    val extras: Map<String, String> = emptyMap(),
+    val timestamp: Long = System.currentTimeMillis(),
 )
 
 @Serializable

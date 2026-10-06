@@ -44,7 +44,7 @@ internal class GetCpuStatsTool : McpTool() {
         }
 
         val response = connection.apiClient.get("/api/cpu", params)
-        val body = response.jsonObject.objectOrNull("data") ?: return "CPU stats unavailable."
+        val body = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "CPU stats unavailable."
         // With include_history the server wraps the reading as {current, history}.
         val data = body.objectOrNull("current") ?: body
 
@@ -94,7 +94,9 @@ internal class GetMemoryStatsTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/memory", historyParam(arguments))
-        val body = response.jsonObject.objectOrNull("data") ?: return "Memory stats unavailable."
+        val body = response.jsonObject.objectOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "Memory stats unavailable."
         val data = body.objectOrNull("current") ?: body
 
         val sb = StringBuilder()
@@ -141,7 +143,7 @@ internal class GetFpsStatsTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/fps", historyParam(arguments))
-        val body = response.jsonObject.objectOrNull("data") ?: return "FPS stats unavailable."
+        val body = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "FPS stats unavailable."
         val data = body.objectOrNull("current") ?: body
 
         val sb = StringBuilder()
@@ -183,7 +185,9 @@ internal class GetPerformanceSnapshotTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/performance")
-        val data = response.jsonObject.objectOrNull("data") ?: return "Performance data unavailable."
+        val data = response.jsonObject.objectOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "Performance data unavailable."
         return TextFormatter.formatPerformanceSnapshot(data)
     }
 }

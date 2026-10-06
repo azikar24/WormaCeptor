@@ -35,7 +35,7 @@ internal class ListPreferencesTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/preferences")
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No preferences found."
+        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No preferences found."
         return TextFormatter.formatPreferences(data)
     }
 }
@@ -59,7 +59,7 @@ internal class ListDatabasesTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val response = connection.apiClient.get("/api/databases")
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No databases found."
+        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No databases found."
         return TextFormatter.formatDatabaseList(data)
     }
 }
@@ -120,11 +120,12 @@ internal class QueryDatabaseTool : McpTool() {
         }
 
         val body = buildJsonObject {
-            put("query", query)
+            // Field name of the device server's SqlQueryRequest
+            put("sql", query)
         }
 
         val response = connection.apiClient.post("/api/databases/$database/query", body)
-        val data = response.jsonObject.objectOrNull("data") ?: return "No results returned."
+        val data = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "No results returned."
         return TextFormatter.formatQueryResult(data)
     }
 
@@ -169,7 +170,7 @@ internal class ListFilesTool : McpTool() {
         }
 
         val response = connection.apiClient.get("/api/files/browse", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No files found."
+        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No files found."
         return TextFormatter.formatFileList(data)
     }
 }
@@ -210,7 +211,9 @@ internal class ReadFileTool : McpTool() {
         }
 
         val response = connection.apiClient.get("/api/files/read", mapOf("path" to path))
-        val data = response.jsonObject.objectOrNull("data") ?: return "File not found or unreadable."
+        val data = response.jsonObject.objectOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "File not found or unreadable."
         val content = data["content"]?.jsonPrimitive?.contentOrNull ?: return "File is empty."
         val mimeType = data["mimeType"]?.jsonPrimitive?.contentOrNull
 
@@ -251,7 +254,9 @@ internal class BrowseSecureStorageTool : McpTool() {
             arguments["type"]?.jsonPrimitive?.contentOrNull?.let { put("type", it) }
         }
         val response = connection.apiClient.get("/api/secure-storage", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No secure storage entries found."
+        val data = response.jsonObject.arrayOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "No secure storage entries found."
         return TextFormatter.formatGenericList(data, "secure storage entry(ies)")
     }
 }
@@ -284,7 +289,9 @@ internal class ListDependenciesTool : McpTool() {
             arguments["category"]?.jsonPrimitive?.contentOrNull?.let { put("category", it) }
         }
         val response = connection.apiClient.get("/api/dependencies", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No dependency information available."
+        val data = response.jsonObject.arrayOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "No dependency information available."
         return TextFormatter.formatGenericList(data, "dependency(ies)")
     }
 }
@@ -323,7 +330,9 @@ internal class ListLoadedLibrariesTool : McpTool() {
             arguments["system"]?.jsonPrimitive?.booleanOrNull?.let { put("system", it.toString()) }
         }
         val response = connection.apiClient.get("/api/loaded-libraries", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return "No loaded libraries information available."
+        val data = response.jsonObject.arrayOrNull(
+            "data",
+        ) ?: return response.serverError() ?: "No loaded libraries information available."
         return TextFormatter.formatGenericList(data, "loaded library(ies)")
     }
 }

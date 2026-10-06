@@ -56,6 +56,8 @@ internal fun Routing.inspectionRoutes() {
             val offset = call.parameters["offset"]?.toIntOrNull() ?: DEFAULT_OFFSET
             val categoryFilter = call.parameters["category"]
 
+            // Koin creates the engine on first use, so its startup scan may not have finished (or started) yet.
+            if (depsEngine.dependencies.value.isEmpty()) awaitRefresh(depsEngine.isLoading, depsEngine::refresh)
             var dependencies = depsEngine.dependencies.value
 
             if (categoryFilter != null) {

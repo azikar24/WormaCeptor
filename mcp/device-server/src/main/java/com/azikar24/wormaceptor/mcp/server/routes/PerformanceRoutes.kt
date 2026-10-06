@@ -20,6 +20,14 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlin.coroutines.cancellation.CancellationException
 
+private const val FpsOffMessage = "FPS monitoring is off. It only samples while running: open the FPS tool or " +
+    "the performance overlay in WormaCeptor, then ask again."
+
+// Monitors only sample while their screen or the overlay runs; a one-off sample beats returning zeros.
+private fun CpuMonitorEngine.currentOrSample() = if (isMonitoring.value) currentCpu.value else takeSample()
+
+private fun MemoryMonitorEngine.currentOrSample() = if (isMonitoring.value) currentMemory.value else takeSample()
+
 internal fun Routing.performanceRoutes() {
     get("/api/cpu") {
         try {
@@ -35,7 +43,7 @@ internal fun Routing.performanceRoutes() {
             val includeHistory = call.parameters["include_history"]?.toBooleanStrictOrNull() == true
             val json = JsonConfig.instance
 
-            val currentDto = cpuEngine.currentCpu.value.toDto()
+            val currentDto = cpuEngine.currentOrSample().toDto()
             val currentElement = json.encodeToJsonElement(CpuInfoDto.serializer(), currentDto)
 
             val dataElement: JsonElement = if (includeHistory) {
@@ -78,7 +86,7 @@ internal fun Routing.performanceRoutes() {
             val includeHistory = call.parameters["include_history"]?.toBooleanStrictOrNull() == true
             val json = JsonConfig.instance
 
-            val currentDto = memoryEngine.currentMemory.value.toDto()
+            val currentDto = memoryEngine.currentOrSample().toDto()
             val currentElement = json.encodeToJsonElement(MemoryInfoDto.serializer(), currentDto)
 
             val dataElement: JsonElement = if (includeHistory) {
@@ -115,6 +123,11 @@ internal fun Routing.performanceRoutes() {
                 call.respond(
                     ApiResponse(success = false, error = "FPS engine not available"),
                 )
+                return@get
+            }
+
+            if (!fpsEngine.isRunning.value) {
+                call.respond(ApiResponse(success = false, error = FpsOffMessage))
                 return@get
             }
 
@@ -165,9 +178,10 @@ internal fun Routing.performanceRoutes() {
             }
 
             val snapshot = PerformanceSnapshotDto(
-                cpu = cpuEngine.currentCpu.value.toDto(),
-                memory = memoryEngine.currentMemory.value.toDto(),
+                cpu = cpuEngine.currentOrSample().toDto(),
+                memory = memoryEngine.currentOrSample().toDto(),
                 fps = fpsEngine.currentFpsInfo.value.toDto(),
+                fpsMonitoring = fpsEngine.isRunning.value,
             )
 
             val json = JsonConfig.instance

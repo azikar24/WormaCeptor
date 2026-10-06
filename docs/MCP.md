@@ -164,7 +164,7 @@ Options:
 |------|-----------|-------------|
 | `list_crashes` | `limit?`, `offset?` | List captured crash reports, paginated |
 | `get_crash` | `id` | Get full crash details with stack trace |
-| `tail_logs` | `level?`, `tag?`, `limit?` | Retrieve recent log entries. `level` matches exactly (`VERBOSE`...`ASSERT`); `tag` is a case-insensitive substring |
+| `tail_logs` | `level?`, `tag?`, `limit?` | Retrieve the most recent log entries (default 100). `level` matches exactly (`VERBOSE`...`ASSERT`); `tag` is a case-insensitive substring. Capture starts on the first call (or with the Logs screen) and only records entries logged after that. On Android 13+ starting capture shows a system "access all device logs" prompt; "Don't allow" is fine, the app can still read its own logs |
 | `list_leaks` | — | List detected memory leaks (LeakCanary integration) |
 | `list_violations` | — | List StrictMode and thread policy violations |
 | `get_device_info` | — | Get device model, Android version, app info, and system properties |
@@ -173,9 +173,9 @@ Options:
 
 | Tool | Parameters | Description |
 |------|-----------|-------------|
-| `get_cpu_stats` | `include_history?` | Get CPU usage with optional history |
-| `get_memory_stats` | `include_history?` | Get memory usage with optional history |
-| `get_fps_stats` | `include_history?` | Get frame rate stats with optional history |
+| `get_cpu_stats` | `include_history?` | Get CPU usage with optional history. When the monitor is off, returns a one-off sample and no history |
+| `get_memory_stats` | `include_history?` | Get memory usage with optional history. When the monitor is off, returns a one-off sample and no history |
+| `get_fps_stats` | `include_history?` | Get frame rate stats with optional history. Returns an error while FPS monitoring is off (start it from the FPS tool or performance overlay) |
 | `get_performance_snapshot` | — | Get a combined snapshot of CPU, memory, and FPS |
 
 ### Storage (8 tools)
@@ -198,7 +198,7 @@ Options:
 | `clear_transactions` | — | Clear all captured network transactions |
 | `clear_crashes` | — | Clear all crash reports |
 | `clear_logs` | — | Clear all log entries |
-| `simulate_location` | `latitude`, `longitude`, `altitude?`, `name?` | Set a mock GPS location (lat: -90..90, lng: -180..180) |
+| `simulate_location` | `latitude`, `longitude`, `altitude?`, `name?` | Set a mock GPS location (lat: -90..90, lng: -180..180). The app must be the mock location app: Developer options, or `adb shell appops set <package> android:mock_location allow` |
 | `stop_location_simulation` | — | Stop mock location |
 | `send_push_notification` | `title`, `body`, `channel_id?`, `priority?` | Send a simulated push notification |
 
@@ -450,6 +450,9 @@ mcp/
 - Check that `wormaceptor-mcp-server` is included as `debugImplementation`
 - Look for `WormaCeptorServer` in logcat: a port clash or `enableAuth` without a token is logged there
 - Tools answering "engine not available" mean `WormaCeptorApi.init()` hasn't run yet
+
+**`simulate_location` says mock locations aren't enabled**
+- Select the app under Developer options > Select mock location app, or run `adb shell appops set <package> android:mock_location allow`
 
 **Auth failures**
 - Ensure `McpConfig(enableAuth = true, authToken = ...)` is set on the device side

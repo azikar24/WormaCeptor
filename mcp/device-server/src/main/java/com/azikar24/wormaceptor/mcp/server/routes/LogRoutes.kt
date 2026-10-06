@@ -35,6 +35,8 @@ internal fun Routing.logRoutes() {
             val levelFilter = call.parameters["level"]
             val tagFilter = call.parameters["tag"]
 
+            // Capture otherwise only starts with the Logs screen; it records entries logged from now on.
+            if (!logEngine.isCapturing.value) logEngine.start()
             var logs = logEngine.logs.value
 
             if (levelFilter != null) {
@@ -53,7 +55,8 @@ internal fun Routing.logRoutes() {
             }
 
             val total = logs.size
-            val paged = logs.drop(offset).take(limit)
+            // Newest entries, oldest first within the page; offset skips the most recent ones.
+            val paged = logs.dropLast(offset).takeLast(limit)
             val dtos = paged.map { it.toDto() }
 
             val json = JsonConfig.instance

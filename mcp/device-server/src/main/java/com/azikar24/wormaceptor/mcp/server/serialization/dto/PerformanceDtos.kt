@@ -44,4 +44,5 @@ internal data class PerformanceSnapshotDto(
     val cpu: CpuInfoDto,
     val memory: MemoryInfoDto,
     val fps: FpsInfoDto,
+    val fpsMonitoring: Boolean,
 )

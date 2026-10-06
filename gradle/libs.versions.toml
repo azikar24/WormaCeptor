@@ -1,6 +1,6 @@
 [versions]
 agp = "8.5.2"
-kotlin = "2.0.21"
+kotlin = "2.4.20"
 kotlinJvm = "2.0.21"
 detekt = "1.23.8"
 preferenceKtx = "1.2.1"

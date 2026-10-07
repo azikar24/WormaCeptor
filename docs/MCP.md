@@ -150,6 +150,7 @@ A standalone JVM application that translates MCP protocol (JSON-RPC 2.0 on stdin
 - **Reconnection**: at startup it waits ~10s for the server, then starts anyway; a tool call that fails with a connection error re-creates the port forward, retries 4 times with backoff (1s, 2s, 4s), then repeats the call once
 - **Frozen or dead app**: requests time out after 10 s (health checks after 2 s). On a timeout or connection error the bridge asks adb whether the app's process is alive (`pidof`) or frozen (`dumpsys activity processes`, `isFrozen=true`) and says so instead of retrying; the package name comes from `/api/health`, cached after the first successful check
 - **Input validation** — path traversal protection, SQL injection prevention, parameter range checks
+- **Output size**: each result is capped at 20,000 characters. Lists keep what fits (logs keep the newest entries) and end with `… truncated, N more entries; use limit/offset to page`; log messages and list field values are clipped at 500 characters
 - **Tool errors**: invalid arguments, device-server errors and connection failures come back as MCP `isError: true` results whose text starts with `Error: `
 - **Verbose mode** — `--verbose` logs all MCP requests and responses to stderr
 
@@ -175,7 +176,7 @@ Options:
 
 | Tool | Parameters | Description |
 |------|-----------|-------------|
-| `list_transactions` | `query?`, `limit?`, `offset?` | List captured HTTP transactions, paginated. `query` is a case-insensitive substring match on URL, method, or status code |
+| `list_transactions` | `query?`, `limit?`, `offset?` | List captured HTTP transactions, paginated (default 20). `query` is a case-insensitive substring match on URL, method, or status code |
 | `get_transaction` | `id` | Get full details of a specific transaction |
 | `get_request_body` | `id` | Get the request body of a transaction |
 | `get_response_body` | `id` | Get the response body of a transaction |
@@ -188,9 +189,9 @@ Options:
 
 | Tool | Parameters | Description |
 |------|-----------|-------------|
-| `list_crashes` | `limit?`, `offset?` | List captured crash reports, paginated |
+| `list_crashes` | `limit?`, `offset?` | List captured crash reports, paginated (default 20) |
 | `get_crash` | `id` | Get full crash details with stack trace |
-| `tail_logs` | `level?`, `tag?`, `limit?` | Retrieve the most recent log entries (default 100). `level` matches exactly (`VERBOSE`...`ASSERT`); `tag` is a case-insensitive substring. Capture starts on the first call (or with the Logs screen) and only records entries logged after that. On Android 13+ starting capture shows a system "access all device logs" prompt; "Don't allow" is fine, the app can still read its own logs |
+| `tail_logs` | `level?`, `tag?`, `limit?` | Retrieve the most recent log entries (default 30). `level` matches exactly (`VERBOSE`...`ASSERT`); `tag` is a case-insensitive substring. Capture starts on the first call (or with the Logs screen) and only records entries logged after that. On Android 13+ starting capture shows a system "access all device logs" prompt; "Don't allow" is fine, the app can still read its own logs |
 | `list_leaks` | — | List detected memory leaks (LeakCanary integration) |
 | `list_violations` | — | List StrictMode and thread policy violations |
 | `get_device_info` | — | Get device model, Android version, app info, and system properties |

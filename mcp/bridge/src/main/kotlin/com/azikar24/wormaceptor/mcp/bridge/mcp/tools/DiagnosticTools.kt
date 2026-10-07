@@ -21,7 +21,8 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
 
-private const val DefaultCrashLimit = 50
+private const val DefaultCrashLimit = 20
+private const val DefaultLogLimit = 30
 
 internal class ListCrashesTool : McpTool() {
 
@@ -53,7 +54,7 @@ internal class ListCrashesTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val params = buildMap {
-            arguments["limit"]?.jsonPrimitive?.intOrNull?.let { put("limit", it.toString()) }
+            put("limit", (arguments["limit"]?.jsonPrimitive?.intOrNull ?: DefaultCrashLimit).toString())
             arguments["offset"]?.jsonPrimitive?.intOrNull?.let { put("offset", it.toString()) }
         }
         val response = connection.apiClient.get("/api/crashes", params).toApiResponse()
@@ -122,8 +123,8 @@ internal class TailLogsTool : McpTool() {
             }
             putJsonObject("limit") {
                 put("type", "integer")
-                put("description", "Maximum number of log entries to return (default: 100)")
-                put("default", 100)
+                put("description", "Maximum number of newest log entries to return (default: $DefaultLogLimit)")
+                put("default", DefaultLogLimit)
             }
         }
     }
@@ -135,7 +136,7 @@ internal class TailLogsTool : McpTool() {
         val params = buildMap {
             arguments["level"]?.jsonPrimitive?.contentOrNull?.let { put("level", it) }
             arguments["tag"]?.jsonPrimitive?.contentOrNull?.let { put("tag", it) }
-            arguments["limit"]?.jsonPrimitive?.intOrNull?.let { put("limit", it.toString()) }
+            put("limit", (arguments["limit"]?.jsonPrimitive?.intOrNull ?: DefaultLogLimit).toString())
         }
 
         val response = connection.apiClient.get("/api/logs", params).toApiResponse()

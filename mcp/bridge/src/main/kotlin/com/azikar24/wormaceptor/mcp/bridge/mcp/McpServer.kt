@@ -5,6 +5,7 @@ import com.azikar24.wormaceptor.mcp.bridge.mcp.tools.McpTool
 import com.azikar24.wormaceptor.mcp.bridge.util.JsonRpcError
 import com.azikar24.wormaceptor.mcp.bridge.util.JsonRpcRequest
 import com.azikar24.wormaceptor.mcp.bridge.util.JsonRpcResponse
+import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -105,7 +106,7 @@ internal class McpServer(
             ?: return errorResponse(request.id, "Unknown tool: $toolName")
 
         return try {
-            val result = executeWithReconnect(tool, arguments)
+            val result = TextFormatter.capResult(executeWithReconnect(tool, arguments))
             toolResult(request.id, result, isError = result.startsWith(McpTool.ERROR_PREFIX))
         } catch (e: Exception) {
             if (e is CancellationException) throw e

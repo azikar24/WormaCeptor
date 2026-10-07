@@ -26,6 +26,8 @@ import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
 
+private const val DefaultTransactionLimit = 20
+
 internal class ListTransactionsTool : McpTool() {
 
     override val name = "list_transactions"
@@ -45,8 +47,8 @@ internal class ListTransactionsTool : McpTool() {
             }
             putJsonObject("limit") {
                 put("type", "integer")
-                put("description", "Maximum number of transactions to return (default: 50)")
-                put("default", 50)
+                put("description", "Maximum number of transactions to return (default: $DefaultTransactionLimit)")
+                put("default", DefaultTransactionLimit)
             }
             putJsonObject("offset") {
                 put("type", "integer")
@@ -62,7 +64,7 @@ internal class ListTransactionsTool : McpTool() {
     ): String {
         val params = buildMap {
             arguments["query"]?.jsonPrimitive?.contentOrNull?.let { put("query", it) }
-            arguments["limit"]?.jsonPrimitive?.intOrNull?.let { put("limit", it.toString()) }
+            put("limit", (arguments["limit"]?.jsonPrimitive?.intOrNull ?: DefaultTransactionLimit).toString())
             arguments["offset"]?.jsonPrimitive?.intOrNull?.let { put("offset", it.toString()) }
         }
 

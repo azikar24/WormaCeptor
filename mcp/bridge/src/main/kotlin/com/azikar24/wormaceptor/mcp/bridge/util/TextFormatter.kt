@@ -23,24 +23,29 @@ import kotlinx.serialization.json.jsonObject
 
 internal object TextFormatter {
 
+    /** Claude Code rejects tool results much past this; a real `tail_logs` call returned 142,529 characters. */
+    const val MAX_RESULT_CHARS = 20_000
+
+    /** Single log messages and field values are clipped to this many characters. */
+    const val MAX_VALUE_CHARS = 500
+
     private const val NotAvailable = "N/A"
+    private const val FooterReserve = 100
+    private const val PageHint = "use limit/offset to page"
 
     /** For the generic formatters: every DTO field is printed, defaults included. */
     private val displayJson = Json(ProtocolJson) { encodeDefaults = true }
 
     fun formatTransactionList(transactions: List<TransactionSummaryDto>): String {
         if (transactions.isEmpty()) return "No transactions captured."
-        val sb = StringBuilder()
-        sb.appendLine("Found ${transactions.size} transaction(s):\n")
-        sb.appendLine("| # | ID | Method | URL | Status | Duration | Time |")
-        sb.appendLine("|---|----|--------|-----|--------|----------|------|")
-        transactions.forEachIndexed { i, tx ->
-            sb.appendLine(
-                "| ${i + 1} | ${tx.id} | ${tx.method} | ${tx.url} " +
-                    "| ${tx.code ?: NotAvailable} | ${tx.tookMs ?: NotAvailable}ms | ${tx.timestamp} |",
-            )
+        val header = "Found ${transactions.size} transaction(s):\n\n" +
+            "| # | ID | Method | URL | Status | Duration | Time |\n" +
+            "|---|----|--------|-----|--------|----------|------|\n"
+        val rows = transactions.mapIndexed { i, tx ->
+            "| ${i + 1} | ${tx.id} | ${tx.method} | ${tx.url.clip()} " +
+                "| ${tx.code ?: NotAvailable} | ${tx.tookMs ?: NotAvailable}ms | ${tx.timestamp} |"
         }
-        return sb.toString()
+        return joinRows(header, rows)
     }
 
     fun formatTransactionDetail(tx: TransactionDetailDto): String {
@@ -84,12 +89,10 @@ internal object TextFormatter {
 
     fun formatCrashList(crashes: List<CrashSummaryDto>): String {
         if (crashes.isEmpty()) return "No crashes recorded."
-        val sb = StringBuilder()
-        sb.appendLine("Found ${crashes.size} crash(es):\n")
-        crashes.forEachIndexed { i, c ->
-            sb.appendLine("${i + 1}. [id=${c.id}] ${c.exceptionType}: ${c.message ?: NotAvailable}")
+        val rows = crashes.mapIndexed { i, c ->
+            "${i + 1}. [id=${c.id}] ${c.exceptionType}: ${c.message?.clip() ?: NotAvailable}"
         }
-        return sb.toString()
+        return joinRows("Found ${crashes.size} crash(es):\n\n", rows)
     }
 
     fun formatCrashDetail(crash: CrashDto): String {
@@ -109,7 +112,8 @@ internal object TextFormatter {
             return "No log entries found. Capture starts with the first tail_logs call and records entries " +
                 "logged after that; trigger the flow again, then retry."
         }
-        return logs.joinToString("\n") { "${it.timestamp} ${it.level}/${it.tag}: ${it.message}" }
+        val rows = logs.map { "${it.timestamp} ${it.level}/${it.tag}: ${it.message.clip()}" }
+        return joinRows("", rows, keepNewest = true, hint = "lower limit or filter by level/tag")
     }
 
     fun formatPerformanceSnapshot(data: PerformanceSnapshotDto): String {
@@ -152,25 +156,17 @@ internal object TextFormatter {
         if (rows.isEmpty()) return "Query returned 0 rows."
 
         val columns = result.columns
-        val sb = StringBuilder()
-        sb.appendLine("| ${columns.joinToString(" | ")} |")
-        sb.appendLine("| ${columns.joinToString(" | ") { "---" }} |")
-        rows.forEach { row ->
-            sb.appendLine("| ${row.joinToString(" | ") { it ?: "null" }} |")
-        }
-        sb.appendLine("\n${rows.size} row(s) returned.")
-        return sb.toString()
+        val header = "| ${columns.joinToString(" | ")} |\n| ${columns.joinToString(" | ") { "---" }} |\n"
+        val lines = rows.map { row -> "| ${row.joinToString(" | ") { it?.clip() ?: "null" }} |" }
+        return joinRows(header, lines, hint = "add LIMIT/OFFSET to the query") + "\n${rows.size} row(s) returned.\n"
     }
 
     fun formatPreferences(prefs: List<PreferenceFileDto>): String {
         if (prefs.isEmpty()) return "No preferences found."
-        val sb = StringBuilder()
-        prefs.forEach { file ->
-            sb.appendLine("File: ${file.name}")
-            file.entries.forEach { e -> sb.appendLine("  ${e.key} = ${e.value} (${e.type})") }
-            sb.appendLine()
+        val rows = prefs.flatMap { file ->
+            listOf("File: ${file.name}") + file.entries.map { e -> "  ${e.key} = ${e.value.clip()} (${e.type})" } + ""
         }
-        return sb.toString()
+        return joinRows("", rows, hint = "query a single file with read_file")
     }
 
     fun formatDeviceInfo(info: DeviceInfoDto): String {
@@ -193,13 +189,12 @@ internal object TextFormatter {
 
     fun formatFileList(files: List<FileEntryDto>): String {
         if (files.isEmpty()) return "No files found."
-        val sb = StringBuilder()
-        files.forEach { f ->
+        val rows = files.map { f ->
             val type = if (f.isDirectory) "DIR " else "FILE"
             val size = if (type == "FILE") "  (${f.sizeBytes} bytes)" else ""
-            sb.appendLine("[$type] ${f.name}$size  ${f.path}")
+            "[$type] ${f.name}$size  ${f.path}"
         }
-        return sb.toString()
+        return joinRows("", rows, hint = "list a subdirectory")
     }
 
     fun <T> formatGenericList(
@@ -208,14 +203,48 @@ internal object TextFormatter {
         label: String,
     ): String {
         if (items.isEmpty()) return "No $label found."
-        val sb = StringBuilder()
-        sb.appendLine("Found ${items.size} $label:\n")
-        items.forEachIndexed { i, item ->
+        val rows = items.mapIndexed { i, item ->
             val o = displayJson.encodeToJsonElement(serializer, item).jsonObject
-            val fields = o.entries.joinToString(", ") { "${it.key}: ${it.value.content()}" }
-            sb.appendLine("${i + 1}. $fields")
+            val fields = o.entries.joinToString(", ") { "${it.key}: ${it.value.content().clip()}" }
+            "${i + 1}. $fields"
         }
-        return sb.toString()
+        return joinRows("Found ${items.size} $label:\n\n", rows)
+    }
+
+    /** Last line of defence for any tool result, bodies included. */
+    fun capResult(text: String): String {
+        if (text.length <= MAX_RESULT_CHARS) return text
+        return text.take(MAX_RESULT_CHARS) + "\n… truncated, ${text.length - MAX_RESULT_CHARS} more characters"
+    }
+
+    private fun String.clip(): String =
+        if (length <= MAX_VALUE_CHARS) this else take(MAX_VALUE_CHARS) + "… (+${length - MAX_VALUE_CHARS} chars)"
+
+    /**
+     * [header] plus as many [rows] as fit in [MAX_RESULT_CHARS], each on its own line, then a footer
+     * naming how many were dropped. [keepNewest] keeps the last rows (logs are oldest first).
+     */
+    private fun joinRows(
+        header: String,
+        rows: List<String>,
+        keepNewest: Boolean = false,
+        hint: String = PageHint,
+    ): String {
+        val budget = MAX_RESULT_CHARS - header.length - FooterReserve
+        val ordered = if (keepNewest) rows.asReversed() else rows
+        var used = 0
+        var fit = 0
+        for (row in ordered) {
+            used += row.length + 1
+            if (used > budget) break
+            fit++
+        }
+        val kept = if (keepNewest) rows.takeLast(fit) else rows.take(fit)
+        return buildString {
+            append(header)
+            kept.forEach { appendLine(it) }
+            if (fit < rows.size) appendLine("… truncated, ${rows.size - fit} more entries; $hint")
+        }
     }
 
     private fun JsonElement.content(): String = when (this) {

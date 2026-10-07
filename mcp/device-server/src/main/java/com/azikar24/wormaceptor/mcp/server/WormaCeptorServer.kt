@@ -10,8 +10,8 @@ import com.azikar24.wormaceptor.mcp.server.routes.diagnosticRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.healthRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.inspectionRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.logRoutes
-import com.azikar24.wormaceptor.mcp.server.routes.monitoringRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.mockRoutes
+import com.azikar24.wormaceptor.mcp.server.routes.monitoringRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.networkRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.performanceRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.replayRoutes

@@ -217,7 +217,7 @@ internal object TextFormatter {
 
     fun formatTimeline(timeline: TimelineDto): String {
         val sb = StringBuilder()
-        val window = "${timeline.sinceMs}..${timeline.untilMs}"
+        val window = "${formatTime(timeline.sinceMs)} .. ${formatTime(timeline.untilMs)}"
         if (timeline.events.isEmpty()) {
             sb.appendLine("No events between $window (device clock, epoch ms).")
         } else {
@@ -226,7 +226,7 @@ internal object TextFormatter {
             )
             timeline.events.forEach { e ->
                 val id = e.id?.let { " id=$it" }.orEmpty()
-                sb.appendLine("${e.timestamp} [${e.type}$id] ${e.summary}")
+                sb.appendLine("${formatTime(e.timestamp)} [${e.type}$id] ${e.summary}")
             }
         }
         if (!timeline.logsIncluded) {
@@ -260,7 +260,7 @@ internal object TextFormatter {
             appendLine("  Match: ${rule.method ?: "any method"} ${rule.matchType} ${rule.urlPattern}")
             appendLine("  Returns: ${rule.status} ${rule.statusMessage}, ${rule.contentType}, delay ${rule.delay}")
             appendLine("  Body: ${body ?: "(empty)"}")
-            appendLine("  Behavior: ${rule.behavior}, priority ${rule.priority}, created ${rule.createdAt}")
+            appendLine("  Behavior: ${rule.behavior}, priority ${rule.priority}, created ${formatTime(rule.createdAt)}")
         }
     }
 

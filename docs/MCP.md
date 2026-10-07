@@ -171,7 +171,7 @@ Options:
   --help, -h         Print help
 ```
 
-## MCP Tools (42 total)
+## MCP Tools (44 total)
 
 ### Network (8 tools)
 

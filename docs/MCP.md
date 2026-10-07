@@ -232,11 +232,13 @@ Options:
 | `send_push_notification` | `title`, `body`, `channel_id?`, `priority?` | Send a simulated push notification |
 | `bring_app_to_front` | `package?` | Launch the app or bring it back to the foreground via adb (`monkey` with the launcher intent). Bridge-only; defaults to the package the bridge last reached |
 
-### Timeline and events (1 tool)
+### Timeline and events (3 tools)
 
 | Tool | Parameters | Description |
 |------|-----------|-------------|
 | `get_timeline` | `since_ms?`, `until_ms?`, `limit?` | Transactions, crashes, logs, StrictMode violations, leaks and WebSocket messages merged in time order, newest last. Window defaults to the last 5 minutes (device clock, epoch ms), `limit` to 50 (max 500, newest kept). Logs are included only while log capture is running |
+| `wait_for_transaction` | `url_contains?`, `method?`, `status?`, `timeout_s?` | Block until a NEW request matching the filters finishes (started after the call), then return it. `url_contains` is a case-insensitive URL substring, `status` an exact code. `timeout_s` defaults to 30, max 120 |
+| `wait_for_crash` | `timeout_s?` | Block until a NEW crash is recorded, then return it with the stack trace. A fatal crash kills the process, so the call can end with "connection dropped": relaunch the app and use `list_crashes` |
 
 ## REST API Endpoints
 
@@ -287,6 +289,8 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 | GET | `/api/violations` | StrictMode violations (`?limit=&offset=`) |
 | GET | `/api/device-info` | Device and app information |
 | GET | `/api/timeline` | Merged event timeline (`?since_ms=&until_ms=&limit=`) |
+| GET | `/api/wait/transaction` | Long-poll for the next new finished transaction (`?url_contains=&method=&status=&timeout_s=`); `data.transaction` is null on timeout |
+| GET | `/api/wait/crash` | Long-poll for the next new crash (`?timeout_s=`); `data.crash` is null on timeout |
 
 ### Performance
 
@@ -443,7 +447,8 @@ mcp/
 │       │   ├── PerformanceTools.kt  # 4 performance tools
 │       │   ├── StorageTools.kt      # 8 storage tools
 │       │   ├── ActionTools.kt       # 6 action tools
-│       │   └── GetTimelineTool.kt   # Event timeline
+│       │   ├── GetTimelineTool.kt   # Event timeline
+│       │   └── WaitTools.kt         # wait_for_transaction, wait_for_crash
 │       └── util/
 │           ├── TextFormatter.kt     # Human-readable output
 │           └── JsonRpc.kt           # JSON-RPC data classes
@@ -473,6 +478,7 @@ mcp/
         │   ├── InspectionRoutes.kt
         │   ├── ActionRoutes.kt
         │   ├── TimelineRoutes.kt
+        │   ├── WaitRoutes.kt
         │   └── DeviceInfoCollector.kt
         ├── streaming/
         │   ├── StreamEvent.kt

@@ -43,6 +43,9 @@ internal object ToolRegistry {
         SendPushNotificationTool(),
         BringAppToFrontTool(),
         // Timeline and events (1)
+        // Timeline and events (3)
         GetTimelineTool(),
+        WaitForTransactionTool(),
+        WaitForCrashTool(),
     )
 }

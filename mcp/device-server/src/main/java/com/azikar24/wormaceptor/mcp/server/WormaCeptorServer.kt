@@ -16,6 +16,7 @@ import com.azikar24.wormaceptor.mcp.server.routes.performanceRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.storageRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.timelineRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.transactionRoutes
+import com.azikar24.wormaceptor.mcp.server.routes.waitRoutes
 import com.azikar24.wormaceptor.mcp.server.serialization.JsonConfig
 import com.azikar24.wormaceptor.mcp.server.streaming.EngineCollector
 import com.azikar24.wormaceptor.mcp.server.streaming.EventStreamManager
@@ -145,6 +146,7 @@ internal class WormaCeptorServer(
                 diagnosticRoutes()
                 inspectionRoutes()
                 timelineRoutes()
+                waitRoutes()
             }
 
             if (ApiCategory.PERFORMANCE in config.enabledCategories) {

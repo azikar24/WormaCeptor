@@ -27,6 +27,10 @@ class ToolRouteTest {
             calls += Call("get", firstArg())
             ok
         }
+        coEvery { get(any(), any(), any()) } answers {
+            calls += Call("get", firstArg())
+            ok
+        }
         coEvery { post(any(), any()) } answers {
             calls += Call("post", firstArg())
             ok

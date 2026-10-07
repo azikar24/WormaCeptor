@@ -41,6 +41,8 @@ import com.azikar24.wormaceptor.mcp.protocol.TimelineDto
 import com.azikar24.wormaceptor.mcp.protocol.TimelineEventDto
 import com.azikar24.wormaceptor.mcp.protocol.TransactionDetailDto
 import com.azikar24.wormaceptor.mcp.protocol.TransactionSummaryDto
+import com.azikar24.wormaceptor.mcp.protocol.WaitForCrashDto
+import com.azikar24.wormaceptor.mcp.protocol.WaitForTransactionDto
 import com.azikar24.wormaceptor.mcp.protocol.WebSocketConnectionDto
 import com.azikar24.wormaceptor.mcp.protocol.WebSocketMessageDto
 import io.mockk.Runs
@@ -121,6 +123,17 @@ class ToolOutputTest {
         "/api/loaded-libraries" to serverResponse(
             listOf(LoadedLibraryDto("libc.so", "/system/lib64/libc.so", "NATIVE_SO", 10L, "0x1", "1", true)),
         ),
+        "/api/wait/transaction" to serverResponse(
+            WaitForTransactionDto(
+                TransactionSummaryDto(
+                    "tx2", "POST", "https://a.test/login", "a.test", "/login", 401, 20L, true, true, "FAILED", 2L,
+                ),
+                waitedMs = 120L,
+            ),
+        ),
+        "/api/wait/crash" to serverResponse(
+            WaitForCrashDto(CrashDto(2L, 2L, "NullPointerException", "npe", "at a.b(c.kt:2)"), waitedMs = 120L),
+        ),
         "/api/timeline" to serverResponse(
             TimelineDto(
                 1L,
@@ -142,6 +155,10 @@ class ToolOutputTest {
             historyFixture(path, params["include_history"] == "true")
                 ?: getFixtures[path]
                 ?: ok.also { missing += "GET $path" }
+        }
+        coEvery { get(any(), any(), any()) } answers {
+            val path: String = firstArg()
+            getFixtures[path] ?: ok.also { missing += "GET $path" }
         }
         coEvery { post("/api/databases/app.db/query", any()) } returns serverResponse(
             QueryResultDto(listOf("id", "name"), listOf(listOf("1", null)), 1, error = null),

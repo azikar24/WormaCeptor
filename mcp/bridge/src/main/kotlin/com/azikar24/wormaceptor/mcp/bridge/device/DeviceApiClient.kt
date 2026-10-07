@@ -55,6 +55,19 @@ internal class DeviceApiClient(
         return response.body()
     }
 
+    /** [get] with its own request timeout, for long-polling routes that outlive the default. */
+    suspend fun get(
+        path: String,
+        params: Map<String, String>,
+        requestTimeoutMs: Long,
+    ): JsonElement {
+        val response = httpClient.get("$baseUrl$path") {
+            params.forEach { (k, v) -> parameter(k, v) }
+            timeout { requestTimeoutMillis = requestTimeoutMs }
+        }
+        return response.body()
+    }
+
     suspend fun post(
         path: String,
         body: JsonElement? = null,

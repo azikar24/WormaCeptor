@@ -123,6 +123,7 @@ public final class com/azikar24/wormaceptor/api/WormaCeptorApi {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/api/WormaCeptorApi;
 	public final fun canShowFloatingButton (Landroid/content/Context;)Z
+	public final fun configureMcpServer (Lcom/azikar24/wormaceptor/domain/entities/McpConfig;)V
 	public final fun getEnabledFeatures ()Ljava/util/Set;
 	public final fun getLaunchIntent (Landroid/content/Context;)Landroid/content/Intent;
 	public final fun getOverlayPermissionIntent (Landroid/content/Context;)Landroid/content/Intent;
@@ -133,11 +134,14 @@ public final class com/azikar24/wormaceptor/api/WormaCeptorApi {
 	public final fun init (Landroid/content/Context;ZLjava/util/Set;Z)V
 	public static synthetic fun init$default (Lcom/azikar24/wormaceptor/api/WormaCeptorApi;Landroid/content/Context;ZLjava/util/Set;ZILjava/lang/Object;)V
 	public final fun isFeatureEnabled (Lcom/azikar24/wormaceptor/api/Feature;)Z
+	public final fun isMcpServerRunning ()Z
 	public final fun isPerformanceOverlayVisible ()Z
 	public final fun registerExtensionProvider (Lcom/azikar24/wormaceptor/domain/contracts/ExtensionProvider;)V
 	public final fun showFloatingButton (Landroid/content/Context;)Z
 	public final fun showPerformanceOverlay (Landroidx/activity/ComponentActivity;)Z
 	public final fun startActivityOnShake (Landroidx/activity/ComponentActivity;)V
+	public final fun startMcpServer ()V
+	public final fun stopMcpServer ()V
 	public final fun unregisterExtensionProvider (Ljava/lang/String;)Z
 }
 

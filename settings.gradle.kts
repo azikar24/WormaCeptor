@@ -6,6 +6,9 @@ pluginManagement {
         mavenCentral()
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -69,6 +72,10 @@ include(":platform:android")
 include(":common:presentation")
 include(":wiring")
 include(":test:architecture")
+
+// MCP Integration (Model Context Protocol for AI agent access)
+include(":mcp:device-server")
+include(":mcp:bridge")
 
 // IDE Integration (Android Studio Plugin - built separately with IntelliJ Gradle Plugin)
 // include(":plugins:android-studio")

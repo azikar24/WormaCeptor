@@ -238,6 +238,24 @@ public final class com/azikar24/wormaceptor/core/engine/LogCaptureEngine {
 public final class com/azikar24/wormaceptor/core/engine/LogCaptureEngine$Companion {
 }
 
+public final class com/azikar24/wormaceptor/core/engine/McpHolder {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/engine/McpHolder;
+	public final fun configure (Lcom/azikar24/wormaceptor/domain/entities/McpConfig;)V
+	public final fun getConfig ()Lcom/azikar24/wormaceptor/domain/entities/McpConfig;
+	public final fun isRunning ()Z
+	public final fun registerServer (Lcom/azikar24/wormaceptor/core/engine/McpServerHandle;)V
+	public final fun restart ()V
+	public final fun start ()V
+	public final fun stop ()V
+}
+
+public abstract interface class com/azikar24/wormaceptor/core/engine/McpServerHandle {
+	public abstract fun isRunning ()Z
+	public abstract fun start ()V
+	public abstract fun stop ()V
+}
+
 public final class com/azikar24/wormaceptor/core/engine/MemoryMonitorEngine {
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/MemoryMonitorEngine$Companion;
@@ -629,6 +647,7 @@ public final class com/azikar24/wormaceptor/core/engine/di/WormaCeptorKoin {
 	public final fun getApplication ()Lorg/koin/core/KoinApplication;
 	public final fun getKoin ()Lorg/koin/core/Koin;
 	public final fun init (Landroid/content/Context;)V
+	public final fun isInitialized ()Z
 }
 
 public final class com/azikar24/wormaceptor/core/engine/ui/DismissZoneContentKt {

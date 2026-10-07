@@ -48,10 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.2.1] - 2025-03-24
 
 ### Added
-- MCP (Model Context Protocol) device server for AI-agent access to runtime debugging data
-- MCP bridge CLI for connecting AI tools to Android devices via ADB
-- 32 MCP tools covering network, diagnostics, performance, storage, and actions
-- Real-time streaming support via WebSocket for live debugging data
 - Ktor client plugin for native Ktor HTTP client support
 - WebSocket monitoring with frame inspection
 - WebView monitoring for page loads and sub-resources

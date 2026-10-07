@@ -22,6 +22,10 @@ object WormaCeptorKoin {
     @Volatile
     private var koinApp: KoinApplication? = null
 
+    /** Whether [init] has run, for callers that start before the host initializes WormaCeptor. */
+    val isInitialized: Boolean
+        get() = koinApp != null
+
     /** The isolated application, for `KoinIsolatedContext`. Throws if [init] hasn't run. */
     val application: KoinApplication
         get() = checkNotNull(koinApp) { "WormaCeptor Koin not initialized. Call WormaCeptor.init() first" }

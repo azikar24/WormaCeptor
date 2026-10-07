@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ClassOrdering:EventStreamManager.kt$EventStreamManager$val activeSessionCount: Int get() = sessions.size</ID>
+    <ID>ClassOrdering:RedactionPlugin.kt$RedactionHelper$private const val REDACTED_PLACEHOLDER = "[REDACTED]"</ID>
+    <ID>CyclomaticComplexMethod:ActionRoutes.kt$internal fun Routing.actionRoutes()</ID>
+    <ID>CyclomaticComplexMethod:DiagnosticRoutes.kt$internal fun Routing.diagnosticRoutes()</ID>
+    <ID>CyclomaticComplexMethod:InspectionRoutes.kt$internal fun Routing.inspectionRoutes()</ID>
+    <ID>CyclomaticComplexMethod:NetworkRoutes.kt$internal fun Routing.networkRoutes()</ID>
+    <ID>CyclomaticComplexMethod:PerformanceRoutes.kt$internal fun Routing.performanceRoutes()</ID>
+    <ID>CyclomaticComplexMethod:StorageRoutes.kt$internal fun Routing.storageRoutes(redactSecrets: Boolean = true)</ID>
+    <ID>CyclomaticComplexMethod:TransactionRoutes.kt$internal fun Routing.transactionRoutes(maxBodySize: Long = ServerConfig.DEFAULT_MAX_BODY_SIZE)</ID>
+    <ID>Filename:RedactionPlugin.kt$com.azikar24.wormaceptor.mcp.server.middleware.RedactionPlugin.kt</ID>
+    <ID>InstanceOfCheckForException:ActionRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:CrashRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:DiagnosticRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:EngineCollector.kt$EngineCollector$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:InspectionRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:LogRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:NetworkRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:PerformanceRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:StorageRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:StreamRoutes.kt$e is CancellationException</ID>
+    <ID>InstanceOfCheckForException:TransactionRoutes.kt$e is CancellationException</ID>
+    <ID>LongMethod:ActionRoutes.kt$internal fun Routing.actionRoutes()</ID>
+    <ID>LongMethod:CrashRoutes.kt$internal fun Routing.crashRoutes()</ID>
+    <ID>LongMethod:DeviceInfoCollector.kt$DeviceInfoCollector$@SuppressLint("MissingPermission") private fun getNetworkDetails(context: Context): NetworkDetails</ID>
+    <ID>LongMethod:DiagnosticRoutes.kt$internal fun Routing.diagnosticRoutes()</ID>
+    <ID>LongMethod:InspectionRoutes.kt$internal fun Routing.inspectionRoutes()</ID>
+    <ID>LongMethod:NetworkRoutes.kt$internal fun Routing.networkRoutes()</ID>
+    <ID>LongMethod:PerformanceRoutes.kt$internal fun Routing.performanceRoutes()</ID>
+    <ID>LongMethod:StorageRoutes.kt$internal fun Routing.storageRoutes(redactSecrets: Boolean = true)</ID>
+    <ID>LongMethod:TransactionRoutes.kt$internal fun Routing.transactionRoutes(maxBodySize: Long = ServerConfig.DEFAULT_MAX_BODY_SIZE)</ID>
+    <ID>MagicNumber:DeviceInfoCollector.kt$DeviceInfoCollector$100f</ID>
+    <ID>MagicNumber:DeviceInfoCollector.kt$DeviceInfoCollector$60f</ID>
+    <ID>MagicNumber:WormaCeptorServer.kt$WormaCeptorServer$1000</ID>
+    <ID>MatchingDeclarationName:AuthPlugin.kt$AuthConfig</ID>
+    <ID>MatchingDeclarationName:HealthRoutes.kt$HealthResponse</ID>
+    <ID>MatchingDeclarationName:RedactionPlugin.kt$RedactionHelper</ID>
+    <ID>MaxLineLength:WormaCeptorServerInitializer.kt$WormaCeptorServerInitializer$"Koin not initialized after ${MAX_INIT_ATTEMPTS * INIT_POLL_INTERVAL_MS}ms, skipping MCP server start"</ID>
+    <ID>MaximumLineLength:WormaCeptorServerInitializer.kt$WormaCeptorServerInitializer$ </ID>
+    <ID>ThrowsCount:ActionRoutes.kt$internal fun Routing.actionRoutes()</ID>
+    <ID>ThrowsCount:DiagnosticRoutes.kt$internal fun Routing.diagnosticRoutes()</ID>
+    <ID>ThrowsCount:NetworkRoutes.kt$internal fun Routing.networkRoutes()</ID>
+    <ID>ThrowsCount:PerformanceRoutes.kt$internal fun Routing.performanceRoutes()</ID>
+    <ID>ThrowsCount:StorageRoutes.kt$internal fun Routing.storageRoutes(redactSecrets: Boolean = true)</ID>
+    <ID>ThrowsCount:TransactionRoutes.kt$internal fun Routing.transactionRoutes(maxBodySize: Long = ServerConfig.DEFAULT_MAX_BODY_SIZE)</ID>
+    <ID>TooGenericExceptionCaught:ActionRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CrashRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DiagnosticRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:EngineCollector.kt$EngineCollector$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:InspectionRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:LogRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:NetworkRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PerformanceRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:StorageRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:StreamRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TransactionRoutes.kt$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WormaCeptorServer.kt$WormaCeptorServer$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:WormaCeptorServerInitializer.kt$WormaCeptorServerInitializer$e: Exception</ID>
+    <ID>TooManyFunctions:EntityMappers.kt$com.azikar24.wormaceptor.mcp.server.serialization.EntityMappers.kt</ID>
+    <ID>TopLevelPropertyNaming:CrashRoutes.kt$private const val DEFAULT_LIMIT = 50</ID>
+    <ID>TopLevelPropertyNaming:CrashRoutes.kt$private const val DEFAULT_OFFSET = 0</ID>
+    <ID>TopLevelPropertyNaming:DiagnosticRoutes.kt$private const val DEFAULT_LIMIT = 50</ID>
+    <ID>TopLevelPropertyNaming:DiagnosticRoutes.kt$private const val DEFAULT_OFFSET = 0</ID>
+    <ID>TopLevelPropertyNaming:EntityMappers.kt$private val SENSITIVE_HEADERS = setOf( "Authorization", "Cookie", "Set-Cookie", "Proxy-Authorization", "X-Api-Key", "X-Auth-Token", )</ID>
+    <ID>TopLevelPropertyNaming:HealthRoutes.kt$private const val SERVER_NAME = "wormaceptor"</ID>
+    <ID>TopLevelPropertyNaming:HealthRoutes.kt$private const val SERVER_VERSION = "1.0.0"</ID>
+    <ID>TopLevelPropertyNaming:InspectionRoutes.kt$private const val DEFAULT_LIMIT = 100</ID>
+    <ID>TopLevelPropertyNaming:InspectionRoutes.kt$private const val DEFAULT_OFFSET = 0</ID>
+    <ID>TopLevelPropertyNaming:LocalRequestGuard.kt$private val LOCAL_HOSTNAMES = setOf("localhost", "127.0.0.1", "[::1]")</ID>
+    <ID>TopLevelPropertyNaming:LogRoutes.kt$private const val DEFAULT_LIMIT = 100</ID>
+    <ID>TopLevelPropertyNaming:LogRoutes.kt$private const val DEFAULT_OFFSET = 0</ID>
+    <ID>TopLevelPropertyNaming:NetworkRoutes.kt$private const val DEFAULT_LIMIT = 50</ID>
+    <ID>TopLevelPropertyNaming:NetworkRoutes.kt$private const val DEFAULT_OFFSET = 0</ID>
+    <ID>TopLevelPropertyNaming:RequestMappers.kt$private const val MAX_PACKET_LOSS_PERCENT = 100f</ID>
+    <ID>TopLevelPropertyNaming:StorageRoutes.kt$private const val DEFAULT_LIMIT = 50</ID>
+    <ID>TopLevelPropertyNaming:StorageRoutes.kt$private const val DEFAULT_OFFSET = 0</ID>
+    <ID>TopLevelPropertyNaming:StorageRoutes.kt$private const val PATH_OUTSIDE_APP = "Path is outside the app's storage directories"</ID>
+    <ID>TopLevelPropertyNaming:TransactionRoutes.kt$private const val DEFAULT_LIMIT = 50</ID>
+    <ID>TopLevelPropertyNaming:TransactionRoutes.kt$private const val DEFAULT_OFFSET = 0</ID>
+  </CurrentIssues>
+</SmellBaseline>

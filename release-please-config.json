@@ -32,6 +32,19 @@
         {
           "type": "generic",
           "path": "docs/migration/from-flipper.md"
+        },
+        {
+          "type": "generic",
+          "path": "docs/MCP.md"
+        },
+        {
+          "type": "generic",
+          "path": "docs/MCP_TUTORIAL.md"
+        },
+        {
+          "type": "json",
+          "path": "mcp/npx/package.json",
+          "jsonpath": "$.version"
         }
       ],
       "changelog-sections": [

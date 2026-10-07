@@ -61,6 +61,15 @@ Initializes WormaCeptor with the specified configuration. Call once during appli
 | `hidePerformanceOverlay()` | Unit | Hide performance overlay |
 | `isPerformanceOverlayVisible()` | Boolean | Check if overlay is visible |
 
+#### MCP Server
+
+| Method | Return Type | Description |
+|--------|-------------|-------------|
+| `configureMcpServer(config: McpConfig)` | Unit | Configure and optionally restart the MCP debug server |
+| `isMcpServerRunning()` | Boolean | Check if MCP server is running |
+| `startMcpServer()` | Unit | Start the MCP server manually |
+| `stopMcpServer()` | Unit | Stop the MCP server |
+
 #### Extension System
 
 | Method | Return Type | Description |
@@ -358,6 +367,36 @@ DTO for transferring complete transaction details to IDE plugins via content pro
 
 ---
 
+### McpConfig
+
+**Package:** `com.azikar24.wormaceptor.domain.entities`
+
+Configuration for the MCP (Model Context Protocol) debug server.
+
+```kotlin
+WormaCeptorApi.configureMcpServer(
+    McpConfig(
+        port = 8999,
+        enableAuth = true,
+        authToken = "my-secret",
+        maxBodySize = 2_097_152L,
+        enabled = true,
+        redactSecrets = true
+    )
+)
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `port` | Int | 8999 | Server port |
+| `enableAuth` | Boolean | false | Enable bearer token authentication |
+| `authToken` | String? | null | Auth token (required when auth enabled) |
+| `maxBodySize` | Long | 1,048,576 | Max transaction body size in bytes |
+| `enabled` | Boolean | true | Whether the server should auto-start |
+| `redactSecrets` | Boolean | true | Replace preference values and file contents under secret-looking keys (token, password, api_key, auth, session, ...) with `[REDACTED]` |
+
+---
+
 ## Implementation-Only Classes
 
 The following classes are public for technical reasons but are not part of the stable API.
@@ -376,7 +415,7 @@ They should only be used by WormaCeptor implementation modules, not by host appl
 
 | Version | Changes |
 |---------|---------|
-| Unreleased | `Feature.DATASTORE`: read-only Preferences DataStore inspector |
+| Unreleased | `Feature.DATASTORE`: read-only Preferences DataStore inspector; MCP server API (`configureMcpServer`, `startMcpServer`, `stopMcpServer`, `isMcpServerRunning`) |
 | 2.3.2 | `ServiceProvider` overloads: `startTransaction(..., startedAtMillis)` and `completeTransaction(..., showNotification, durationMs)`; defaults delegate to the existing methods, so custom providers keep compiling |
 | 2.3.0 | `Feature.MOCK_RULES`, `Feature.COMPOSE_RECOMPOSITION_INSPECTOR`, `Modifier.trackRecomposition` |
 | 2.2.0 | Ktor HTTP client support, MVI pattern adoption (BaseViewModel), shared WormaCeptorTheme, decoupled syntax highlighting |

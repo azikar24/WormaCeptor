@@ -149,6 +149,78 @@ jobs:
             --clobber
 
   # ==========================================================================
+  # Attach the MCP bridge jar; the stable asset name keeps
+  # releases/latest/download/wormaceptor-mcp-bridge.jar working for agents
+  # ==========================================================================
+  attach-mcp-bridge:
+    name: Attach MCP bridge jar to GitHub Release
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build bridge jar
+        run: |
+          ./gradlew :mcp:bridge:jar --no-configuration-cache
+          cp mcp/bridge/build/libs/bridge.jar wormaceptor-mcp-bridge.jar
+          sha256sum wormaceptor-mcp-bridge.jar > wormaceptor-mcp-bridge.jar.sha256
+
+      - name: Attach to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            wormaceptor-mcp-bridge.jar \
+            wormaceptor-mcp-bridge.jar.sha256 \
+            --clobber
+
+  # ==========================================================================
+  # Publish the npx launcher (wormaceptor-mcp); it downloads the jar above
+  # ==========================================================================
+  publish-npm-launcher:
+    name: Publish wormaceptor-mcp to npm
+    runs-on: ubuntu-latest
+    needs: attach-mcp-bridge
+    # Trusted publishing (OIDC): no npm token. npm only accepts it from this workflow file once the
+    # package's Settings -> Trusted publishing lists azikar24/WormaCeptor + release.yml.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      # Trusted publishing needs Node 22.14+ and npm CLI 11.5.1+; bun's publish docs only cover token auth.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish
+        working-directory: mcp/npx
+        run: |
+          # The first version must be published by hand (trusted publishing is configured per existing package).
+          if ! npm view wormaceptor-mcp version >/dev/null 2>&1; then
+            echo "::notice::wormaceptor-mcp isn't on npm yet; publish it once by hand, then add the trusted publisher."
+            exit 0
+          fi
+          npm install -g npm@latest
+          npm publish --access public
+
+  # ==========================================================================
   # Trigger WormaCeptorWeb content sync via repository_dispatch
   # ==========================================================================
   notify-website:

@@ -34,7 +34,7 @@ These steps are written so a coding agent can do the whole setup itself. Use the
    shasum -a 256 -c wormaceptor-mcp-bridge.jar.sha256
    claude mcp add --transport stdio wormaceptor -- java -jar /absolute/path/to/wormaceptor-mcp-bridge.jar
    ```
-3. The bridge needs Java 17+ and `adb`. If `java` isn't on PATH, use Android Studio's bundled JDK (macOS: `/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java`); the npx launcher finds it automatically. If `adb` isn't on PATH, pass `--adb <sdk>/platform-tools/adb`.
+3. The bridge needs Java 17+ and `adb`. If `java` isn't on PATH, use Android Studio's bundled JDK (macOS: `/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java`); the npx launcher finds it automatically. The bridge looks for `adb` in `$ANDROID_HOME/platform-tools`, `$ANDROID_SDK_ROOT/platform-tools`, on PATH, then in the default SDK dir (macOS `~/Library/Android/sdk`, Linux `~/Android/Sdk`, Windows `%LOCALAPPDATA%\Android\Sdk`); anywhere else, pass `--adb <path>`.
 4. With more than one device attached, append `--device <serial>` (from `adb devices`) to the command.
 5. Build and run the debug app, keep it in the foreground, then check with `claude mcp get wormaceptor` and call `get_device_info`.
 
@@ -160,7 +160,8 @@ Usage: java -jar bridge.jar [options]
 Options:
   --port <port>      Device server port (default: 8999)
   --device, -s <id>  Target device serial (required if multiple devices)
-  --adb <path>       Path to adb executable (default: adb)
+  --adb <path>       Path to adb (default: searches ANDROID_HOME, ANDROID_SDK_ROOT,
+                     PATH, then the default Android SDK dir)
   --token <token>    Bearer token for authentication
   --verbose, -v      Enable verbose request/response logging
   --version          Print version and exit

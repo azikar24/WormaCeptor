@@ -5,7 +5,8 @@ import com.azikar24.wormaceptor.mcp.bridge.mcp.McpProtocol
 internal data class BridgeConfig(
     val port: Int = 8999,
     val deviceSerial: String? = null,
-    val adbPath: String = "adb",
+    /** The `--adb` flag; null means search for adb. */
+    val adbPath: String? = null,
     val verbose: Boolean = false,
     val authToken: String? = null,
 ) {
@@ -13,7 +14,7 @@ internal data class BridgeConfig(
         fun fromArgs(args: Array<String>): BridgeConfig {
             var port = 8999
             var device: String? = null
-            var adbPath = "adb"
+            var adbPath: String? = null
             var verbose = false
             var authToken: String? = null
 
@@ -51,7 +52,8 @@ internal data class BridgeConfig(
                 |Options:
                 |  --port <port>     Device server port (default: 8999)
                 |  --device, -s <id> Target device serial (required if multiple devices)
-                |  --adb <path>      Path to adb executable (default: adb)
+                |  --adb <path>      Path to adb (default: searches ANDROID_HOME, ANDROID_SDK_ROOT,
+                |                    PATH, then the default Android SDK dir)
                 |  --token <token>   Bearer token for authentication
                 |  --verbose, -v     Enable verbose logging
                 |  --version         Print version and exit

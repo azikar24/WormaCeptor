@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.mcp.bridge
 
 import com.azikar24.wormaceptor.mcp.bridge.adb.AdbClient
 import com.azikar24.wormaceptor.mcp.bridge.adb.DeviceDiscovery
+import com.azikar24.wormaceptor.mcp.bridge.adb.resolveAdbPath
 import com.azikar24.wormaceptor.mcp.bridge.config.BridgeConfig
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import com.azikar24.wormaceptor.mcp.bridge.mcp.McpProtocol
@@ -19,7 +20,9 @@ fun main(args: Array<String>) {
     }
 
     runBlocking {
-        val adbClient = AdbClient(config.adbPath)
+        val adbPath = resolveAdbPath(config.adbPath)
+        if (config.verbose) System.err.println("adb: $adbPath")
+        val adbClient = AdbClient(adbPath)
 
         val device = try {
             DeviceDiscovery(adbClient).findDevice(config.deviceSerial)

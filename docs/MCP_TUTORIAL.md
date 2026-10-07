@@ -525,7 +525,7 @@ The `mcp-device-server` module is included as `debugImplementation`. It physical
 |------|-------|---------|-------------|
 | `--port` | | 8999 | Device server port |
 | `--device` | `-s` | auto | Target device serial |
-| `--adb` | | `adb` | Path to adb |
+| `--adb` | | found automatically | Path to adb. Without it the bridge checks `$ANDROID_HOME`, `$ANDROID_SDK_ROOT`, PATH, then the default SDK dir |
 | `--token` | | none | Bearer auth token |
 | `--verbose` | `-v` | off | Log all requests/responses |
 | `--version` | | | Print version |

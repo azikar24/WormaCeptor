@@ -1,6 +1,7 @@
 package com.azikar24.wormaceptor.mcp.bridge.device
 
 import com.azikar24.wormaceptor.mcp.bridge.adb.AdbClient
+import com.azikar24.wormaceptor.mcp.bridge.adb.isNoise
 import com.azikar24.wormaceptor.mcp.bridge.adb.launchFailure
 import com.azikar24.wormaceptor.mcp.bridge.adb.parseThreadtime
 import com.azikar24.wormaceptor.mcp.bridge.config.BridgeConfig
@@ -25,14 +26,22 @@ internal class DeviceConnection(
         authToken = config.authToken,
     )
 
-    /** The app's package, learned from the first successful health check; adb diagnostics need it. */
+    /** The app's package: `--package`, then the health check, then [resolvePackage]'s adb lookup. */
     @Volatile
-    var packageName: String? = null
+    var packageName: String? = config.packageName
         private set
 
     /** Host clock at the last clear_logs; one app's logcat can't be cleared, so older entries are hidden. */
     @Volatile
     private var logsClearedAtMs = 0L
+
+    /**
+     * The app under debug. Before any health check succeeds (e.g. the app was already frozen when the bridge
+     * started) it asks adb which installed app registers the MCP server, and uses it when there is exactly one.
+     */
+    suspend fun resolvePackage(): String? = packageName ?: withContext(Dispatchers.IO) {
+        adbClient.mcpPackages(config.deviceSerial).singleOrNull()
+    }?.also { packageName = it }
 
     private suspend fun healthy(): Boolean {
         val health = apiClient.healthCheck() ?: return false
@@ -87,7 +96,7 @@ internal class DeviceConnection(
 
     /** Why the app stopped answering, when adb can tell (frozen or not running); null otherwise. */
     suspend fun unreachableAppHint(): String? {
-        val pkg = packageName ?: return null
+        val pkg = resolvePackage() ?: return null
         return withContext(Dispatchers.IO) { adbClient.processState(config.deviceSerial, pkg)?.hint }
     }
 
@@ -100,9 +109,9 @@ internal class DeviceConnection(
      * minus entries before the last [markLogsCleared]. Null when adb can't read it.
      */
     suspend fun readAppLogs(): List<LogEntryDto>? {
-        val pkg = packageName ?: return null
+        val pkg = resolvePackage() ?: return null
         val output = withContext(Dispatchers.IO) { adbClient.appLogcat(config.deviceSerial, pkg) } ?: return null
-        return parseThreadtime(output).filter { it.timestamp > logsClearedAtMs }
+        return parseThreadtime(output).filter { it.timestamp > logsClearedAtMs && !it.isNoise() }
     }
 
     /** Starts or resumes the app's launcher activity; returns an error message, or null on success. */

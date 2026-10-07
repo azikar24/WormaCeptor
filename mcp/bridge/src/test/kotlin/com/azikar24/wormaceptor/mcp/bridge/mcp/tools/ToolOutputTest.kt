@@ -195,7 +195,7 @@ class ToolOutputTest {
     }
     private val connection = mockk<DeviceConnection> {
         every { apiClient } returns this@ToolOutputTest.apiClient
-        every { packageName } returns "com.example"
+        coEvery { resolvePackage() } returns "com.example"
         coEvery { bringAppToFront(any()) } returns null
         coEvery { readAppLogs() } returns null
         every { markLogsCleared() } just Runs

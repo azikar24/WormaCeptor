@@ -9,6 +9,8 @@ internal data class BridgeConfig(
     val adbPath: String? = null,
     val verbose: Boolean = false,
     val authToken: String? = null,
+    /** The `--package` flag: the app under debug, when adb finds several apps with the MCP server. */
+    val packageName: String? = null,
 ) {
     companion object {
         fun fromArgs(args: Array<String>): BridgeConfig {
@@ -17,6 +19,7 @@ internal data class BridgeConfig(
             var adbPath: String? = null
             var verbose = false
             var authToken: String? = null
+            var packageName: String? = null
 
             val iter = args.iterator()
             while (iter.hasNext()) {
@@ -26,6 +29,7 @@ internal data class BridgeConfig(
                     "--adb" -> adbPath = iter.next()
                     "--verbose", "-v" -> verbose = true
                     "--token" -> authToken = iter.next()
+                    "--package" -> packageName = iter.next()
                     "--version" -> {
                         System.err.println("wormaceptor-bridge ${McpProtocol.SERVER_VERSION}")
                         kotlin.system.exitProcess(0)
@@ -41,7 +45,7 @@ internal data class BridgeConfig(
                     }
                 }
             }
-            return BridgeConfig(port, device, adbPath, verbose, authToken)
+            return BridgeConfig(port, device, adbPath, verbose, authToken, packageName)
         }
 
         private fun printHelp() {
@@ -55,6 +59,7 @@ internal data class BridgeConfig(
                 |  --adb <path>      Path to adb (default: searches ANDROID_HOME, ANDROID_SDK_ROOT,
                 |                    PATH, then the default Android SDK dir)
                 |  --token <token>   Bearer token for authentication
+                |  --package <id>    App under debug (default: the only app with the MCP server)
                 |  --verbose, -v     Enable verbose logging
                 |  --version         Print version and exit
                 |  --help, -h        Print this help message

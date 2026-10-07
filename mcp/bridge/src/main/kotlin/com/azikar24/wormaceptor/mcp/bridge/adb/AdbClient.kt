@@ -29,6 +29,13 @@ internal fun parseDevices(output: String): List<DeviceInfo> = output.lines()
         DeviceInfo(parts[0], parts[1], model, product)
     }
 
+private const val McpProviderClass = "com.azikar24.wormaceptor.mcp.server.WormaCeptorServerInitializer"
+private val McpProviderLine = Regex("""^\s+([\w.]+)/""" + Regex.escape(McpProviderClass) + ":")
+
+/** Parses `dumpsys package providers` for apps that include the MCP device server. */
+internal fun parseMcpPackages(output: String): List<String> =
+    output.lineSequence().mapNotNull { McpProviderLine.find(it)?.groupValues?.get(1) }.distinct().toList()
+
 internal class AdbClient(private val adbPath: String = "adb") {
 
     fun listDevices(): List<DeviceInfo> {
@@ -66,6 +73,12 @@ internal class AdbClient(private val adbPath: String = "adb") {
     ): CommandResult = runCommand(listOfNotNull(adbPath, serial?.let { "-s" }, serial) + args)
 
     /** The app process's whole logcat buffer in threadtime format; null when it isn't running or adb failed. */
+    /** Packages installed on the device that register the MCP server's ContentProvider. */
+    fun mcpPackages(serial: String?): List<String> {
+        val result = run(serial, "shell", "dumpsys", "package", "providers")
+        return if (result.exitCode == 0) parseMcpPackages(result.output) else emptyList()
+    }
+
     fun appLogcat(
         serial: String?,
         packageName: String,

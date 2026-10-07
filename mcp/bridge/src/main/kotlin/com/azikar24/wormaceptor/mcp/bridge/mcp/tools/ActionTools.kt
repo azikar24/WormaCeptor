@@ -209,9 +209,9 @@ internal class BringAppToFrontTool : McpTool() {
         connection: DeviceConnection,
     ): String {
         val pkg = arguments["package"]?.jsonPrimitive?.contentOrNull?.takeIf { it.isNotBlank() }
-            ?: connection.packageName
-            ?: return "${ERROR_PREFIX}The app's package isn't known yet (the bridge hasn't reached the app). " +
-                "Pass 'package'."
+            ?: connection.resolvePackage()
+            ?: return "${ERROR_PREFIX}Couldn't tell which app to launch: none or several installed apps include " +
+                "the MCP server. Pass 'package'."
         val failure = connection.bringAppToFront(pkg) ?: return "Brought $pkg to the foreground."
         return "${ERROR_PREFIX}Couldn't launch $pkg: $failure"
     }

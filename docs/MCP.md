@@ -166,6 +166,7 @@ Options:
   --adb <path>       Path to adb (default: searches ANDROID_HOME, ANDROID_SDK_ROOT,
                      PATH, then the default Android SDK dir)
   --token <token>    Bearer token for authentication
+  --package <id>     App under debug (default: the only installed app with the MCP server)
   --verbose, -v      Enable verbose request/response logging
   --version          Print version and exit
   --help, -h         Print help

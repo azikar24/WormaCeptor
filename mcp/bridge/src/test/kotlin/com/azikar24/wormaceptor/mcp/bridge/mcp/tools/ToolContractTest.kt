@@ -134,7 +134,7 @@ class ToolContractTest {
 
     @Test
     fun `bring_app_to_front launches the cached package, or the one passed in`() = runTest {
-        every { connection.packageName } returns "com.cached"
+        coEvery { connection.resolvePackage() } returns "com.cached"
         coEvery { connection.bringAppToFront(any()) } returns null
         assertEquals(
             "Brought com.cached to the foreground.",
@@ -147,7 +147,7 @@ class ToolContractTest {
 
     @Test
     fun `bring_app_to_front reports an unknown package and launch failures as errors`() = runTest {
-        every { connection.packageName } returns null
+        coEvery { connection.resolvePackage() } returns null
         assertTrue(BringAppToFrontTool().execute(buildJsonObject {}, connection).startsWith("Error: "))
 
         coEvery { connection.bringAppToFront("com.gone") } returns "No activities found to run, monkey aborted."

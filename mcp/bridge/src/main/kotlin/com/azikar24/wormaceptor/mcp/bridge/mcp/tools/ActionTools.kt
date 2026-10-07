@@ -20,6 +20,8 @@ internal class ClearTransactionsTool : McpTool() {
 
     override val name = "clear_transactions"
 
+    override val annotations = ToolAnnotations.Destructive
+
     override val description = "Delete all captured HTTP network transactions from the WormaCeptor buffer. " +
         "This is permanent: deleted transactions can't be recovered. " +
         "Use to reset the transaction list before reproducing a specific flow, " +
@@ -44,6 +46,8 @@ internal class ClearCrashesTool : McpTool() {
 
     override val name = "clear_crashes"
 
+    override val annotations = ToolAnnotations.Destructive
+
     override val description = "Delete all captured crash reports from the WormaCeptor buffer. " +
         "This is permanent: deleted crash reports and stack traces can't be recovered. " +
         "Use to clear historical crashes before testing a fix, " +
@@ -66,6 +70,8 @@ internal class ClearLogsTool : McpTool() {
 
     override val name = "clear_logs"
 
+    override val annotations = ToolAnnotations.Destructive
+
     override val description = "Delete all captured log entries from the WormaCeptor buffer. " +
         "This is permanent: deleted log entries can't be recovered. " +
         "Use to clear historical logs before reproducing an issue, " +
@@ -87,6 +93,8 @@ internal class ClearLogsTool : McpTool() {
 internal class SimulateLocationTool : McpTool() {
 
     override val name = "simulate_location"
+
+    override val annotations = ToolAnnotations(readOnlyHint = false, destructiveHint = false, idempotentHint = true)
 
     override val description = "Set a mock GPS location on the Android device for testing location-based features. " +
         "Requires latitude and longitude; optionally accepts altitude and a descriptive name. " +
@@ -150,6 +158,8 @@ internal class StopLocationSimulationTool : McpTool() {
 
     override val name = "stop_location_simulation"
 
+    override val annotations = ToolAnnotations(readOnlyHint = false, destructiveHint = false, idempotentHint = true)
+
     override val description = "Stop the current GPS location simulation and restore real device location. " +
         "Use after simulate_location when you're done testing location features " +
         "and want the device to use its actual GPS position again."
@@ -172,6 +182,8 @@ internal class StopLocationSimulationTool : McpTool() {
 internal class SendPushNotificationTool : McpTool() {
 
     override val name = "send_push_notification"
+
+    override val annotations = ToolAnnotations(readOnlyHint = false, destructiveHint = false, idempotentHint = false)
 
     override val description = "Send a local push notification to the Android device for testing notification handling. " +
         "Creates a notification with the specified title and body text. " +

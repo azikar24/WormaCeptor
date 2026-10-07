@@ -244,6 +244,8 @@ internal class SetRateLimitTool : McpTool() {
 
     override val name = "set_rate_limit"
 
+    override val annotations = ToolAnnotations(readOnlyHint = false, destructiveHint = false, idempotentHint = true)
+
     override val description = "Configure network rate limiting (throttling) on the Android app to simulate " +
         "slow network conditions. Pass a named preset, or custom values for download/upload speed, " +
         "latency, and packet loss (unset custom values keep their current setting). " +

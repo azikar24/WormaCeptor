@@ -7,9 +7,8 @@ import kotlinx.serialization.json.putJsonObject
 
 internal object McpCapabilities {
 
-    @Suppress("UnusedParameter")
-    fun initializeResponse(requestId: JsonElement?): JsonElement = buildJsonObject {
-        put("protocolVersion", McpProtocol.PROTOCOL_VERSION)
+    fun initializeResponse(requestedVersion: String?): JsonElement = buildJsonObject {
+        put("protocolVersion", McpProtocol.negotiateVersion(requestedVersion))
         putJsonObject("capabilities") {
             putJsonObject("tools") {}
         }

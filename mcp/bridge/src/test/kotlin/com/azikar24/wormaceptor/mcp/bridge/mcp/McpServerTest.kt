@@ -47,4 +47,61 @@ class McpServerTest {
         val body = list["body"] as kotlinx.serialization.json.JsonObject
         assertEquals(32, body["result"]!!.jsonObject["tools"]!!.jsonArray.size)
     }
+
+    private fun negotiated(params: String): String? {
+        val init = exchange("""{"jsonrpc":"2.0","id":0,"method":"initialize","params":$params}""").single()
+        val body = init["body"] as kotlinx.serialization.json.JsonObject
+        return body["result"]!!.jsonObject["protocolVersion"]!!.jsonPrimitive.content
+    }
+
+    @Test
+    fun `initialize echoes a supported protocol version`() {
+        listOf("2024-11-05", "2025-06-18", "2025-11-25").forEach { version ->
+            assertEquals(version, negotiated("""{"protocolVersion":"$version","capabilities":{}}"""))
+        }
+    }
+
+    @Test
+    fun `initialize answers the latest version for unsupported or missing requests`() {
+        // 2025-03-26 requires accepting JSON-RPC batches, which the bridge doesn't.
+        listOf(
+            """{"protocolVersion":"2025-03-26","capabilities":{}}""",
+            """{"protocolVersion":"2099-01-01","capabilities":{}}""",
+            """{"capabilities":{}}""",
+            """[]""",
+        ).forEach { params -> assertEquals("2025-11-25", negotiated(params)) }
+    }
+
+    @Test
+    fun `tools list annotates which tools change device state`() {
+        val list = exchange("""{"jsonrpc":"2.0","id":1,"method":"tools/list"}""").single()
+        val tools = (list["body"] as kotlinx.serialization.json.JsonObject)["result"]!!.jsonObject["tools"]!!.jsonArray
+        val hints = tools.associate { tool ->
+            val o = tool.jsonObject
+            val annotations = o["annotations"]!!.jsonObject
+            val values = HINTS.associateWith { annotations[it]!!.jsonPrimitive.content.toBoolean() }
+            o["name"]!!.jsonPrimitive.content to values
+        }
+
+        val writers = setOf(
+            "clear_transactions",
+            "clear_crashes",
+            "clear_logs",
+            "set_rate_limit",
+            "simulate_location",
+            "stop_location_simulation",
+            "send_push_notification",
+        )
+        assertEquals(hints.keys - writers, hints.filterValues { it.getValue("readOnlyHint") }.keys)
+        assertEquals(
+            setOf("clear_transactions", "clear_crashes", "clear_logs"),
+            hints.filterValues { it.getValue("destructiveHint") }.keys,
+        )
+        assertEquals(setOf("send_push_notification"), hints.filterValues { !it.getValue("idempotentHint") }.keys)
+        assertEquals(emptySet<String>(), hints.filterValues { it.getValue("openWorldHint") }.keys)
+    }
+
+    private companion object {
+        val HINTS = listOf("readOnlyHint", "destructiveHint", "idempotentHint", "openWorldHint")
+    }
 }

@@ -9,6 +9,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.addJsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
@@ -64,7 +66,9 @@ internal class McpServer(
         return when (request.method) {
             "initialize" -> JsonRpcResponse(
                 id = request.id,
-                result = McpCapabilities.initializeResponse(request.id),
+                result = McpCapabilities.initializeResponse(
+                    ((request.params as? JsonObject)?.get("protocolVersion") as? JsonPrimitive)?.contentOrNull,
+                ),
             )
             "notifications/initialized" -> null
             "tools/list" -> handleToolsList(request)

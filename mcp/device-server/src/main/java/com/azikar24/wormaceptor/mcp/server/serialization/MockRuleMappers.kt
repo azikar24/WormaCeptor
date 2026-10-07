@@ -155,7 +155,7 @@ private fun pathOf(url: String): String = try {
 }
 
 /** The body as text, or null if it is binary or too large, mirroring the in-app prefill. */
-private fun decodeTextBody(
+internal fun decodeTextBody(
     bytes: ByteArray,
     contentType: String?,
 ): String? {

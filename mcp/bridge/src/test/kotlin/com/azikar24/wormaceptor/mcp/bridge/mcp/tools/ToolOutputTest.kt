@@ -9,6 +9,7 @@ import com.azikar24.wormaceptor.mcp.protocol.CpuHistoryDto
 import com.azikar24.wormaceptor.mcp.protocol.CpuInfoDto
 import com.azikar24.wormaceptor.mcp.protocol.CrashDto
 import com.azikar24.wormaceptor.mcp.protocol.CrashSummaryDto
+import com.azikar24.wormaceptor.mcp.protocol.CurlDto
 import com.azikar24.wormaceptor.mcp.protocol.DatabaseInfoDto
 import com.azikar24.wormaceptor.mcp.protocol.DependencyInfoDto
 import com.azikar24.wormaceptor.mcp.protocol.DeviceDetailsDto
@@ -34,6 +35,7 @@ import com.azikar24.wormaceptor.mcp.protocol.PreferenceFileDto
 import com.azikar24.wormaceptor.mcp.protocol.QueryResultDto
 import com.azikar24.wormaceptor.mcp.protocol.RateLimitConfigDto
 import com.azikar24.wormaceptor.mcp.protocol.ReadFileDto
+import com.azikar24.wormaceptor.mcp.protocol.ReplayResultDto
 import com.azikar24.wormaceptor.mcp.protocol.RequestDto
 import com.azikar24.wormaceptor.mcp.protocol.ResponseDto
 import com.azikar24.wormaceptor.mcp.protocol.ScreenDetailsDto
@@ -132,6 +134,9 @@ class ToolOutputTest {
         "/api/loaded-libraries" to serverResponse(
             listOf(LoadedLibraryDto("libc.so", "/system/lib64/libc.so", "NATIVE_SO", 10L, "0x1", "1", true)),
         ),
+        "/api/transactions/tx1/curl" to serverResponse(
+            CurlDto("curl \\\n  'https://a.test/x'", listOf("Authorization"), bodyOmitted = true),
+        ),
         "/api/wait/transaction" to serverResponse(
             WaitForTransactionDto(
                 TransactionSummaryDto(
@@ -184,6 +189,9 @@ class ToolOutputTest {
         coEvery { post("/api/mock-rules/tx1/enabled", any()) } returns serverResponse(mockRule)
         coEvery { post("/api/transactions/tx1/mock", any()) } returns
             serverResponse(MockFromTransactionResultDto(mockRule, bodyOmitted = false))
+        coEvery { post("/api/transactions/tx1/replay", any()) } returns serverResponse(
+            ReplayResultDto("tx9", "GET", "https://a.test/x", 200, "OK", 30L, error = "e"),
+        )
     }
     private val connection = mockk<DeviceConnection> {
         every { apiClient } returns this@ToolOutputTest.apiClient

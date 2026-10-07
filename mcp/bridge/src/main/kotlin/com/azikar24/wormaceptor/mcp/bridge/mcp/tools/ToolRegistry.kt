@@ -53,5 +53,8 @@ internal object ToolRegistry {
         MockFromTransactionTool(),
         SetMockRuleEnabledTool(),
         DeleteMockRuleTool(),
+        // Reproduce (2)
+        ExportCurlTool(),
+        ReplayTransactionTool(),
     )
 }

@@ -14,6 +14,7 @@ import com.azikar24.wormaceptor.mcp.server.routes.monitoringRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.mockRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.networkRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.performanceRoutes
+import com.azikar24.wormaceptor.mcp.server.routes.replayRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.storageRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.timelineRoutes
 import com.azikar24.wormaceptor.mcp.server.routes.transactionRoutes
@@ -140,6 +141,7 @@ internal class WormaCeptorServer(
                 transactionRoutes(maxBodySize = config.maxBodySize)
                 networkRoutes()
                 mockRoutes()
+                replayRoutes()
             }
 
             if (ApiCategory.DIAGNOSTICS in config.enabledCategories) {

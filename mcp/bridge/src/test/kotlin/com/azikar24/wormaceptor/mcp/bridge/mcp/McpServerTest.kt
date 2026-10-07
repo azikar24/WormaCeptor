@@ -60,7 +60,7 @@ class McpServerTest {
     fun `tools list returns all registered tools`() {
         val list = exchange("""{"jsonrpc":"2.0","id":1,"method":"tools/list"}""").single()
         val body = list["body"] as kotlinx.serialization.json.JsonObject
-        assertEquals(40, body["result"]!!.jsonObject["tools"]!!.jsonArray.size)
+        assertEquals(42, body["result"]!!.jsonObject["tools"]!!.jsonArray.size)
     }
 
     private fun negotiated(params: String): String? {
@@ -112,17 +112,18 @@ class McpServerTest {
             "mock_from_transaction",
             "set_mock_rule_enabled",
             "delete_mock_rule",
+            "replay_transaction",
         )
         assertEquals(hints.keys - writers, hints.filterValues { it.getValue("readOnlyHint") }.keys)
         assertEquals(
-            setOf("clear_transactions", "clear_crashes", "clear_logs", "delete_mock_rule"),
+            setOf("clear_transactions", "clear_crashes", "clear_logs", "delete_mock_rule", "replay_transaction"),
             hints.filterValues { it.getValue("destructiveHint") }.keys,
         )
         assertEquals(
-            setOf("send_push_notification", "create_mock_rule", "mock_from_transaction"),
+            setOf("send_push_notification", "create_mock_rule", "mock_from_transaction", "replay_transaction"),
             hints.filterValues { !it.getValue("idempotentHint") }.keys,
         )
-        assertEquals(emptySet<String>(), hints.filterValues { it.getValue("openWorldHint") }.keys)
+        assertEquals(setOf("replay_transaction"), hints.filterValues { it.getValue("openWorldHint") }.keys)
     }
 
     private fun callResult(

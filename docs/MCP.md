@@ -171,7 +171,7 @@ Options:
   --help, -h         Print help
 ```
 
-## MCP Tools (40 total)
+## MCP Tools (42 total)
 
 ### Network (8 tools)
 
@@ -252,6 +252,13 @@ Mocks apply to OkHttp and Ktor clients that use the WormaCeptor interceptor or p
 | `set_mock_rule_enabled` | `id`, `enabled` | Turn a rule on or off without deleting it |
 | `delete_mock_rule` | `id` | Delete a rule permanently |
 
+### Reproduce (2 tools)
+
+| Tool | Parameters | Description |
+|------|-----------|-------------|
+| `export_curl` | `id` | Build a shell-quoted cURL command (method, URL, headers, text body) for a captured request. Sensitive headers stay `[REDACTED]` and are listed; binary bodies are left out |
+| `replay_transaction` | `id`, `url?`, `headers?`, `body?` | Send a captured request again from the device and capture it as a new transaction; returns its id and status. `headers` is an object whose entries replace captured headers of the same name. Goes straight to the server: mock rules, throttling and the app's own interceptors don't apply |
+
 ## REST API Endpoints
 
 All endpoints are prefixed with `/api`. Responses follow a standard envelope:
@@ -294,6 +301,8 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 | POST | `/api/mock-rules/{id}/enabled` | Enable or disable a rule: `{enabled}` |
 | DELETE | `/api/mock-rules/{id}` | Delete a rule |
 | POST | `/api/transactions/{id}/mock` | Create a rule from a captured transaction: `{status?, body?}` |
+| GET | `/api/transactions/{id}/curl` | cURL command: `{command, redactedHeaders, bodyOmitted}` |
+| POST | `/api/transactions/{id}/replay` | Re-send a request: `{url?, headers?, body?}`, returns `{transactionId, method, url, code, message, durationMs, error}` |
 
 ### Diagnostics
 
@@ -466,6 +475,7 @@ mcp/
 │       │   ├── ActionTools.kt       # 6 action tools
 │       │   ├── GetTimelineTool.kt   # Event timeline
 │       │   ├── MockTools.kt         # 5 mock rule tools
+│       │   ├── ReplayTools.kt       # export_curl, replay_transaction
 │       │   └── WaitTools.kt         # wait_for_transaction, wait_for_crash
 │       └── util/
 │           ├── TextFormatter.kt     # Human-readable output
@@ -496,6 +506,7 @@ mcp/
         │   ├── InspectionRoutes.kt
         │   ├── ActionRoutes.kt
         │   ├── MockRoutes.kt
+        │   ├── ReplayRoutes.kt
         │   ├── TimelineRoutes.kt
         │   ├── WaitRoutes.kt
         │   └── DeviceInfoCollector.kt

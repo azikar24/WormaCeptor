@@ -43,6 +43,8 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.kotlin.serialization)
+    // replay_transaction; already on the host's debug classpath through core:engine.
+    implementation(libs.okhttp)
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.ktor.client.content.negotiation)

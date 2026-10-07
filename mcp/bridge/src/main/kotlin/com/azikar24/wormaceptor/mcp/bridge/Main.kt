@@ -9,6 +9,8 @@ import com.azikar24.wormaceptor.mcp.bridge.mcp.McpProtocol
 import com.azikar24.wormaceptor.mcp.bridge.mcp.McpServer
 import com.azikar24.wormaceptor.mcp.bridge.mcp.tools.ToolRegistry
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 fun main(args: Array<String>) {
@@ -41,12 +43,15 @@ fun main(args: Array<String>) {
 
         // Pin the discovered serial: adb diagnostics and logcat need it even when --device wasn't given.
         val connection = DeviceConnection(config.copy(deviceSerial = device.serial), adbClient)
-        try {
-            connection.connect()
-            System.err.println("Connected to WormaCeptor server")
-        } catch (e: IllegalStateException) {
-            // The app may not be running yet; tool calls reconnect on demand.
-            System.err.println("Warning: ${e.message}")
+        // Connect in the background: MCP clients time out the initialize handshake (Claude Code: 30 s), and
+        // a frozen or not-yet-started app can keep connect() busy longer than that. Tool calls reconnect on demand.
+        launch(Dispatchers.IO) {
+            try {
+                connection.connect()
+                System.err.println("Connected to WormaCeptor server")
+            } catch (e: IllegalStateException) {
+                System.err.println("Warning: ${e.message}")
+            }
         }
 
         Runtime.getRuntime().addShutdownHook(

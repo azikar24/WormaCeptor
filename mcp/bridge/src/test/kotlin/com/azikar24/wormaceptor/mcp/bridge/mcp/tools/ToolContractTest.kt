@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceApiClient
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
+import com.azikar24.wormaceptor.mcp.protocol.MonitoringStateDto
 import com.azikar24.wormaceptor.mcp.protocol.ReadFileDto
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -70,6 +71,34 @@ class ToolContractTest {
             TailLogsTool().enumFor("level"),
         )
         assertEquals(listOf("low", "default", "high", "max"), SendPushNotificationTool().enumFor("priority"))
+    }
+
+    @Test
+    fun `set_monitoring sends target and enabled and reports the resulting state`() = runTest {
+        val body = slot<JsonElement>()
+        coEvery { apiClient.post("/api/monitoring", capture(body)) } returns
+            serverResponse(MonitoringStateDto("cpu", running = true))
+        val args = buildJsonObject {
+            put("target", "cpu")
+            put("enabled", true)
+        }
+        assertEquals("cpu monitoring is on.", SetMonitoringTool().execute(args, connection))
+        assertEquals(setOf("target", "enabled"), body.captured.jsonObject.keys)
+        assertEquals(listOf("cpu", "memory", "fps"), SetMonitoringTool().enumFor("target"))
+    }
+
+    @Test
+    fun `set_monitoring explains a stop the overlay prevented`() = runTest {
+        coEvery { apiClient.post("/api/monitoring", any()) } returns
+            serverResponse(MonitoringStateDto("fps", running = true, note = "kept running: the overlay shows it"))
+        val args = buildJsonObject {
+            put("target", "fps")
+            put("enabled", false)
+        }
+        assertEquals(
+            "fps monitoring is on (kept running: the overlay shows it).",
+            SetMonitoringTool().execute(args, connection),
+        )
     }
 
     @Test

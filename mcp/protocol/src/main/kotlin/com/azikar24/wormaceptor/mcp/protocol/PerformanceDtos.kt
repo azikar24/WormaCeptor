@@ -47,6 +47,21 @@ internal data class PerformanceSnapshotDto(
     val fpsMonitoring: Boolean,
 )
 
+/** `POST /api/monitoring`. [target] is `cpu`, `memory` or `fps`. */
+@Serializable
+internal data class SetMonitoringRequestDto(
+    val target: String,
+    val enabled: Boolean,
+)
+
+/** Result of `POST /api/monitoring`; [note] explains when the request didn't change anything. */
+@Serializable
+internal data class MonitoringStateDto(
+    val target: String,
+    val running: Boolean,
+    val note: String? = null,
+)
+
 /** `/api/cpu?include_history=true`; without the flag the route returns a bare [CpuInfoDto]. */
 @Serializable
 internal data class CpuHistoryDto(

@@ -20,8 +20,8 @@ import io.ktor.server.routing.get
 import kotlinx.serialization.json.JsonElement
 import kotlin.coroutines.cancellation.CancellationException
 
-private const val FpsOffMessage = "FPS monitoring is off. It only samples while running: open the FPS tool or " +
-    "the performance overlay in WormaCeptor, then ask again."
+private const val FpsOffMessage = "FPS monitoring is off. It only samples while running: call set_monitoring " +
+    "with target=fps and enabled=true (or open the FPS tool or performance overlay), then ask again."
 
 // Monitors only sample while their screen or the overlay runs; a one-off sample beats returning zeros.
 private fun CpuMonitorEngine.currentOrSample() = if (isMonitoring.value) currentCpu.value else takeSample()

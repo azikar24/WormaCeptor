@@ -194,8 +194,10 @@ The AI reads the crash, finds `MainActivityViewModel.kt:108` in your codebase, r
 **"Is the app laggy?"**
 
 ```
-Get the current FPS stats. Are there any dropped frames?
+Turn on FPS monitoring, then get the FPS stats. Are there any dropped frames?
 ```
+
+FPS only samples while its monitor runs; the AI starts it with `set_monitoring`.
 
 **"How's memory?"**
 
@@ -541,12 +543,12 @@ The `mcp-device-server` module is included as `debugImplementation`. It physical
 | `maxBodySize` | Long | 1,048,576 | Max body characters in responses |
 | `enabled` | Boolean | true | Auto-start on app launch; `false` stops a running server |
 
-### All 33 MCP Tools
+### All 34 MCP Tools
 
 | Category | Tools |
 |----------|-------|
 | **Network** | `list_transactions`, `get_transaction`, `get_request_body`, `get_response_body`, `list_websocket_connections`, `list_websocket_messages`, `get_rate_limit`, `set_rate_limit` |
 | **Diagnostics** | `list_crashes`, `get_crash`, `tail_logs`, `list_leaks`, `list_violations`, `get_device_info` |
-| **Performance** | `get_cpu_stats`, `get_memory_stats`, `get_fps_stats`, `get_performance_snapshot` |
+| **Performance** | `get_cpu_stats`, `get_memory_stats`, `get_fps_stats`, `get_performance_snapshot`, `set_monitoring` |
 | **Storage** | `list_preferences`, `list_databases`, `query_database`, `list_files`, `read_file`, `browse_secure_storage`, `list_dependencies`, `list_loaded_libraries` |
 | **Actions** | `clear_transactions`, `clear_crashes`, `clear_logs`, `simulate_location`, `stop_location_simulation`, `send_push_notification`, `bring_app_to_front` |

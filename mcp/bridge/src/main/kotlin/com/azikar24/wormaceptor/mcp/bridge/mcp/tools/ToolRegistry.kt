@@ -19,11 +19,12 @@ internal object ToolRegistry {
         ListLeaksTool(),
         ListViolationsTool(),
         GetDeviceInfoTool(),
-        // Performance (4)
+        // Performance (5)
         GetCpuStatsTool(),
         GetMemoryStatsTool(),
         GetFpsStatsTool(),
         GetPerformanceSnapshotTool(),
+        SetMonitoringTool(),
         // Storage (8)
         ListPreferencesTool(),
         ListDatabasesTool(),

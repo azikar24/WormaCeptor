@@ -22,6 +22,7 @@ import com.azikar24.wormaceptor.mcp.protocol.LogEntryDto
 import com.azikar24.wormaceptor.mcp.protocol.MemoryDetailsDto
 import com.azikar24.wormaceptor.mcp.protocol.MemoryHistoryDto
 import com.azikar24.wormaceptor.mcp.protocol.MemoryInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.MonitoringStateDto
 import com.azikar24.wormaceptor.mcp.protocol.NetworkDetailsDto
 import com.azikar24.wormaceptor.mcp.protocol.OsDetailsDto
 import com.azikar24.wormaceptor.mcp.protocol.PerformanceSnapshotDto
@@ -133,6 +134,12 @@ class ToolOutputTest {
             QueryResultDto(listOf("id", "name"), listOf(listOf("1", null)), 1, error = null),
         )
         coEvery { post(match { it != "/api/databases/app.db/query" }, any()) } returns ok
+        coEvery {
+            post(
+                "/api/monitoring",
+                any(),
+            )
+        } returns serverResponse(MonitoringStateDto("fps", true, "already running"))
         coEvery { delete(any()) } returns ok
     }
     private val connection = mockk<DeviceConnection> {
@@ -164,6 +171,8 @@ class ToolOutputTest {
         put("longitude", 2.0)
         put("title", "t")
         put("body", "b")
+        put("target", "fps")
+        put("enabled", true)
         put("include_history", withHistory)
     }
 

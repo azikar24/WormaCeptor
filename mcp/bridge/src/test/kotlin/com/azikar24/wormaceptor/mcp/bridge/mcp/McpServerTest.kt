@@ -60,7 +60,7 @@ class McpServerTest {
     fun `tools list returns all registered tools`() {
         val list = exchange("""{"jsonrpc":"2.0","id":1,"method":"tools/list"}""").single()
         val body = list["body"] as kotlinx.serialization.json.JsonObject
-        assertEquals(33, body["result"]!!.jsonObject["tools"]!!.jsonArray.size)
+        assertEquals(34, body["result"]!!.jsonObject["tools"]!!.jsonArray.size)
     }
 
     private fun negotiated(params: String): String? {
@@ -107,6 +107,7 @@ class McpServerTest {
             "stop_location_simulation",
             "send_push_notification",
             "bring_app_to_front",
+            "set_monitoring",
         )
         assertEquals(hints.keys - writers, hints.filterValues { it.getValue("readOnlyHint") }.keys)
         assertEquals(

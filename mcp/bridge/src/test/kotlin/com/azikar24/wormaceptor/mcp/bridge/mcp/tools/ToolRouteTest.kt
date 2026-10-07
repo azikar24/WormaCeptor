@@ -46,6 +46,8 @@ class ToolRouteTest {
         put("longitude", 2.0)
         put("title", "t")
         put("body", "b")
+        put("target", "fps")
+        put("enabled", true)
     }
 
     // Gradle runs tests with the module dir (mcp/bridge) as working directory.

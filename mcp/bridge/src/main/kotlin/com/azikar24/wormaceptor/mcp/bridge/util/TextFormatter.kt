@@ -143,7 +143,7 @@ internal object TextFormatter {
         sb.appendLine("  Native: ${mem.nativeHeapAllocated} bytes allocated")
         sb.appendLine()
         if (!data.fpsMonitoring) {
-            sb.appendLine("FPS: monitoring is off (open the FPS tool or performance overlay to sample)")
+            sb.appendLine("FPS: monitoring is off (start it with set_monitoring target=fps enabled=true)")
         } else {
             val fps = data.fps
             sb.appendLine(

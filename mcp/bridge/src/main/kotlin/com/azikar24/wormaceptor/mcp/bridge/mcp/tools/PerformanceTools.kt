@@ -5,19 +5,24 @@ import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
 import com.azikar24.wormaceptor.mcp.bridge.util.dataAs
 import com.azikar24.wormaceptor.mcp.bridge.util.errorText
 import com.azikar24.wormaceptor.mcp.bridge.util.toApiResponse
+import com.azikar24.wormaceptor.mcp.bridge.util.toRequestBody
 import com.azikar24.wormaceptor.mcp.protocol.CpuHistoryDto
 import com.azikar24.wormaceptor.mcp.protocol.CpuInfoDto
 import com.azikar24.wormaceptor.mcp.protocol.FpsHistoryDto
 import com.azikar24.wormaceptor.mcp.protocol.FpsInfoDto
 import com.azikar24.wormaceptor.mcp.protocol.MemoryHistoryDto
 import com.azikar24.wormaceptor.mcp.protocol.MemoryInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.MonitoringStateDto
 import com.azikar24.wormaceptor.mcp.protocol.PerformanceSnapshotDto
+import com.azikar24.wormaceptor.mcp.protocol.SetMonitoringRequestDto
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonArray
 import kotlinx.serialization.json.putJsonObject
 
 internal class GetCpuStatsTool : McpTool() {
@@ -194,6 +199,58 @@ internal class GetPerformanceSnapshotTool : McpTool() {
         val data = response.dataAs<PerformanceSnapshotDto>()
             ?: return response.errorText() ?: "Performance data unavailable."
         return TextFormatter.formatPerformanceSnapshot(data)
+    }
+}
+
+internal class SetMonitoringTool : McpTool() {
+
+    override val name = "set_monitoring"
+
+    override val annotations = ToolAnnotations(readOnlyHint = false, destructiveHint = false, idempotentHint = true)
+
+    override val description = "Start or stop a performance monitor (cpu, memory or fps) in the running app. " +
+        "Monitors only sample while running: get_fps_stats needs fps monitoring on, and history in " +
+        "get_cpu_stats/get_memory_stats only grows while their monitor runs. " +
+        "Stopping leaves a monitor running when the performance overlay shows it."
+
+    override val inputSchema = buildJsonObject {
+        put("type", "object")
+        putJsonObject("properties") {
+            putJsonObject("target") {
+                put("type", "string")
+                putJsonArray("enum") { MONITOR_TARGETS.forEach { add(JsonPrimitive(it)) } }
+                put("description", "Monitor to change")
+            }
+            putJsonObject("enabled") {
+                put("type", "boolean")
+                put("description", "true to start sampling, false to stop")
+            }
+        }
+        putJsonArray("required") {
+            add(JsonPrimitive("target"))
+            add(JsonPrimitive("enabled"))
+        }
+    }
+
+    override suspend fun execute(
+        arguments: JsonObject,
+        connection: DeviceConnection,
+    ): String {
+        val target = arguments["target"]?.jsonPrimitive?.contentOrNull
+            ?: return "${ERROR_PREFIX}'target' parameter is required (one of ${MONITOR_TARGETS.joinToString()})."
+        val enabled = arguments["enabled"]?.jsonPrimitive?.booleanOrNull
+            ?: return "${ERROR_PREFIX}'enabled' parameter is required and must be true or false."
+
+        val body = SetMonitoringRequestDto(target = target, enabled = enabled).toRequestBody()
+        val response = connection.apiClient.post("/api/monitoring", body).toApiResponse()
+        val state = response.dataAs<MonitoringStateDto>() ?: return response.errorText() ?: "Monitoring unchanged."
+        val status = "${state.target} monitoring is ${if (state.running) "on" else "off"}"
+        return state.note?.let { "$status ($it)." } ?: "$status."
+    }
+
+    companion object {
+        /** Mirrors `MonitorTarget` on the device server. */
+        internal val MONITOR_TARGETS = listOf("cpu", "memory", "fps")
     }
 }
 

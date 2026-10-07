@@ -170,7 +170,7 @@ Options:
   --help, -h         Print help
 ```
 
-## MCP Tools (33 total)
+## MCP Tools (34 total)
 
 ### Network (8 tools)
 
@@ -196,14 +196,15 @@ Options:
 | `list_violations` | — | List StrictMode and thread policy violations |
 | `get_device_info` | — | Get device model, Android version, app info, and system properties |
 
-### Performance (4 tools)
+### Performance (5 tools)
 
 | Tool | Parameters | Description |
 |------|-----------|-------------|
 | `get_cpu_stats` | `include_history?` | Get CPU usage with optional history. When the monitor is off, returns a one-off sample and no history |
 | `get_memory_stats` | `include_history?` | Get memory usage with optional history. When the monitor is off, returns a one-off sample and no history |
-| `get_fps_stats` | `include_history?` | Get frame rate stats with optional history. Returns an error while FPS monitoring is off (start it from the FPS tool or performance overlay) |
+| `get_fps_stats` | `include_history?` | Get frame rate stats with optional history. Returns an error while FPS monitoring is off (start it with `set_monitoring`, the FPS tool or the performance overlay) |
 | `get_performance_snapshot` | — | Get a combined snapshot of CPU, memory, and FPS |
+| `set_monitoring` | `target`, `enabled` | Start or stop the `cpu`, `memory` or `fps` monitor. Stopping keeps a monitor running while the performance overlay shows it |
 
 ### Storage (8 tools)
 
@@ -287,6 +288,7 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 | GET | `/api/memory` | Memory stats (`?include_history=true`) |
 | GET | `/api/fps` | FPS stats (`?include_history=true`) |
 | GET | `/api/performance` | Combined performance snapshot |
+| POST | `/api/monitoring` | Start/stop a monitor: `{target: cpu|memory|fps, enabled}` returns `{target, running, note}` |
 
 ### Storage
 
@@ -328,7 +330,7 @@ Subscribe by sending (send `"type": "unsubscribe"` to stop a channel):
 { "type": "subscribe", "channels": ["transactions", "crashes", "logs", "cpu", "memory", "fps"] }
 ```
 
-`transactions` and `crashes` emit `"event": "new"` once per new item; `logs` emits `"new"` per entry; `cpu`, `memory` and `fps` emit `"update"` whenever the monitor publishes a reading (the monitors only sample while they are running, for example with the performance overlay open). The bridge doesn't use the stream; it is for scripts and custom clients.
+`transactions` and `crashes` emit `"event": "new"` once per new item; `logs` emits `"new"` per entry; `cpu`, `memory` and `fps` emit `"update"` whenever the monitor publishes a reading (the monitors only sample while they are running: `set_monitoring`, the performance overlay or the tool's screen). The bridge doesn't use the stream; it is for scripts and custom clients.
 
 Events arrive as:
 ```json

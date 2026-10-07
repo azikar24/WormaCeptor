@@ -9,7 +9,7 @@
     <ID>CyclomaticComplexMethod:InspectionRoutes.kt$internal fun Routing.inspectionRoutes()</ID>
     <ID>CyclomaticComplexMethod:NetworkRoutes.kt$internal fun Routing.networkRoutes()</ID>
     <ID>CyclomaticComplexMethod:PerformanceRoutes.kt$internal fun Routing.performanceRoutes()</ID>
-    <ID>CyclomaticComplexMethod:StorageRoutes.kt$internal fun Routing.storageRoutes()</ID>
+    <ID>CyclomaticComplexMethod:StorageRoutes.kt$internal fun Routing.storageRoutes(redactSecrets: Boolean = true)</ID>
     <ID>CyclomaticComplexMethod:TransactionRoutes.kt$internal fun Routing.transactionRoutes(maxBodySize: Long = ServerConfig.DEFAULT_MAX_BODY_SIZE)</ID>
     <ID>Filename:RedactionPlugin.kt$com.azikar24.wormaceptor.mcp.server.middleware.RedactionPlugin.kt</ID>
     <ID>InstanceOfCheckForException:ActionRoutes.kt$e is CancellationException</ID>
@@ -30,7 +30,7 @@
     <ID>LongMethod:InspectionRoutes.kt$internal fun Routing.inspectionRoutes()</ID>
     <ID>LongMethod:NetworkRoutes.kt$internal fun Routing.networkRoutes()</ID>
     <ID>LongMethod:PerformanceRoutes.kt$internal fun Routing.performanceRoutes()</ID>
-    <ID>LongMethod:StorageRoutes.kt$internal fun Routing.storageRoutes()</ID>
+    <ID>LongMethod:StorageRoutes.kt$internal fun Routing.storageRoutes(redactSecrets: Boolean = true)</ID>
     <ID>LongMethod:TransactionRoutes.kt$internal fun Routing.transactionRoutes(maxBodySize: Long = ServerConfig.DEFAULT_MAX_BODY_SIZE)</ID>
     <ID>MagicNumber:DeviceInfoCollector.kt$DeviceInfoCollector$100f</ID>
     <ID>MagicNumber:DeviceInfoCollector.kt$DeviceInfoCollector$60f</ID>
@@ -44,7 +44,7 @@
     <ID>ThrowsCount:DiagnosticRoutes.kt$internal fun Routing.diagnosticRoutes()</ID>
     <ID>ThrowsCount:NetworkRoutes.kt$internal fun Routing.networkRoutes()</ID>
     <ID>ThrowsCount:PerformanceRoutes.kt$internal fun Routing.performanceRoutes()</ID>
-    <ID>ThrowsCount:StorageRoutes.kt$internal fun Routing.storageRoutes()</ID>
+    <ID>ThrowsCount:StorageRoutes.kt$internal fun Routing.storageRoutes(redactSecrets: Boolean = true)</ID>
     <ID>ThrowsCount:TransactionRoutes.kt$internal fun Routing.transactionRoutes(maxBodySize: Long = ServerConfig.DEFAULT_MAX_BODY_SIZE)</ID>
     <ID>TooGenericExceptionCaught:ActionRoutes.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:CrashRoutes.kt$e: Exception</ID>

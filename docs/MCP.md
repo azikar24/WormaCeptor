@@ -137,6 +137,7 @@ An embedded Ktor/Netty HTTP server that runs inside the debug build on port 8999
 - **Debug-only**: included as `debugImplementation`, zero code in release builds
 - **Localhost-only**: binds `127.0.0.1` and rejects requests with an `Origin` header or a non-local `Host` (blocks browser and DNS-rebinding access)
 - **Optional auth**: bearer token validation when `McpConfig.enableAuth` is true
+- **Secret redaction**: preference values and file contents under secret-looking keys are masked (`McpConfig.redactSecrets`)
 - **Header redaction** — sensitive headers (`Authorization`, `Cookie`, `X-Api-Key`, etc.) are replaced with `[REDACTED]` in API responses
 - **Secure storage keys only**: `browse_secure_storage` never returns stored values
 - **WebSocket streaming**: real-time engine data at `/api/stream`
@@ -371,6 +372,15 @@ Sensitive HTTP headers are automatically redacted in API responses. The followin
 - `X-Api-Key`
 - `X-Auth-Token`
 
+### Secret Redaction
+
+With `McpConfig.redactSecrets` (on by default) the server replaces values with `[REDACTED]` when their key contains `token`, `secret`, `password`, `passwd`, `passphrase`, `apikey`, `api_key`, `auth`, `credential`, `private_key` or `session` (case-insensitive):
+
+- `list_preferences`: by preference key; JSON stored in a preference value is scanned too
+- `read_file`: `"key": "value"` pairs in any text file, and SharedPreferences XML entries (`<string name="key">`, `name="key" value="..."`)
+
+It is best effort: a secret under an unrelated key, or in a format other than these, is sent as-is. Turn it off with `McpConfig(redactSecrets = false)` when you need the raw values.
+
 ### Input Validation
 
 The bridge validates tool inputs before forwarding to the device, and the server checks again:
@@ -395,6 +405,7 @@ The device server binds to `127.0.0.1:8999` on the Android device. It is not exp
 | `authToken` | String? | null | Required token when auth is enabled |
 | `maxBodySize` | Long | 1,048,576 (1 MB) | Max characters of a body returned by the body endpoints |
 | `enabled` | Boolean | true | Auto-start the server; `false` stops a running one |
+| `redactSecrets` | Boolean | true | Mask values under secret-looking keys in `list_preferences` and `read_file` (see Secret Redaction) |
 
 ## Module Structure
 

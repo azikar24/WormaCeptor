@@ -23,6 +23,8 @@ import com.azikar24.wormaceptor.mcp.protocol.ReadFileDto
 import com.azikar24.wormaceptor.mcp.protocol.ResponseMeta
 import com.azikar24.wormaceptor.mcp.protocol.SecureStorageEntryDto
 import com.azikar24.wormaceptor.mcp.protocol.SqlQueryRequestDto
+import com.azikar24.wormaceptor.mcp.server.security.redactSecrets
+import com.azikar24.wormaceptor.mcp.server.security.redacted
 import com.azikar24.wormaceptor.mcp.server.security.resolveWithinRoots
 import com.azikar24.wormaceptor.mcp.server.serialization.JsonConfig
 import com.azikar24.wormaceptor.mcp.server.serialization.toDto
@@ -60,7 +62,7 @@ private class StorageRepositories {
     val files: FileSystemRepository by lazy { FileSystemRepositoryImpl(FileSystemDataSource(context)) }
 }
 
-internal fun Routing.storageRoutes() {
+internal fun Routing.storageRoutes(redactSecrets: Boolean = true) {
     val repositories = StorageRepositories()
 
     get("/api/preferences") {
@@ -70,7 +72,7 @@ internal fun Routing.storageRoutes() {
             val files = prefsRepo.observePreferenceFiles().first()
             val dtos = files.map { file ->
                 val items = prefsRepo.observePreferenceItems(file.name).first()
-                file.toDto(entries = items.map { it.toDto() })
+                file.toDto(entries = items.map { it.toDto().let { e -> if (redactSecrets) e.redacted() else e } })
             }
 
             val json = JsonConfig.instance
@@ -215,6 +217,7 @@ internal fun Routing.storageRoutes() {
                 return@get
             }
             val dto = fileRepo.readFile(file.path).toReadFileDto()
+                .let { if (redactSecrets) it.copy(content = redactSecrets(it.content)) else it }
             val dataElement: JsonElement = JsonConfig.instance.encodeToJsonElement(ReadFileDto.serializer(), dto)
             call.respond(ApiResponse(success = true, data = dataElement))
         } catch (e: Exception) {

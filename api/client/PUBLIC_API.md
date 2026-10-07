@@ -380,7 +380,8 @@ WormaCeptorApi.configureMcpServer(
         enableAuth = true,
         authToken = "my-secret",
         maxBodySize = 2_097_152L,
-        enabled = true
+        enabled = true,
+        redactSecrets = true
     )
 )
 ```
@@ -392,6 +393,7 @@ WormaCeptorApi.configureMcpServer(
 | `authToken` | String? | null | Auth token (required when auth enabled) |
 | `maxBodySize` | Long | 1,048,576 | Max transaction body size in bytes |
 | `enabled` | Boolean | true | Whether the server should auto-start |
+| `redactSecrets` | Boolean | true | Replace preference values and file contents under secret-looking keys (token, password, api_key, auth, session, ...) with `[REDACTED]` |
 
 ---
 

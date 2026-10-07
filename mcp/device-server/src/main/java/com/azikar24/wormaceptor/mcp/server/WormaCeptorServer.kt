@@ -151,7 +151,7 @@ internal class WormaCeptorServer(
             }
 
             if (ApiCategory.STORAGE in config.enabledCategories) {
-                storageRoutes()
+                storageRoutes(redactSecrets = config.redactSecrets)
             }
 
             if (ApiCategory.ACTIONS in config.enabledCategories) {

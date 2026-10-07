@@ -499,7 +499,7 @@ If you restart the app, the next tool call that fails to connect makes the bridg
 
 ### Sensitive data is redacted
 
-Headers like `Authorization`, `Cookie`, and `X-Api-Key` are automatically replaced with `[REDACTED]` in API responses, on top of any `RedactionConfig` rules applied at capture time. `browse_secure_storage` returns key names only, never values. Bodies, preferences, databases, and files are sent as-is, so treat the conversation as containing app data.
+Headers like `Authorization`, `Cookie`, and `X-Api-Key` are automatically replaced with `[REDACTED]` in API responses, on top of any `RedactionConfig` rules applied at capture time. `browse_secure_storage` returns key names only, never values. Preference values and file contents under secret-looking keys (`token`, `password`, `api_key`, `auth`, `session`, ...) are masked too (`McpConfig(redactSecrets = false)` turns that off). Bodies, databases, and everything else are sent as-is, so treat the conversation as containing app data.
 
 ### Auth is off by default
 
@@ -542,6 +542,7 @@ The `mcp-device-server` module is included as `debugImplementation`. It physical
 | `authToken` | String? | null | The token to require |
 | `maxBodySize` | Long | 1,048,576 | Max body characters in responses |
 | `enabled` | Boolean | true | Auto-start on app launch; `false` stops a running server |
+| `redactSecrets` | Boolean | true | Mask preference and file values under secret-looking keys |
 
 ### All 34 MCP Tools
 

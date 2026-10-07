@@ -8,6 +8,8 @@ package com.azikar24.wormaceptor.domain.entities
  * @property authToken Bearer token required when [enableAuth] is true
  * @property maxBodySize Maximum transaction body size, in bytes, returned by the server
  * @property enabled Whether the server starts automatically
+ * @property redactSecrets Whether preference values and file contents under secret-looking keys
+ *   (token, password, api_key, auth, session, ...) are replaced with `[REDACTED]`
  */
 data class McpConfig(
     val port: Int = DEFAULT_PORT,
@@ -15,6 +17,7 @@ data class McpConfig(
     val authToken: String? = null,
     val maxBodySize: Long = DEFAULT_MAX_BODY_SIZE,
     val enabled: Boolean = true,
+    val redactSecrets: Boolean = true,
 ) {
     /** Default values for [McpConfig]. */
     companion object {

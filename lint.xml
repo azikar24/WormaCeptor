@@ -34,6 +34,11 @@
         <ignore path="**/androidTest/**" />
     </issue>
 
+    <!-- Ktor's IntelliJ debug detector references java.lang.management; that path never runs on Android -->
+    <issue id="InvalidPackage">
+        <ignore regexp="ktor-utils-jvm" />
+    </issue>
+
     <!-- Ignore for build directories -->
     <issue id="all">
         <ignore path="**/build/**" />

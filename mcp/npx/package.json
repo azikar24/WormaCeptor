@@ -1,0 +1,22 @@
+{
+  "name": "wormaceptor-mcp",
+  "version": "2.3.2",
+  "description": "Runs the WormaCeptor MCP bridge so AI agents can inspect a running Android debug app over adb",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azikar24/WormaCeptor.git",
+    "directory": "mcp/npx"
+  },
+  "homepage": "https://wormaceptor.com/docs/mcp",
+  "bin": {
+    "wormaceptor-mcp": "bin/wormaceptor-mcp.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["mcp", "android", "debugging", "wormaceptor", "adb"]
+}

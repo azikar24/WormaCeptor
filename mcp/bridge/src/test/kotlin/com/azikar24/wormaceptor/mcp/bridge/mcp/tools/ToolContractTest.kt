@@ -2,13 +2,17 @@ package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceApiClient
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
+import com.azikar24.wormaceptor.mcp.protocol.LogEntryDto
 import com.azikar24.wormaceptor.mcp.protocol.MonitoringStateDto
 import com.azikar24.wormaceptor.mcp.protocol.ReadFileDto
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.slot
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
@@ -151,6 +155,42 @@ class ToolContractTest {
             "Error: Couldn't launch com.gone: No activities found to run, monkey aborted.",
             BringAppToFrontTool().execute(buildJsonObject { put("package", "com.gone") }, connection),
         )
+    }
+
+    @Test
+    fun `tail_logs reads logcat through adb and applies level, tag and limit without the device route`() = runTest {
+        val logs = listOf(
+            LogEntryDto(0L, 1L, "ERROR", "OkHttp", 1, 1, "old"),
+            LogEntryDto(1L, 2L, "INFO", "OkHttp", 1, 1, "info"),
+            LogEntryDto(2L, 3L, "ERROR", "Auth", 1, 1, "other tag"),
+            LogEntryDto(3L, 4L, "ERROR", "okhttp.Client", 1, 1, "newest"),
+        )
+        coEvery { connection.readAppLogs() } returns logs
+        val args = buildJsonObject {
+            put("level", "ERROR")
+            put("tag", "OKHTTP")
+            put("limit", 1)
+        }
+        val text = TailLogsTool().execute(args, connection)
+        assertTrue(text, text.contains("ERROR/okhttp.Client: newest"))
+        assertEquals(1, text.trim().lines().size)
+        coVerify(exactly = 0) { apiClient.get(any(), any()) }
+    }
+
+    @Test
+    fun `tail_logs falls back to the device route when adb can't read logcat`() = runTest {
+        coEvery { connection.readAppLogs() } returns null
+        coEvery { apiClient.get("/api/logs", mapOf("limit" to "30")) } returns
+            serverResponse(listOf(LogEntryDto(1L, 1L, "INFO", "Tag", 1, 2, "from device")))
+        assertTrue(TailLogsTool().execute(buildJsonObject {}, connection).contains("INFO/Tag: from device"))
+    }
+
+    @Test
+    fun `clear_logs hides earlier adb logs only after the server cleared its buffer`() = runTest {
+        every { connection.markLogsCleared() } just Runs
+        coEvery { apiClient.post("/api/clear/logs", any()) } returns buildJsonObject { put("success", true) }
+        assertEquals("Logs cleared.", ClearLogsTool().execute(buildJsonObject {}, connection))
+        verify(exactly = 1) { connection.markLogsCleared() }
     }
 
     @Test

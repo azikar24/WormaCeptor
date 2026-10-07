@@ -191,7 +191,7 @@ Options:
 |------|-----------|-------------|
 | `list_crashes` | `limit?`, `offset?` | List captured crash reports, paginated (default 20) |
 | `get_crash` | `id` | Get full crash details with stack trace |
-| `tail_logs` | `level?`, `tag?`, `limit?` | Retrieve the most recent log entries (default 30). `level` matches exactly (`VERBOSE`...`ASSERT`); `tag` is a case-insensitive substring. Capture starts on the first call (or with the Logs screen) and only records entries logged after that. On Android 13+ starting capture shows a system "access all device logs" prompt; "Don't allow" is fine, the app can still read its own logs |
+| `tail_logs` | `level?`, `tag?`, `limit?` | Retrieve the most recent log entries (default 30). `level` matches exactly (`VERBOSE`...`ASSERT`); `tag` is a case-insensitive substring. The bridge reads the app process's logcat over adb (`logcat -d -v threadtime --pid=<pid>`): the whole buffer, no in-app capture and no Android 13+ log access prompt. If adb can't read it, it falls back to `/api/logs`, which only has entries while WormaCeptor's in-app capture runs (Logs screen) |
 | `list_leaks` | — | List detected memory leaks (LeakCanary integration) |
 | `list_violations` | — | List StrictMode and thread policy violations |
 | `get_device_info` | — | Get device model, Android version, app info, and system properties |
@@ -225,7 +225,7 @@ Options:
 |------|-----------|-------------|
 | `clear_transactions` | — | Clear all captured network transactions |
 | `clear_crashes` | — | Clear all crash reports |
-| `clear_logs` | — | Clear all log entries |
+| `clear_logs` | — | Empty the in-app log buffer; `tail_logs` then hides entries logged before the call (by host clock; logcat itself isn't cleared) |
 | `simulate_location` | `latitude`, `longitude`, `altitude?`, `name?` | Set a mock GPS location (lat: -90..90, lng: -180..180). The app must be the mock location app: Developer options, or `adb shell appops set <package> android:mock_location allow` |
 | `stop_location_simulation` | — | Stop mock location |
 | `send_push_notification` | `title`, `body`, `channel_id?`, `priority?` | Send a simulated push notification |
@@ -275,7 +275,7 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 |--------|----------|-------------|
 | GET | `/api/crashes` | List crashes (`?limit=&offset=`) |
 | GET | `/api/crashes/{id}` | Crash details with stack trace |
-| GET | `/api/logs` | Log entries (`?level=&tag=&limit=&offset=`) |
+| GET | `/api/logs` | Entries from the in-app capture (`?level=&tag=&limit=&offset=`); empty unless capture was started in the app |
 | GET | `/api/leaks` | Memory leaks (`?limit=&offset=`) |
 | GET | `/api/violations` | StrictMode violations (`?limit=&offset=`) |
 | GET | `/api/device-info` | Device and app information |
@@ -330,7 +330,7 @@ Subscribe by sending (send `"type": "unsubscribe"` to stop a channel):
 { "type": "subscribe", "channels": ["transactions", "crashes", "logs", "cpu", "memory", "fps"] }
 ```
 
-`transactions` and `crashes` emit `"event": "new"` once per new item; `logs` emits `"new"` per entry; `cpu`, `memory` and `fps` emit `"update"` whenever the monitor publishes a reading (the monitors only sample while they are running: `set_monitoring`, the performance overlay or the tool's screen). The bridge doesn't use the stream; it is for scripts and custom clients.
+`transactions` and `crashes` emit `"event": "new"` once per new item; `logs` emits `"new"` per entry while the in-app log capture runs (open the Logs screen; the server doesn't start it); `cpu`, `memory` and `fps` emit `"update"` whenever the monitor publishes a reading (the monitors only sample while they are running: `set_monitoring`, the performance overlay or the tool's screen). The bridge doesn't use the stream; it is for scripts and custom clients.
 
 Events arrive as:
 ```json

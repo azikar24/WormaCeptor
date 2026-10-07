@@ -35,8 +35,8 @@ internal fun Routing.logRoutes() {
             val levelFilter = call.parameters["level"]
             val tagFilter = call.parameters["tag"]
 
-            // Capture otherwise only starts with the Logs screen; it records entries logged from now on.
-            if (!logEngine.isCapturing.value) logEngine.start()
+            // No auto-start: starting capture clears logcat and triggers Android 13+'s log access prompt.
+            // The bridge reads logcat over adb and only falls back here.
             var logs = logEngine.logs.value
 
             if (levelFilter != null) {

@@ -65,6 +65,16 @@ internal class AdbClient(private val adbPath: String = "adb") {
         vararg args: String,
     ): CommandResult = runCommand(listOfNotNull(adbPath, serial?.let { "-s" }, serial) + args)
 
+    /** The app process's whole logcat buffer in threadtime format; null when it isn't running or adb failed. */
+    fun appLogcat(
+        serial: String?,
+        packageName: String,
+    ): String? {
+        val pid = parsePid(run(serial, "shell", "pidof", packageName).output) ?: return null
+        val result = run(serial, "logcat", "-d", "-v", "threadtime", "--pid=$pid")
+        return result.output.takeIf { result.exitCode == 0 }
+    }
+
     /** Null when adb itself failed, so callers don't mistake a broken adb for a dead app. */
     fun processState(
         serial: String?,

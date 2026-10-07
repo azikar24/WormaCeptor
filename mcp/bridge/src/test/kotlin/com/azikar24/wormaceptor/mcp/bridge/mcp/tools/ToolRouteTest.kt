@@ -2,8 +2,10 @@ package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceApiClient
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.buildJsonObject
@@ -34,7 +36,12 @@ class ToolRouteTest {
             ok
         }
     }
-    private val connection = mockk<DeviceConnection> { every { apiClient } returns this@ToolRouteTest.apiClient }
+    private val connection = mockk<DeviceConnection> {
+        every { apiClient } returns this@ToolRouteTest.apiClient
+        // adb unavailable: tail_logs falls back to the device route.
+        coEvery { readAppLogs() } returns null
+        every { markLogsCleared() } just Runs
+    }
 
     // Superset of required params; tools ignore the ones they don't declare.
     private val args = buildJsonObject {

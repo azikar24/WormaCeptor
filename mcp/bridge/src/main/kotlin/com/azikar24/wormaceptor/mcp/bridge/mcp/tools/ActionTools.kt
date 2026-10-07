@@ -72,8 +72,8 @@ internal class ClearLogsTool : McpTool() {
 
     override val annotations = ToolAnnotations.Destructive
 
-    override val description = "Delete all captured log entries from the WormaCeptor buffer. " +
-        "This is permanent: deleted log entries can't be recovered. " +
+    override val description = "Clear the app's logs: tail_logs then only shows entries logged after this call, " +
+        "and WormaCeptor's in-app log buffer is emptied (permanent). The device's logcat itself is not cleared. " +
         "Use to clear historical logs before reproducing an issue, " +
         "or to get a clean log stream for targeted debugging."
 
@@ -86,7 +86,9 @@ internal class ClearLogsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        return connection.apiClient.post("/api/clear/logs").toApiResponse().errorText() ?: "Logs cleared."
+        connection.apiClient.post("/api/clear/logs").toApiResponse().errorText()?.let { return it }
+        connection.markLogsCleared()
+        return "Logs cleared."
     }
 }
 

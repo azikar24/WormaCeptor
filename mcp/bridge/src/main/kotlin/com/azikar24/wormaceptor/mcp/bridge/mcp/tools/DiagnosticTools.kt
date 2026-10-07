@@ -1,5 +1,6 @@
 package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
+import com.azikar24.wormaceptor.mcp.bridge.adb.filterLogs
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
 import com.azikar24.wormaceptor.mcp.bridge.util.dataAs
@@ -100,7 +101,8 @@ internal class TailLogsTool : McpTool() {
 
     override val name = "tail_logs"
 
-    override val description = "Retrieve recent log entries from the running Android app. " +
+    override val description = "Retrieve the newest log entries of the running Android app's process, " +
+        "read from logcat over adb (full buffer history, no in-app capture needed). " +
         "Returns timestamp, level (VERBOSE/DEBUG/INFO/WARN/ERROR/ASSERT), tag, and message for each entry. " +
         "Use to monitor app behavior, trace execution flow, find warning/error messages, " +
         "or debug specific features by filtering on tag or log level."
@@ -133,12 +135,21 @@ internal class TailLogsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val params = buildMap {
-            arguments["level"]?.jsonPrimitive?.contentOrNull?.let { put("level", it) }
-            arguments["tag"]?.jsonPrimitive?.contentOrNull?.let { put("tag", it) }
-            put("limit", (arguments["limit"]?.jsonPrimitive?.intOrNull ?: DefaultLogLimit).toString())
+        val level = arguments["level"]?.jsonPrimitive?.contentOrNull
+        val tag = arguments["tag"]?.jsonPrimitive?.contentOrNull
+        val limit = arguments["limit"]?.jsonPrimitive?.intOrNull ?: DefaultLogLimit
+
+        connection.readAppLogs()?.let { logs ->
+            val entries = filterLogs(logs, level, tag, limit)
+            return if (entries.isEmpty()) "No log entries found." else TextFormatter.formatLogEntries(entries)
         }
 
+        // adb couldn't read logcat: fall back to the in-app capture, which only runs while started from the app.
+        val params = buildMap {
+            level?.let { put("level", it) }
+            tag?.let { put("tag", it) }
+            put("limit", limit.toString())
+        }
         val response = connection.apiClient.get("/api/logs", params).toApiResponse()
         val data = response.dataAs<List<LogEntryDto>>() ?: return response.errorText() ?: "No log entries found."
         return TextFormatter.formatLogEntries(data)

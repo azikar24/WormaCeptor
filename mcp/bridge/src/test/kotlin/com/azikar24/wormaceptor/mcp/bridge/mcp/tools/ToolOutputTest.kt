@@ -41,8 +41,10 @@ import com.azikar24.wormaceptor.mcp.protocol.TransactionDetailDto
 import com.azikar24.wormaceptor.mcp.protocol.TransactionSummaryDto
 import com.azikar24.wormaceptor.mcp.protocol.WebSocketConnectionDto
 import com.azikar24.wormaceptor.mcp.protocol.WebSocketMessageDto
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonElement
@@ -146,6 +148,8 @@ class ToolOutputTest {
         every { apiClient } returns this@ToolOutputTest.apiClient
         every { packageName } returns "com.example"
         coEvery { bringAppToFront(any()) } returns null
+        coEvery { readAppLogs() } returns null
+        every { markLogsCleared() } just Runs
     }
 
     private fun historyFixture(

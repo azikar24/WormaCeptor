@@ -2,7 +2,9 @@ package com.azikar24.wormaceptor.mcp.bridge.device
 
 import com.azikar24.wormaceptor.mcp.bridge.adb.AdbClient
 import com.azikar24.wormaceptor.mcp.bridge.adb.launchFailure
+import com.azikar24.wormaceptor.mcp.bridge.adb.parseThreadtime
 import com.azikar24.wormaceptor.mcp.bridge.config.BridgeConfig
+import com.azikar24.wormaceptor.mcp.protocol.LogEntryDto
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -27,6 +29,10 @@ internal class DeviceConnection(
     @Volatile
     var packageName: String? = null
         private set
+
+    /** Host clock at the last clear_logs; one app's logcat can't be cleared, so older entries are hidden. */
+    @Volatile
+    private var logsClearedAtMs = 0L
 
     private suspend fun healthy(): Boolean {
         val health = apiClient.healthCheck() ?: return false
@@ -83,6 +89,20 @@ internal class DeviceConnection(
     suspend fun unreachableAppHint(): String? {
         val pkg = packageName ?: return null
         return withContext(Dispatchers.IO) { adbClient.processState(config.deviceSerial, pkg)?.hint }
+    }
+
+    fun markLogsCleared() {
+        logsClearedAtMs = System.currentTimeMillis()
+    }
+
+    /**
+     * The app's own logcat read through adb (full history, no in-app capture or permission prompt),
+     * minus entries before the last [markLogsCleared]. Null when adb can't read it.
+     */
+    suspend fun readAppLogs(): List<LogEntryDto>? {
+        val pkg = packageName ?: return null
+        val output = withContext(Dispatchers.IO) { adbClient.appLogcat(config.deviceSerial, pkg) } ?: return null
+        return parseThreadtime(output).filter { it.timestamp > logsClearedAtMs }
     }
 
     /** Starts or resumes the app's launcher activity; returns an error message, or null on success. */

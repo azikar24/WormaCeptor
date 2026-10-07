@@ -123,8 +123,8 @@ internal object TextFormatter {
 
     fun formatLogEntries(logs: List<LogEntryDto>): String {
         if (logs.isEmpty()) {
-            return "No log entries found. Capture starts with the first tail_logs call and records entries " +
-                "logged after that; trigger the flow again, then retry."
+            return "No log entries found. adb couldn't read logcat, and WormaCeptor's in-app capture only " +
+                "records while it runs (open the Logs screen in the app), then retry."
         }
         val rows = logs.map { "${formatTime(it.timestamp)} ${it.level}/${it.tag}: ${it.message.clip()}" }
         return joinRows("", rows, keepNewest = true, hint = "lower limit or filter by level/tag")

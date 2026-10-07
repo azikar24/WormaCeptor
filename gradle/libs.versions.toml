@@ -46,7 +46,7 @@ autoServiceKsp = "1.2.0"
 
 dependencyAnalysis = "1.30.0"
 binaryCompatibilityValidator = "0.14.0"
-kover = "0.7.6"
+kover = "0.9.11"
 junit-jupiter = "5.11.0"
 android-junit5-plugin = "1.11.0.0"
 kotest = "5.9.1"

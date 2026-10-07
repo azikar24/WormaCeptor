@@ -20,6 +20,11 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.longOrNull
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import kotlin.math.abs
 
 internal object TextFormatter {
 
@@ -32,6 +37,15 @@ internal object TextFormatter {
     private const val NotAvailable = "N/A"
     private const val FooterReserve = 100
     private const val PageHint = "use limit/offset to page"
+    private const val MsPerSecond = 1_000L
+    private const val SecondsPerMinute = 60L
+    private const val SecondsPerHour = 3_600L
+    private const val SecondsPerDay = 86_400L
+
+    /** Time-named values below this (2001-01-01) aren't epoch millis, so they print raw. */
+    private const val MinEpochMs = 978_307_200_000L
+    private val TimeField = Regex("^(timestamp|lastModified|.+At|.+Time)$")
+    private val IsoSeconds: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
 
     /** For the generic formatters: every DTO field is printed, defaults included. */
     private val displayJson = Json(ProtocolJson) { encodeDefaults = true }
@@ -43,7 +57,7 @@ internal object TextFormatter {
             "|---|----|--------|-----|--------|----------|------|\n"
         val rows = transactions.mapIndexed { i, tx ->
             "| ${i + 1} | ${tx.id} | ${tx.method} | ${tx.url.clip()} " +
-                "| ${tx.code ?: NotAvailable} | ${tx.tookMs ?: NotAvailable}ms | ${tx.timestamp} |"
+                "| ${tx.code ?: NotAvailable} | ${tx.tookMs ?: NotAvailable}ms | ${formatTime(tx.timestamp)} |"
         }
         return joinRows(header, rows)
     }
@@ -98,7 +112,7 @@ internal object TextFormatter {
     fun formatCrashDetail(crash: CrashDto): String {
         val sb = StringBuilder()
         sb.appendLine("Crash: ${crash.id}")
-        sb.appendLine("Time: ${crash.timestamp}")
+        sb.appendLine("Time: ${formatTime(crash.timestamp)}")
         sb.appendLine("Exception: ${crash.exceptionType}")
         sb.appendLine("Message: ${crash.message ?: NotAvailable}")
         sb.appendLine()
@@ -112,7 +126,7 @@ internal object TextFormatter {
             return "No log entries found. Capture starts with the first tail_logs call and records entries " +
                 "logged after that; trigger the flow again, then retry."
         }
-        val rows = logs.map { "${it.timestamp} ${it.level}/${it.tag}: ${it.message.clip()}" }
+        val rows = logs.map { "${formatTime(it.timestamp)} ${it.level}/${it.tag}: ${it.message.clip()}" }
         return joinRows("", rows, keepNewest = true, hint = "lower limit or filter by level/tag")
     }
 
@@ -174,7 +188,7 @@ internal object TextFormatter {
         sb.appendLine("Device Information:")
         displayJson.encodeToJsonElement(DeviceInfoDto.serializer(), info).jsonObject.forEach { (key, value) ->
             val displayKey = key.replace(Regex("([A-Z])"), " $1").trim().replaceFirstChar { it.uppercase() }
-            sb.appendLine("  $displayKey: ${value.content()}")
+            sb.appendLine("  $displayKey: ${fieldValue(key, value)}")
         }
         return sb.toString()
     }
@@ -205,10 +219,37 @@ internal object TextFormatter {
         if (items.isEmpty()) return "No $label found."
         val rows = items.mapIndexed { i, item ->
             val o = displayJson.encodeToJsonElement(serializer, item).jsonObject
-            val fields = o.entries.joinToString(", ") { "${it.key}: ${it.value.content().clip()}" }
+            val fields = o.entries.joinToString(", ") { "${it.key}: ${fieldValue(it.key, it.value)}" }
             "${i + 1}. $fields"
         }
         return joinRows("Found ${items.size} $label:\n\n", rows)
+    }
+
+    /** Local ISO-8601 to the second plus age, e.g. `2026-10-07T18:05:12 (12 s ago)`. */
+    fun formatTime(
+        epochMs: Long,
+        nowMs: Long = System.currentTimeMillis(),
+        zone: ZoneId = ZoneId.systemDefault(),
+    ): String {
+        val local = IsoSeconds.format(Instant.ofEpochMilli(epochMs).atZone(zone))
+        val seconds = (nowMs - epochMs) / MsPerSecond
+        val span = abs(seconds)
+        val amount = when {
+            span < SecondsPerMinute -> "$span s"
+            span < SecondsPerHour -> "${span / SecondsPerMinute} min"
+            span < SecondsPerDay -> "${span / SecondsPerHour} h"
+            else -> "${span / SecondsPerDay} d"
+        }
+        return if (seconds >= 0) "$local ($amount ago)" else "$local (in $amount)"
+    }
+
+    /** Time-named fields holding epoch millis render via [formatTime]; everything else is clipped text. */
+    private fun fieldValue(
+        key: String,
+        value: JsonElement,
+    ): String {
+        val epochMs = (value as? JsonPrimitive)?.longOrNull?.takeIf { it >= MinEpochMs && TimeField.matches(key) }
+        return epochMs?.let { formatTime(it) } ?: value.content().clip()
     }
 
     /** Last line of defence for any tool result, bodies included. */

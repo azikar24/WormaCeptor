@@ -7,6 +7,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class TextFormatterTest {
 
@@ -53,6 +55,34 @@ class TextFormatterTest {
         val message = WebSocketMessageDto(1L, 1L, "TEXT", "SENT", "p".repeat(5_000), 1L, 5_000L)
         val text = TextFormatter.formatGenericList(listOf(message), WebSocketMessageDto.serializer(), "message(s)")
         assertTrue(text.contains("… (+4500 chars)"))
+    }
+
+    @Test
+    fun `timestamps render as local ISO time plus relative age`() {
+        val zone = ZoneId.of("Asia/Riyadh")
+        val at = ZonedDateTime.of(2026, 10, 7, 18, 5, 12, 0, zone).toInstant().toEpochMilli()
+        assertEquals("2026-10-07T18:05:12 (12 s ago)", TextFormatter.formatTime(at, at + 12_400, zone))
+        assertEquals("2026-10-07T18:05:12 (3 min ago)", TextFormatter.formatTime(at, at + 200_000, zone))
+        assertEquals("2026-10-07T18:05:12 (5 h ago)", TextFormatter.formatTime(at, at + 5 * 3_600_000L, zone))
+        assertEquals("2026-10-07T18:05:12 (2 d ago)", TextFormatter.formatTime(at, at + 2 * 86_400_000L, zone))
+        assertEquals("2026-10-07T18:05:12 (in 4 s)", TextFormatter.formatTime(at, at - 4_000, zone))
+    }
+
+    @Test
+    fun `generic lists render time fields but keep ids raw`() {
+        val now = System.currentTimeMillis()
+        val message = WebSocketMessageDto(1_791_320_958_640L, 1L, "TEXT", "SENT", "hi", now - 5_000, 2L)
+        val text = TextFormatter.formatGenericList(listOf(message), WebSocketMessageDto.serializer(), "message(s)")
+        assertTrue(text, text.contains("id: 1791320958640,"))
+        assertTrue(text, Regex("""timestamp: \d{4}-\d\d-\d\dT\d\d:\d\d:\d\d \(5 s ago\)""").containsMatchIn(text))
+    }
+
+    @Test
+    fun `log lines start with a readable time`() {
+        val text = TextFormatter.formatLogEntries(
+            listOf(LogEntryDto(1L, System.currentTimeMillis(), "INFO", "T", 1, 2, "m")),
+        )
+        assertTrue(text, Regex("""^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d \(\d+ s ago\) INFO/T: m""").containsMatchIn(text))
     }
 
     @Test

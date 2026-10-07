@@ -68,7 +68,7 @@ internal class GetCpuStatsTool : McpTool() {
 
         history?.let {
             sb.appendLine("\nUsage History (${it.size} samples):")
-            it.forEach { s -> sb.appendLine("  ${s.timestamp}: ${s.overallUsagePercent}%") }
+            it.forEach { s -> sb.appendLine("  ${TextFormatter.formatTime(s.timestamp)}: ${s.overallUsagePercent}%") }
         }
 
         return sb.toString()
@@ -115,7 +115,11 @@ internal class GetMemoryStatsTool : McpTool() {
         sb.appendLine("GC Count: ${data.gcCount}")
         history?.let {
             sb.appendLine("\nHistory (${it.size} samples):")
-            it.forEach { s -> sb.appendLine("  ${s.timestamp}: ${s.usedMemory} bytes (${s.heapUsagePercent}%)") }
+            it.forEach { s ->
+                sb.appendLine(
+                    "  ${TextFormatter.formatTime(s.timestamp)}: ${s.usedMemory} bytes (${s.heapUsagePercent}%)",
+                )
+            }
         }
         return sb.toString()
     }
@@ -162,7 +166,7 @@ internal class GetFpsStatsTool : McpTool() {
         sb.appendLine("Jank Frames: ${data.jankFrames}")
         history?.let {
             sb.appendLine("\nHistory (${it.size} samples):")
-            it.forEach { s -> sb.appendLine("  ${s.timestamp}: ${s.currentFps} fps") }
+            it.forEach { s -> sb.appendLine("  ${TextFormatter.formatTime(s.timestamp)}: ${s.currentFps} fps") }
         }
         return sb.toString()
     }

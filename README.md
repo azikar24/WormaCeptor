@@ -46,8 +46,8 @@ Add the dependencies in your app's `build.gradle.kts`:
 <!-- x-release-please-start-version -->
 ```kotlin
 dependencies {
-    implementation("com.azikar24.wormaceptor:wormaceptor-client:2.3.1")
-    debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:2.3.1")
+    implementation("com.azikar24.wormaceptor:wormaceptor-client:3.4.0")
+    debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:3.4.0")
 }
 ```
 <!-- x-release-please-end -->
@@ -135,7 +135,7 @@ Add the MCP device server to your debug build and your AI coding agent can read 
 
 <!-- x-release-please-start-version -->
 ```kotlin
-debugImplementation("com.azikar24.wormaceptor:wormaceptor-mcp-server:2.4.0")
+debugImplementation("com.azikar24.wormaceptor:wormaceptor-mcp-server:3.4.0")
 ```
 <!-- x-release-please-end -->
 

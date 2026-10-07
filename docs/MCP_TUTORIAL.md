@@ -271,6 +271,50 @@ Set the device location to the Eiffel Tower (48.8584, 2.2945)
 Send a test push notification with title "Order Update" and body "Your order has shipped!"
 ```
 
+### Watching a Flow Live
+
+**"What happened when I tapped Login?"**
+
+```
+I just tapped Login and nothing happened. Show me the timeline of the last minute.
+```
+
+The AI calls `get_timeline` and gets requests, logs, crashes, StrictMode violations and WebSocket messages in one time-ordered list, each with the id to drill into.
+
+**"Catch the request as it happens"**
+
+```
+Wait for the next POST to /api/login, then show me its response body. I'll tap the button now.
+```
+
+The AI calls `wait_for_transaction` with `url_contains: "/api/login"` and `method: "POST"`; it returns as soon as a new matching request finishes (30 s by default). `wait_for_crash` does the same for crashes.
+
+### Mocking Responses
+
+**"Force an error state"**
+
+```
+Make GET https://api.example.com/users return a 500 with {"error":"down"}, then I'll check the error screen.
+```
+
+The AI calls `create_mock_rule`. Mocks apply to OkHttp and Ktor clients that use the WormaCeptor interceptor or plugin; `list_mock_rules`, `set_mock_rule_enabled` and `delete_mock_rule` manage them afterwards.
+
+**"Replay a real response with tweaks"**
+
+```
+Take the last /api/feed response, mock it with an empty items array, and slow it down by 3 seconds.
+```
+
+The AI calls `mock_from_transaction` with an edited `body` (or `create_mock_rule` with `delay_ms`).
+
+### Reproducing Outside the App
+
+```
+Give me a curl command for the failed checkout request, then replay it against https://staging.example.com and compare.
+```
+
+The AI calls `export_curl` (sensitive headers stay `[REDACTED]`) and `replay_transaction` with a `url` override. The replay is sent from the device straight to the server, skipping mock rules and throttling, and shows up as a new transaction.
+
 ### Combining It All
 
 The real power is combining tools in a single conversation:
@@ -544,7 +588,7 @@ The `mcp-device-server` module is included as `debugImplementation`. It physical
 | `enabled` | Boolean | true | Auto-start on app launch; `false` stops a running server |
 | `redactSecrets` | Boolean | true | Mask preference and file values under secret-looking keys |
 
-### All 34 MCP Tools
+### All 44 MCP Tools
 
 | Category | Tools |
 |----------|-------|
@@ -553,3 +597,7 @@ The `mcp-device-server` module is included as `debugImplementation`. It physical
 | **Performance** | `get_cpu_stats`, `get_memory_stats`, `get_fps_stats`, `get_performance_snapshot`, `set_monitoring` |
 | **Storage** | `list_preferences`, `list_databases`, `query_database`, `list_files`, `read_file`, `browse_secure_storage`, `list_dependencies`, `list_loaded_libraries` |
 | **Actions** | `clear_transactions`, `clear_crashes`, `clear_logs`, `simulate_location`, `stop_location_simulation`, `send_push_notification`, `bring_app_to_front` |
+| **Actions** | `clear_transactions`, `clear_crashes`, `clear_logs`, `simulate_location`, `stop_location_simulation`, `send_push_notification` |
+| **Timeline and events** | `get_timeline`, `wait_for_transaction`, `wait_for_crash` |
+| **Mock rules** | `list_mock_rules`, `create_mock_rule`, `mock_from_transaction`, `set_mock_rule_enabled`, `delete_mock_rule` |
+| **Reproduce** | `export_curl`, `replay_transaction` |

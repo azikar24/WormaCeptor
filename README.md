@@ -95,7 +95,7 @@ You can also enable the shake gesture with `WormaCeptorApi.startActivityOnShake(
 
 **Testing** — Fire test push notifications, manage FCM tokens, mock GPS locations, encrypt/decrypt and hash with the crypto tool
 
-**AI agents** — An optional MCP server lets Claude Code, Cursor, and other MCP clients query the running debug app: 32 tools for transactions, crashes, logs, performance, storage, and actions. See [AI Agents (MCP)](#ai-agents-mcp)
+**AI agents** — An optional MCP server lets Claude Code, Cursor, and other MCP clients query the running debug app: 42 tools for transactions, crashes, logs, performance, storage, mock rules, request replay, and actions. See [AI Agents (MCP)](#ai-agents-mcp)
 
 Every feature is its own module. Enable exactly what you need at init time, disable the rest. See [Feature Toggles](https://wormaceptor.com/docs/feature-toggles).
 
@@ -145,7 +145,7 @@ Build the bridge CLI once (`./gradlew :mcp:bridge:jar` in this repo), then regis
 claude mcp add --transport stdio wormaceptor -- java -jar /absolute/path/to/bridge.jar
 ```
 
-The server binds to `127.0.0.1` on the device and the bridge reaches it through `adb forward`. Bearer-token auth is available and off by default; read [Security](docs/MCP.md#security) before using it on a shared device. Setup, all 32 tools, and configuration: [docs/MCP.md](docs/MCP.md). Walkthrough: [docs/MCP_TUTORIAL.md](docs/MCP_TUTORIAL.md).
+The server binds to `127.0.0.1` on the device and the bridge reaches it through `adb forward`. Bearer-token auth is available and off by default; read [Security](docs/MCP.md#security) before using it on a shared device. Setup, all 42 tools, and configuration: [docs/MCP.md](docs/MCP.md). Walkthrough: [docs/MCP_TUTORIAL.md](docs/MCP_TUTORIAL.md).
 
 ---
 

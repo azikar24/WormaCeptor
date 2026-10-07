@@ -5,6 +5,7 @@ import io.ktor.websocket.Frame
 import io.ktor.websocket.send
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 
 internal class EventStreamManager {
@@ -18,7 +19,7 @@ internal class EventStreamManager {
         session: DefaultWebSocketServerSession,
     ) {
         sessions[sessionId] = session
-        subscriptions[sessionId] = ConcurrentHashMap.newKeySet()
+        subscriptions[sessionId] = Collections.newSetFromMap(ConcurrentHashMap())
     }
 
     fun removeSession(sessionId: String) {

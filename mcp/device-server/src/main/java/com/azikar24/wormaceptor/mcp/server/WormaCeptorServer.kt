@@ -48,6 +48,7 @@ internal data class ErrorResponse(
  * `WormaCeptorApi.configureMcpServer` changes.
  */
 internal class WormaCeptorServer(
+    private val packageName: String? = null,
     private val configProvider: () -> ServerConfig = { ServerConfig.from(McpHolder.config) },
 ) : McpServerHandle {
     private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
@@ -129,7 +130,7 @@ internal class WormaCeptorServer(
         }
 
         routing {
-            healthRoutes()
+            healthRoutes(packageName)
 
             if (ApiCategory.NETWORK in config.enabledCategories) {
                 transactionRoutes(maxBodySize = config.maxBodySize)

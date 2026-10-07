@@ -100,6 +100,31 @@ class ToolContractTest {
     }
 
     @Test
+    fun `bring_app_to_front launches the cached package, or the one passed in`() = runTest {
+        every { connection.packageName } returns "com.cached"
+        coEvery { connection.bringAppToFront(any()) } returns null
+        assertEquals(
+            "Brought com.cached to the foreground.",
+            BringAppToFrontTool().execute(buildJsonObject {}, connection),
+        )
+        val explicit = BringAppToFrontTool().execute(buildJsonObject { put("package", "com.other") }, connection)
+        assertEquals("Brought com.other to the foreground.", explicit)
+        coVerify { connection.bringAppToFront("com.other") }
+    }
+
+    @Test
+    fun `bring_app_to_front reports an unknown package and launch failures as errors`() = runTest {
+        every { connection.packageName } returns null
+        assertTrue(BringAppToFrontTool().execute(buildJsonObject {}, connection).startsWith("Error: "))
+
+        coEvery { connection.bringAppToFront("com.gone") } returns "No activities found to run, monkey aborted."
+        assertEquals(
+            "Error: Couldn't launch com.gone: No activities found to run, monkey aborted.",
+            BringAppToFrontTool().execute(buildJsonObject { put("package", "com.gone") }, connection),
+        )
+    }
+
+    @Test
     fun `read_file renders content and mime type from the JSON envelope`() = runTest {
         coEvery { apiClient.get("/api/files/read", mapOf("path" to "files/a.json")) } returns
             serverResponse(ReadFileDto(content = "{ }", mimeType = "application/json"))

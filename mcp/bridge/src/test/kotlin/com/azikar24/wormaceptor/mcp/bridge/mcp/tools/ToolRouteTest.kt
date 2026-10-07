@@ -61,7 +61,7 @@ class ToolRouteTest {
 
     @Test
     fun `every tool calls a registered device-server route`() = runTest {
-        val unmatched = ToolRegistry.allTools().flatMap { tool ->
+        val unmatched = ToolRegistry.allTools().filterNot { it.name in BRIDGE_ONLY }.flatMap { tool ->
             calls.clear()
             runCatching { tool.execute(args, connection) }
             if (calls.isEmpty()) return@flatMap listOf("${tool.name}: made no request")
@@ -78,6 +78,9 @@ class ToolRouteTest {
     }
 
     private companion object {
+        /** Tools that only talk to adb, never the device server. */
+        val BRIDGE_ONLY = setOf("bring_app_to_front")
+
         val ROUTE = Regex("""\b(get|post|delete)\("(/api/[^"]*)"\)""")
     }
 }

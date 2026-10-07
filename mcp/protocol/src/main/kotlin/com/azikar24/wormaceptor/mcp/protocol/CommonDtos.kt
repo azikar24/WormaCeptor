@@ -20,3 +20,13 @@ internal data class ResponseMeta(
     val truncated: Boolean = false,
     val totalSize: Long? = null,
 )
+
+/** `/api/health`. The bridge caches [packageName] to run adb diagnostics when the app stops answering. */
+@Serializable
+internal data class HealthDto(
+    val success: Boolean = true,
+    val server: String,
+    val version: String,
+    val timestamp: Long = System.currentTimeMillis(),
+    val packageName: String? = null,
+)

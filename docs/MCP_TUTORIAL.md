@@ -489,7 +489,7 @@ This logs all MCP traffic to stderr:
 
 ### Keep the app process alive
 
-The MCP server runs inside the app process. If Android kills the app in the background, the server goes with it. Relaunch the app and the next tool call reconnects.
+The MCP server runs inside the app process. When another app takes the foreground, Android may freeze or kill yours and every tool call times out. The bridge checks with adb and answers "The app is frozen in the background" or "The app isn't running"; ask the AI to call `bring_app_to_front` (or tap the app), and the next tool call reconnects.
 
 ### Bridge reconnects on demand
 
@@ -541,7 +541,7 @@ The `mcp-device-server` module is included as `debugImplementation`. It physical
 | `maxBodySize` | Long | 1,048,576 | Max body characters in responses |
 | `enabled` | Boolean | true | Auto-start on app launch; `false` stops a running server |
 
-### All 32 MCP Tools
+### All 33 MCP Tools
 
 | Category | Tools |
 |----------|-------|
@@ -549,4 +549,4 @@ The `mcp-device-server` module is included as `debugImplementation`. It physical
 | **Diagnostics** | `list_crashes`, `get_crash`, `tail_logs`, `list_leaks`, `list_violations`, `get_device_info` |
 | **Performance** | `get_cpu_stats`, `get_memory_stats`, `get_fps_stats`, `get_performance_snapshot` |
 | **Storage** | `list_preferences`, `list_databases`, `query_database`, `list_files`, `read_file`, `browse_secure_storage`, `list_dependencies`, `list_loaded_libraries` |
-| **Actions** | `clear_transactions`, `clear_crashes`, `clear_logs`, `simulate_location`, `stop_location_simulation`, `send_push_notification` |
+| **Actions** | `clear_transactions`, `clear_crashes`, `clear_logs`, `simulate_location`, `stop_location_simulation`, `send_push_notification`, `bring_app_to_front` |

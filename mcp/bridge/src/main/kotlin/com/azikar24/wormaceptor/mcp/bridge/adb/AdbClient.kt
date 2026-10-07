@@ -59,6 +59,26 @@ internal class AdbClient(private val adbPath: String = "adb") {
         return runCommand(listOf(adbPath, "forward", "--remove", "tcp:$localPort")).exitCode == 0
     }
 
+    /** Runs `adb [-s serial] <args>`. */
+    fun run(
+        serial: String?,
+        vararg args: String,
+    ): CommandResult = runCommand(listOfNotNull(adbPath, serial?.let { "-s" }, serial) + args)
+
+    /** Null when adb itself failed, so callers don't mistake a broken adb for a dead app. */
+    fun processState(
+        serial: String?,
+        packageName: String,
+    ): AppProcessState? {
+        val pidof = run(serial, "shell", "pidof", packageName)
+        // pidof exits 1 with empty output when nothing matches; anything on stderr is an adb problem.
+        if (pidof.exitCode != 0 && pidof.error.isNotBlank()) return null
+        val pid = parsePid(pidof.output) ?: return AppProcessState.NotRunning
+        val dumpsys = run(serial, "shell", "dumpsys", "activity", "processes", packageName)
+        if (dumpsys.exitCode != 0) return null
+        return appProcessState(pid, isMainProcessFrozen(dumpsys.output, packageName))
+    }
+
     private fun runCommand(
         args: List<String>,
         timeoutSeconds: Long = COMMAND_TIMEOUT_SECONDS,

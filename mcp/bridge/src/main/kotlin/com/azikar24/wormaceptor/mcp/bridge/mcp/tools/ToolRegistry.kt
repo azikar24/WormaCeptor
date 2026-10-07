@@ -33,12 +33,13 @@ internal object ToolRegistry {
         BrowseSecureStorageTool(),
         ListDependenciesTool(),
         ListLoadedLibrariesTool(),
-        // Actions (6)
+        // Actions (7)
         ClearTransactionsTool(),
         ClearCrashesTool(),
         ClearLogsTool(),
         SimulateLocationTool(),
         StopLocationSimulationTool(),
         SendPushNotificationTool(),
+        BringAppToFrontTool(),
     )
 }

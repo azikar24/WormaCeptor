@@ -1,11 +1,14 @@
 package com.azikar24.wormaceptor.mcp.bridge.device
 
+import com.azikar24.wormaceptor.mcp.bridge.util.ProtocolJson
+import com.azikar24.wormaceptor.mcp.protocol.HealthDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.timeout
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -68,20 +71,25 @@ internal class DeviceApiClient(
         return response.body()
     }
 
-    suspend fun healthCheck(): Boolean {
+    /** The health payload, or null when the server didn't answer within [HEALTH_TIMEOUT_MS]. */
+    suspend fun healthCheck(): HealthDto? {
         return try {
-            get("/api/health")
-            true
+            val response = httpClient.get("$baseUrl/api/health") {
+                timeout { requestTimeoutMillis = HEALTH_TIMEOUT_MS }
+            }
+            ProtocolJson.decodeFromJsonElement(HealthDto.serializer(), response.body<JsonElement>())
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            false
+            null
         }
     }
 
     fun close() = httpClient.close()
 
     companion object {
-        internal const val REQUEST_TIMEOUT_MS = 30_000L
+        // A frozen app accepts the adb-forwarded connection but never answers: fail fast, then diagnose.
+        internal const val REQUEST_TIMEOUT_MS = 10_000L
         internal const val CONNECT_TIMEOUT_MS = 5_000L
+        internal const val HEALTH_TIMEOUT_MS = 2_000L
     }
 }

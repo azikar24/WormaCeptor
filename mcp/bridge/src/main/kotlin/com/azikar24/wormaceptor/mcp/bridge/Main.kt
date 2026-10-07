@@ -39,7 +39,8 @@ fun main(args: Array<String>) {
         }
         System.err.println("Port forwarded: localhost:${config.port} -> device:${config.port}")
 
-        val connection = DeviceConnection(config, adbClient)
+        // Pin the discovered serial: adb diagnostics and logcat need it even when --device wasn't given.
+        val connection = DeviceConnection(config.copy(deviceSerial = device.serial), adbClient)
         try {
             connection.connect()
             System.err.println("Connected to WormaCeptor server")

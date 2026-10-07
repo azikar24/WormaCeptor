@@ -18,7 +18,7 @@ import com.azikar24.wormaceptor.core.engine.McpHolder
 internal class WormaCeptorServerInitializer : ContentProvider() {
 
     override fun onCreate(): Boolean {
-        val server = WormaCeptorServer()
+        val server = WormaCeptorServer(packageName = context?.packageName)
         McpHolder.registerServer(server)
         // Providers run before Application.onCreate; a main-looper post runs after it, so the config read below
         // includes the host's configureMcpServer(). Reading it any earlier started the server without auth.

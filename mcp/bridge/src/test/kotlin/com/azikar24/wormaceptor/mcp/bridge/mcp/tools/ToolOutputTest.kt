@@ -135,7 +135,11 @@ class ToolOutputTest {
         coEvery { post(match { it != "/api/databases/app.db/query" }, any()) } returns ok
         coEvery { delete(any()) } returns ok
     }
-    private val connection = mockk<DeviceConnection> { every { apiClient } returns this@ToolOutputTest.apiClient }
+    private val connection = mockk<DeviceConnection> {
+        every { apiClient } returns this@ToolOutputTest.apiClient
+        every { packageName } returns "com.example"
+        coEvery { bringAppToFront(any()) } returns null
+    }
 
     private fun historyFixture(
         path: String,

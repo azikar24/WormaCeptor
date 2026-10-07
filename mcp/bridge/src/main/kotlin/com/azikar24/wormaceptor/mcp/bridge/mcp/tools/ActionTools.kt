@@ -179,6 +179,42 @@ internal class StopLocationSimulationTool : McpTool() {
     }
 }
 
+internal class BringAppToFrontTool : McpTool() {
+
+    override val name = "bring_app_to_front"
+
+    override val annotations = ToolAnnotations(readOnlyHint = false, destructiveHint = false, idempotentHint = true)
+
+    override val description = "Launch the app, or bring it back to the foreground, through adb. " +
+        "Android freezes or kills backgrounded apps, and then every other tool times out; " +
+        "call this when a tool says the app is frozen or not running, then retry that tool."
+
+    override val inputSchema = buildJsonObject {
+        put("type", "object")
+        putJsonObject("properties") {
+            putJsonObject("package") {
+                put("type", "string")
+                put(
+                    "description",
+                    "Application id to launch. Omit to use the app the bridge last connected to.",
+                )
+            }
+        }
+    }
+
+    override suspend fun execute(
+        arguments: JsonObject,
+        connection: DeviceConnection,
+    ): String {
+        val pkg = arguments["package"]?.jsonPrimitive?.contentOrNull?.takeIf { it.isNotBlank() }
+            ?: connection.packageName
+            ?: return "${ERROR_PREFIX}The app's package isn't known yet (the bridge hasn't reached the app). " +
+                "Pass 'package'."
+        val failure = connection.bringAppToFront(pkg) ?: return "Brought $pkg to the foreground."
+        return "${ERROR_PREFIX}Couldn't launch $pkg: $failure"
+    }
+}
+
 internal class SendPushNotificationTool : McpTool() {
 
     override val name = "send_push_notification"

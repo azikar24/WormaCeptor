@@ -1,9 +1,11 @@
 package com.azikar24.wormaceptor.mcp.bridge.mcp
 
+import com.azikar24.wormaceptor.mcp.bridge.adb.AppProcessState
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceApiClient
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import com.azikar24.wormaceptor.mcp.bridge.mcp.tools.ToolRegistry
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -18,6 +20,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.IOException
 import java.io.StringWriter
 
 /** Wire-level checks with the messages Claude Code 2.1 actually sends (captured from a real session). */
@@ -57,7 +60,7 @@ class McpServerTest {
     fun `tools list returns all registered tools`() {
         val list = exchange("""{"jsonrpc":"2.0","id":1,"method":"tools/list"}""").single()
         val body = list["body"] as kotlinx.serialization.json.JsonObject
-        assertEquals(32, body["result"]!!.jsonObject["tools"]!!.jsonArray.size)
+        assertEquals(33, body["result"]!!.jsonObject["tools"]!!.jsonArray.size)
     }
 
     private fun negotiated(params: String): String? {
@@ -103,6 +106,7 @@ class McpServerTest {
             "simulate_location",
             "stop_location_simulation",
             "send_push_notification",
+            "bring_app_to_front",
         )
         assertEquals(hints.keys - writers, hints.filterValues { it.getValue("readOnlyHint") }.keys)
         assertEquals(
@@ -155,6 +159,40 @@ class McpServerTest {
         val connection = mockk<DeviceConnection> { every { this@mockk.apiClient } returns apiClient }
         val result = callResult("""{"name":"clear_crashes","arguments":{}}""", connection)
         assertEquals("Crashes cleared.", result.text())
+        assertFalse(result.isError())
+    }
+
+    @Test
+    fun `timeout on a frozen app returns the adb diagnosis without reconnecting`() {
+        val apiClient = mockk<DeviceApiClient> {
+            coEvery { get("/api/crashes", any()) } throws IOException("Request timeout has expired")
+        }
+        val connection = mockk<DeviceConnection> {
+            every { this@mockk.apiClient } returns apiClient
+            coEvery { unreachableAppHint() } returns AppProcessState.Frozen.hint
+        }
+        val result = callResult("""{"name":"list_crashes","arguments":{}}""", connection)
+        assertEquals("Error: ${AppProcessState.Frozen.hint}", result.text())
+        assertTrue(result.isError())
+        coVerify(exactly = 0) { connection.reconnect(any()) }
+    }
+
+    @Test
+    fun `timeout on a running app reconnects and retries`() {
+        var calls = 0
+        val apiClient = mockk<DeviceApiClient> {
+            coEvery { get("/api/crashes", any()) } answers {
+                if (calls++ == 0) throw IOException("Connection reset")
+                buildJsonObject { put("success", true) }
+            }
+        }
+        val connection = mockk<DeviceConnection> {
+            every { this@mockk.apiClient } returns apiClient
+            coEvery { unreachableAppHint() } returns null
+            coEvery { reconnect(any()) } returns true
+        }
+        val result = callResult("""{"name":"list_crashes","arguments":{}}""", connection)
+        assertEquals("No crashes found.", result.text())
         assertFalse(result.isError())
     }
 

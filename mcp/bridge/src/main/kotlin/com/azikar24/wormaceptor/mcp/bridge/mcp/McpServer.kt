@@ -105,20 +105,27 @@ internal class McpServer(
             ?: return errorResponse(request.id, "Unknown tool: $toolName")
 
         return try {
-            val result = try {
-                tool.execute(arguments, connection)
-            } catch (e: IOException) {
-                // App restarted or the adb forward dropped: re-forward once, then retry the call.
-                if (!connection.reconnect()) {
-                    throw IOException("Device server unreachable; is the debug app running? (${e.message})", e)
-                }
-                tool.execute(arguments, connection)
-            }
+            val result = executeWithReconnect(tool, arguments)
             toolResult(request.id, result, isError = result.startsWith(McpTool.ERROR_PREFIX))
         } catch (e: Exception) {
             if (e is CancellationException) throw e
             toolResult(request.id, "${McpTool.ERROR_PREFIX}${e.message}", isError = true)
         }
+    }
+
+    private suspend fun executeWithReconnect(
+        tool: McpTool,
+        arguments: JsonObject,
+    ): String = try {
+        tool.execute(arguments, connection)
+    } catch (e: IOException) {
+        // A frozen or dead app won't come back by reconnecting: say what to do instead.
+        connection.unreachableAppHint()?.let { throw IOException(it, e) }
+        // App restarted or the adb forward dropped: re-forward once, then retry the call.
+        if (!connection.reconnect()) {
+            throw IOException("Device server unreachable; is the debug app running? (${e.message})", e)
+        }
+        tool.execute(arguments, connection)
     }
 
     private fun toolResult(

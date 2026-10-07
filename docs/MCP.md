@@ -148,6 +148,7 @@ A standalone JVM application that translates MCP protocol (JSON-RPC 2.0 on stdin
 - **Auto-discovers** connected devices via ADB
 - **Port forwarding** — sets up `tcp:8999 → tcp:8999` automatically
 - **Reconnection**: at startup it waits ~10s for the server, then starts anyway; a tool call that fails with a connection error re-creates the port forward, retries 4 times with backoff (1s, 2s, 4s), then repeats the call once
+- **Frozen or dead app**: requests time out after 10 s (health checks after 2 s). On a timeout or connection error the bridge asks adb whether the app's process is alive (`pidof`) or frozen (`dumpsys activity processes`, `isFrozen=true`) and says so instead of retrying; the package name comes from `/api/health`, cached after the first successful check
 - **Input validation** — path traversal protection, SQL injection prevention, parameter range checks
 - **Tool errors**: invalid arguments, device-server errors and connection failures come back as MCP `isError: true` results whose text starts with `Error: `
 - **Verbose mode** — `--verbose` logs all MCP requests and responses to stderr
@@ -168,7 +169,7 @@ Options:
   --help, -h         Print help
 ```
 
-## MCP Tools (32 total)
+## MCP Tools (33 total)
 
 ### Network (8 tools)
 
@@ -216,7 +217,7 @@ Options:
 | `list_dependencies` | `category?` | List detected app dependencies, optionally by category (`NETWORKING`, `UI_FRAMEWORK`, ...) |
 | `list_loaded_libraries` | `type?`, `system?` | List loaded libraries. `type`: `NATIVE_SO`, `DEX`, `JAR`, `AAR_RESOURCE`; `system`: true/false |
 
-### Actions (6 tools)
+### Actions (7 tools)
 
 | Tool | Parameters | Description |
 |------|-----------|-------------|
@@ -226,6 +227,7 @@ Options:
 | `simulate_location` | `latitude`, `longitude`, `altitude?`, `name?` | Set a mock GPS location (lat: -90..90, lng: -180..180). The app must be the mock location app: Developer options, or `adb shell appops set <package> android:mock_location allow` |
 | `stop_location_simulation` | — | Stop mock location |
 | `send_push_notification` | `title`, `body`, `channel_id?`, `priority?` | Send a simulated push notification |
+| `bring_app_to_front` | `package?` | Launch the app or bring it back to the foreground via adb (`monkey` with the launcher intent). Bridge-only; defaults to the package the bridge last reached |
 
 ## REST API Endpoints
 
@@ -250,7 +252,7 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| GET | `/api/health` | No | Server health check |
+| GET | `/api/health` | No | Server health check: `{success, server, version, timestamp, packageName}` |
 
 ### Network
 
@@ -483,6 +485,11 @@ mcp/
 - Ensure `McpConfig(enableAuth = true, authToken = ...)` is set on the device side
 - Pass the same token with `--token` on the bridge side
 - The health endpoint (`/api/health`) always bypasses auth
+
+**"The app is frozen in the background" / "The app isn't running"**
+- Android froze or killed the app after another app took the foreground; every request then times out
+- Bring it back with the `bring_app_to_front` tool (or tap the app), then retry the call
+- The bridge learns the package from the app's first successful health check; before that, pass `package` to `bring_app_to_front`
 
 **Bridge reconnection exhausted**
 - A failing tool call retries the port forward 4 times, then returns the connection error

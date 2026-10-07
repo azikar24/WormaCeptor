@@ -171,7 +171,7 @@ Options:
   --help, -h         Print help
 ```
 
-## MCP Tools (34 total)
+## MCP Tools (35 total)
 
 ### Network (8 tools)
 
@@ -232,6 +232,12 @@ Options:
 | `send_push_notification` | `title`, `body`, `channel_id?`, `priority?` | Send a simulated push notification |
 | `bring_app_to_front` | `package?` | Launch the app or bring it back to the foreground via adb (`monkey` with the launcher intent). Bridge-only; defaults to the package the bridge last reached |
 
+### Timeline and events (1 tool)
+
+| Tool | Parameters | Description |
+|------|-----------|-------------|
+| `get_timeline` | `since_ms?`, `until_ms?`, `limit?` | Transactions, crashes, logs, StrictMode violations, leaks and WebSocket messages merged in time order, newest last. Window defaults to the last 5 minutes (device clock, epoch ms), `limit` to 50 (max 500, newest kept). Logs are included only while log capture is running |
+
 ## REST API Endpoints
 
 All endpoints are prefixed with `/api`. Responses follow a standard envelope:
@@ -280,6 +286,7 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 | GET | `/api/leaks` | Memory leaks (`?limit=&offset=`) |
 | GET | `/api/violations` | StrictMode violations (`?limit=&offset=`) |
 | GET | `/api/device-info` | Device and app information |
+| GET | `/api/timeline` | Merged event timeline (`?since_ms=&until_ms=&limit=`) |
 
 ### Performance
 
@@ -435,7 +442,8 @@ mcp/
 │       │   ├── DiagnosticTools.kt   # 6 diagnostic tools
 │       │   ├── PerformanceTools.kt  # 4 performance tools
 │       │   ├── StorageTools.kt      # 8 storage tools
-│       │   └── ActionTools.kt       # 6 action tools
+│       │   ├── ActionTools.kt       # 6 action tools
+│       │   └── GetTimelineTool.kt   # Event timeline
 │       └── util/
 │           ├── TextFormatter.kt     # Human-readable output
 │           └── JsonRpc.kt           # JSON-RPC data classes
@@ -464,6 +472,7 @@ mcp/
         │   ├── NetworkRoutes.kt
         │   ├── InspectionRoutes.kt
         │   ├── ActionRoutes.kt
+        │   ├── TimelineRoutes.kt
         │   └── DeviceInfoCollector.kt
         ├── streaming/
         │   ├── StreamEvent.kt

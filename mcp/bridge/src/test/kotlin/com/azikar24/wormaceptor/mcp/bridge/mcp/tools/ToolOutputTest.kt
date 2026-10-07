@@ -37,6 +37,8 @@ import com.azikar24.wormaceptor.mcp.protocol.ScreenDetailsDto
 import com.azikar24.wormaceptor.mcp.protocol.SecureStorageEntryDto
 import com.azikar24.wormaceptor.mcp.protocol.StorageDetailsDto
 import com.azikar24.wormaceptor.mcp.protocol.ThreadViolationDto
+import com.azikar24.wormaceptor.mcp.protocol.TimelineDto
+import com.azikar24.wormaceptor.mcp.protocol.TimelineEventDto
 import com.azikar24.wormaceptor.mcp.protocol.TransactionDetailDto
 import com.azikar24.wormaceptor.mcp.protocol.TransactionSummaryDto
 import com.azikar24.wormaceptor.mcp.protocol.WebSocketConnectionDto
@@ -118,6 +120,15 @@ class ToolOutputTest {
         ),
         "/api/loaded-libraries" to serverResponse(
             listOf(LoadedLibraryDto("libc.so", "/system/lib64/libc.so", "NATIVE_SO", 10L, "0x1", "1", true)),
+        ),
+        "/api/timeline" to serverResponse(
+            TimelineDto(
+                1L,
+                2L,
+                listOf(TimelineEventDto(1L, "transaction", "tx1", "GET https://a.test/x -> 200")),
+                1,
+                true,
+            ),
         ),
     )
 

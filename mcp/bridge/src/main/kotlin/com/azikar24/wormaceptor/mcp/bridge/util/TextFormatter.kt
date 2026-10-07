@@ -10,6 +10,7 @@ import com.azikar24.wormaceptor.mcp.protocol.PerformanceSnapshotDto
 import com.azikar24.wormaceptor.mcp.protocol.PreferenceFileDto
 import com.azikar24.wormaceptor.mcp.protocol.QueryResultDto
 import com.azikar24.wormaceptor.mcp.protocol.RateLimitConfigDto
+import com.azikar24.wormaceptor.mcp.protocol.TimelineDto
 import com.azikar24.wormaceptor.mcp.protocol.TransactionDetailDto
 import com.azikar24.wormaceptor.mcp.protocol.TransactionSummaryDto
 import kotlinx.serialization.KSerializer
@@ -209,6 +210,26 @@ internal object TextFormatter {
             "[$type] ${f.name}$size  ${f.path}"
         }
         return joinRows("", rows, hint = "list a subdirectory")
+    }
+
+    fun formatTimeline(timeline: TimelineDto): String {
+        val sb = StringBuilder()
+        val window = "${timeline.sinceMs}..${timeline.untilMs}"
+        if (timeline.events.isEmpty()) {
+            sb.appendLine("No events between $window (device clock, epoch ms).")
+        } else {
+            sb.appendLine(
+                "Timeline $window: ${timeline.events.size} of ${timeline.totalEvents} event(s), oldest first:\n",
+            )
+            timeline.events.forEach { e ->
+                val id = e.id?.let { " id=$it" }.orEmpty()
+                sb.appendLine("${e.timestamp} [${e.type}$id] ${e.summary}")
+            }
+        }
+        if (!timeline.logsIncluded) {
+            sb.appendLine("\nLog entries left out: log capture is off (it starts with tail_logs or the Logs screen).")
+        }
+        return sb.toString()
     }
 
     fun <T> formatGenericList(

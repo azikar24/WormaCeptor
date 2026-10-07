@@ -42,5 +42,7 @@ internal object ToolRegistry {
         StopLocationSimulationTool(),
         SendPushNotificationTool(),
         BringAppToFrontTool(),
+        // Timeline and events (1)
+        GetTimelineTool(),
     )
 }

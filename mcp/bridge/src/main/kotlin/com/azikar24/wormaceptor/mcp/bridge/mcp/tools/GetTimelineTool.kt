@@ -5,7 +5,9 @@ import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
 import com.azikar24.wormaceptor.mcp.bridge.util.dataAs
 import com.azikar24.wormaceptor.mcp.bridge.util.errorText
 import com.azikar24.wormaceptor.mcp.bridge.util.toApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.LogEntryDto
 import com.azikar24.wormaceptor.mcp.protocol.TimelineDto
+import com.azikar24.wormaceptor.mcp.protocol.TimelineEventDto
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.intOrNull
@@ -61,6 +63,34 @@ internal class GetTimelineTool : McpTool() {
         }
         val response = connection.apiClient.get("/api/timeline", params).toApiResponse()
         val data = response.dataAs<TimelineDto>() ?: return response.errorText() ?: "Timeline is empty."
-        return TextFormatter.formatTimeline(data)
+        // The device only has logs while its in-app capture runs; the bridge can read them over adb instead.
+        val logs = if (data.logsIncluded) null else connection.readAppLogs()
+        val limit = arguments["limit"]?.jsonPrimitive?.intOrNull ?: data.events.size
+        return TextFormatter.formatTimeline(if (logs == null) data else mergeLogs(data, logs, limit))
     }
+}
+
+private val TimelineLogLevels = setOf("WARN", "ERROR", "ASSERT")
+
+/** Adds the adb [logs] inside the timeline's window, keeping the newest [limit] events in time order. */
+internal fun mergeLogs(
+    timeline: TimelineDto,
+    logs: List<LogEntryDto>,
+    limit: Int,
+): TimelineDto {
+    // Warnings and errors only: the timeline is for correlating events, and info/debug lines would bury them.
+    val inWindow = logs.filter { it.timestamp in timeline.sinceMs..timeline.untilMs && it.level in TimelineLogLevels }
+    val logEvents = inWindow.map {
+        TimelineEventDto(
+            timestamp = it.timestamp,
+            type = "log",
+            id = null,
+            summary = "${it.level}/${it.tag}: ${it.message}",
+        )
+    }
+    return timeline.copy(
+        events = (timeline.events + logEvents).sortedBy { it.timestamp }.takeLast(limit),
+        totalEvents = timeline.totalEvents + inWindow.size,
+        logsIncluded = true,
+    )
 }

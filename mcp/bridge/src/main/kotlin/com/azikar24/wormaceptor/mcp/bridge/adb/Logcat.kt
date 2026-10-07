@@ -62,3 +62,21 @@ internal fun filterLogs(
         .filter { tag == null || it.tag.contains(tag, ignoreCase = true) }
         .takeLast(limit)
 }
+
+// Same tags and messages LogCaptureEngine drops for the in-app Logs screen, plus SELinux audit denials.
+private val NoisyTagPrefixes = setOf(
+    "ViewRootImpl", "VRI", "Insets", "WindowOnBackDispatcher", "BLASTBufferQueue", "Choreographer",
+    "SurfaceComposerClient", "OpenGLRenderer", "BufferQueue", "HWUI", "qdgralloc", "InputTransport",
+    "ImeFocusController", "ImeTracker", "NativeCustomFrequencyManager",
+)
+private val NoisyMessageSubstrings = setOf(
+    "setRequestedFrameRate",
+    "setFrameRateCategory",
+    "ViewPostIme pointer",
+    "avc:  denied",
+    "avc: denied",
+)
+
+/** Framework and SELinux chatter that buries the app's own log lines. */
+internal fun LogEntryDto.isNoise(): Boolean = NoisyTagPrefixes.any { tag.startsWith(it) } ||
+    NoisyMessageSubstrings.any { message.contains(it) }

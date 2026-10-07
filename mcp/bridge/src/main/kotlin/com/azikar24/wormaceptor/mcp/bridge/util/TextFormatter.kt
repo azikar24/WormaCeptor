@@ -230,7 +230,7 @@ internal object TextFormatter {
             }
         }
         if (!timeline.logsIncluded) {
-            sb.appendLine("\nLog entries left out: log capture is off (it starts with tail_logs or the Logs screen).")
+            sb.appendLine("\nLog entries left out: adb logcat and the in-app log capture were both unavailable.")
         }
         return sb.toString()
     }

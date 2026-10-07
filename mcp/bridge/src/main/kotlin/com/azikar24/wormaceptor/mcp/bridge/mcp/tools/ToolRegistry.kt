@@ -47,5 +47,11 @@ internal object ToolRegistry {
         GetTimelineTool(),
         WaitForTransactionTool(),
         WaitForCrashTool(),
+        // Mock rules (5)
+        ListMockRulesTool(),
+        CreateMockRuleTool(),
+        MockFromTransactionTool(),
+        SetMockRuleEnabledTool(),
+        DeleteMockRuleTool(),
     )
 }

@@ -6,6 +6,8 @@ import com.azikar24.wormaceptor.mcp.protocol.DatabaseInfoDto
 import com.azikar24.wormaceptor.mcp.protocol.DeviceInfoDto
 import com.azikar24.wormaceptor.mcp.protocol.FileEntryDto
 import com.azikar24.wormaceptor.mcp.protocol.LogEntryDto
+import com.azikar24.wormaceptor.mcp.protocol.MockRuleDto
+import com.azikar24.wormaceptor.mcp.protocol.MockRulesDto
 import com.azikar24.wormaceptor.mcp.protocol.PerformanceSnapshotDto
 import com.azikar24.wormaceptor.mcp.protocol.PreferenceFileDto
 import com.azikar24.wormaceptor.mcp.protocol.QueryResultDto
@@ -47,6 +49,7 @@ internal object TextFormatter {
     private const val MinEpochMs = 978_307_200_000L
     private val TimeField = Regex("^(timestamp|lastModified|.+At|.+Time)$")
     private val IsoSeconds: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+    private const val MockBodyPreviewChars = 200
 
     /** For the generic formatters: every DTO field is printed, defaults included. */
     private val displayJson = Json(ProtocolJson) { encodeDefaults = true }
@@ -230,6 +233,35 @@ internal object TextFormatter {
             sb.appendLine("\nLog entries left out: log capture is off (it starts with tail_logs or the Logs screen).")
         }
         return sb.toString()
+    }
+
+    fun formatMockRules(data: MockRulesDto): String {
+        val sb = StringBuilder()
+        if (!data.mockingEnabled) sb.appendLine("Mocking is turned off globally: no rule applies until it is on.\n")
+        if (data.rules.isEmpty()) return sb.append("No mock rules defined.").toString()
+        sb.appendLine("Found ${data.rules.size} mock rule(s):\n")
+        data.rules.forEach { sb.appendLine(formatMockRule(it)) }
+        return sb.toString()
+    }
+
+    fun formatMockRule(rule: MockRuleDto): String {
+        val state = if (rule.enabled) "enabled" else "disabled"
+        val body = rule.body?.let {
+            if (it.length > MockBodyPreviewChars) {
+                it.take(
+                    MockBodyPreviewChars,
+                ) + "..."
+            } else {
+                it
+            }
+        }
+        return buildString {
+            appendLine("[$state] ${rule.name} (id=${rule.id})")
+            appendLine("  Match: ${rule.method ?: "any method"} ${rule.matchType} ${rule.urlPattern}")
+            appendLine("  Returns: ${rule.status} ${rule.statusMessage}, ${rule.contentType}, delay ${rule.delay}")
+            appendLine("  Body: ${body ?: "(empty)"}")
+            appendLine("  Behavior: ${rule.behavior}, priority ${rule.priority}, created ${rule.createdAt}")
+        }
     }
 
     fun <T> formatGenericList(

@@ -23,6 +23,9 @@ import com.azikar24.wormaceptor.mcp.protocol.MemoryDetailsDto
 import com.azikar24.wormaceptor.mcp.protocol.MemoryHistoryDto
 import com.azikar24.wormaceptor.mcp.protocol.MemoryInfoDto
 import com.azikar24.wormaceptor.mcp.protocol.MonitoringStateDto
+import com.azikar24.wormaceptor.mcp.protocol.MockFromTransactionResultDto
+import com.azikar24.wormaceptor.mcp.protocol.MockRuleDto
+import com.azikar24.wormaceptor.mcp.protocol.MockRulesDto
 import com.azikar24.wormaceptor.mcp.protocol.NetworkDetailsDto
 import com.azikar24.wormaceptor.mcp.protocol.OsDetailsDto
 import com.azikar24.wormaceptor.mcp.protocol.PerformanceSnapshotDto
@@ -68,7 +71,13 @@ class ToolOutputTest {
     private val memory = MemoryInfoDto(1L, 100L, 50L, 150L, 300L, 33.3f, 40L, 30L, 10L, 7L)
     private val fps = FpsInfoDto(59.9f, 58.1f, 30f, 60f, 3, 1, 1L)
 
+    private val mockRule = MockRuleDto(
+        "r1", "GET /x", true, "GET", "https://a.test/x", "PREFIX", 500, "Internal Server Error",
+        "application/json", "{}", "100 ms", "Always", 0, 1L,
+    )
+
     private val getFixtures: Map<String, JsonElement> = mapOf(
+        "/api/mock-rules" to serverResponse(MockRulesDto(mockingEnabled = true, rules = listOf(mockRule))),
         "/api/transactions" to serverResponse(
             listOf(
                 TransactionSummaryDto(
@@ -171,6 +180,10 @@ class ToolOutputTest {
             )
         } returns serverResponse(MonitoringStateDto("fps", true, "already running"))
         coEvery { delete(any()) } returns ok
+        coEvery { post("/api/mock-rules", any()) } returns serverResponse(mockRule)
+        coEvery { post("/api/mock-rules/tx1/enabled", any()) } returns serverResponse(mockRule)
+        coEvery { post("/api/transactions/tx1/mock", any()) } returns
+            serverResponse(MockFromTransactionResultDto(mockRule, bodyOmitted = false))
     }
     private val connection = mockk<DeviceConnection> {
         every { apiClient } returns this@ToolOutputTest.apiClient
@@ -206,6 +219,9 @@ class ToolOutputTest {
         put("target", "fps")
         put("enabled", true)
         put("include_history", withHistory)
+        put("url_pattern", "https://a.test/x")
+        put("status", 500)
+        put("enabled", true)
     }
 
     private suspend fun outputGaps(withHistory: Boolean): List<String> = ToolRegistry.allTools().mapNotNull { tool ->

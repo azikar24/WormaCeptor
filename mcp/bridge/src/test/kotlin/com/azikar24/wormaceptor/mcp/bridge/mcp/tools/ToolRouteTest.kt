@@ -58,6 +58,8 @@ class ToolRouteTest {
         put("title", "t")
         put("body", "b")
         put("target", "fps")
+        put("url_pattern", "https://a.test/x")
+        put("status", 500)
         put("enabled", true)
     }
 

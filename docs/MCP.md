@@ -171,7 +171,7 @@ Options:
   --help, -h         Print help
 ```
 
-## MCP Tools (35 total)
+## MCP Tools (40 total)
 
 ### Network (8 tools)
 
@@ -240,6 +240,18 @@ Options:
 | `wait_for_transaction` | `url_contains?`, `method?`, `status?`, `timeout_s?` | Block until a NEW request matching the filters finishes (started after the call), then return it. `url_contains` is a case-insensitive URL substring, `status` an exact code. `timeout_s` defaults to 30, max 120 |
 | `wait_for_crash` | `timeout_s?` | Block until a NEW crash is recorded, then return it with the stack trace. A fatal crash kills the process, so the call can end with "connection dropped": relaunch the app and use `list_crashes` |
 
+### Mock rules (5 tools)
+
+Mocks apply to OkHttp and Ktor clients that use the WormaCeptor interceptor or plugin. Rules are the same ones the in-app Mock Rules screen edits, and only apply while mocking is on globally (`list_mock_rules` shows it).
+
+| Tool | Parameters | Description |
+|------|-----------|-------------|
+| `list_mock_rules` | — | List mock rules (pattern, match type, method, status, content type, body preview, delay, enabled) and whether mocking is on |
+| `create_mock_rule` | `url_pattern`, `status`, `match_type?`, `method?`, `body?`, `content_type?`, `delay_ms?`, `enabled?` | Create a rule that returns a canned response. `match_type`: `PREFIX` (default) or `EXACT` compare against the full URL including scheme and query; `REGEX` searches anywhere in it. `method` omitted matches any; `content_type` defaults to `application/json`; `status` 100-599 |
+| `mock_from_transaction` | `id`, `status?`, `body?` | Copy a captured transaction into a rule, like the in-app "Add to Mock": exact URL and method, captured status, content type and text body. `status` / `body` override them; binary or oversized bodies are left out |
+| `set_mock_rule_enabled` | `id`, `enabled` | Turn a rule on or off without deleting it |
+| `delete_mock_rule` | `id` | Delete a rule permanently |
+
 ## REST API Endpoints
 
 All endpoints are prefixed with `/api`. Responses follow a standard envelope:
@@ -277,6 +289,11 @@ All endpoints are prefixed with `/api`. Responses follow a standard envelope:
 | GET | `/api/websockets/messages` | WebSocket messages (`?connection_id=`) |
 | GET | `/api/rate-limit` | Current rate limit config |
 | POST | `/api/rate-limit` | Update rate limit config |
+| GET | `/api/mock-rules` | Mock rules and the global `mockingEnabled` flag |
+| POST | `/api/mock-rules` | Create a mock rule: `{urlPattern, status, method?, matchType?, body?, contentType?, delayMs?, enabled?}` |
+| POST | `/api/mock-rules/{id}/enabled` | Enable or disable a rule: `{enabled}` |
+| DELETE | `/api/mock-rules/{id}` | Delete a rule |
+| POST | `/api/transactions/{id}/mock` | Create a rule from a captured transaction: `{status?, body?}` |
 
 ### Diagnostics
 
@@ -448,6 +465,7 @@ mcp/
 │       │   ├── StorageTools.kt      # 8 storage tools
 │       │   ├── ActionTools.kt       # 6 action tools
 │       │   ├── GetTimelineTool.kt   # Event timeline
+│       │   ├── MockTools.kt         # 5 mock rule tools
 │       │   └── WaitTools.kt         # wait_for_transaction, wait_for_crash
 │       └── util/
 │           ├── TextFormatter.kt     # Human-readable output
@@ -477,6 +495,7 @@ mcp/
         │   ├── NetworkRoutes.kt
         │   ├── InspectionRoutes.kt
         │   ├── ActionRoutes.kt
+        │   ├── MockRoutes.kt
         │   ├── TimelineRoutes.kt
         │   ├── WaitRoutes.kt
         │   └── DeviceInfoCollector.kt

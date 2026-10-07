@@ -16,6 +16,8 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
+import java.io.BufferedReader
+import java.io.BufferedWriter
 import java.io.IOException
 
 internal class McpServer(
@@ -28,10 +30,10 @@ internal class McpServer(
         encodeDefaults = false
     }
 
-    suspend fun run() {
-        val reader = System.`in`.bufferedReader()
-        val writer = System.out.bufferedWriter()
-
+    suspend fun run(
+        reader: BufferedReader = System.`in`.bufferedReader(),
+        writer: BufferedWriter = System.out.bufferedWriter(),
+    ) {
         while (true) {
             val line = reader.readLine() ?: break
             if (line.isBlank()) continue

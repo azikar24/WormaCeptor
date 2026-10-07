@@ -193,23 +193,32 @@ jobs:
     name: Publish wormaceptor-mcp to npm
     runs-on: ubuntu-latest
     needs: attach-mcp-bridge
+    # Trusted publishing (OIDC): no npm token. npm only accepts it from this workflow file once the
+    # package's Settings -> Trusted publishing lists azikar24/WormaCeptor + release.yml.
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.release.tag_name }}
 
-      - uses: oven-sh/setup-bun@v2
+      # Trusted publishing needs Node 22.14+ and npm CLI 11.5.1+; bun's publish docs only cover token auth.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Publish
         working-directory: mcp/npx
-        env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          if [[ -z "$NPM_CONFIG_TOKEN" ]]; then
-            echo "NPM_TOKEN not set; skipping npm publish."
+          # The first version must be published by hand (trusted publishing is configured per existing package).
+          if ! npm view wormaceptor-mcp version >/dev/null 2>&1; then
+            echo "::notice::wormaceptor-mcp isn't on npm yet; publish it once by hand, then add the trusted publisher."
             exit 0
           fi
-          bun publish --access public
+          npm install -g npm@latest
+          npm publish --access public
 
   # ==========================================================================
   # Trigger WormaCeptorWeb content sync via repository_dispatch

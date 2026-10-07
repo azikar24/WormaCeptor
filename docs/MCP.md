@@ -15,6 +15,29 @@ WormaCeptor exposes a [Model Context Protocol](https://modelcontextprotocol.io/)
                                              └─────────────────────┘
 ```
 
+## Setup for AI agents
+
+These steps are written so a coding agent can do the whole setup itself. Use the WormaCeptor version the project already depends on (the version of `wormaceptor-client`) everywhere `VERSION` appears; the server, bridge and launcher are released together.
+
+1. Add the device server to the app module, next to the existing WormaCeptor dependencies:
+   ```kotlin
+   debugImplementation("com.azikar24.wormaceptor:wormaceptor-mcp-server:VERSION")
+   ```
+2. Register the bridge with the MCP client. With Node.js 18+ (the launcher downloads the matching bridge jar from the GitHub release, checks its SHA-256 and caches it):
+   ```bash
+   claude mcp add --transport stdio wormaceptor -- npx -y wormaceptor-mcp@VERSION
+   ```
+   Without Node, download the jar and its checksum, verify, and register it directly:
+   ```bash
+   curl -fLO https://github.com/azikar24/WormaCeptor/releases/download/vVERSION/wormaceptor-mcp-bridge.jar
+   curl -fLO https://github.com/azikar24/WormaCeptor/releases/download/vVERSION/wormaceptor-mcp-bridge.jar.sha256
+   shasum -a 256 -c wormaceptor-mcp-bridge.jar.sha256
+   claude mcp add --transport stdio wormaceptor -- java -jar /absolute/path/to/wormaceptor-mcp-bridge.jar
+   ```
+3. The bridge needs Java 17+ and `adb`. If `java` isn't on PATH, use Android Studio's bundled JDK (macOS: `/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java`); the npx launcher finds it automatically. If `adb` isn't on PATH, pass `--adb <sdk>/platform-tools/adb`.
+4. With more than one device attached, append `--device <serial>` (from `adb devices`) to the command.
+5. Build and run the debug app, keep it in the foreground, then check with `claude mcp get wormaceptor` and call `get_device_info`.
+
 ## Quick Start
 
 ### 1. Add the dependency

@@ -2,6 +2,7 @@ package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceApiClient
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
+import com.azikar24.wormaceptor.mcp.protocol.ReadFileDto
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -9,8 +10,6 @@ import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -102,13 +101,8 @@ class ToolContractTest {
 
     @Test
     fun `read_file renders content and mime type from the JSON envelope`() = runTest {
-        coEvery { apiClient.get("/api/files/read", mapOf("path" to "files/a.json")) } returns buildJsonObject {
-            put("success", true)
-            put(
-                "data",
-                JsonObject(mapOf("content" to JsonPrimitive("{ }"), "mimeType" to JsonPrimitive("application/json"))),
-            )
-        }
+        coEvery { apiClient.get("/api/files/read", mapOf("path" to "files/a.json")) } returns
+            serverResponse(ReadFileDto(content = "{ }", mimeType = "application/json"))
         val result = ReadFileTool().execute(buildJsonObject { put("path", "files/a.json") }, connection)
         assertTrue(result.startsWith("MIME Type: application/json"))
         assertTrue(result.endsWith("{ }"))

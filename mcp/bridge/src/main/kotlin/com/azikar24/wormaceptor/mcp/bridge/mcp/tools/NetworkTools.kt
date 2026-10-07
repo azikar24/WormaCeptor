@@ -2,6 +2,17 @@ package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
+import com.azikar24.wormaceptor.mcp.bridge.util.dataAs
+import com.azikar24.wormaceptor.mcp.bridge.util.errorText
+import com.azikar24.wormaceptor.mcp.bridge.util.toApiResponse
+import com.azikar24.wormaceptor.mcp.bridge.util.toRequestBody
+import com.azikar24.wormaceptor.mcp.protocol.BodyDto
+import com.azikar24.wormaceptor.mcp.protocol.RateLimitConfigDto
+import com.azikar24.wormaceptor.mcp.protocol.SetRateLimitRequestDto
+import com.azikar24.wormaceptor.mcp.protocol.TransactionDetailDto
+import com.azikar24.wormaceptor.mcp.protocol.TransactionSummaryDto
+import com.azikar24.wormaceptor.mcp.protocol.WebSocketConnectionDto
+import com.azikar24.wormaceptor.mcp.protocol.WebSocketMessageDto
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
@@ -9,7 +20,6 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.floatOrNull
 import kotlinx.serialization.json.intOrNull
-import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.longOrNull
 import kotlinx.serialization.json.put
@@ -56,8 +66,9 @@ internal class ListTransactionsTool : McpTool() {
             arguments["offset"]?.jsonPrimitive?.intOrNull?.let { put("offset", it.toString()) }
         }
 
-        val response = connection.apiClient.get("/api/transactions", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No transactions found."
+        val response = connection.apiClient.get("/api/transactions", params).toApiResponse()
+        val data = response.dataAs<List<TransactionSummaryDto>>()
+            ?: return response.errorText() ?: "No transactions found."
         return TextFormatter.formatTransactionList(data)
     }
 }
@@ -89,8 +100,8 @@ internal class GetTransactionTool : McpTool() {
             ?: return "Error: 'id' parameter is required and must be non-empty."
         if (id.isBlank()) return "Error: 'id' parameter is required and must be non-empty."
 
-        val response = connection.apiClient.get("/api/transactions/$id")
-        val data = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "Transaction not found."
+        val response = connection.apiClient.get("/api/transactions/$id").toApiResponse()
+        val data = response.dataAs<TransactionDetailDto>() ?: return response.errorText() ?: "Transaction not found."
         return TextFormatter.formatTransactionDetail(data)
     }
 }
@@ -122,14 +133,9 @@ internal class GetRequestBodyTool : McpTool() {
             ?: return "Error: 'id' parameter is required and must be non-empty."
         if (id.isBlank()) return "Error: 'id' parameter is required and must be non-empty."
 
-        val response = connection.apiClient.get("/api/transactions/$id/request-body")
-        val data = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "No request body found."
-        return TextFormatter.formatBody(
-            body = data["body"]?.jsonPrimitive?.contentOrNull ?: "",
-            contentType = data["contentType"]?.jsonPrimitive?.contentOrNull,
-            truncated = data["truncated"]?.jsonPrimitive?.contentOrNull?.toBooleanStrictOrNull() ?: false,
-            totalSize = data["totalSize"]?.jsonPrimitive?.longOrNull,
-        )
+        val response = connection.apiClient.get("/api/transactions/$id/request-body").toApiResponse()
+        val data = response.dataAs<BodyDto>() ?: return response.errorText() ?: "No request body found."
+        return TextFormatter.formatBody(data.body, data.contentType, data.truncated, data.totalSize)
     }
 }
 
@@ -160,16 +166,9 @@ internal class GetResponseBodyTool : McpTool() {
             ?: return "Error: 'id' parameter is required and must be non-empty."
         if (id.isBlank()) return "Error: 'id' parameter is required and must be non-empty."
 
-        val response = connection.apiClient.get("/api/transactions/$id/response-body")
-        val data = response.jsonObject.objectOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "No response body found."
-        return TextFormatter.formatBody(
-            body = data["body"]?.jsonPrimitive?.contentOrNull ?: "",
-            contentType = data["contentType"]?.jsonPrimitive?.contentOrNull,
-            truncated = data["truncated"]?.jsonPrimitive?.contentOrNull?.toBooleanStrictOrNull() ?: false,
-            totalSize = data["totalSize"]?.jsonPrimitive?.longOrNull,
-        )
+        val response = connection.apiClient.get("/api/transactions/$id/response-body").toApiResponse()
+        val data = response.dataAs<BodyDto>() ?: return response.errorText() ?: "No response body found."
+        return TextFormatter.formatBody(data.body, data.contentType, data.truncated, data.totalSize)
     }
 }
 
@@ -191,11 +190,10 @@ internal class ListWebSocketConnectionsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/websockets/connections")
-        val data = response.jsonObject.arrayOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "No WebSocket connections found."
-        return TextFormatter.formatGenericList(data, "WebSocket connection(s)")
+        val response = connection.apiClient.get("/api/websockets/connections").toApiResponse()
+        val data = response.dataAs<List<WebSocketConnectionDto>>()
+            ?: return response.errorText() ?: "No WebSocket connections found."
+        return TextFormatter.formatGenericList(data, WebSocketConnectionDto.serializer(), "WebSocket connection(s)")
     }
 }
 
@@ -235,11 +233,10 @@ internal class ListWebSocketMessagesTool : McpTool() {
             arguments["limit"]?.jsonPrimitive?.intOrNull?.let { put("limit", it.toString()) }
         }
 
-        val response = connection.apiClient.get("/api/websockets/messages", params)
-        val data = response.jsonObject.arrayOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "No WebSocket messages found."
-        return TextFormatter.formatGenericList(data, "WebSocket message(s)")
+        val response = connection.apiClient.get("/api/websockets/messages", params).toApiResponse()
+        val data = response.dataAs<List<WebSocketMessageDto>>()
+            ?: return response.errorText() ?: "No WebSocket messages found."
+        return TextFormatter.formatGenericList(data, WebSocketMessageDto.serializer(), "WebSocket message(s)")
     }
 }
 
@@ -293,19 +290,17 @@ internal class SetRateLimitTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val body = buildJsonObject {
-            arguments["enabled"]?.jsonPrimitive?.booleanOrNull?.let { put("enabled", it) }
-            arguments["preset"]?.jsonPrimitive?.contentOrNull?.let { put("preset", it) }
-            arguments["download_kbps"]?.jsonPrimitive?.longOrNull?.let { put("downloadSpeedKbps", it) }
-            arguments["upload_kbps"]?.jsonPrimitive?.longOrNull?.let { put("uploadSpeedKbps", it) }
-            arguments["latency_ms"]?.jsonPrimitive?.longOrNull?.let { put("latencyMs", it) }
-            arguments["packet_loss"]?.jsonPrimitive?.floatOrNull?.let { put("packetLossPercent", it) }
-        }
+        val body = SetRateLimitRequestDto(
+            enabled = arguments["enabled"]?.jsonPrimitive?.booleanOrNull,
+            preset = arguments["preset"]?.jsonPrimitive?.contentOrNull,
+            downloadSpeedKbps = arguments["download_kbps"]?.jsonPrimitive?.longOrNull,
+            uploadSpeedKbps = arguments["upload_kbps"]?.jsonPrimitive?.longOrNull,
+            latencyMs = arguments["latency_ms"]?.jsonPrimitive?.longOrNull,
+            packetLossPercent = arguments["packet_loss"]?.jsonPrimitive?.floatOrNull,
+        )
 
-        val response = connection.apiClient.post("/api/rate-limit", body).jsonObject
-        val error = response["error"]?.jsonPrimitive?.contentOrNull
-        if (error != null) return "Error: $error"
-        return "Rate limit configuration updated."
+        val response = connection.apiClient.post("/api/rate-limit", body.toRequestBody()).toApiResponse()
+        return response.errorText() ?: "Rate limit configuration updated."
     }
 
     companion object {
@@ -340,14 +335,9 @@ internal class GetRateLimitTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/rate-limit")
-        val data = response.jsonObject.objectOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "No rate limit configuration found."
-        val sb = StringBuilder("Rate Limit Configuration:\n")
-        data.forEach { (key, value) ->
-            sb.appendLine("  $key: ${value.jsonPrimitive.contentOrNull ?: "N/A"}")
-        }
-        return sb.toString()
+        val response = connection.apiClient.get("/api/rate-limit").toApiResponse()
+        val data = response.dataAs<RateLimitConfigDto>()
+            ?: return response.errorText() ?: "No rate limit configuration found."
+        return TextFormatter.formatRateLimit(data)
     }
 }

@@ -8,9 +8,9 @@ import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.entities.MockLocation
 import com.azikar24.wormaceptor.domain.entities.NotificationPriority
 import com.azikar24.wormaceptor.domain.entities.SimulatedNotification
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ApiResponse
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.MockLocationDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.SimulatedNotificationDto
+import com.azikar24.wormaceptor.mcp.protocol.ApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.MockLocationDto
+import com.azikar24.wormaceptor.mcp.protocol.SimulatedNotificationDto
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing

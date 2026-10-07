@@ -5,11 +5,11 @@ import com.azikar24.wormaceptor.core.engine.LoadedLibrariesEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.entities.DependencyCategory
 import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
+import com.azikar24.wormaceptor.mcp.protocol.ApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.DependencyInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.LoadedLibraryDto
+import com.azikar24.wormaceptor.mcp.protocol.ResponseMeta
 import com.azikar24.wormaceptor.mcp.server.serialization.JsonConfig
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ApiResponse
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.DependencyInfoDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.LoadedLibraryDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ResponseMeta
 import com.azikar24.wormaceptor.mcp.server.serialization.toDto
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing

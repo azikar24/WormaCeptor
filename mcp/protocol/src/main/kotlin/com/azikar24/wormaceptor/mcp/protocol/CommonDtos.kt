@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptor.mcp.server.serialization.dto
+package com.azikar24.wormaceptor.mcp.protocol
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement

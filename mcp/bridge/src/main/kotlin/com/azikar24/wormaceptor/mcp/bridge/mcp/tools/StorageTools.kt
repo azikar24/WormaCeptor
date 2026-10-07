@@ -5,12 +5,24 @@ import com.azikar24.wormaceptor.domain.entities.LoadedLibrary
 import com.azikar24.wormaceptor.domain.entities.SecureStorageEntry
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
+import com.azikar24.wormaceptor.mcp.bridge.util.dataAs
+import com.azikar24.wormaceptor.mcp.bridge.util.errorText
+import com.azikar24.wormaceptor.mcp.bridge.util.toApiResponse
+import com.azikar24.wormaceptor.mcp.bridge.util.toRequestBody
+import com.azikar24.wormaceptor.mcp.protocol.DatabaseInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.DependencyInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.FileEntryDto
+import com.azikar24.wormaceptor.mcp.protocol.LoadedLibraryDto
+import com.azikar24.wormaceptor.mcp.protocol.PreferenceFileDto
+import com.azikar24.wormaceptor.mcp.protocol.QueryResultDto
+import com.azikar24.wormaceptor.mcp.protocol.ReadFileDto
+import com.azikar24.wormaceptor.mcp.protocol.SecureStorageEntryDto
+import com.azikar24.wormaceptor.mcp.protocol.SqlQueryRequestDto
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
@@ -34,8 +46,8 @@ internal class ListPreferencesTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/preferences")
-        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No preferences found."
+        val response = connection.apiClient.get("/api/preferences").toApiResponse()
+        val data = response.dataAs<List<PreferenceFileDto>>() ?: return response.errorText() ?: "No preferences found."
         return TextFormatter.formatPreferences(data)
     }
 }
@@ -58,8 +70,8 @@ internal class ListDatabasesTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/databases")
-        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No databases found."
+        val response = connection.apiClient.get("/api/databases").toApiResponse()
+        val data = response.dataAs<List<DatabaseInfoDto>>() ?: return response.errorText() ?: "No databases found."
         return TextFormatter.formatDatabaseList(data)
     }
 }
@@ -119,13 +131,9 @@ internal class QueryDatabaseTool : McpTool() {
             }
         }
 
-        val body = buildJsonObject {
-            // Field name of the device server's SqlQueryRequest
-            put("sql", query)
-        }
-
-        val response = connection.apiClient.post("/api/databases/$database/query", body)
-        val data = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "No results returned."
+        val body = SqlQueryRequestDto(sql = query).toRequestBody()
+        val response = connection.apiClient.post("/api/databases/$database/query", body).toApiResponse()
+        val data = response.dataAs<QueryResultDto>() ?: return response.errorText() ?: "No results returned."
         return TextFormatter.formatQueryResult(data)
     }
 
@@ -169,8 +177,8 @@ internal class ListFilesTool : McpTool() {
             path?.let { put("path", it) }
         }
 
-        val response = connection.apiClient.get("/api/files/browse", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No files found."
+        val response = connection.apiClient.get("/api/files/browse", params).toApiResponse()
+        val data = response.dataAs<List<FileEntryDto>>() ?: return response.errorText() ?: "No files found."
         return TextFormatter.formatFileList(data)
     }
 }
@@ -210,17 +218,12 @@ internal class ReadFileTool : McpTool() {
             return "Error: 'path' parameter must not contain path traversal sequences (..)"
         }
 
-        val response = connection.apiClient.get("/api/files/read", mapOf("path" to path))
-        val data = response.jsonObject.objectOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "File not found or unreadable."
-        val content = data["content"]?.jsonPrimitive?.contentOrNull ?: return "File is empty."
-        val mimeType = data["mimeType"]?.jsonPrimitive?.contentOrNull
-
+        val response = connection.apiClient.get("/api/files/read", mapOf("path" to path)).toApiResponse()
+        val data = response.dataAs<ReadFileDto>() ?: return response.errorText() ?: "File not found or unreadable."
         val sb = StringBuilder()
-        if (mimeType != null) sb.appendLine("MIME Type: $mimeType")
+        data.mimeType?.let { sb.appendLine("MIME Type: $it") }
         sb.appendLine()
-        sb.append(content)
+        sb.append(data.content)
         return sb.toString()
     }
 }
@@ -253,11 +256,10 @@ internal class BrowseSecureStorageTool : McpTool() {
         val params = buildMap {
             arguments["type"]?.jsonPrimitive?.contentOrNull?.let { put("type", it) }
         }
-        val response = connection.apiClient.get("/api/secure-storage", params)
-        val data = response.jsonObject.arrayOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "No secure storage entries found."
-        return TextFormatter.formatGenericList(data, "secure storage entry(ies)")
+        val response = connection.apiClient.get("/api/secure-storage", params).toApiResponse()
+        val data = response.dataAs<List<SecureStorageEntryDto>>()
+            ?: return response.errorText() ?: "No secure storage entries found."
+        return TextFormatter.formatGenericList(data, SecureStorageEntryDto.serializer(), "secure storage entry(ies)")
     }
 }
 
@@ -288,11 +290,10 @@ internal class ListDependenciesTool : McpTool() {
         val params = buildMap {
             arguments["category"]?.jsonPrimitive?.contentOrNull?.let { put("category", it) }
         }
-        val response = connection.apiClient.get("/api/dependencies", params)
-        val data = response.jsonObject.arrayOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "No dependency information available."
-        return TextFormatter.formatGenericList(data, "dependency(ies)")
+        val response = connection.apiClient.get("/api/dependencies", params).toApiResponse()
+        val data = response.dataAs<List<DependencyInfoDto>>()
+            ?: return response.errorText() ?: "No dependency information available."
+        return TextFormatter.formatGenericList(data, DependencyInfoDto.serializer(), "dependency(ies)")
     }
 }
 
@@ -329,10 +330,9 @@ internal class ListLoadedLibrariesTool : McpTool() {
             arguments["type"]?.jsonPrimitive?.contentOrNull?.let { put("type", it) }
             arguments["system"]?.jsonPrimitive?.booleanOrNull?.let { put("system", it.toString()) }
         }
-        val response = connection.apiClient.get("/api/loaded-libraries", params)
-        val data = response.jsonObject.arrayOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "No loaded libraries information available."
-        return TextFormatter.formatGenericList(data, "loaded library(ies)")
+        val response = connection.apiClient.get("/api/loaded-libraries", params).toApiResponse()
+        val data = response.dataAs<List<LoadedLibraryDto>>()
+            ?: return response.errorText() ?: "No loaded libraries information available."
+        return TextFormatter.formatGenericList(data, LoadedLibraryDto.serializer(), "loaded library(ies)")
     }
 }

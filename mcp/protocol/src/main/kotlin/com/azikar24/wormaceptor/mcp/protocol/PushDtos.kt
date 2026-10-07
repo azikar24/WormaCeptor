@@ -1,6 +1,5 @@
-package com.azikar24.wormaceptor.mcp.server.serialization.dto
+package com.azikar24.wormaceptor.mcp.protocol
 
-import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
 import kotlinx.serialization.Serializable
 import java.util.UUID
 
@@ -21,7 +20,8 @@ internal data class SimulatedNotificationDto(
     val body: String,
     // The bridge sends title, body and optionally channelId and priority.
     val id: String = UUID.randomUUID().toString(),
-    val channelId: String = PushSimulatorEngine.DEFAULT_CHANNEL_ID,
+    // PushSimulatorEngine.DEFAULT_CHANNEL_ID, pinned by BridgeRequestDecodingTest: this code can't see core:engine.
+    val channelId: String = "wormaceptor_test_channel",
     val priority: String = "default",
     val extras: Map<String, String> = emptyMap(),
     val timestamp: Long = System.currentTimeMillis(),

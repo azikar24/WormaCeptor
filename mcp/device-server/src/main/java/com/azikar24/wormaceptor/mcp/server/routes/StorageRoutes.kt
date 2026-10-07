@@ -14,16 +14,17 @@ import com.azikar24.wormaceptor.feature.filebrowser.data.FileSystemDataSource
 import com.azikar24.wormaceptor.feature.filebrowser.data.FileSystemRepositoryImpl
 import com.azikar24.wormaceptor.feature.preferences.data.PreferencesDataSource
 import com.azikar24.wormaceptor.feature.preferences.data.PreferencesRepositoryImpl
+import com.azikar24.wormaceptor.mcp.protocol.ApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.DatabaseInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.FileEntryDto
+import com.azikar24.wormaceptor.mcp.protocol.PreferenceFileDto
+import com.azikar24.wormaceptor.mcp.protocol.QueryResultDto
+import com.azikar24.wormaceptor.mcp.protocol.ReadFileDto
+import com.azikar24.wormaceptor.mcp.protocol.ResponseMeta
+import com.azikar24.wormaceptor.mcp.protocol.SecureStorageEntryDto
+import com.azikar24.wormaceptor.mcp.protocol.SqlQueryRequestDto
 import com.azikar24.wormaceptor.mcp.server.security.resolveWithinRoots
 import com.azikar24.wormaceptor.mcp.server.serialization.JsonConfig
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ApiResponse
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.DatabaseInfoDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.FileEntryDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.PreferenceFileDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.QueryResultDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ReadFileDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ResponseMeta
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.SecureStorageEntryDto
 import com.azikar24.wormaceptor.mcp.server.serialization.toDto
 import com.azikar24.wormaceptor.mcp.server.serialization.toReadFileDto
 import io.ktor.http.HttpStatusCode
@@ -33,7 +34,6 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import kotlinx.coroutines.flow.first
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
 import java.io.File
@@ -42,11 +42,6 @@ import kotlin.coroutines.cancellation.CancellationException
 private const val DEFAULT_LIMIT = 50
 private const val DEFAULT_OFFSET = 0
 private const val PATH_OUTSIDE_APP = "Path is outside the app's storage directories"
-
-@Serializable
-private data class SqlQueryRequest(
-    val sql: String,
-)
 
 private fun resolveAppPath(
     path: String,
@@ -128,7 +123,7 @@ internal fun Routing.storageRoutes() {
                 return@post
             }
 
-            val request = call.receive<SqlQueryRequest>()
+            val request = call.receive<SqlQueryRequestDto>()
             val sql = request.sql.trim()
 
             if (!sql.uppercase().startsWith("SELECT")) {

@@ -2,12 +2,20 @@ package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
+import com.azikar24.wormaceptor.mcp.bridge.util.dataAs
+import com.azikar24.wormaceptor.mcp.bridge.util.errorText
+import com.azikar24.wormaceptor.mcp.bridge.util.toApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.CrashDto
+import com.azikar24.wormaceptor.mcp.protocol.CrashSummaryDto
+import com.azikar24.wormaceptor.mcp.protocol.DeviceInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.LeakInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.LogEntryDto
+import com.azikar24.wormaceptor.mcp.protocol.ThreadViolationDto
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.intOrNull
-import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
@@ -48,8 +56,8 @@ internal class ListCrashesTool : McpTool() {
             arguments["limit"]?.jsonPrimitive?.intOrNull?.let { put("limit", it.toString()) }
             arguments["offset"]?.jsonPrimitive?.intOrNull?.let { put("offset", it.toString()) }
         }
-        val response = connection.apiClient.get("/api/crashes", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No crashes found."
+        val response = connection.apiClient.get("/api/crashes", params).toApiResponse()
+        val data = response.dataAs<List<CrashSummaryDto>>() ?: return response.errorText() ?: "No crashes found."
         return TextFormatter.formatCrashList(data)
     }
 }
@@ -81,8 +89,8 @@ internal class GetCrashTool : McpTool() {
             ?: return "Error: 'id' parameter is required and must be non-empty."
         if (id.isBlank()) return "Error: 'id' parameter is required and must be non-empty."
 
-        val response = connection.apiClient.get("/api/crashes/$id")
-        val data = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "Crash not found."
+        val response = connection.apiClient.get("/api/crashes/$id").toApiResponse()
+        val data = response.dataAs<CrashDto>() ?: return response.errorText() ?: "Crash not found."
         return TextFormatter.formatCrashDetail(data)
     }
 }
@@ -130,8 +138,8 @@ internal class TailLogsTool : McpTool() {
             arguments["limit"]?.jsonPrimitive?.intOrNull?.let { put("limit", it.toString()) }
         }
 
-        val response = connection.apiClient.get("/api/logs", params)
-        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No log entries found."
+        val response = connection.apiClient.get("/api/logs", params).toApiResponse()
+        val data = response.dataAs<List<LogEntryDto>>() ?: return response.errorText() ?: "No log entries found."
         return TextFormatter.formatLogEntries(data)
     }
 
@@ -158,9 +166,9 @@ internal class ListLeaksTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/leaks")
-        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No leaks detected."
-        return TextFormatter.formatGenericList(data, "memory leak(s)")
+        val response = connection.apiClient.get("/api/leaks").toApiResponse()
+        val data = response.dataAs<List<LeakInfoDto>>() ?: return response.errorText() ?: "No leaks detected."
+        return TextFormatter.formatGenericList(data, LeakInfoDto.serializer(), "memory leak(s)")
     }
 }
 
@@ -182,9 +190,10 @@ internal class ListViolationsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/violations")
-        val data = response.jsonObject.arrayOrNull("data") ?: return response.serverError() ?: "No violations detected."
-        return TextFormatter.formatGenericList(data, "violation(s)")
+        val response = connection.apiClient.get("/api/violations").toApiResponse()
+        val data = response.dataAs<List<ThreadViolationDto>>()
+            ?: return response.errorText() ?: "No violations detected."
+        return TextFormatter.formatGenericList(data, ThreadViolationDto.serializer(), "violation(s)")
     }
 }
 
@@ -206,10 +215,8 @@ internal class GetDeviceInfoTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/device-info")
-        val data = response.jsonObject.objectOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "Device info unavailable."
+        val response = connection.apiClient.get("/api/device-info").toApiResponse()
+        val data = response.dataAs<DeviceInfoDto>() ?: return response.errorText() ?: "Device info unavailable."
         return TextFormatter.formatDeviceInfo(data)
     }
 }

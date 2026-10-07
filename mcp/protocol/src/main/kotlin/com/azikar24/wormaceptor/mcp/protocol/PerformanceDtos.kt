@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptor.mcp.server.serialization.dto
+package com.azikar24.wormaceptor.mcp.protocol
 
 import kotlinx.serialization.Serializable
 
@@ -45,4 +45,28 @@ internal data class PerformanceSnapshotDto(
     val memory: MemoryInfoDto,
     val fps: FpsInfoDto,
     val fpsMonitoring: Boolean,
+)
+
+/** `/api/cpu?include_history=true`; without the flag the route returns a bare [CpuInfoDto]. */
+@Serializable
+internal data class CpuHistoryDto(
+    val current: CpuInfoDto,
+    val history: List<CpuInfoDto>,
+    val isMonitoring: Boolean,
+)
+
+/** `/api/memory?include_history=true`; without the flag the route returns a bare [MemoryInfoDto]. */
+@Serializable
+internal data class MemoryHistoryDto(
+    val current: MemoryInfoDto,
+    val history: List<MemoryInfoDto>,
+    val isMonitoring: Boolean,
+)
+
+/** `/api/fps?include_history=true`; without the flag the route returns a bare [FpsInfoDto]. */
+@Serializable
+internal data class FpsHistoryDto(
+    val current: FpsInfoDto,
+    val history: List<FpsInfoDto>,
+    val isRunning: Boolean,
 )

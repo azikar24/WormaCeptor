@@ -4,20 +4,20 @@ import com.azikar24.wormaceptor.core.engine.CpuMonitorEngine
 import com.azikar24.wormaceptor.core.engine.FpsMonitorEngine
 import com.azikar24.wormaceptor.core.engine.MemoryMonitorEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
+import com.azikar24.wormaceptor.mcp.protocol.ApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.CpuHistoryDto
+import com.azikar24.wormaceptor.mcp.protocol.CpuInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.FpsHistoryDto
+import com.azikar24.wormaceptor.mcp.protocol.FpsInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.MemoryHistoryDto
+import com.azikar24.wormaceptor.mcp.protocol.MemoryInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.PerformanceSnapshotDto
 import com.azikar24.wormaceptor.mcp.server.serialization.JsonConfig
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ApiResponse
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.CpuInfoDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.FpsInfoDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.MemoryInfoDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.PerformanceSnapshotDto
 import com.azikar24.wormaceptor.mcp.server.serialization.toDto
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlin.coroutines.cancellation.CancellationException
 
 private const val FpsOffMessage = "FPS monitoring is off. It only samples while running: open the FPS tool or " +
@@ -44,23 +44,18 @@ internal fun Routing.performanceRoutes() {
             val json = JsonConfig.instance
 
             val currentDto = cpuEngine.currentOrSample().toDto()
-            val currentElement = json.encodeToJsonElement(CpuInfoDto.serializer(), currentDto)
 
             val dataElement: JsonElement = if (includeHistory) {
-                val historyDtos = cpuEngine.cpuHistory.value.map { it.toDto() }
-                val historyElement = json.encodeToJsonElement(
-                    ListSerializer(CpuInfoDto.serializer()),
-                    historyDtos,
-                )
-                JsonObject(
-                    mapOf(
-                        "current" to currentElement,
-                        "history" to historyElement,
-                        "isMonitoring" to JsonPrimitive(cpuEngine.isMonitoring.value),
+                json.encodeToJsonElement(
+                    CpuHistoryDto.serializer(),
+                    CpuHistoryDto(
+                        current = currentDto,
+                        history = cpuEngine.cpuHistory.value.map { it.toDto() },
+                        isMonitoring = cpuEngine.isMonitoring.value,
                     ),
                 )
             } else {
-                currentElement
+                json.encodeToJsonElement(CpuInfoDto.serializer(), currentDto)
             }
 
             call.respond(ApiResponse(success = true, data = dataElement))
@@ -87,23 +82,18 @@ internal fun Routing.performanceRoutes() {
             val json = JsonConfig.instance
 
             val currentDto = memoryEngine.currentOrSample().toDto()
-            val currentElement = json.encodeToJsonElement(MemoryInfoDto.serializer(), currentDto)
 
             val dataElement: JsonElement = if (includeHistory) {
-                val historyDtos = memoryEngine.memoryHistory.value.map { it.toDto() }
-                val historyElement = json.encodeToJsonElement(
-                    ListSerializer(MemoryInfoDto.serializer()),
-                    historyDtos,
-                )
-                JsonObject(
-                    mapOf(
-                        "current" to currentElement,
-                        "history" to historyElement,
-                        "isMonitoring" to JsonPrimitive(memoryEngine.isMonitoring.value),
+                json.encodeToJsonElement(
+                    MemoryHistoryDto.serializer(),
+                    MemoryHistoryDto(
+                        current = currentDto,
+                        history = memoryEngine.memoryHistory.value.map { it.toDto() },
+                        isMonitoring = memoryEngine.isMonitoring.value,
                     ),
                 )
             } else {
-                currentElement
+                json.encodeToJsonElement(MemoryInfoDto.serializer(), currentDto)
             }
 
             call.respond(ApiResponse(success = true, data = dataElement))
@@ -135,23 +125,18 @@ internal fun Routing.performanceRoutes() {
             val json = JsonConfig.instance
 
             val currentDto = fpsEngine.currentFpsInfo.value.toDto()
-            val currentElement = json.encodeToJsonElement(FpsInfoDto.serializer(), currentDto)
 
             val dataElement: JsonElement = if (includeHistory) {
-                val historyDtos = fpsEngine.fpsHistory.value.map { it.toDto() }
-                val historyElement = json.encodeToJsonElement(
-                    ListSerializer(FpsInfoDto.serializer()),
-                    historyDtos,
-                )
-                JsonObject(
-                    mapOf(
-                        "current" to currentElement,
-                        "history" to historyElement,
-                        "isRunning" to JsonPrimitive(fpsEngine.isRunning.value),
+                json.encodeToJsonElement(
+                    FpsHistoryDto.serializer(),
+                    FpsHistoryDto(
+                        current = currentDto,
+                        history = fpsEngine.fpsHistory.value.map { it.toDto() },
+                        isRunning = fpsEngine.isRunning.value,
                     ),
                 )
             } else {
-                currentElement
+                json.encodeToJsonElement(FpsInfoDto.serializer(), currentDto)
             }
 
             call.respond(ApiResponse(success = true, data = dataElement))

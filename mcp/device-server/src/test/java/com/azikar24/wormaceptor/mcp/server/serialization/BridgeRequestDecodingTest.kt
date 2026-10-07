@@ -1,7 +1,8 @@
 package com.azikar24.wormaceptor.mcp.server.serialization
 
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.MockLocationDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.SimulatedNotificationDto
+import com.azikar24.wormaceptor.core.engine.PushSimulatorEngine
+import com.azikar24.wormaceptor.mcp.protocol.MockLocationDto
+import com.azikar24.wormaceptor.mcp.protocol.SimulatedNotificationDto
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -18,6 +19,12 @@ class BridgeRequestDecodingTest {
         dto.title shouldBe "Order Update"
         dto.priority shouldBe "high"
         dto.id.isNotBlank() shouldBe true
+    }
+
+    @Test
+    fun `push body without channelId targets the engine's default channel`() {
+        val dto = json.decodeFromString<SimulatedNotificationDto>("""{"title":"t","body":"b"}""")
+        dto.channelId shouldBe PushSimulatorEngine.DEFAULT_CHANNEL_ID
     }
 
     @Test

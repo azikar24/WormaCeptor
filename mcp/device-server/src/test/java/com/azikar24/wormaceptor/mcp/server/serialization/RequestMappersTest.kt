@@ -3,7 +3,7 @@ package com.azikar24.wormaceptor.mcp.server.serialization
 import com.azikar24.wormaceptor.domain.entities.FileContent
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig
 import com.azikar24.wormaceptor.domain.entities.RateLimitConfig.NetworkPreset
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.SetRateLimitRequestDto
+import com.azikar24.wormaceptor.mcp.protocol.SetRateLimitRequestDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull

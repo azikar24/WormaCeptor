@@ -1,12 +1,16 @@
 package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
+import com.azikar24.wormaceptor.mcp.bridge.util.errorText
+import com.azikar24.wormaceptor.mcp.bridge.util.toApiResponse
+import com.azikar24.wormaceptor.mcp.bridge.util.toRequestBody
+import com.azikar24.wormaceptor.mcp.protocol.MockLocationDto
+import com.azikar24.wormaceptor.mcp.protocol.SimulatedNotificationDto
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
@@ -30,10 +34,9 @@ internal class ClearTransactionsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.post("/api/clear/transactions")
-        response.serverError()?.let { return it }
-        return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
-            ?: "Transactions cleared."
+        return connection.apiClient.post(
+            "/api/clear/transactions",
+        ).toApiResponse().errorText() ?: "Transactions cleared."
     }
 }
 
@@ -55,10 +58,7 @@ internal class ClearCrashesTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.post("/api/clear/crashes")
-        response.serverError()?.let { return it }
-        return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
-            ?: "Crashes cleared."
+        return connection.apiClient.post("/api/clear/crashes").toApiResponse().errorText() ?: "Crashes cleared."
     }
 }
 
@@ -80,10 +80,7 @@ internal class ClearLogsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.post("/api/clear/logs")
-        response.serverError()?.let { return it }
-        return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
-            ?: "Logs cleared."
+        return connection.apiClient.post("/api/clear/logs").toApiResponse().errorText() ?: "Logs cleared."
     }
 }
 
@@ -137,17 +134,15 @@ internal class SimulateLocationTool : McpTool() {
             return "Error: 'longitude' must be between -180 and 180 (got $longitude)"
         }
 
-        val body = buildJsonObject {
-            put("latitude", latitude)
-            put("longitude", longitude)
-            arguments["altitude"]?.jsonPrimitive?.doubleOrNull?.let { put("altitude", it) }
-            arguments["name"]?.jsonPrimitive?.contentOrNull?.let { put("name", it) }
+        val body = MockLocationDto(latitude = latitude, longitude = longitude).let {
+            it.copy(
+                altitude = arguments["altitude"]?.jsonPrimitive?.doubleOrNull ?: it.altitude,
+                name = arguments["name"]?.jsonPrimitive?.contentOrNull,
+            )
         }
 
-        val response = connection.apiClient.post("/api/location", body)
-        response.serverError()?.let { return it }
-        return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
-            ?: "Location set to $latitude, $longitude."
+        val response = connection.apiClient.post("/api/location", body.toRequestBody()).toApiResponse()
+        return response.errorText() ?: "Location set to $latitude, $longitude."
     }
 }
 
@@ -168,10 +163,9 @@ internal class StopLocationSimulationTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.delete("/api/location")
-        response.serverError()?.let { return it }
-        return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
-            ?: "Location simulation stopped."
+        return connection.apiClient.delete(
+            "/api/location",
+        ).toApiResponse().errorText() ?: "Location simulation stopped."
     }
 }
 
@@ -227,16 +221,14 @@ internal class SendPushNotificationTool : McpTool() {
             ?: return "Error: 'body' parameter is required and must be non-empty."
         if (body.isBlank()) return "Error: 'body' parameter is required and must be non-empty."
 
-        val requestBody = buildJsonObject {
-            put("title", title)
-            put("body", body)
-            arguments["channel_id"]?.jsonPrimitive?.contentOrNull?.let { put("channelId", it) }
-            arguments["priority"]?.jsonPrimitive?.contentOrNull?.let { put("priority", it) }
+        val requestBody = SimulatedNotificationDto(title = title, body = body).let {
+            it.copy(
+                channelId = arguments["channel_id"]?.jsonPrimitive?.contentOrNull ?: it.channelId,
+                priority = arguments["priority"]?.jsonPrimitive?.contentOrNull ?: it.priority,
+            )
         }
 
-        val response = connection.apiClient.post("/api/push", requestBody)
-        response.serverError()?.let { return it }
-        return response.jsonObject["message"]?.jsonPrimitive?.contentOrNull
-            ?: "Push notification sent: '$title'."
+        val response = connection.apiClient.post("/api/push", requestBody.toRequestBody()).toApiResponse()
+        return response.errorText() ?: "Push notification sent: '$title'."
     }
 }

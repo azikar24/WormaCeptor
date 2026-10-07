@@ -11,7 +11,6 @@
     <ID>CyclomaticComplexMethod:PerformanceRoutes.kt$internal fun Routing.performanceRoutes()</ID>
     <ID>CyclomaticComplexMethod:StorageRoutes.kt$internal fun Routing.storageRoutes()</ID>
     <ID>CyclomaticComplexMethod:TransactionRoutes.kt$internal fun Routing.transactionRoutes(maxBodySize: Long = ServerConfig.DEFAULT_MAX_BODY_SIZE)</ID>
-    <ID>Filename:LogDtos.kt$com.azikar24.wormaceptor.mcp.server.serialization.dto.LogDtos.kt</ID>
     <ID>Filename:RedactionPlugin.kt$com.azikar24.wormaceptor.mcp.server.middleware.RedactionPlugin.kt</ID>
     <ID>InstanceOfCheckForException:ActionRoutes.kt$e is CancellationException</ID>
     <ID>InstanceOfCheckForException:CrashRoutes.kt$e is CancellationException</ID>
@@ -38,7 +37,6 @@
     <ID>MagicNumber:WormaCeptorServer.kt$WormaCeptorServer$1000</ID>
     <ID>MatchingDeclarationName:AuthPlugin.kt$AuthConfig</ID>
     <ID>MatchingDeclarationName:HealthRoutes.kt$HealthResponse</ID>
-    <ID>MatchingDeclarationName:LogDtos.kt$LogEntryDto</ID>
     <ID>MatchingDeclarationName:RedactionPlugin.kt$RedactionHelper</ID>
     <ID>MaxLineLength:WormaCeptorServerInitializer.kt$WormaCeptorServerInitializer$"Koin not initialized after ${MAX_INIT_ATTEMPTS * INIT_POLL_INTERVAL_MS}ms, skipping MCP server start"</ID>
     <ID>MaximumLineLength:WormaCeptorServerInitializer.kt$WormaCeptorServerInitializer$ </ID>

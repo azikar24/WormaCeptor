@@ -2,11 +2,20 @@ package com.azikar24.wormaceptor.mcp.bridge.mcp.tools
 
 import com.azikar24.wormaceptor.mcp.bridge.device.DeviceConnection
 import com.azikar24.wormaceptor.mcp.bridge.util.TextFormatter
+import com.azikar24.wormaceptor.mcp.bridge.util.dataAs
+import com.azikar24.wormaceptor.mcp.bridge.util.errorText
+import com.azikar24.wormaceptor.mcp.bridge.util.toApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.CpuHistoryDto
+import com.azikar24.wormaceptor.mcp.protocol.CpuInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.FpsHistoryDto
+import com.azikar24.wormaceptor.mcp.protocol.FpsInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.MemoryHistoryDto
+import com.azikar24.wormaceptor.mcp.protocol.MemoryInfoDto
+import com.azikar24.wormaceptor.mcp.protocol.PerformanceSnapshotDto
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
@@ -43,30 +52,27 @@ internal class GetCpuStatsTool : McpTool() {
             arguments["include_history"]?.jsonPrimitive?.contentOrNull?.let { put("include_history", it) }
         }
 
-        val response = connection.apiClient.get("/api/cpu", params)
-        val body = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "CPU stats unavailable."
-        // With include_history the server wraps the reading as {current, history}.
-        val data = body.objectOrNull("current") ?: body
+        val response = connection.apiClient.get("/api/cpu", params).toApiResponse()
+        // With include_history the server wraps the reading as {current, history, isMonitoring}.
+        val stats = if (params[HistoryParam] == "true") {
+            response.dataAs<CpuHistoryDto>()?.let { it.current to it.history }
+        } else {
+            response.dataAs<CpuInfoDto>()?.let { it to null }
+        }
+        val (data, history) = stats ?: return response.errorText() ?: "CPU stats unavailable."
 
         val sb = StringBuilder()
-        sb.appendLine("CPU: ${data.str("overallUsagePercent")}% (${data.str("coreCount")} cores)")
-        data.strOrNull("cpuFrequencyMHz")?.let { sb.appendLine("Frequency: $it MHz") }
-        data.strOrNull("cpuTemperature")?.let { sb.appendLine("Temperature: $it\u00B0C") }
+        sb.appendLine("CPU: ${data.overallUsagePercent}% (${data.coreCount} cores)")
+        sb.appendLine("Frequency: ${data.cpuFrequencyMHz} MHz")
+        data.cpuTemperature?.let { sb.appendLine("Temperature: $it\u00B0C") }
 
-        body.arrayOrNull("history")?.let { history ->
-            sb.appendLine("\nUsage History (${history.size} samples):")
-            history.forEach { sample ->
-                val s = sample.jsonObject
-                sb.appendLine("  ${s.str("timestamp")}: ${s.str("overallUsagePercent")}%")
-            }
+        history?.let {
+            sb.appendLine("\nUsage History (${it.size} samples):")
+            it.forEach { s -> sb.appendLine("  ${s.timestamp}: ${s.overallUsagePercent}%") }
         }
 
         return sb.toString()
     }
-
-    private fun JsonObject.str(key: String): String = this[key]?.jsonPrimitive?.contentOrNull ?: "N/A"
-
-    private fun JsonObject.strOrNull(key: String): String? = this[key]?.jsonPrimitive?.contentOrNull
 }
 
 internal class GetMemoryStatsTool : McpTool() {
@@ -93,30 +99,26 @@ internal class GetMemoryStatsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/memory", historyParam(arguments))
-        val body = response.jsonObject.objectOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "Memory stats unavailable."
-        val data = body.objectOrNull("current") ?: body
+        val params = historyParam(arguments)
+        val response = connection.apiClient.get("/api/memory", params).toApiResponse()
+        val stats = if (params[HistoryParam] == "true") {
+            response.dataAs<MemoryHistoryDto>()?.let { it.current to it.history }
+        } else {
+            response.dataAs<MemoryInfoDto>()?.let { it to null }
+        }
+        val (data, history) = stats ?: return response.errorText() ?: "Memory stats unavailable."
 
         val sb = StringBuilder()
-        sb.appendLine("Memory: ${data.str("usedMemory")} / ${data.str("totalMemory")} bytes")
-        sb.appendLine("Heap Usage: ${data.str("heapUsagePercent")}%")
-        sb.appendLine("Native Heap: ${data.str("nativeHeapAllocated")} bytes allocated")
-        data.strOrNull("gcCount")?.let { sb.appendLine("GC Count: $it") }
-        body.arrayOrNull("history")?.let { history ->
-            sb.appendLine("\nHistory (${history.size} samples):")
-            history.forEach { sample ->
-                val s = sample.jsonObject
-                sb.appendLine("  ${s.str("timestamp")}: ${s.str("usedMemory")} bytes (${s.str("heapUsagePercent")}%)")
-            }
+        sb.appendLine("Memory: ${data.usedMemory} / ${data.totalMemory} bytes")
+        sb.appendLine("Heap Usage: ${data.heapUsagePercent}%")
+        sb.appendLine("Native Heap: ${data.nativeHeapAllocated} bytes allocated")
+        sb.appendLine("GC Count: ${data.gcCount}")
+        history?.let {
+            sb.appendLine("\nHistory (${it.size} samples):")
+            it.forEach { s -> sb.appendLine("  ${s.timestamp}: ${s.usedMemory} bytes (${s.heapUsagePercent}%)") }
         }
         return sb.toString()
     }
-
-    private fun JsonObject.str(key: String): String = this[key]?.jsonPrimitive?.contentOrNull ?: "N/A"
-
-    private fun JsonObject.strOrNull(key: String): String? = this[key]?.jsonPrimitive?.contentOrNull
 }
 
 internal class GetFpsStatsTool : McpTool() {
@@ -142,28 +144,28 @@ internal class GetFpsStatsTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/fps", historyParam(arguments))
-        val body = response.jsonObject.objectOrNull("data") ?: return response.serverError() ?: "FPS stats unavailable."
-        val data = body.objectOrNull("current") ?: body
+        val params = historyParam(arguments)
+        val response = connection.apiClient.get("/api/fps", params).toApiResponse()
+        val stats = if (params[HistoryParam] == "true") {
+            response.dataAs<FpsHistoryDto>()?.let { it.current to it.history }
+        } else {
+            response.dataAs<FpsInfoDto>()?.let { it to null }
+        }
+        val (data, history) = stats ?: return response.errorText() ?: "FPS stats unavailable."
 
         val sb = StringBuilder()
         sb.appendLine(
-            "FPS: ${data.str("currentFps")} (avg: ${data.str("averageFps")}, " +
-                "min: ${data.str("minFps")}, max: ${data.str("maxFps")})",
+            "FPS: ${data.currentFps} (avg: ${data.averageFps}, " +
+                "min: ${data.minFps}, max: ${data.maxFps})",
         )
-        sb.appendLine("Dropped Frames: ${data.str("droppedFrames")}")
-        sb.appendLine("Jank Frames: ${data.str("jankFrames")}")
-        body.arrayOrNull("history")?.let { history ->
-            sb.appendLine("\nHistory (${history.size} samples):")
-            history.forEach { sample ->
-                val s = sample.jsonObject
-                sb.appendLine("  ${s.str("timestamp")}: ${s.str("currentFps")} fps")
-            }
+        sb.appendLine("Dropped Frames: ${data.droppedFrames}")
+        sb.appendLine("Jank Frames: ${data.jankFrames}")
+        history?.let {
+            sb.appendLine("\nHistory (${it.size} samples):")
+            it.forEach { s -> sb.appendLine("  ${s.timestamp}: ${s.currentFps} fps") }
         }
         return sb.toString()
     }
-
-    private fun JsonObject.str(key: String): String = this[key]?.jsonPrimitive?.contentOrNull ?: "N/A"
 }
 
 internal class GetPerformanceSnapshotTool : McpTool() {
@@ -184,14 +186,15 @@ internal class GetPerformanceSnapshotTool : McpTool() {
         arguments: JsonObject,
         connection: DeviceConnection,
     ): String {
-        val response = connection.apiClient.get("/api/performance")
-        val data = response.jsonObject.objectOrNull(
-            "data",
-        ) ?: return response.serverError() ?: "Performance data unavailable."
+        val response = connection.apiClient.get("/api/performance").toApiResponse()
+        val data = response.dataAs<PerformanceSnapshotDto>()
+            ?: return response.errorText() ?: "Performance data unavailable."
         return TextFormatter.formatPerformanceSnapshot(data)
     }
 }
 
+private const val HistoryParam = "include_history"
+
 private fun historyParam(arguments: JsonObject): Map<String, String> = buildMap {
-    arguments["include_history"]?.jsonPrimitive?.booleanOrNull?.let { put("include_history", it.toString()) }
+    arguments[HistoryParam]?.jsonPrimitive?.booleanOrNull?.let { put(HistoryParam, it.toString()) }
 }

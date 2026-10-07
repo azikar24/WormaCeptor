@@ -8,6 +8,16 @@ application {
     mainClass.set("com.azikar24.wormaceptor.mcp.bridge.MainKt")
 }
 
+// DTOs shared with :mcp:device-server, compiled into both modules (not a module or artifact of its own).
+sourceSets.main {
+    kotlin.srcDir("../protocol/src/main/kotlin")
+}
+
+// Detekt only scans module dirs; the shared DTOs are checked here, once.
+detekt {
+    source.from("../protocol/src/main/kotlin")
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17

@@ -1,11 +1,11 @@
 package com.azikar24.wormaceptor.mcp.server.routes
 
 import com.azikar24.wormaceptor.core.engine.CoreHolder
+import com.azikar24.wormaceptor.mcp.protocol.ApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.CrashDto
+import com.azikar24.wormaceptor.mcp.protocol.CrashSummaryDto
+import com.azikar24.wormaceptor.mcp.protocol.ResponseMeta
 import com.azikar24.wormaceptor.mcp.server.serialization.JsonConfig
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ApiResponse
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.CrashDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.CrashSummaryDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ResponseMeta
 import com.azikar24.wormaceptor.mcp.server.serialization.toDto
 import com.azikar24.wormaceptor.mcp.server.serialization.toSummaryDto
 import io.ktor.http.HttpStatusCode

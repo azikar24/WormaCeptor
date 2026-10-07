@@ -13,6 +13,8 @@ android {
     buildFeatures {
         buildConfig = true
     }
+    // DTOs shared with :mcp:bridge, compiled into both modules (not a module or artifact of its own).
+    sourceSets["main"].java.srcDir("../protocol/src/main/kotlin")
     packaging {
         resources {
             excludes += listOf(

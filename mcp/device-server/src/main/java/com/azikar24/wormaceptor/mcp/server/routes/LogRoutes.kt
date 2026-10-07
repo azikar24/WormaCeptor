@@ -3,10 +3,10 @@ package com.azikar24.wormaceptor.mcp.server.routes
 import com.azikar24.wormaceptor.core.engine.LogCaptureEngine
 import com.azikar24.wormaceptor.core.engine.di.WormaCeptorKoin
 import com.azikar24.wormaceptor.domain.entities.LogLevel
+import com.azikar24.wormaceptor.mcp.protocol.ApiResponse
+import com.azikar24.wormaceptor.mcp.protocol.LogEntryDto
+import com.azikar24.wormaceptor.mcp.protocol.ResponseMeta
 import com.azikar24.wormaceptor.mcp.server.serialization.JsonConfig
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ApiResponse
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.LogEntryDto
-import com.azikar24.wormaceptor.mcp.server.serialization.dto.ResponseMeta
 import com.azikar24.wormaceptor.mcp.server.serialization.toDto
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing

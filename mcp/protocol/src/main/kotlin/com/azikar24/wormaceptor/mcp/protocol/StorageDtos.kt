@@ -1,4 +1,4 @@
-package com.azikar24.wormaceptor.mcp.server.serialization.dto
+package com.azikar24.wormaceptor.mcp.protocol
 
 import kotlinx.serialization.Serializable
 
@@ -37,6 +37,11 @@ internal data class ColumnInfoDto(
     val type: String,
     val isPrimaryKey: Boolean,
     val isNullable: Boolean,
+)
+
+@Serializable
+internal data class SqlQueryRequestDto(
+    val sql: String,
 )
 
 @Serializable

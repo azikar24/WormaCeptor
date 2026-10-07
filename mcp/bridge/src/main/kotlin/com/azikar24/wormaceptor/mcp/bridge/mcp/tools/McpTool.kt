@@ -29,6 +29,7 @@ internal abstract class McpTool {
 
     open val annotations: ToolAnnotations = ToolAnnotations.ReadOnly
 
+    /** Text starting with [ERROR_PREFIX] is sent with MCP `isError: true`, so validation and server errors count. */
     abstract suspend fun execute(
         arguments: JsonObject,
         connection: DeviceConnection,
@@ -44,5 +45,9 @@ internal abstract class McpTool {
             put("idempotentHint", annotations.idempotentHint)
             put("openWorldHint", annotations.openWorldHint)
         }
+    }
+
+    companion object {
+        const val ERROR_PREFIX = "Error: "
     }
 }

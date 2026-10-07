@@ -114,33 +114,29 @@ internal class McpServer(
                 }
                 tool.execute(arguments, connection)
             }
-            JsonRpcResponse(
-                id = request.id,
-                result = buildJsonObject {
-                    putJsonArray("content") {
-                        addJsonObject {
-                            put("type", "text")
-                            put("text", result)
-                        }
-                    }
-                },
-            )
+            toolResult(request.id, result, isError = result.startsWith(McpTool.ERROR_PREFIX))
         } catch (e: Exception) {
             if (e is CancellationException) throw e
-            JsonRpcResponse(
-                id = request.id,
-                result = buildJsonObject {
-                    putJsonArray("content") {
-                        addJsonObject {
-                            put("type", "text")
-                            put("text", "Error: ${e.message}")
-                        }
-                    }
-                    put("isError", true)
-                },
-            )
+            toolResult(request.id, "${McpTool.ERROR_PREFIX}${e.message}", isError = true)
         }
     }
+
+    private fun toolResult(
+        id: JsonElement?,
+        text: String,
+        isError: Boolean,
+    ) = JsonRpcResponse(
+        id = id,
+        result = buildJsonObject {
+            putJsonArray("content") {
+                addJsonObject {
+                    put("type", "text")
+                    put("text", text)
+                }
+            }
+            if (isError) put("isError", true)
+        },
+    )
 
     private fun errorResponse(
         id: JsonElement?,

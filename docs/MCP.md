@@ -149,6 +149,7 @@ A standalone JVM application that translates MCP protocol (JSON-RPC 2.0 on stdin
 - **Port forwarding** — sets up `tcp:8999 → tcp:8999` automatically
 - **Reconnection**: at startup it waits ~10s for the server, then starts anyway; a tool call that fails with a connection error re-creates the port forward, retries 4 times with backoff (1s, 2s, 4s), then repeats the call once
 - **Input validation** — path traversal protection, SQL injection prevention, parameter range checks
+- **Tool errors**: invalid arguments, device-server errors and connection failures come back as MCP `isError: true` results whose text starts with `Error: `
 - **Verbose mode** — `--verbose` logs all MCP requests and responses to stderr
 
 ## Bridge CLI Reference

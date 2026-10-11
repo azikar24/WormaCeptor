@@ -175,6 +175,8 @@ tasks.register("fullCheck") {
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "org.jetbrains.kotlinx.kover")
+    // DAGP 2.0+ no longer auto-applies to subprojects from the root
+    apply(plugin = "com.autonomousapps.dependency-analysis")
 
     detekt {
         buildUponDefaultConfig = true

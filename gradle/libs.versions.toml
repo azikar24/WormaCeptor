@@ -46,7 +46,7 @@ autoServiceKsp = "1.2.0"
 
 # Code Quality Plugins
 
-dependencyAnalysis = "1.30.0"
+dependencyAnalysis = "3.19.2"
 binaryCompatibilityValidator = "0.16.3"
 kover = "0.7.6"
 junit-jupiter = "5.11.0"

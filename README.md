@@ -7,8 +7,8 @@
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-UI-blue.svg)](https://developer.android.com/jetpack/compose)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**23 debug tools in one library, zero lines in your release APK.**
-Inspect network traffic, monitor performance, browse databases, simulate locations, and more. Ships only in debug builds through Gradle's `debugImplementation`, so nothing reaches production.
+**Your AI agent can read your code. Now it can read your running Android app.**
+WormaCeptor puts network traffic, crashes, logs, databases and preferences one tool call away for Claude Code, Cursor and other MCP clients, and on screen for you. No proxy, no certificates. Ships only in debug builds through Gradle's `debugImplementation`, so nothing reaches production. [Set up the agent in two lines](#ai-agents-mcp).
 
 ## Demo
 
@@ -139,11 +139,15 @@ debugImplementation("com.azikar24.wormaceptor:wormaceptor-mcp-server:3.4.0")
 ```
 <!-- x-release-please-end -->
 
-Build the bridge CLI once (`./gradlew :mcp:bridge:jar` in this repo), then register it with your client:
+Register the bridge with your client (needs Node.js 18+, Java 17+ and `adb`; the launcher downloads the matching bridge jar and checks its SHA-256):
 
+<!-- x-release-please-start-version -->
 ```bash
-claude mcp add --transport stdio wormaceptor -- java -jar /absolute/path/to/bridge.jar
+claude mcp add --transport stdio wormaceptor -- npx -y wormaceptor-mcp@3.4.0
 ```
+<!-- x-release-please-end -->
+
+No Node? Download `wormaceptor-mcp-bridge.jar` from the [latest release](https://github.com/azikar24/WormaCeptor/releases/latest) and run it with `java -jar`.
 
 The server binds to `127.0.0.1` on the device and the bridge reaches it through `adb forward`. Bearer-token auth is available and off by default; read [Security](docs/MCP.md#security) before using it on a shared device. Setup, all 44 tools, and configuration: [docs/MCP.md](docs/MCP.md). Walkthrough: [docs/MCP_TUTORIAL.md](docs/MCP_TUTORIAL.md).
 

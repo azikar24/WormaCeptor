@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.wormaceptor/wormaceptor",
+  "title": "WormaCeptor",
+  "description": "Inspect a running Android debug app: network traffic, crashes, logs, databases and preferences",
+  "websiteUrl": "https://wormaceptor.com/docs/mcp",
+  "repository": {
+    "url": "https://github.com/azikar24/WormaCeptor",
+    "source": "github",
+    "subfolder": "mcp/npx"
+  },
+  "version": "3.4.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "wormaceptor-mcp",
+      "version": "3.4.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

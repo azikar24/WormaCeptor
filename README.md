@@ -12,6 +12,12 @@ WormaCeptor puts network traffic, crashes, logs, databases and preferences one t
 
 ## Demo
 
+An agent finds and fixes a failing checkout by reading the app's network traffic through WormaCeptor:
+
+<p align="center">
+  <img src="media/mcp_agent_demo.webp" width="100%" alt="An AI agent calls WormaCeptor, reads the 422 response body, and fixes the currency field" />
+</p>
+
 Network inspection, system tools, and performance monitoring side by side:
 
 <p>

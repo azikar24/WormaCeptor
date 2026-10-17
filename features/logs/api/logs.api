@@ -8,13 +8,14 @@ public final class com/azikar24/wormaceptor/feature/logs/LogsViewModelFactory : 
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LogCaptureEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/logs/ui/ComposableSingletons$LogsScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/logs/ui/ComposableSingletons$LogsScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$logs_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-417424543$WormaCeptor_features_logs_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/logs/ui/LogsScreenKt {

@@ -1,7 +1,9 @@
 [versions]
-agp = "8.5.2"
-kotlin = "2.0.21"
-kotlinJvm = "2.0.21"
+agp = "8.13.2"
+# AGP 8.13 bundles R8 8.13, which cannot read Kotlin 2.4 metadata. Drop once on AGP 9.
+r8 = "9.1.56"
+kotlin = "2.4.20"
+kotlinJvm = "2.4.20"
 detekt = "1.23.8"
 preferenceKtx = "1.2.1"
 spotless = "6.25.0"
@@ -13,16 +15,16 @@ constraintlayout = "2.2.1"
 lifecycle = "2.7.0"
 navigation = "2.8.3"
 paging = "3.3.6"
-pagingRuntime = "3.3.6"
+pagingRuntime = "3.5.1"
 retrofit = "2.9.0"
 okhttp = "4.12.0"
-room = "2.6.1"
+room = "2.7.2"
 composeBom = "2024.10.01"
 accompanist = "0.36.0"
 multidex = "2.0.1"
-ksp = "2.0.21-1.0.27"
+ksp = "2.3.11"
 junit = "4.13.2"
-mockk = "1.13.12"
+mockk = "1.14.11"
 kotlinx-coroutines-test = "1.8.1"
 koin = "4.0.0"
 ktor = "3.0.3"
@@ -44,11 +46,11 @@ autoServiceKsp = "1.2.0"
 
 # Code Quality Plugins
 
-dependencyAnalysis = "1.30.0"
-binaryCompatibilityValidator = "0.14.0"
-kover = "0.7.6"
+dependencyAnalysis = "3.19.2"
+binaryCompatibilityValidator = "0.16.3"
+kover = "0.9.11"
 junit-jupiter = "5.11.0"
-android-junit5-plugin = "1.11.0.0"
+android-junit5-plugin = "2.0.1"
 kotest = "5.9.1"
 turbine = "1.2.0"
 gradleDoctor = "0.9.1"
@@ -90,7 +92,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
-kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.3" }
+kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.11.0" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -139,6 +141,7 @@ auto-service-annotations = { group = "com.google.auto.service", name = "auto-ser
 auto-service-ksp = { group = "dev.zacsweers.autoservice", name = "auto-service-ksp", version.ref = "autoServiceKsp" }
 
 # Gradle plugin classpath dependencies (used by build-logic convention plugins)
+android-r8 = { group = "com.android.tools", name = "r8", version.ref = "r8" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }

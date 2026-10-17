@@ -100,7 +100,7 @@ class WormaCeptorContentProvider : ContentProvider() {
             Log.w(TAG, "Failed to query status", e)
         }
 
-        cursor.addRow(arrayOf(capturing, count))
+        cursor.addRow(arrayOf<Any>(capturing, count))
         return cursor
     }
 
@@ -137,7 +137,7 @@ class WormaCeptorContentProvider : ContentProvider() {
             val contentType = response?.let { extractContentType(it) }
 
             cursor.addRow(
-                arrayOf(
+                arrayOf<Any?>(
                     getProperty(item, "id")?.toString() ?: return,
                     method,
                     host,

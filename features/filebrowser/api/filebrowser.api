@@ -8,6 +8,8 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/FileBrowserViewM
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/FileSystemRepository;Landroid/app/Application;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/data/FileSystemDataSource {
@@ -36,37 +38,27 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/data/FileSystemR
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileBrowserScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileBrowserScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$filebrowser_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$filebrowser_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$filebrowser_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$filebrowser_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1057430982$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1133365607$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1915958486$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-44917822$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$72718947$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileInfoSheetKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileInfoSheetKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$filebrowser_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$filebrowser_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1043381568$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-498942696$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-869051735$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileViewerScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/ComposableSingletons$FileViewerScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
-	public final fun getLambda-1$filebrowser_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$filebrowser_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-141689977$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-232641801$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/FileBrowserScreenKt {
@@ -87,18 +79,15 @@ public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/Br
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/ComposableSingletons$BreadcrumbBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/components/ComposableSingletons$BreadcrumbBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$filebrowser_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1412214140$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1724547070$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/ComposableSingletons$FileListItemKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/filebrowser/ui/components/ComposableSingletons$FileListItemKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$filebrowser_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$57552352$WormaCeptor_features_filebrowser_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/filebrowser/ui/components/FileListItemKt {

@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath(libs.android.r8)
+    }
+}
+
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
@@ -82,27 +88,29 @@ apiValidation {
 // =============================================================================
 // Kover Configuration (Code Coverage)
 // =============================================================================
-koverReport {
-    filters {
-        excludes {
-            classes(
-                "*BuildConfig",
-                "*_Factory",
-                "*_HiltModules*",
-                "*Hilt_*",
-                "*_Impl",
-                "*.di.*",
-                "*.theme.*",
-            )
-            packages(
-                "*.generated.*",
-                "*.databinding.*",
-            )
+kover {
+    reports {
+        filters {
+            excludes {
+                classes(
+                    "*BuildConfig",
+                    "*_Factory",
+                    "*_HiltModules*",
+                    "*Hilt_*",
+                    "*_Impl",
+                    "*.di.*",
+                    "*.theme.*",
+                )
+                packages(
+                    "*.generated.*",
+                    "*.databinding.*",
+                )
+            }
         }
-    }
-    verify {
-        rule("Minimum Coverage") {
-            minBound(50)
+        verify {
+            rule("Minimum Coverage") {
+                minBound(50)
+            }
         }
     }
 }
@@ -169,6 +177,8 @@ tasks.register("fullCheck") {
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "org.jetbrains.kotlinx.kover")
+    // DAGP 2.0+ no longer auto-applies to subprojects from the root
+    apply(plugin = "com.autonomousapps.dependency-analysis")
 
     detekt {
         buildUponDefaultConfig = true

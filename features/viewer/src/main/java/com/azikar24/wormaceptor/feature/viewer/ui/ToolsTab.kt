@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.azikar24.wormaceptor.api.WormaCeptorApi
@@ -57,6 +58,7 @@ fun ToolsTab(
     val searchQuery = state.toolsSearchQuery
     val collapsedCategories = state.collapsedToolCategories
     val context = LocalContext.current
+    val resources = LocalResources.current
     val favoritesRepository = remember { FavoritesRepository.getInstance(context) }
     val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
@@ -158,7 +160,7 @@ fun ToolsTab(
                         val added = favoritesRepository.toggleFavorite(tool.feature)
                         if (!added && favorites.size >= FavoritesRepository.MAX_FAVORITES) {
                             onShowMessage(
-                                context.getString(
+                                resources.getString(
                                     R.string.viewer_tools_max_favorites,
                                     FavoritesRepository.MAX_FAVORITES,
                                 ),

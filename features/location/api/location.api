@@ -8,64 +8,47 @@ public final class com/azikar24/wormaceptor/feature/location/LocationViewModelFa
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/LocationSimulatorRepository;Lcom/azikar24/wormaceptor/core/engine/LocationSimulatorEngine;Landroid/content/Context;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationInputSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationInputSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-11$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1047323506$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1102603765$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1121030518$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1540531007$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1854979326$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-270257979$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-322251390$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1911747521$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2016913722$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2138524693$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$301742878$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationPresetsSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationPresetsSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$487901735$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$66943582$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function3;
-	public static field lambda-4 Lkotlin/jvm/functions/Function3;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$location_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$location_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-4$location_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-5$location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1292062247$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1373564336$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1414914823$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$312523550$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$740410169$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationStatusSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/location/ui/ComposableSingletons$LocationStatusSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$location_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-94509025$WormaCeptor_features_location_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/location/ui/LocationScreenKt {

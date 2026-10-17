@@ -1,8 +1,7 @@
 public final class com/azikar24/wormaceptor/feature/recomposition/ComposableSingletons$RecompositionNavigationContributorKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ComposableSingletons$RecompositionNavigationContributorKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function4;
 	public fun <init> ()V
-	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1381024114$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/RecompositionNavigationContributor : com/azikar24/wormaceptor/core/ui/navigation/FeatureNavigationContributor {
@@ -45,38 +44,30 @@ public final class com/azikar24/wormaceptor/feature/recomposition/RecompositionT
 
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$EmptyRecompositionStateKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$EmptyRecompositionStateKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-530879769$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1834971521$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$RecomposerRowKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$RecomposerRowKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1193134174$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$984598682$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$RecompositionSummaryScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$RecompositionSummaryScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function3;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$recomposition_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1167017216$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1631191255$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$39391442$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$SummaryRowKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/recomposition/ui/ComposableSingletons$SummaryRowKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$recomposition_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-950917257$WormaCeptor_features_recomposition_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/recomposition/ui/RecompositionSummaryScreenKt {

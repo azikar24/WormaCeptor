@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -76,11 +76,11 @@ internal fun GridFilterCard(
         label = "border_animation",
     )
 
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val stateDesc = when {
-        count == 0 -> context.getString(R.string.viewer_filter_no_items)
-        isSelected -> context.getString(R.string.viewer_filter_selected, count)
-        else -> context.getString(R.string.viewer_filter_items_count, count)
+        count == 0 -> resources.getString(R.string.viewer_filter_no_items)
+        isSelected -> resources.getString(R.string.viewer_filter_selected, count)
+        else -> resources.getString(R.string.viewer_filter_items_count, count)
     }
 
     Box(
@@ -108,7 +108,7 @@ internal fun GridFilterCard(
                 selected = isSelected
                 stateDescription = stateDesc
                 val actionText = if (count > 0) {
-                    context.getString(
+                    resources.getString(
                         if (isSelected) {
                             R.string.viewer_filter_action_deselect
                         } else {
@@ -116,7 +116,7 @@ internal fun GridFilterCard(
                         },
                     )
                 } else {
-                    context.getString(R.string.viewer_filter_disabled)
+                    resources.getString(R.string.viewer_filter_disabled)
                 }
                 contentDescription = "$label filter. $stateDesc. $actionText"
             }

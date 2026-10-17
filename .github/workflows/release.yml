@@ -92,7 +92,7 @@ jobs:
 
       - name: Upload mapping for crash deobfuscation
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mapping-${{ github.event.release.tag_name }}
           path: app/build/outputs/mapping/release/mapping.txt

@@ -88,27 +88,29 @@ apiValidation {
 // =============================================================================
 // Kover Configuration (Code Coverage)
 // =============================================================================
-koverReport {
-    filters {
-        excludes {
-            classes(
-                "*BuildConfig",
-                "*_Factory",
-                "*_HiltModules*",
-                "*Hilt_*",
-                "*_Impl",
-                "*.di.*",
-                "*.theme.*",
-            )
-            packages(
-                "*.generated.*",
-                "*.databinding.*",
-            )
+kover {
+    reports {
+        filters {
+            excludes {
+                classes(
+                    "*BuildConfig",
+                    "*_Factory",
+                    "*_HiltModules*",
+                    "*Hilt_*",
+                    "*_Impl",
+                    "*.di.*",
+                    "*.theme.*",
+                )
+                packages(
+                    "*.generated.*",
+                    "*.databinding.*",
+                )
+            }
         }
-    }
-    verify {
-        rule("Minimum Coverage") {
-            minBound(50)
+        verify {
+            rule("Minimum Coverage") {
+                minBound(50)
+            }
         }
     }
 }

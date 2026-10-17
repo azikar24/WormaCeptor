@@ -221,6 +221,36 @@ jobs:
           npm publish --access public
 
   # ==========================================================================
+  # List the server in the official MCP Registry (needs the npm version above)
+  # ==========================================================================
+  publish-mcp-registry:
+    name: Publish to MCP Registry
+    runs-on: ubuntu-latest
+    needs: publish-npm-launcher
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Install mcp-publisher
+        run: |
+          curl -sL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+
+      # The key's public half is the v=MCPv1 TXT record on wormaceptor.com.
+      - name: Publish
+        env:
+          MCP_PRIVATE_KEY: ${{ secrets.MCP_PRIVATE_KEY }}
+        run: |
+          if [ -z "$MCP_PRIVATE_KEY" ]; then
+            echo "::error::MCP_PRIVATE_KEY secret is missing"
+            exit 1
+          fi
+          ./mcp-publisher login dns --domain wormaceptor.com --private-key "$MCP_PRIVATE_KEY"
+          ./mcp-publisher publish
+
+  # ==========================================================================
   # Trigger WormaCeptorWeb content sync via repository_dispatch
   # ==========================================================================
   notify-website:

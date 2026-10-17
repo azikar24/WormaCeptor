@@ -7,10 +7,16 @@
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-UI-blue.svg)](https://developer.android.com/jetpack/compose)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**23 debug tools in one library, zero lines in your release APK.**
-Inspect network traffic, monitor performance, browse databases, simulate locations, and more. Ships only in debug builds through Gradle's `debugImplementation`, so nothing reaches production.
+**Your AI agent can read your code. Now it can read your running Android app.**
+WormaCeptor puts network traffic, crashes, logs, databases and preferences one tool call away for Claude Code, Cursor and other MCP clients, and on screen for you. No proxy, no certificates. Ships only in debug builds through Gradle's `debugImplementation`, so nothing reaches production. [Set up the agent in two lines](#ai-agents-mcp).
 
 ## Demo
+
+An agent finds and fixes a failing checkout by reading the app's network traffic through WormaCeptor:
+
+<p align="center">
+  <img src="media/mcp_agent_demo.webp" width="100%" alt="An AI agent calls WormaCeptor, reads the 422 response body, and fixes the currency field" />
+</p>
 
 Network inspection, system tools, and performance monitoring side by side:
 
@@ -87,15 +93,15 @@ You can also enable the shake gesture with `WormaCeptorApi.startActivityOnShake(
 
 ## Features
 
-**Network** — Intercept HTTP/HTTPS via OkHttp or Ktor, monitor WebSocket connections and WebView requests, copy URLs or export as cURL, JSON and HAR, throttle with the rate limiter, and mock responses with Mock Rules (turn any captured request into a mock with Add to Mock)
+**Network**: Intercept HTTP/HTTPS via OkHttp or Ktor, monitor WebSocket connections and WebView requests, copy URLs or export as cURL, JSON and HAR, throttle with the rate limiter, and mock responses with Mock Rules (turn any captured request into a mock with Add to Mock)
 
-**Performance** — Track FPS, memory, and CPU in real time with a live overlay, catch memory leaks and StrictMode thread violations, spot excessive Compose recompositions
+**Performance**: Track FPS, memory, and CPU in real time with a live overlay, catch memory leaks and StrictMode thread violations, spot excessive Compose recompositions
 
-**System** — Browse SQLite databases, edit SharedPreferences, inspect DataStore and encrypted storage, explore files, view loaded native libraries and Gradle dependencies, read device info and logcat, capture crash reports
+**System**: Browse SQLite databases, edit SharedPreferences, inspect DataStore and encrypted storage, explore files, view loaded native libraries and Gradle dependencies, read device info and logcat, capture crash reports
 
-**Testing** — Fire test push notifications, manage FCM tokens, mock GPS locations, encrypt/decrypt and hash with the crypto tool
+**Testing**: Fire test push notifications, manage FCM tokens, mock GPS locations, encrypt/decrypt and hash with the crypto tool
 
-**AI agents** — An optional MCP server lets Claude Code, Cursor, and other MCP clients query the running debug app: 44 tools for transactions, crashes, logs, performance, storage, mock rules, request replay, and actions. See [AI Agents (MCP)](#ai-agents-mcp)
+**AI agents**: An optional MCP server lets Claude Code, Cursor, and other MCP clients query the running debug app: 44 tools for transactions, crashes, logs, performance, storage, mock rules, request replay, and actions. See [AI Agents (MCP)](#ai-agents-mcp)
 
 Every feature is its own module. Enable exactly what you need at init time, disable the rest. See [Feature Toggles](https://wormaceptor.com/docs/feature-toggles).
 
@@ -139,11 +145,15 @@ debugImplementation("com.azikar24.wormaceptor:wormaceptor-mcp-server:3.4.0")
 ```
 <!-- x-release-please-end -->
 
-Build the bridge CLI once (`./gradlew :mcp:bridge:jar` in this repo), then register it with your client:
+Register the bridge with your client (needs Node.js 18+, Java 17+ and `adb`; the launcher downloads the matching bridge jar and checks its SHA-256):
 
+<!-- x-release-please-start-version -->
 ```bash
-claude mcp add --transport stdio wormaceptor -- java -jar /absolute/path/to/bridge.jar
+claude mcp add --transport stdio wormaceptor -- npx -y wormaceptor-mcp@3.4.0
 ```
+<!-- x-release-please-end -->
+
+No Node? Download `wormaceptor-mcp-bridge.jar` from the [latest release](https://github.com/azikar24/WormaCeptor/releases/latest) and run it with `java -jar`.
 
 The server binds to `127.0.0.1` on the device and the bridge reaches it through `adb forward`. Bearer-token auth is available and off by default; read [Security](docs/MCP.md#security) before using it on a shared device. Setup, all 44 tools, and configuration: [docs/MCP.md](docs/MCP.md). Walkthrough: [docs/MCP_TUTORIAL.md](docs/MCP_TUTORIAL.md).
 
@@ -151,7 +161,7 @@ The server binds to `127.0.0.1` on the device and the bridge reaches it through 
 
 ## Documentation
 
-Full docs at **[wormaceptor.com](https://wormaceptor.com)** — [Getting Started](https://wormaceptor.com/docs)
+Full docs at **[wormaceptor.com](https://wormaceptor.com)**: [Getting Started](https://wormaceptor.com/docs)
 
 - [Installation & Requirements](https://wormaceptor.com/docs/installation)
 - [Ktor Client Plugin](https://wormaceptor.com/docs/ktor)
@@ -179,4 +189,4 @@ PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, architecture rule
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).

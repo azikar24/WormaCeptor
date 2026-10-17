@@ -5,6 +5,37 @@ All notable changes to WormaCeptor will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.1](https://github.com/azikar24/WormaCeptor/compare/v3.4.0...v3.4.1) (2026-10-17)
+
+
+### Bug Fixes
+
+* **viewer:** read strings through LocalResources for compose 1.10 lint ([b3644bc](https://github.com/azikar24/WormaCeptor/commit/b3644bc43270f78eb2c95e79de2d1e6dc3b8efad))
+
+
+### Build
+
+* **api:** regenerate api dumps for kotlin 2.4 codegen ([71d46ee](https://github.com/azikar24/WormaCeptor/commit/71d46eede5759184af89008a5b615d3010883cf0))
+* **deps:** bump actions/checkout from 4 to 7 ([76dc2d3](https://github.com/azikar24/WormaCeptor/commit/76dc2d3272e67bb1c20c0f16c3df614e42ce78d5))
+* **deps:** bump actions/checkout from 4 to 7 ([f4434f0](https://github.com/azikar24/WormaCeptor/commit/f4434f00fe1020d98bf42473cfe82b57ca565516))
+* **deps:** bump actions/setup-java from 4 to 6 ([81ae58e](https://github.com/azikar24/WormaCeptor/commit/81ae58ec9312fad3c7f2dcb22449d8b3bebdfc3d))
+* **deps:** bump actions/upload-artifact from 4 to 7 ([a3fef06](https://github.com/azikar24/WormaCeptor/commit/a3fef06fa2d54e0ef6537f6a03e7a77fbe5294d4))
+* **deps:** bump agp to 8.13.2, gradle to 8.13, pin r8 9.1.56 ([d08497c](https://github.com/azikar24/WormaCeptor/commit/d08497ce989ee4e3baa2905b14c4a6e832717f38))
+* **deps:** bump androidx.paging:paging-runtime from 3.3.6 to 3.5.1 ([f9b006f](https://github.com/azikar24/WormaCeptor/commit/f9b006fce7eb22a29f52fd639b1e15404542f4eb))
+* **deps:** bump com.google.firebase:firebase-messaging-ktx from 24.1.0 to 24.1.2 ([8411735](https://github.com/azikar24/WormaCeptor/commit/8411735717973ba5d0c1fbfeabd86ad352ad3645))
+* **deps:** bump de.mannodermaus.android-junit5 from 1.11.0.0 to 2.0.1 ([69d2095](https://github.com/azikar24/WormaCeptor/commit/69d2095d458e53a58e383a4af5034d6baf653624))
+* **deps:** bump dependency-analysis to 3.19.2 ([6490ea7](https://github.com/azikar24/WormaCeptor/commit/6490ea73b2541246f620039fb17316abb8754c6b))
+* **deps:** bump gitleaks/gitleaks-action from 2 to 3 ([ca68b42](https://github.com/azikar24/WormaCeptor/commit/ca68b42c5618b3f01795296d2cd84d97eecb94a5))
+* **deps:** bump gradle/actions from 3 to 6 ([5006662](https://github.com/azikar24/WormaCeptor/commit/5006662b54390b3b2f4d173c5bcef5c45d713269))
+* **deps:** bump io.mockk:mockk from 1.13.12 to 1.14.11 ([db3cce3](https://github.com/azikar24/WormaCeptor/commit/db3cce31e5f3e081a54b69e295ab8006e83d54b3))
+* **deps:** bump kotlin to 2.4.20 ([7d70ac5](https://github.com/azikar24/WormaCeptor/commit/7d70ac5f8b3aa89c7db1b30e505040dc5ac4a604))
+* **deps:** bump kotlinx-serialization-json from 1.6.3 to 1.11.0 ([ecc06ea](https://github.com/azikar24/WormaCeptor/commit/ecc06ea2b31d8dc763678ccc5f5a528566fd1b44))
+* **deps:** bump kover to 0.9.11 and move to the kover { reports } dsl ([4420000](https://github.com/azikar24/WormaCeptor/commit/442000006ebcb0c134a746ec115a882c244073b9))
+* **deps:** run lint 9.1.1 so it can read kotlin 2.4 metadata ([fde674a](https://github.com/azikar24/WormaCeptor/commit/fde674ab497dd0bcca7e4ef66e6d6e0b034249e1))
+* **deps:** upgrade kotlin to 2.4.20 and the toolchain that depends on it ([650e056](https://github.com/azikar24/WormaCeptor/commit/650e056c61e3c9ea895090883c4bd0f8f265808a))
+* **mcp:** publish the server to the official MCP Registry ([3e49275](https://github.com/azikar24/WormaCeptor/commit/3e492751e523da358e1349a461e7be299000c6bd))
+* **mcp:** publish the server to the official MCP Registry ([64d52ce](https://github.com/azikar24/WormaCeptor/commit/64d52ce525069e6e633ac47f0fa9d8a05049ee80))
+
 ## [3.4.0](https://github.com/azikar24/WormaCeptor/compare/v2.3.2...v3.4.0) (2026-10-07)
 
 

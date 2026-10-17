@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
@@ -29,7 +29,7 @@ internal fun FilterHeader(
     totalCount: Int,
     filtersActive: Boolean,
 ) {
-    val context = LocalContext.current
+    val resources = LocalResources.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,7 +67,7 @@ internal fun FilterHeader(
             },
             modifier = Modifier.semantics {
                 liveRegion = LiveRegionMode.Polite
-                contentDescription = context.getString(
+                contentDescription = resources.getString(
                     R.string.viewer_filter_results_description,
                     filteredCount,
                     totalCount,

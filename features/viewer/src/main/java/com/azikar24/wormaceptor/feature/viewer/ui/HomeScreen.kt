@@ -36,7 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -297,7 +297,7 @@ private fun ActiveFiltersBanner(
     currentPage: Int,
     onTransactionEvent: (TransactionListViewEvent) -> Unit,
 ) {
-    val context = LocalContext.current
+    val resources = LocalResources.current
 
     if (currentPage != 0 || transactionState.selectedIds.isNotEmpty()) return
 
@@ -376,7 +376,7 @@ private fun ActiveFiltersBanner(
                             modifier = Modifier.semantics {
                                 role = Role.Button
                                 selected = true
-                                contentDescription = context.getString(
+                                contentDescription = resources.getString(
                                     R.string.viewer_home_search_filter_description,
                                     transactionState.searchQuery,
                                 )
@@ -410,7 +410,7 @@ private fun ActiveFiltersBanner(
                             modifier = Modifier.semantics {
                                 role = Role.Button
                                 selected = true
-                                contentDescription = context.getString(
+                                contentDescription = resources.getString(
                                     R.string.viewer_home_method_filter_description,
                                     method,
                                 )
@@ -424,7 +424,7 @@ private fun ActiveFiltersBanner(
                             300..399 -> "3xx"
                             400..499 -> "4xx"
                             500..599 -> "5xx"
-                            else -> context.getString(R.string.viewer_home_status_label)
+                            else -> resources.getString(R.string.viewer_home_status_label)
                         }
                         AssistChip(
                             onClick = {
@@ -451,7 +451,7 @@ private fun ActiveFiltersBanner(
                             modifier = Modifier.semantics {
                                 role = Role.Button
                                 selected = true
-                                contentDescription = context.getString(
+                                contentDescription = resources.getString(
                                     R.string.viewer_home_status_filter_description,
                                     statusLabel,
                                 )

@@ -8,15 +8,15 @@ public final class com/azikar24/wormaceptor/feature/memory/MemoryViewModelFactor
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/MemoryMonitorEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/ui/ComposableSingletons$MemoryScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/ui/ComposableSingletons$MemoryScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$memory_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-813098845$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1656534733$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/ui/MemoryScreenKt {
@@ -25,36 +25,29 @@ public final class com/azikar24/wormaceptor/feature/memory/ui/MemoryScreenKt {
 
 public final class com/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$MemoryActionButtonsKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$MemoryActionButtonsKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$memory_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1982586739$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$41888852$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$MemoryChartCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$MemoryChartCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$memory_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-677861097$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2069440237$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$MemoryTopAppBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$MemoryTopAppBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$memory_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-523892953$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2004450250$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$NativeHeapCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/memory/ui/components/ComposableSingletons$NativeHeapCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$memory_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-762295009$WormaCeptor_features_memory_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/memory/vm/MemoryViewEffect {

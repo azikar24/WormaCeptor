@@ -1,10 +1,8 @@
 public final class com/azikar24/wormaceptor/core/ui/components/appbar/ComposableSingletons$WormaCeptorTopBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/appbar/ComposableSingletons$WormaCeptorTopBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-2107027506$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1137386597$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/appbar/WormaCeptorTopBarKt {
@@ -55,42 +53,32 @@ public final class com/azikar24/wormaceptor/core/ui/components/badge/BadgeVarian
 
 public final class com/azikar24/wormaceptor/core/ui/components/badge/ComposableSingletons$WormaCeptorBadgeKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/badge/ComposableSingletons$WormaCeptorBadgeKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1118162563$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1626640770$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$5932231$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$94474274$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/badge/ComposableSingletons$WormaCeptorMethodBadgeKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/badge/ComposableSingletons$WormaCeptorMethodBadgeKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1685624227$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1774166270$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/badge/ComposableSingletons$WormaCeptorStatusBadgeKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/badge/ComposableSingletons$WormaCeptorStatusBadgeKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$804985731$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$893527774$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/badge/ComposableSingletons$WormaCeptorWarningBadgeKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/badge/ComposableSingletons$WormaCeptorWarningBadgeKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$433903157$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$548697103$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/badge/WormaCeptorBadgeKt {
@@ -122,66 +110,44 @@ public final class com/azikar24/wormaceptor/core/ui/components/button/ButtonVari
 
 public final class com/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorButtonKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorButtonKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1567113568$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-756670971$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-969319498$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1607434395$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorFABKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorFABKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-12 Lkotlin/jvm/functions/Function2;
-	public static field lambda-13 Lkotlin/jvm/functions/Function2;
-	public static field lambda-14 Lkotlin/jvm/functions/Function2;
-	public static field lambda-15 Lkotlin/jvm/functions/Function2;
-	public static field lambda-16 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-11$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-12$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-13$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-14$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-15$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-16$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1019029510$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1348095901$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1368016856$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1636744570$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1842812401$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2130812883$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-862061619$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1360964377$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1971121938$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2073200220$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$26466027$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$601280820$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$841791423$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$873428545$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$945139061$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$971048417$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorFilledTonalIconButtonKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorFilledTonalIconButtonKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-827059311$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorIconButtonKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/button/ComposableSingletons$WormaCeptorIconButtonKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$881489829$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/button/WormaCeptorButtonKt {
@@ -220,118 +186,75 @@ public final class com/azikar24/wormaceptor/core/ui/components/card/CardStyle : 
 
 public final class com/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-10 Lkotlin/jvm/functions/Function3;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-12 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function3;
-	public static field lambda-3 Lkotlin/jvm/functions/Function3;
-	public static field lambda-4 Lkotlin/jvm/functions/Function3;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function3;
-	public static field lambda-8 Lkotlin/jvm/functions/Function3;
-	public static field lambda-9 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-10$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-11$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-12$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-8$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1098303461$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1148302546$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1234875101$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1248015261$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1852424706$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1906398140$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-589632382$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-599762324$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1273451213$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1632218041$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1720760084$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$328096389$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorContainerKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorContainerKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1143123777$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$575089626$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$762856648$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorExpandableCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorExpandableCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-10 Lkotlin/jvm/functions/Function3;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-12 Lkotlin/jvm/functions/Function2;
-	public static field lambda-13 Lkotlin/jvm/functions/Function3;
-	public static field lambda-14 Lkotlin/jvm/functions/Function3;
-	public static field lambda-15 Lkotlin/jvm/functions/Function2;
-	public static field lambda-16 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function3;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function3;
-	public static field lambda-6 Lkotlin/jvm/functions/Function3;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-10$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-11$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-12$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-13$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-14$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-15$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-16$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1055708431$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1336978874$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-2113105352$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-277311903$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-442129311$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-692245149$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-723399754$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-779618754$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-821694290$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-890891023$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$122127203$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1728623155$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1892906536$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$199285811$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$274609548$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$888188668$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorInfoCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorInfoCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function3;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1187890589$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2140772373$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-516493183$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-976992428$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1382336249$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1660821566$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorSummaryCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorSummaryCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-400301472$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-786687633$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$245781797$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$659567508$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorToolTileKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/card/ComposableSingletons$WormaCeptorToolTileKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-11638076$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-667691648$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/card/WormaCeptorCardKt {
@@ -361,15 +284,11 @@ public final class com/azikar24/wormaceptor/core/ui/components/card/WormaCeptorT
 
 public final class com/azikar24/wormaceptor/core/ui/components/chip/ComposableSingletons$WormaCeptorChipKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/chip/ComposableSingletons$WormaCeptorChipKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1529838166$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$331235782$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$427686363$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$524268257$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/chip/WormaCeptorChipKt {
@@ -378,47 +297,32 @@ public final class com/azikar24/wormaceptor/core/ui/components/chip/WormaCeptorC
 
 public final class com/azikar24/wormaceptor/core/ui/components/detail/ComposableSingletons$WormaCeptorDetailHeaderKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/detail/ComposableSingletons$WormaCeptorDetailHeaderKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1797406880$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1892066433$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-98338585$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1150896030$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1837300034$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$473090083$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$772552475$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/detail/ComposableSingletons$WormaCeptorDetailRowKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/detail/ComposableSingletons$WormaCeptorDetailRowKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1088969751$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1633815405$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-503572040$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1270358926$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/detail/ComposableSingletons$WormaCeptorDetailSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/detail/ComposableSingletons$WormaCeptorDetailSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1468236296$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1564332931$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-99656542$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$951022419$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/detail/DetailItem {
@@ -450,11 +354,9 @@ public final class com/azikar24/wormaceptor/core/ui/components/detail/WormaCepto
 
 public final class com/azikar24/wormaceptor/core/ui/components/dialog/ComposableSingletons$WormaCeptorAlertDialogKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/dialog/ComposableSingletons$WormaCeptorAlertDialogKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1945755343$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$229254465$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/dialog/WormaCeptorAlertDialogKt {
@@ -468,15 +370,11 @@ public final class com/azikar24/wormaceptor/core/ui/components/dialog/WormaCepto
 
 public final class com/azikar24/wormaceptor/core/ui/components/divider/ComposableSingletons$WormaCeptorDividerKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/divider/ComposableSingletons$WormaCeptorDividerKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1521122269$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-613959026$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1461394761$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2014161470$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/divider/DividerOrientation : java/lang/Enum {
@@ -503,65 +401,41 @@ public final class com/azikar24/wormaceptor/core/ui/components/divider/WormaCept
 
 public final class com/azikar24/wormaceptor/core/ui/components/input/ComposableSingletons$WormaCeptorDropdownBoxKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/input/ComposableSingletons$WormaCeptorDropdownBoxKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function3;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-132018203$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1536215768$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1954121245$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$715623531$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$867371768$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/input/ComposableSingletons$WormaCeptorSearchBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/input/ComposableSingletons$WormaCeptorSearchBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1464887647$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1819623221$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-28293202$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-899770395$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1134146442$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2047470384$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$445102331$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$569847286$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$818443008$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$945843238$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/input/ComposableSingletons$WormaCeptorTextFieldKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/input/ComposableSingletons$WormaCeptorTextFieldKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-178602371$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-912673931$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-984428422$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1518076534$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1546405570$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1659418899$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2038601432$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$312813204$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$899945598$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/input/WormaCeptorDropdownBoxKt {
@@ -578,33 +452,20 @@ public final class com/azikar24/wormaceptor/core/ui/components/input/WormaCeptor
 
 public final class com/azikar24/wormaceptor/core/ui/components/list/ComposableSingletons$WormaCeptorListItemKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/list/ComposableSingletons$WormaCeptorListItemKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-12 Lkotlin/jvm/functions/Function2;
-	public static field lambda-13 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-11$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-12$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-13$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1300224252$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1413315332$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1784861083$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2096204342$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-330950590$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-476578329$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-815587421$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-839454367$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1459060290$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1934820049$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1993634450$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$488564908$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$530656573$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/list/WormaCeptorListItemKt {
@@ -613,20 +474,16 @@ public final class com/azikar24/wormaceptor/core/ui/components/list/WormaCeptorL
 
 public final class com/azikar24/wormaceptor/core/ui/components/metric/ComposableSingletons$WormaCeptorChartLegendItemKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/metric/ComposableSingletons$WormaCeptorChartLegendItemKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1857555264$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-392878875$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/metric/ComposableSingletons$WormaCeptorDistributionBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/metric/ComposableSingletons$WormaCeptorDistributionBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1774818833$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2057296340$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/metric/WormaCeptorChartLegendItemKt {
@@ -643,20 +500,16 @@ public final class com/azikar24/wormaceptor/core/ui/components/metric/WormaCepto
 
 public final class com/azikar24/wormaceptor/core/ui/components/monitoring/ComposableSingletons$WormaCeptorMonitoringIndicatorKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/monitoring/ComposableSingletons$WormaCeptorMonitoringIndicatorKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1904214305$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$64542108$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/monitoring/ComposableSingletons$WormaCeptorMonitoringStatusBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/monitoring/ComposableSingletons$WormaCeptorMonitoringStatusBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1815750595$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$639544504$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/monitoring/WormaCeptorMonitoringIndicatorKt {
@@ -669,31 +522,19 @@ public final class com/azikar24/wormaceptor/core/ui/components/monitoring/WormaC
 
 public final class com/azikar24/wormaceptor/core/ui/components/section/ComposableSingletons$WormaCeptorSectionHeaderKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/section/ComposableSingletons$WormaCeptorSectionHeaderKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-12 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-11$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-12$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1031437827$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1302684208$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1681866741$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2025684286$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2142008620$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-821408397$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1635439584$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2008882510$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$313286479$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$499705143$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$659234053$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$927578834$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/section/WormaCeptorScrollableRowKt {
@@ -706,47 +547,32 @@ public final class com/azikar24/wormaceptor/core/ui/components/section/WormaCept
 
 public final class com/azikar24/wormaceptor/core/ui/components/state/ComposableSingletons$WormaCeptorEmptyStateKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/state/ComposableSingletons$WormaCeptorEmptyStateKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1306300220$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1984106167$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2018809318$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2143554273$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/state/ComposableSingletons$WormaCeptorErrorStateKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/state/ComposableSingletons$WormaCeptorErrorStateKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1737446022$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2013569968$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2138314923$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-537363247$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1879715327$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1881895468$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/state/ComposableSingletons$WormaCeptorSkeletonKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/state/ComposableSingletons$WormaCeptorSkeletonKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1011903432$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1168950223$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1928633780$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-555131096$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1520222691$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/state/HapticOnceState {
@@ -788,15 +614,11 @@ public final class com/azikar24/wormaceptor/core/ui/components/state/WormaCeptor
 
 public final class com/azikar24/wormaceptor/core/ui/components/status/ComposableSingletons$WormaCeptorStatusDotKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/status/ComposableSingletons$WormaCeptorStatusDotKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2000768575$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-424565651$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-450604612$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$385876946$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/status/WormaCeptorStatusDotKt {
@@ -805,11 +627,9 @@ public final class com/azikar24/wormaceptor/core/ui/components/status/WormaCepto
 
 public final class com/azikar24/wormaceptor/core/ui/components/tab/ComposableSingletons$WormaCeptorTabRowKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/tab/ComposableSingletons$WormaCeptorTabRowKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1162851100$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1386355348$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/core/ui/components/tab/WormaCeptorTabRowKt {
@@ -818,15 +638,11 @@ public final class com/azikar24/wormaceptor/core/ui/components/tab/WormaCeptorTa
 
 public final class com/azikar24/wormaceptor/core/ui/components/toggle/ComposableSingletons$WormaCeptorSwitchKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/core/ui/components/toggle/ComposableSingletons$WormaCeptorSwitchKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ui_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1708198526$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1854897768$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-897755929$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$721856125$WormaCeptor_core_ui_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract interface class com/azikar24/wormaceptor/core/ui/components/toggle/SwitchVariant {

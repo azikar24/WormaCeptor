@@ -34,11 +34,15 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/CrashDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/CrashDao {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/CrashDao_Impl$Companion;
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAll ()Lkotlinx/coroutines/flow/Flow;
-	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/CrashEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/CrashDao_Impl$Companion {
+	public final fun getRequiredConverters ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/CrashEntity {
@@ -160,11 +164,15 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao_Impl$Companion;
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAll ()Lkotlinx/coroutines/flow/Flow;
-	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LeakEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao_Impl$Companion {
+	public final fun getRequiredConverters ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LeakEntity {
@@ -204,11 +212,15 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao_Impl$Companion;
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao_Impl$Companion {
+	public final fun getRequiredConverters ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetEntity {
@@ -259,11 +271,15 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao_Impl$Companion;
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun clear (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun observe ()Lkotlinx/coroutines/flow/Flow;
 	public fun upsert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao_Impl$Companion {
+	public final fun getRequiredConverters ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationEntity {
@@ -309,13 +325,17 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockRuleDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/MockRuleDao {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockRuleDao_Impl$Companion;
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun observeAll ()Lkotlinx/coroutines/flow/Flow;
 	public fun upsert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockRuleEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockRuleDao_Impl$Companion {
+	public final fun getRequiredConverters ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/MockRuleEntity {
@@ -374,13 +394,17 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao_Impl$Companion;
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun count (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateDao_Impl$Companion {
+	public final fun getRequiredConverters ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/PushTemplateEntity {
@@ -518,6 +542,7 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao_Impl$Companion;
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteByIds (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -527,13 +552,16 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/Transaction
 	public fun getAllBodyRefs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getById (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getById (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getTransactionsPaged (IILjava/lang/String;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun insert (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun observeById (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public fun search (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public fun update (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionDao_Impl$Companion {
+	public final fun getRequiredConverters ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/TransactionEntity {
@@ -609,13 +637,17 @@ public abstract interface class com/azikar24/wormaceptor/infra/persistence/sqlit
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao_Impl : com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao {
+	public static final field Companion Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao_Impl$Companion;
 	public fun <init> (Landroidx/room/RoomDatabase;)V
 	public fun deleteAll (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteByWebViewId (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteOldest (ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static fun getRequiredConverters ()Ljava/util/List;
 	public fun insertOrUpdate (Lcom/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun observeAll ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestDao_Impl$Companion {
+	public final fun getRequiredConverters ()Ljava/util/List;
 }
 
 public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WebViewRequestEntity {
@@ -683,8 +715,9 @@ public final class com/azikar24/wormaceptor/infra/persistence/sqlite/WormaCeptor
 	public fun <init> ()V
 	public fun clearAllTables ()V
 	public fun crashDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/CrashDao;
-	public fun getAutoMigrations (Ljava/util/Map;)Ljava/util/List;
-	public fun getRequiredAutoMigrationSpecs ()Ljava/util/Set;
+	public fun createAutoMigrations (Ljava/util/Map;)Ljava/util/List;
+	public synthetic fun createOpenDelegate ()Landroidx/room/RoomOpenDelegateMarker;
+	public fun getRequiredAutoMigrationSpecClasses ()Ljava/util/Set;
 	public fun leakDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LeakDao;
 	public fun locationPresetDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/LocationPresetDao;
 	public fun mockLocationDao ()Lcom/azikar24/wormaceptor/infra/persistence/sqlite/MockLocationDao;

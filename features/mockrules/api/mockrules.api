@@ -6,95 +6,66 @@ public final class com/azikar24/wormaceptor/feature/mockrules/MockRulesNavigatio
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$BasicInfoSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$BasicInfoSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1624534992$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2051804721$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$225086445$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$623275600$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$DelaySectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$DelaySectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2144518075$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1268386702$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1339535423$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1707837605$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$343375574$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$465929977$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MethodDropdownKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MethodDropdownKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1906441717$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2057865062$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$44132488$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MockRuleEditorScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MockRuleEditorScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$892192267$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$980975021$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MockRulesScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$MockRulesScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function3;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1473905115$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1892190028$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1040894646$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$RequestMatchingSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$RequestMatchingSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1603027956$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-388464336$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-401886613$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$79323565$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$ResponseSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/mockrules/ui/ComposableSingletons$ResponseSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$mockrules_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1155153173$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1954358412$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2065939936$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1275597292$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1885132687$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2012112984$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$239437041$WormaCeptor_features_mockrules_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/mockrules/ui/MockRulesScreenKt {

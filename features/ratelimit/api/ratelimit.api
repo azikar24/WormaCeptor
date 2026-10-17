@@ -8,17 +8,16 @@ public final class com/azikar24/wormaceptor/feature/ratelimit/RateLimitViewModel
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/RateLimitEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/ratelimit/ui/ComposableSingletons$RateLimitScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/ratelimit/ui/ComposableSingletons$RateLimitScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ratelimit_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ratelimit_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$ratelimit_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1986249347$WormaCeptor_features_ratelimit_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-876351131$WormaCeptor_features_ratelimit_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$133684220$WormaCeptor_features_ratelimit_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/ratelimit/ui/RateLimitScreenKt {

@@ -8,23 +8,19 @@ public final class com/azikar24/wormaceptor/feature/dependenciesinspector/Depend
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/DependenciesInspectorEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/ComposableSingletons$DependenciesInspectorScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/dependenciesinspector/ui/ComposableSingletons$DependenciesInspectorScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1269482844$WormaCeptor_features_dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-63615757$WormaCeptor_features_dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$232696692$WormaCeptor_features_dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$586157476$WormaCeptor_features_dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$792991448$WormaCeptor_features_dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$98114003$WormaCeptor_features_dependenciesinspector_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/dependenciesinspector/ui/DependenciesInspectorScreenKt {

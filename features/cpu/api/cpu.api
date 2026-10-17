@@ -8,57 +8,46 @@ public final class com/azikar24/wormaceptor/feature/cpu/CpuViewModelFactory : an
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/CpuMonitorEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuChartSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuChartSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-17860671$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1427123976$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuPerCoreSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuPerCoreSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1232731883$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-616479296$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1130210008$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-15868148$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1734416118$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$49043823$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuSystemInfoKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuSystemInfoKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-617019692$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$482387038$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuUsageGaugeKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/cpu/ui/ComposableSingletons$CpuUsageGaugeKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$cpu_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$cpu_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-17382598$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-910411386$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$570321799$WormaCeptor_features_cpu_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/cpu/ui/CpuScreenKt {

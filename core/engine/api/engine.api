@@ -391,6 +391,7 @@ public final class com/azikar24/wormaceptor/core/engine/PerformanceOverlayState 
 	public static final field $stable I
 	public static final field Companion Lcom/azikar24/wormaceptor/core/engine/PerformanceOverlayState$Companion;
 	public static final field DISMISS_ZONE_THRESHOLD F
+	public fun <init> ()V
 	public synthetic fun <init> (ZJZZZZIZIZIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (ZJZZZZIZIZIZLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Z

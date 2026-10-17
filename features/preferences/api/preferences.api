@@ -8,6 +8,8 @@ public final class com/azikar24/wormaceptor/feature/preferences/PreferencesViewM
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/domain/contracts/PreferencesRepository;Lcom/azikar24/wormaceptor/feature/preferences/navigator/PreferencesNavigator;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/data/DataStoreDataSource {
@@ -66,9 +68,8 @@ public final class com/azikar24/wormaceptor/feature/preferences/data/Preferences
 
 public final class com/azikar24/wormaceptor/feature/preferences/navigation/ComposableSingletons$PreferencesNavigationKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/navigation/ComposableSingletons$PreferencesNavigationKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function4;
 	public fun <init> ()V
-	public final fun getLambda-1$preferences_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$-495089679$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/navigation/PreferencesNavigationKt {
@@ -83,34 +84,23 @@ public abstract interface class com/azikar24/wormaceptor/feature/preferences/nav
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/ComposableSingletons$PreferenceDetailScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/ui/ComposableSingletons$PreferenceDetailScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1247335841$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-280543656$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1011705124$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1517860833$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2107205698$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/ComposableSingletons$PreferencesListScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/ui/ComposableSingletons$PreferencesListScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1431806646$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1893025142$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2074827333$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1740697022$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2111611497$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$892543839$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/PreferenceDetailScreenKt {
@@ -123,36 +113,24 @@ public final class com/azikar24/wormaceptor/feature/preferences/ui/PreferencesLi
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceEditSheetKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceEditSheetKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-11$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$preferences_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-175510670$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-281279017$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-853959410$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-990009153$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-999575355$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1154807309$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$144855748$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$180619534$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$321732216$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$474667236$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$533425536$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceItemCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/preferences/ui/components/ComposableSingletons$PreferenceItemCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$preferences_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-960356430$WormaCeptor_features_preferences_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/preferences/ui/components/PreferenceEditSheetKt {

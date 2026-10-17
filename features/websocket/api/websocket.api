@@ -8,13 +8,14 @@ public final class com/azikar24/wormaceptor/feature/websocket/WebSocketViewModel
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/WebSocketMonitorEngine;Lcom/azikar24/wormaceptor/feature/websocket/navigator/WebSocketNavigator;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/navigation/ComposableSingletons$WebSocketNavigationKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/navigation/ComposableSingletons$WebSocketNavigationKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function4;
 	public fun <init> ()V
-	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda$1829482978$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function4;
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/navigation/WebSocketNavigationKt {
@@ -28,57 +29,42 @@ public abstract interface class com/azikar24/wormaceptor/feature/websocket/navig
 
 public final class com/azikar24/wormaceptor/feature/websocket/ui/ComposableSingletons$WebSocketDetailScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/ui/ComposableSingletons$WebSocketDetailScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-451375878$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1326468212$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1328119972$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1610647063$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$825707300$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/ui/ComposableSingletons$WebSocketListScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/ui/ComposableSingletons$WebSocketListScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1388376934$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2002003825$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1402092093$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$20523199$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$927373834$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$DirectionFilterChipsKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$DirectionFilterChipsKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1680666228$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2118745580$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$MessageListKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$MessageListKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$451420407$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$WebSocketStatsBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/websocket/ui/components/ComposableSingletons$WebSocketStatsBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$websocket_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1263886252$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$282855295$WormaCeptor_features_websocket_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/websocket/vm/WebSocketViewEffect {

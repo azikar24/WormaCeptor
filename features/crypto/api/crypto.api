@@ -8,95 +8,75 @@ public final class com/azikar24/wormaceptor/feature/crypto/CryptoViewModelFactor
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/CryptoEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$AlgorithmModeSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$AlgorithmModeSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1323848389$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1822210845$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1977694849$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoErrorCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoErrorCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1409208816$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1663790437$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoHistoryScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoHistoryScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-631853912$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoResultCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoResultCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-967043388$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$166212212$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2073168013$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2086179760$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$283926939$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$CryptoScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1162996843$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1550238098$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$HistoryItemKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$HistoryItemKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1445463517$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-580997476$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1504970068$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$InputSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$InputSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-709064194$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$KeyIvSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$KeyIvSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$crypto_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1936067829$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-719432505$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$563208443$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$845025141$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$PresetsSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/crypto/ui/ComposableSingletons$PresetsSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$crypto_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$63948741$WormaCeptor_features_crypto_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/crypto/vm/CryptoViewEffect {

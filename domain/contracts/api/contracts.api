@@ -61,6 +61,7 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Databa
 	public abstract fun getTableSchema (Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
 	public abstract fun getTables (Ljava/lang/String;)Ljava/util/List;
 	public abstract fun queryTable (Ljava/lang/String;Ljava/lang/String;II)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
+	public static synthetic fun queryTable$default (Lcom/azikar24/wormaceptor/domain/contracts/DatabaseRepository;Ljava/lang/String;Ljava/lang/String;IIILjava/lang/Object;)Lcom/azikar24/wormaceptor/domain/entities/QueryResult;
 }
 
 public final class com/azikar24/wormaceptor/domain/contracts/DatabaseRepository$DefaultImpls {
@@ -87,7 +88,7 @@ public final class com/azikar24/wormaceptor/domain/contracts/ExtensionContext {
 public abstract interface class com/azikar24/wormaceptor/domain/contracts/ExtensionProvider {
 	public abstract fun extractExtensions (Lcom/azikar24/wormaceptor/domain/contracts/ExtensionContext;)Ljava/util/Map;
 	public abstract fun getName ()Ljava/lang/String;
-	public abstract fun getPriority ()I
+	public fun getPriority ()I
 }
 
 public final class com/azikar24/wormaceptor/domain/contracts/ExtensionProvider$DefaultImpls {
@@ -281,6 +282,7 @@ public abstract interface class com/azikar24/wormaceptor/domain/contracts/Transa
 	public abstract fun getTransactionById (Ljava/util/UUID;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getTransactionCount (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getTransactionsPaged (Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;I)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getTransactionsPaged$default (Lcom/azikar24/wormaceptor/domain/contracts/TransactionRepository;Ljava/lang/String;Lcom/azikar24/wormaceptor/domain/contracts/TransactionFilters;IILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun observeTransaction (Ljava/util/UUID;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun saveTransaction (Lcom/azikar24/wormaceptor/domain/entities/NetworkTransaction;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun searchTransactions (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;

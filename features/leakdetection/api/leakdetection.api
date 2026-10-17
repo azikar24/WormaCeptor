@@ -8,19 +8,17 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/LeakDetectionV
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LeakDetectionEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/ui/ComposableSingletons$LeakDetectionScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/leakdetection/ui/ComposableSingletons$LeakDetectionScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1005435302$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-315780511$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-672230223$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1512256360$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/ui/LeakDetectionScreenKt {
@@ -29,41 +27,29 @@ public final class com/azikar24/wormaceptor/feature/leakdetection/ui/LeakDetecti
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/ui/components/ComposableSingletons$LeakCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/leakdetection/ui/components/ComposableSingletons$LeakCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-813106562$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$126689731$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1818650137$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$886373288$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/ui/components/ComposableSingletons$LeakDetailContentKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/leakdetection/ui/components/ComposableSingletons$LeakDetailContentKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1228806648$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1921977102$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1190452067$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1242746829$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/leakdetection/ui/components/ComposableSingletons$SeverityFilterChipsKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/leakdetection/ui/components/ComposableSingletons$SeverityFilterChipsKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$leakdetection_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1553455635$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2075650685$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-610974296$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$322252946$WormaCeptor_features_leakdetection_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/leakdetection/vm/LeakDetectionViewEffect {

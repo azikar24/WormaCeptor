@@ -8,6 +8,8 @@ public final class com/azikar24/wormaceptor/feature/deviceinfo/DeviceInfoViewMod
 	public static final field $stable I
 	public fun <init> (Landroid/app/Application;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/deviceinfo/GetDeviceInfoUseCase {
@@ -22,13 +24,10 @@ public final class com/azikar24/wormaceptor/feature/deviceinfo/navigation/Device
 
 public final class com/azikar24/wormaceptor/feature/deviceinfo/ui/ComposableSingletons$DeviceInfoScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/deviceinfo/ui/ComposableSingletons$DeviceInfoScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$deviceinfo_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-412659962$WormaCeptor_features_deviceinfo_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2142884477$WormaCeptor_features_deviceinfo_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$721750921$WormaCeptor_features_deviceinfo_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/deviceinfo/ui/DeviceInfoScreenKt {

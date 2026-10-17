@@ -8,17 +8,16 @@ public final class com/azikar24/wormaceptor/feature/loadedlibraries/LoadedLibrar
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/LoadedLibrariesEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/loadedlibraries/ui/ComposableSingletons$LoadedLibrariesScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/loadedlibraries/ui/ComposableSingletons$LoadedLibrariesScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-4155630$WormaCeptor_features_loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-664587656$WormaCeptor_features_loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$590194361$WormaCeptor_features_loadedlibraries_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/loadedlibraries/ui/LoadedLibrariesScreenKt {

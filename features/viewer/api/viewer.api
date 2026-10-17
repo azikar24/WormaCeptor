@@ -111,150 +111,106 @@ public final class com/azikar24/wormaceptor/feature/viewer/navigation/DeepLinkHa
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$CrashDetailScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$CrashDetailScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1213566193$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-270885250$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1303602532$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1583175127$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$CrashListScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$CrashListScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-610276706$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-758280304$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2064408399$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$FilterBottomSheetContentKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$FilterBottomSheetContentKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1892981630$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$HomeScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$HomeScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1323674222$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-632770253$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-760497237$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1202106697$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1479110071$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1762925474$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$HomeTopBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$HomeTopBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-11$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1119052328$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1153336176$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2095345268$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-439389417$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1092178682$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1185198946$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1956856785$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$296161933$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$388599573$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$750123919$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$900515630$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$ToolsTabKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$ToolsTabKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$163339668$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$249416964$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionBodyViewerKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionBodyViewerKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2062929848$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1888595782$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionDetailHeaderKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionDetailHeaderKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1069496311$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1385820798$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1925272412$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-4305897$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-671552882$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1105674$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1309997440$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2109571969$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionDetailSearchOverlayKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionDetailSearchOverlayKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1766792761$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1811922946$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionHeadersViewKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionHeadersViewKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1325099966$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$556620976$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionListScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionListScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2116405064$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$915696061$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionOverviewSectionKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/ComposableSingletons$TransactionOverviewSectionKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1563862266$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/CrashDetailScreenKt {
@@ -426,141 +382,94 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/BulkAct
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$BulkActionBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$BulkActionBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1187315137$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-359856086$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1199359083$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1302148864$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1864512967$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$220356514$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$618188158$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenBottomControlBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenBottomControlBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1214098434$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2099396146$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenImageViewerKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenImageViewerKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-410862796$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1066908298$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1877512511$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenTopControlBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$FullscreenTopControlBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1341496537$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-35953498$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-630760008$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1913638604$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$533858160$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$ImagePreviewCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$ImagePreviewCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function3;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1528071303$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1597127929$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$237471138$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewStateContentKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewStateContentKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1627947913$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1162417725$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$134129062$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1717201219$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$715784348$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$976029952$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewSuccessKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfPreviewSuccessKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1012992034$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1102245914$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1799342691$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-444552322$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1834627703$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfViewerScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$PdfViewerScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1552214600$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$TransactionContextMenuKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/ComposableSingletons$TransactionContextMenuKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-10 Lkotlin/jvm/functions/Function2;
-	public static field lambda-11 Lkotlin/jvm/functions/Function2;
-	public static field lambda-12 Lkotlin/jvm/functions/Function2;
-	public static field lambda-13 Lkotlin/jvm/functions/Function2;
-	public static field lambda-14 Lkotlin/jvm/functions/Function2;
-	public static field lambda-15 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
-	public static field lambda-5 Lkotlin/jvm/functions/Function2;
-	public static field lambda-6 Lkotlin/jvm/functions/Function2;
-	public static field lambda-7 Lkotlin/jvm/functions/Function2;
-	public static field lambda-8 Lkotlin/jvm/functions/Function2;
-	public static field lambda-9 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-10$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-11$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-12$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-13$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-14$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-15$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-6$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-7$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-8$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-9$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1540296291$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1575945701$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1696255295$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1848310274$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1947319777$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1982969187$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-3347872$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-38997282$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-798404445$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1174603046$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1940624033$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$368026204$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$403675614$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$681656782$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$775049690$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/FullscreenImageViewerKt {
@@ -664,11 +573,9 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/Transac
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/ComposableSingletons$ProtobufViewKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/body/ComposableSingletons$ProtobufViewKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2121339938$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$848612934$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/body/ContentTypeChipInfo {
@@ -718,54 +625,43 @@ public final class com/azikar24/wormaceptor/feature/viewer/ui/components/gesture
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfBottomNavigationBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfBottomNavigationBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1644194513$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2068650606$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2078691501$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfOverlaysKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfOverlaysKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-996047103$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1038314829$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfPageJumpDialogKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfPageJumpDialogKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1838428300$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1553787950$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfTopControlBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$PdfTopControlBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-81826239$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1457124586$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$ZoomablePageKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/pdf/ComposableSingletons$ZoomablePageKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1808893462$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/components/tools/ComposableSingletons$PerformanceOverlayToggleKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/viewer/ui/components/tools/ComposableSingletons$PerformanceOverlayToggleKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$viewer_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1047519619$WormaCeptor_features_viewer_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/viewer/ui/util/CommonUtilsKt {

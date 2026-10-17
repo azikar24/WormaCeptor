@@ -8,22 +8,21 @@ public final class com/azikar24/wormaceptor/feature/fps/FpsViewModelFactory : an
 	public static final field $stable I
 	public fun <init> (Lcom/azikar24/wormaceptor/core/engine/FpsMonitorEngine;)V
 	public fun create (Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;
+	public fun create (Ljava/lang/Class;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
+	public fun create (Lkotlin/reflect/KClass;Landroidx/lifecycle/viewmodel/CreationExtras;)Landroidx/lifecycle/ViewModel;
 }
 
 public final class com/azikar24/wormaceptor/feature/fps/ui/ComposableSingletons$FpsScreenKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/fps/ui/ComposableSingletons$FpsScreenKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-143154413$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/fps/ui/ComposableSingletons$FpsTopAppBarKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/fps/ui/ComposableSingletons$FpsTopAppBarKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$fps_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1136799567$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-79554706$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/azikar24/wormaceptor/feature/fps/ui/FpsScreenKt {
@@ -32,44 +31,33 @@ public final class com/azikar24/wormaceptor/feature/fps/ui/FpsScreenKt {
 
 public final class com/azikar24/wormaceptor/feature/fps/ui/components/ComposableSingletons$CurrentFpsCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/fps/ui/components/ComposableSingletons$CurrentFpsCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$fps_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$fps_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1086308009$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1695246791$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$668697885$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/fps/ui/components/ComposableSingletons$DroppedFramesCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/fps/ui/components/ComposableSingletons$DroppedFramesCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function3;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
-	public static field lambda-3 Lkotlin/jvm/functions/Function2;
-	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$fps_release ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$fps_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$fps_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-683774087$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1767162242$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1937831744$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$878044047$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/fps/ui/components/ComposableSingletons$FpsChartCardKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/fps/ui/components/ComposableSingletons$FpsChartCardKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$fps_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1404717421$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$180066365$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/azikar24/wormaceptor/feature/fps/ui/components/ComposableSingletons$StatisticsRowKt {
 	public static final field INSTANCE Lcom/azikar24/wormaceptor/feature/fps/ui/components/ComposableSingletons$StatisticsRowKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$fps_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1520424657$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$851116697$WormaCeptor_features_fps_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public abstract class com/azikar24/wormaceptor/feature/fps/vm/FpsViewEffect {

@@ -11,7 +11,7 @@ const https = require("node:https");
 const os = require("node:os");
 const path = require("node:path");
 
-const REPO = "azikar24/WormaCeptor";
+const REPO = "wormaceptor/WormaCeptor";
 const ASSET = "wormaceptor-mcp-bridge.jar";
 const version = process.env.WORMACEPTOR_BRIDGE_VERSION || require("../package.json").version;
 const cacheDir = path.join(

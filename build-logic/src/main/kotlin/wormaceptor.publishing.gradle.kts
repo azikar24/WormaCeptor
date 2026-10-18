@@ -34,7 +34,7 @@ mavenPublishing {
             project.findProperty("POM_DESCRIPTION") as String?
                 ?: "WormaCeptor – advanced Android debugging toolkit",
         )
-        url.set("https://github.com/AziKar24/WormaCeptor")
+        url.set("https://github.com/wormaceptor/WormaCeptor")
         inceptionYear.set("2026")
 
         licenses {
@@ -52,13 +52,13 @@ mavenPublishing {
             }
         }
         scm {
-            url.set("https://github.com/AziKar24/WormaCeptor")
-            connection.set("scm:git:git://github.com/AziKar24/WormaCeptor.git")
-            developerConnection.set("scm:git:ssh://git@github.com/AziKar24/WormaCeptor.git")
+            url.set("https://github.com/wormaceptor/WormaCeptor")
+            connection.set("scm:git:git://github.com/wormaceptor/WormaCeptor.git")
+            developerConnection.set("scm:git:ssh://git@github.com/wormaceptor/WormaCeptor.git")
         }
         issueManagement {
             system.set("GitHub Issues")
-            url.set("https://github.com/AziKar24/WormaCeptor/issues")
+            url.set("https://github.com/wormaceptor/WormaCeptor/issues")
         }
     }
 }

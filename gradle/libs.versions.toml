@@ -59,7 +59,7 @@ vanniktechMavenPublish = "0.30.0"
 playPublisher = "3.10.1"
 
 #noinspection UnusedVersionCatalogEntry
-minSdk = "23"
+minSdk = "24"
 #noinspection UnusedVersionCatalogEntry
 targetSdk = "36"
 #noinspection UnusedVersionCatalogEntry

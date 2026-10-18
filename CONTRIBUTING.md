@@ -6,7 +6,7 @@ Welcome! We appreciate your interest in contributing to WormaCeptor. Whether you
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/AziKar24/WormaCeptor.git
+   git clone https://github.com/wormaceptor/WormaCeptor.git
    cd WormaCeptor
    ```
 

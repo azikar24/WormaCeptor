@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/azikar24/WormaCeptor.git",
+    "url": "git+https://github.com/wormaceptor/WormaCeptor.git",
     "directory": "mcp/npx"
   },
   "homepage": "https://wormaceptor.com/docs/mcp",

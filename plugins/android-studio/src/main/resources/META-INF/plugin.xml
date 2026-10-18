@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.azikar24.wormaceptor.studio</id>
     <name>WormaCeptor</name>
-    <vendor email="azikar24@gmail.com" url="https://github.com/AziKar24/WormaCeptor">AziKar24</vendor>
+    <vendor email="azikar24@gmail.com" url="https://github.com/wormaceptor/WormaCeptor">AziKar24</vendor>
     <description><![CDATA[
         Network inspection integration for Android development.
         <br/><br/>

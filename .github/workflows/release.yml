@@ -194,7 +194,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: attach-mcp-bridge
     # Trusted publishing (OIDC): no npm token. npm only accepts it from this workflow file once the
-    # package's Settings -> Trusted publishing lists azikar24/WormaCeptor + release.yml.
+    # package's Settings -> Trusted publishing lists wormaceptor/WormaCeptor + release.yml.
     permissions:
       id-token: write
       contents: read

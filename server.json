@@ -5,7 +5,7 @@
   "description": "Inspect a running Android debug app: network traffic, crashes, logs, databases and preferences",
   "websiteUrl": "https://wormaceptor.com/docs/mcp",
   "repository": {
-    "url": "https://github.com/azikar24/WormaCeptor",
+    "url": "https://github.com/wormaceptor/WormaCeptor",
     "source": "github",
     "subfolder": "mcp/npx"
   },

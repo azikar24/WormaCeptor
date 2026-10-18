@@ -1,6 +1,6 @@
 # WormaCeptor
 
-[![GitHub Stars](https://img.shields.io/github/stars/azikar24/WormaCeptor?style=social)](https://github.com/azikar24/WormaCeptor)
+[![GitHub Stars](https://img.shields.io/github/stars/wormaceptor/WormaCeptor?style=social)](https://github.com/wormaceptor/WormaCeptor)
 [![Maven Central](https://img.shields.io/maven-central/v/com.azikar24.wormaceptor/wormaceptor-client.svg)](https://central.sonatype.com/artifact/com.azikar24.wormaceptor/wormaceptor-client)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg)](https://developer.android.com/about/versions/marshmallow)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)](https://kotlinlang.org)
@@ -153,7 +153,7 @@ claude mcp add --transport stdio wormaceptor -- npx -y wormaceptor-mcp@3.4.0
 ```
 <!-- x-release-please-end -->
 
-No Node? Download `wormaceptor-mcp-bridge.jar` from the [latest release](https://github.com/azikar24/WormaCeptor/releases/latest) and run it with `java -jar`.
+No Node? Download `wormaceptor-mcp-bridge.jar` from the [latest release](https://github.com/wormaceptor/WormaCeptor/releases/latest) and run it with `java -jar`.
 
 The server binds to `127.0.0.1` on the device and the bridge reaches it through `adb forward`. Bearer-token auth is available and off by default; read [Security](docs/MCP.md#security) before using it on a shared device. Setup, all 44 tools, and configuration: [docs/MCP.md](docs/MCP.md). Walkthrough: [docs/MCP_TUTORIAL.md](docs/MCP_TUTORIAL.md).
 

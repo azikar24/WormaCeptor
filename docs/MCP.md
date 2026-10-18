@@ -29,8 +29,8 @@ These steps are written so a coding agent can do the whole setup itself. Use the
    ```
    Without Node, download the jar and its checksum, verify, and register it directly:
    ```bash
-   curl -fLO https://github.com/azikar24/WormaCeptor/releases/download/vVERSION/wormaceptor-mcp-bridge.jar
-   curl -fLO https://github.com/azikar24/WormaCeptor/releases/download/vVERSION/wormaceptor-mcp-bridge.jar.sha256
+   curl -fLO https://github.com/wormaceptor/WormaCeptor/releases/download/vVERSION/wormaceptor-mcp-bridge.jar
+   curl -fLO https://github.com/wormaceptor/WormaCeptor/releases/download/vVERSION/wormaceptor-mcp-bridge.jar.sha256
    shasum -a 256 -c wormaceptor-mcp-bridge.jar.sha256
    claude mcp add --transport stdio wormaceptor -- java -jar /absolute/path/to/wormaceptor-mcp-bridge.jar
    ```

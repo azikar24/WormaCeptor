@@ -3,7 +3,7 @@ agp = "8.13.2"
 # AGP 8.13 bundles R8 8.13, which cannot read Kotlin 2.4 metadata. Drop once on AGP 9.
 r8 = "9.1.56"
 kotlin = "2.4.20"
-kotlinJvm = "2.4.20"
+kotlinJvm = "2.4.21"
 detekt = "1.23.8"
 preferenceKtx = "1.2.1"
 spotless = "6.25.0"

@@ -42,8 +42,8 @@ dependencyResolutionManagement {
 }
 
 // build.gradle.kts (app)
-implementation("com.azikar24.wormaceptor:wormaceptor-client:3.4.1")
-debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:3.4.1")
+implementation("com.azikar24.wormaceptor:wormaceptor-client:3.4.2")
+debugImplementation("com.azikar24.wormaceptor:wormaceptor-persistence:3.4.2")
 ```
 <!-- x-release-please-end -->
 

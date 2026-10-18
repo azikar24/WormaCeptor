@@ -5,6 +5,51 @@ All notable changes to WormaCeptor will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.2](https://github.com/wormaceptor/WormaCeptor/compare/v3.4.1...v3.4.2) (2026-10-18)
+
+
+### Bug Fixes
+
+* **app:** raise demo app minSdk to 24 and drop the dead website dispatch ([1d4e480](https://github.com/wormaceptor/WormaCeptor/commit/1d4e48087507df3954a55a148aba4beaad4adc83))
+* **app:** raise demo app minSdk to 24 for play automatic protection ([998ca49](https://github.com/wormaceptor/WormaCeptor/commit/998ca4957e75785a70ece8d5478060a67609e9aa))
+
+
+### Build
+
+* **deps:** bump actions/checkout from 4 to 7 ([b488014](https://github.com/wormaceptor/WormaCeptor/commit/b488014b772d2880d08b29edc4d84cf66e71fb98))
+* **deps:** bump actions/checkout from 4 to 7 ([1cbfebf](https://github.com/wormaceptor/WormaCeptor/commit/1cbfebfdca5d6534496163d6e3798a6456601da8))
+* **deps:** bump actions/setup-node from 4 to 7 ([daeaa56](https://github.com/wormaceptor/WormaCeptor/commit/daeaa56418a3ada436498ad75b44a4d37efba788))
+* **deps:** bump actions/setup-node from 4 to 7 ([da85fac](https://github.com/wormaceptor/WormaCeptor/commit/da85fac9437bed16377ab1dcb1178ef0f773f90e))
+* **deps:** bump androidx.core:core-splashscreen from 1.0.1 to 1.2.0 ([46134d9](https://github.com/wormaceptor/WormaCeptor/commit/46134d991be1a95770b41dd27f154424cb1ba6c1))
+* **deps:** bump androidx.core:core-splashscreen from 1.0.1 to 1.2.0 ([2557edb](https://github.com/wormaceptor/WormaCeptor/commit/2557edbb99f96190151ac6334c09e42428ca2006))
+* **deps:** bump androidx.paging:paging-compose from 3.3.6 to 3.5.3 ([9647636](https://github.com/wormaceptor/WormaCeptor/commit/964763687a58f1975459e8565753c5b801848be9))
+* **deps:** bump androidx.paging:paging-compose from 3.3.6 to 3.5.3 ([4f053f6](https://github.com/wormaceptor/WormaCeptor/commit/4f053f6b11ecc8f5ad0b881d9b41b3061dbd88c3))
+* **deps:** bump app.cash.turbine:turbine from 1.2.0 to 1.2.1 ([99fb326](https://github.com/wormaceptor/WormaCeptor/commit/99fb326d2bc46e39e0c169546b43a950d79654bf))
+* **deps:** bump app.cash.turbine:turbine from 1.2.0 to 1.2.1 ([f9ac0a2](https://github.com/wormaceptor/WormaCeptor/commit/f9ac0a2a09767ecfd5e9bde7a3ab934e1fe9dccf))
+* **deps:** bump com.squareup.sort-dependencies from 0.6 to 0.21.0 ([4d7036e](https://github.com/wormaceptor/WormaCeptor/commit/4d7036e10fbac6a37df1d33d3397b813eb95a82a))
+* **deps:** bump com.squareup.sort-dependencies from 0.6 to 0.21.0 ([2e5bf64](https://github.com/wormaceptor/WormaCeptor/commit/2e5bf64f886ea577e9ca5af7d396d1b1d612dd01))
+* **deps:** bump googleapis/release-please-action from 4 to 5 ([da0d53c](https://github.com/wormaceptor/WormaCeptor/commit/da0d53c18a00bdd550546dbd9313609771c6aeb6))
+* **deps:** bump googleapis/release-please-action from 4 to 5 ([7b1813e](https://github.com/wormaceptor/WormaCeptor/commit/7b1813ee4fd141a76a0dfb45b359c63b01f1d62f))
+* **deps:** bump junit-jupiter to 6.1.3 ([24de347](https://github.com/wormaceptor/WormaCeptor/commit/24de3476831b9e19c411c4a8d93354b5a25bb256))
+* **deps:** bump junit-jupiter to 6.1.3 and add the aligned platform launcher ([20ff102](https://github.com/wormaceptor/WormaCeptor/commit/20ff10257e8a2a2312ba2e178b74bc8da0911db8))
+* **deps:** bump koin from 4.0.0 to 4.2.2 ([a55d560](https://github.com/wormaceptor/WormaCeptor/commit/a55d5604fa5d07a7d3a63cedf8fde651b4d5b5fd))
+* **deps:** bump koin from 4.0.0 to 4.2.2 ([167670b](https://github.com/wormaceptor/WormaCeptor/commit/167670b63e3701bb632a8282dc89c134631dbad8))
+* **deps:** bump kotlin from 2.4.20 to 2.4.21 ([7c9fc0d](https://github.com/wormaceptor/WormaCeptor/commit/7c9fc0dfbb0f428b96b7f240b89d1dc4891922d5))
+* **deps:** bump kotlin from 2.4.20 to 2.4.21 ([6c9f888](https://github.com/wormaceptor/WormaCeptor/commit/6c9f8884f2678804004d1bbcff68ae103bfcb132))
+* **deps:** bump ktor from 3.0.3 to 3.6.0 ([5d7997a](https://github.com/wormaceptor/WormaCeptor/commit/5d7997a9026b96bb8729bac114578420d8cf18fc))
+* **deps:** bump ktor from 3.0.3 to 3.6.0 ([6df3f38](https://github.com/wormaceptor/WormaCeptor/commit/6df3f38391d2c104ec63a89d642f33f34c804fad))
+* **deps:** bump org.jetbrains.kotlin.jvm from 2.4.20 to 2.4.21 ([9431e8c](https://github.com/wormaceptor/WormaCeptor/commit/9431e8ccd0b192859b9d632c5c3ad72669b09055))
+* **deps:** bump org.jetbrains.kotlin.jvm from 2.4.20 to 2.4.21 ([80b458b](https://github.com/wormaceptor/WormaCeptor/commit/80b458b35eab370e8e572030ac4059857388a756))
+* **deps:** bump retrofit from 2.9.0 to 3.0.0 ([384d678](https://github.com/wormaceptor/WormaCeptor/commit/384d6784db65811c8d0f09de60187463a58a0e66))
+* **deps:** bump retrofit from 2.9.0 to 3.0.0 ([fef25ef](https://github.com/wormaceptor/WormaCeptor/commit/fef25ef42395bda417b605a5c76d983803eaa7ec))
+* **lint:** ignore netty's javax.naming.ldap reference for ktor 3.6 ([7eacd33](https://github.com/wormaceptor/WormaCeptor/commit/7eacd334f29dfdf3ef280c605ebc81f0c4722a04))
+
+
+### CI/CD
+
+* pass gitleaks license to the secret scan ([0d9ef8e](https://github.com/wormaceptor/WormaCeptor/commit/0d9ef8e00bebe80794cdb28130d1dbabeb4bc027))
+* **release:** drop the website dispatch job ([d81479f](https://github.com/wormaceptor/WormaCeptor/commit/d81479fba0c532f285ce16ab1de5ccc7ed9b4c1e))
+
 ## [3.4.1](https://github.com/azikar24/WormaCeptor/compare/v3.4.0...v3.4.1) (2026-10-17)
 
 

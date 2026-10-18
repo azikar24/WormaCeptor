@@ -204,7 +204,7 @@ jobs:
           ref: ${{ github.event.release.tag_name }}
 
       # Trusted publishing needs Node 22.14+ and npm CLI 11.5.1+; bun's publish docs only cover token auth.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'

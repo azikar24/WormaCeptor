@@ -54,7 +54,7 @@ android-junit5-plugin = "2.0.1"
 kotest = "5.9.1"
 turbine = "1.2.0"
 gradleDoctor = "0.9.1"
-sortDependencies = "0.6"
+sortDependencies = "0.21.0"
 vanniktechMavenPublish = "0.30.0"
 playPublisher = "3.10.1"
 

@@ -249,3 +249,41 @@ jobs:
           fi
           ./mcp-publisher login dns --domain wormaceptor.com --private-key "$MCP_PRIVATE_KEY"
           ./mcp-publisher publish
+
+  # ==========================================================================
+  # Open a PR on the website that bumps the version; content edits go on the same PR
+  # ==========================================================================
+  update-website:
+    name: Open website version PR
+    runs-on: ubuntu-latest
+    needs: publish-maven
+    permissions: {}
+    env:
+      GH_TOKEN: ${{ secrets.WEBSITE_TOKEN }}
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - name: Bump version and open PR
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::WEBSITE_TOKEN secret is missing"
+            exit 1
+          fi
+          version="${RELEASE_TAG#v}"
+          branch="chore/version-$version"
+          gh repo clone wormaceptor/WormaCeptorWeb web -- --depth 1
+          cd web
+          sed -i -E "s/^export const VERSION = \"[^\"]+\";/export const VERSION = \"$version\";/" src/lib/site.ts
+          grep -rlE 'com\.azikar24\.wormaceptor:[a-z-]+:[0-9]+\.[0-9]+\.[0-9]+"' content \
+            | xargs -r sed -i -E "s/(com\.azikar24\.wormaceptor:[a-z-]+:)[0-9]+\.[0-9]+\.[0-9]+\"/\1$version\"/g"
+          if git diff --quiet; then
+            echo "Website already on $version"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -am "docs: bump install snippets to WormaCeptor $version"
+          git push origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "docs: bump install snippets to WormaCeptor $version" \
+            --body "Opened by the WormaCeptor release workflow for $RELEASE_TAG. Add content changes from the release notes to this PR before merging: https://github.com/wormaceptor/WormaCeptor/releases/tag/$RELEASE_TAG"
